@@ -1,4 +1,13 @@
+body, html{
+  background-color: #2C3641;
+}
 *{
   margin: 0;
   padding: 0;
+}
+.MainLogo{
+  cursor: pointer;
+  width: max-content;
+  height: max-content;
+  display: block;
 }

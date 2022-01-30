@@ -1,6 +1,8 @@
 import Image from 'next/image'
 import styles from '../styles/nf_error.module.css'
 import Link from 'next/link'
+import Logo from '../components/Logo'
+
 
 // Pixel GIF code adapted from https://stackoverflow.com/a/33919020/266535
 const keyStr =
@@ -32,16 +34,11 @@ export default function ErrorPage(){
         />
 
         <div className={styles.container}>
+            
             <div className={styles.logoBlock}>
-                <Link href="/">
-                    <Image
-                    src='/w_logo_svg.svg'
-                    alt="Logo"
-                    layout='intrinsic'
-                    width={223.63}
-                    height={66.16}
-                    />
-                </Link>
+  
+              <Logo w="223" h="66" href="./"/>
+
             </div>
 
             <div className={styles.errorBlock}>

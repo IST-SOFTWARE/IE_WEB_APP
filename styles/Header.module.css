@@ -1,0 +1,127 @@
+.header{
+    width: max-content;
+    min-width: 100vw;
+    height: 94px;
+    background-color: #151A20;
+    display: flex;
+    align-items: center;
+  }
+
+.Headercontainer{
+    width: 1410px;
+    padding: 0px 15px;
+    height: max-content;
+    display: flex;
+    align-items: center;
+    /* border: solid 1px #fff; */
+    margin: 0 auto;
+}
+
+.catalogAndSearch{
+    display: flex;
+    column-gap: 11px;
+    margin: 0 auto;
+}
+
+.infoLoginCart{
+    display: flex;
+    column-gap: 27px;
+}
+
+
+.CatalogBtn{
+    width: 131px;
+    height: 50px;
+    background: #151A20;
+    border: 2px solid #76ACE7;
+    box-sizing: border-box;
+    border-radius: 25px;
+    align-items: center;
+    justify-content: center;
+    column-gap: 8px;
+    display: flex;
+    cursor: pointer;
+
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 21px;
+    color: #E6E6E4;
+}
+.search_block{
+    height: 50px;
+    width: 704px;
+    background: #E6E6E4;
+    box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.11);
+    border-radius: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between
+}
+.search{
+    margin-left:26px;
+    width: 87%;
+    outline: none;
+    border: none;
+    background: #E6E6E4;
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 21px;
+    color: #798189;
+}
+.search:focus{
+    outline: none;
+    border: none;
+}
+.sBtn{
+    border: none;
+    background: rgba(0, 0, 0, 0);
+    margin-right: 21px;
+    cursor: pointer;
+    border-radius: 100%;
+}
+
+.ContactsBlock{ 
+    width: 76px;
+    height: 76px;
+    background: #151A20;
+    box-shadow: 0px 0px 4px #335172;
+    border-radius: 14px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    row-gap: 5px;
+    border: none;
+    cursor: pointer;
+}
+.ContactsBlock a{
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 16px;
+    color: #fff;
+}
+
+/* Global styles for Cart and LogIn */
+.cartAndLoginBlock{         
+     background: #151A20;
+     border: none;
+     display: flex;
+     flex-direction: column;
+     align-items: center;
+     justify-content: center;
+     cursor: pointer;
+}
+.cartAndLoginBlock a{
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 16px;
+    color: #fff;
+}
