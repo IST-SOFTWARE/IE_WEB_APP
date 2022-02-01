@@ -4,8 +4,8 @@ import NextNProgress from 'nextjs-progressbar'
 export default function MyApp({Component, PageProps}){
     return(
         <>
-        
-        <NextNprogress
+
+        <NextNProgress
         color="#29D"
         startPosition={0.3}
         stopDelayMs={200}

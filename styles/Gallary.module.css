@@ -1,0 +1,68 @@
+.gtBlock{
+    width: 687px;
+    height: 248px;    
+    background: linear-gradient(270deg, #151A20 0%, rgba(0, 0, 0, 0) 88.83%);
+    border-radius: 27px; 
+    display: grid;
+    justify-items: end;
+    grid-template-rows: 187px 60px;
+    z-index: 10;
+    /* justify-content: center;
+    row-gap: 34px; */
+
+}
+.textBlock{
+    width: 580px;
+    height: max-content;
+    /* border: solid 1px #fff; */
+    height: 86%;
+    overflow-y: hidden;
+    display: flex;
+    align-items: center;
+    align-self: center;
+}
+.textBlock p{
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 30px;
+    line-height: 35px;
+    color: #fff;
+    margin-right: 28px;
+    /* border: solid 1px #fff; */
+    height: max-content;
+
+}
+.pointsBlock{
+    width: max-content;
+    display: flex;
+    column-gap: 8px;
+    margin-right: 36px;
+    /* border: solid 1px #fff; */
+}
+.GallaryPoint{
+    width: 24px;
+    height: 24px;
+    border: 2px solid #76ACE7;
+    box-sizing: border-box;
+    border-radius: 100%;
+    background: none;
+    cursor: pointer;
+}
+.GallaryPoint.active{
+    width: 24px;
+    height: 24px;
+    border: 2px solid #FFD064;
+    box-sizing: border-box;
+    border-radius: 100%;
+    background: #FFD064;
+    cursor: pointer;
+}
+.GallaryBlock{
+    position: absolute;
+    right: 0;
+    top:0;
+    z-index: 0;
+    height: 100%;
+    width: 100%;
+}

@@ -2,7 +2,7 @@ import Image from "next/image"
 import React from "react";
 import Link from "next/link";
 
-const Logo = ({w, h, href}) => {
+export default function Logo({w, h, href}){
     return(
         <>
         <Link href={href}>
@@ -20,4 +20,3 @@ const Logo = ({w, h, href}) => {
     )
 }
 
-export default Logo;

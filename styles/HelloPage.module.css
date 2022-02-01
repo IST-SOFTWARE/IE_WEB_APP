@@ -1,0 +1,26 @@
+.HelloContent{
+    width: 100%;
+    height: calc(100vh - 94px);
+    display: grid;
+    grid-template-columns: 50% auto;
+    z-index: 10;
+    position: relative;
+}
+.HelloContent h2{
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 20px;
+    color: #99A8BA;
+    margin-top: 6px;
+}
+.LeftBlock{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+.RightBlock{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
