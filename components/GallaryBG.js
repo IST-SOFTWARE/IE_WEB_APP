@@ -58,8 +58,18 @@ export default function GallaryBG({image}){
             </div>
             <style jsx>{`
                 /* should be edit!!! */
-
-
+                
+                @media (max-width: 1919.98px){
+                    .GallaryBlock{
+                    display: block;
+                    }
+                }
+                
+                @media (max-width: 1439.98px){
+                    .GallaryBlock{
+                        display: none;
+                        }
+                }
                 
                 .GallaryBlock{
                         overflow: hidden;

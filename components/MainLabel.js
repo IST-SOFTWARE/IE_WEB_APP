@@ -1,4 +1,4 @@
-export default function({children, padding}){
+export default function MainLabel({children, padding}){
     return(
         <>
             <div className="MainLabel" style={{marginTop: padding}}>
