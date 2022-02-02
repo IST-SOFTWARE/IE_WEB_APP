@@ -30,7 +30,7 @@ const gallary = [
     {
         id: "5", 
         text : "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam",
-        img: "/GalleryImgs/5.jpg"
+        img: "/GalleryImgs/6.jpeg"
     }
 ]
 
@@ -38,10 +38,13 @@ const gallary = [
 export default function Hello(){
 
     const [image, setImage] = useState(gallary[0].img);
+
     const imageChenger = (nImg) => {
-        console.log(nImg);
         setImage(nImg);
     }
+    // useEffect(()=>{
+
+    // })
 
     return(
         <>
