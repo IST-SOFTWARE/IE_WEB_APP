@@ -1,6 +1,6 @@
 import styles from "../../styles/Header.module.css"
 
-const Login = () => {
+export default function Login(){
     return(
         <>
             <button className={styles.cartAndLoginBlock}>
@@ -10,4 +10,3 @@ const Login = () => {
         </>
     )
 }
-export default Login

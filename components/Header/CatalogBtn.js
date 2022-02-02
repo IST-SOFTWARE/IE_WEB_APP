@@ -1,5 +1,5 @@
 import styles from "../../styles/Header.module.css"
-const CatalogBtn = () => {
+export default function  CatalogBtn(){
     return(
         <>
             <button className={styles.CatalogBtn}>
@@ -9,4 +9,3 @@ const CatalogBtn = () => {
         </>
     )
 }
-export default CatalogBtn;

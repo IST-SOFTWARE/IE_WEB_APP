@@ -57,10 +57,13 @@ export default function GallaryBG({image}){
                 </div>
             </div>
             <style jsx>{`
+                /* should be edit!!! */
+
+
+                
                 .GallaryBlock{
                         overflow: hidden;
                         position: absolute;
-                        display: block;
                         right: 0;
                         top:0;
                         z-index: 0;

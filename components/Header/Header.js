@@ -6,7 +6,7 @@ import Cart from "./Cart"
 import Login from "./Login"
 
 import styles from "../../styles/Header.module.css"
-const Header = () => {
+export default function  Header(){
     return(
         <>
          <div className={styles.header}>
@@ -30,4 +30,3 @@ const Header = () => {
         </>
     )
 }
-export default Header

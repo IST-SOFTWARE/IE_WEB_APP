@@ -1,7 +1,7 @@
 import styles from "../../styles/Header.module.css"
 
 
-const Search = () => {
+export default function Search(){
     return(
         <>
             <div className={styles.search_block}>
@@ -13,4 +13,3 @@ const Search = () => {
         </>
     )
 }
-export default Search;

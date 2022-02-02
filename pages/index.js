@@ -6,7 +6,7 @@ export default function index(){
     return(
         <>
             <Header/>
-            <LangSwitcher/>
+            {/* <LangSwitcher/> */}
             <div className="container">
                 <Hello/>
             </div>

@@ -1,6 +1,6 @@
 import styles from "../../styles/Header.module.css"
 
-const Contacts = () => {
+export default function Contacts(){
     return(
         <>
             <button className={styles.ContactsBlock}>
@@ -10,4 +10,3 @@ const Contacts = () => {
         </>
     )
 }
-export default Contacts
