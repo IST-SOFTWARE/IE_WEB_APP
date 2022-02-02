@@ -58,11 +58,24 @@
     background: #FFD064;
     cursor: pointer;
 }
-.GallaryBlock{
-    position: absolute;
-    right: 0;
-    top:0;
-    z-index: 0;
-    height: 100%;
+.gallaryImg{
     width: 100%;
+    height: 100%;
+    position: relative;
+    mask:url("/g_mask.svg");
+    mask-repeat: no-repeat;
+    mask-position: right;
+    padding: 2px;
 }
+.GalleryBorder{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    right: 0;
+    background: linear-gradient(0deg, rgba(118, 172, 231, 1), rgba(21, 26, 32, 1));
+    mask:url("/g_mask.svg");
+    mask-repeat: no-repeat;
+    mask-position: right;
+}
+

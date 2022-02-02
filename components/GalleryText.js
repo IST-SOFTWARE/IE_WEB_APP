@@ -8,10 +8,12 @@ export default function GallaryText(props) {
     const [activeId, setId] = useState(props.defId);
 
     const SwitchSlide = (itemId) => {
+        props.slideBg(Points.find(item => item.id === itemId.toString()).img);
         setSlide(slide = 
             Points.find(item => item.id === itemId.toString()).text);
         setId(itemId);
     }
+
 
     const Points = props.gallary;
     const PointsList = Points.map((point) =>
