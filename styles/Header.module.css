@@ -16,18 +16,18 @@
     height: max-content;
     display: flex;
     align-items: center;
-    border: solid 1px #76ACE7;
+    /* border: solid 1px #76ACE7; */
 }
 
 .catalogAndSearch{
     display: flex;
-    column-gap: 11px;
+    /* column-gap: 11px; */
+    /* border: solid 1px #fff; */
     margin: 0 auto;
 }
 
 .infoLoginCart{
     display: flex;
-    column-gap: 27px;
 }
 
 
@@ -40,9 +40,10 @@
     border-radius: 25px;
     align-items: center;
     justify-content: center;
-    column-gap: 8px;
+    /* column-gap: 8px; */
     display: flex;
     cursor: pointer;
+    margin-right: 11px;
 
     font-family: Roboto;
     font-style: normal;
@@ -50,6 +51,9 @@
     font-size: 18px;
     line-height: 21px;
     color: #E6E6E4;
+}
+.CatalogBtn img{
+    margin-right: 9px;
 }
 .search_block{
     height: 50px;
@@ -96,7 +100,8 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    row-gap: 5px;
+    /* row-gap: 5px; */
+    margin-right: 9px;
     border: none;
     cursor: pointer;
 }
@@ -107,6 +112,7 @@
     font-size: 14px;
     line-height: 16px;
     color: #fff;
+    margin-top: 5px;
 }
 
 /* Global styles for Cart and LogIn */
@@ -118,6 +124,7 @@
      align-items: center;
      justify-content: center;
      cursor: pointer;
+     margin-left: 20px;
 }
 .cartAndLoginBlock a{
     font-family: Roboto;

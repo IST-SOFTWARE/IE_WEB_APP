@@ -36,7 +36,7 @@
 .pointsBlock{
     width: max-content;
     display: flex;
-    column-gap: 8px;
+    /* column-gap: 8px; */
     margin-right: 36px;
     /* border: solid 1px #fff; */
 }
@@ -48,6 +48,7 @@
     border-radius: 100%;
     background: none;
     cursor: pointer;
+    margin-left: 8px;
 }
 .GallaryPoint.active{
     width: 24px;
