@@ -29,7 +29,6 @@
     align-items: center;
     margin-bottom: 40px;
     /* column-gap: 38px; */
-    border: solid 1px #fff;
 }
 .errorMsg h1{
     font-family: roboto;

@@ -19,6 +19,8 @@ body, html{
   font-style: normal;
   font-weight: bold;
   font-size: 46px;
+  white-space: pre-line;  
+  vertical-align: bottom;
   /* font-size: calc(23px + (46 - 23) * ((100vw - 300px) / (1920 - 320))); */
 }
 

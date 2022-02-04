@@ -35,13 +35,16 @@ const gallary = [
 ]
 
 
-export default function Hello(){
-
+export default function Hello({content, lang}){
     const [image, setImage] = useState(gallary[0].img);
-
     const imageChenger = (nImg) => {
         setImage(nImg);
     }
+
+    function LangChecker(def, settings, lng){ 
+        return ((content[settings])[lng] === undefined) ? def : (content[settings])[lng];
+    }
+
     // useEffect(()=>{
 
     // })
@@ -53,11 +56,15 @@ export default function Hello(){
                 <div className={styles.LeftBlock}>
                     <div>
                         <MainLabel padding="50px">
-                            ОБОРУДОВАНИЕ ДЛЯ ЛИФТОВ<br/>
-                            И ЭСКАЛАТОРОВ
+                            {LangChecker(
+                            "ОБОРУДОВАНИЕ ДЛЯ ЛИФТОВ И ЭСКАЛАТОРОВ"
+                            ,"Label", lang)}
                         </MainLabel>
-                        <h2>Lift your business up<br/>
-                        with IST Elevator.</h2>
+                        <h2>
+                            {LangChecker(
+                                "Lift your business up with IST Elevator."
+                                ,"Tagline", lang)}
+                        </h2>
                     </div>
                     <CallBack phone="+7(000)000-00-00"/>
                     <ScrollDown/>

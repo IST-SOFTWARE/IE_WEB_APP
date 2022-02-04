@@ -13,6 +13,8 @@
     font-size: 20px;
     color: #99A8BA;
     margin-top: 6px;
+    white-space: pre-line;  
+    vertical-align: bottom;
 }
 .LeftBlock{
     display: flex;
