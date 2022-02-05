@@ -1,11 +1,11 @@
 import styles from "../styles/ScrollDown.module.css"
 
-export default function ScrollDown(){
+export default function ScrollDown({text}){
     return(
         <>
             <div className={styles.sdBlock}>
                 <img src="./sd_ico.svg" alt="Scroll down" width="40px" height="52px"/>
-                <p>Листай вниз</p>
+                <p>{text}</p>
             </div>
         </>
     )

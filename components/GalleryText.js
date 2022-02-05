@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useEffect } from "react/cjs/react.development";
 import styles from "../styles/Gallary.module.css"
 import GallaryPoint from "./GallaryPoint"
 
@@ -7,10 +8,16 @@ export default function GallaryText(props) {
     const [slide, setSlide] = useState(props.defText);
     const [activeId, setId] = useState(props.defId);
 
+    useEffect(()=>{
+        setSlide( 
+            Points.find(item => item["id"] === activeId.toString())[props.lng]);
+    },[props.lng])
+
     const SwitchSlide = (itemId) => {
-        props.slideBg(Points.find(item => item.id === itemId.toString()).img);
+        props.slideBg(
+            Points.find(item => item["id"] === itemId.toString())["img"]);
         setSlide(slide = 
-            Points.find(item => item.id === itemId.toString()).text);
+            Points.find(item => item["id"] === itemId.toString())[props.lng]);
         setId(itemId);
     }
 
@@ -18,9 +25,9 @@ export default function GallaryText(props) {
     const Points = props.gallary;
     const PointsList = Points.map((point) =>
         <GallaryPoint
-        key={point.id} 
+        key={point["id"]} 
         SlideSwitcher={SwitchSlide}
-        id={point.id}
+        id={point["id"]}
         activeId={activeId}/>
     );
 

@@ -6,7 +6,7 @@ import Cart from "./Cart"
 import Login from "./Login"
 
 import styles from "../../styles/Header.module.css"
-export default function  Header(){
+export default function  Header({HeaderLangChecker, content, lang}){
     return(
         <>
          <div className={styles.header}>
@@ -15,14 +15,39 @@ export default function  Header(){
                     <Logo w="218" h="65" href="./"/>
 
                     <div className={styles.catalogAndSearch}>
-                        <CatalogBtn/>
-                        <Search/>
+                        <CatalogBtn text={
+                           HeaderLangChecker(content,
+                            "Каталог",
+                            "CatalogTitle",
+                            lang)
+                        }/>
+                        <Search placeholder={
+                           HeaderLangChecker(content,
+                            "Ищем что-то?",
+                            "SearchPlaceholder",
+                            lang)
+                        }/>
                     </div>
 
                     <div className={styles.infoLoginCart}>
-                        <Contacts/>
-                        <Cart/>
-                        <Login/>
+                        <Contacts contTitle={
+                           HeaderLangChecker(content,
+                            "Контакты",
+                            "ContectsTitle",
+                            lang)
+                        }/>
+                        <Cart cartTitle={
+                           HeaderLangChecker(content,
+                            "Корзина",
+                            "CartTitle",
+                            lang)
+                        }/>
+                        <Login loginTitle={
+                           HeaderLangChecker(content,
+                            "Войти",
+                            "LoginTitle",
+                            lang)
+                        }/>
                     </div>
                 </div>
             </div>

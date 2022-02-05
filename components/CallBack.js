@@ -1,18 +1,47 @@
 import styles from "../styles/CallBack.module.css"
 
-export default function CallBack({phone}) {
+export default function CallBack({cbLangChecker, lContent, lng}) {
     return(
         <>
             <div className={styles.CallBack}>
                 <div className={styles.BaseBlock}>
-                <p>Заказать звонок:</p>
+                <p>
+                    {cbLangChecker(lContent,           
+                    "Заказать звонок"
+                    ,"SendFormTitle", lng)}
+                :</p>
+                
                     <div className={styles.InputBlock}>
-                        <input type="text" placeholder="Имя:"/>
-                        <input type="text" placeholder="Телефон:"/>
-                        <button>Отправить заявку</button>
+                        <input type="text" placeholder=
+                            {cbLangChecker(lContent,                   
+                            "Имя"
+                            ,"SendFormName", lng) + ":"}
+                            
+                        />
+                        <input type="text" placeholder=
+                            {cbLangChecker(lContent,                  
+                            "Телефон"
+                            ,"SendFormPhone", lng) + ":"}
+                        />
+                        <button>
+                        {cbLangChecker(lContent,                    
+                            "Телефон"
+                            ,"SendFormSender", lng)}
+                        </button>
                     </div>
                 </div>
-                <p>Наш телефон: <a>{phone}</a></p>
+                <p>
+                {cbLangChecker(lContent,                    
+                "Наш телефон"
+                ,"SendFormPhoneTitle", lng) + ": "}
+
+                    <a>
+                    {cbLangChecker(lContent,               
+                    "+7(000)000-00-00"
+                    ,"CompanyPhone", lng)}
+                    </a>
+
+                </p>
             </div>
         </>
     )
