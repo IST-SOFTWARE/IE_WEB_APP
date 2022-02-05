@@ -1,5 +1,4 @@
-import { useState } from "react";
-import { useEffect } from "react/cjs/react.development";
+import { useState , useEffect } from "react";
 import styles from "../styles/Gallary.module.css"
 import GallaryPoint from "./GallaryPoint"
 
