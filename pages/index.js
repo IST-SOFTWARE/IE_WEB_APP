@@ -2,7 +2,6 @@ import { useState } from "react";
 import Header from "../components/Header/Header"
 import Hello from "../components/LandingPages/Hello"
 import LangSwitcher from "../components/LangSwitcher"
-import ScrollDown from "../components/ScrollDown";
 
 const HelloContent = {
     "Label": {
