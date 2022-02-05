@@ -46,6 +46,10 @@ const Languages = {
     "Title" : {
         "ru" : "Язык",
         "eng" : "Language"
+    },
+    "ChangeText":{
+        "ru" : "Переключить язык на \"ENG\" ",
+        "eng" : "Switch language to \"RU\" "
     }
 };
 const HeaderContent = {

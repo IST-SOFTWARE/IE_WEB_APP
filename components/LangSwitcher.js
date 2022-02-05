@@ -30,6 +30,31 @@ export default function LangSwitcher({switchFnc,SwLangChecker,lang,content}){
 
                 </p>
             </button>
+
+            <style jsx global>{`
+            .LangSwtchrBlock:hover::before{
+                content: '${SwLangChecker(
+                    content,
+                    "Переключить язык на \"ENG\" ",
+                    "ChangeText",
+                    lLang
+                )}';
+                width: 100px;
+                text-align: center;
+                vertical-align: middle;
+                padding: 10px 30px;
+                background: #2C3641;
+                border-radius: 30px;
+                color:#fff;
+                box-shadow: 0px 0px 10px #191c1f;
+                position: absolute;
+                bottom: 100px;
+                transition: 1s;
+                font-family: roboto;
+                font-size: 15px;
+              }
+            `}    
+            </style>
         </>
     )
 }
