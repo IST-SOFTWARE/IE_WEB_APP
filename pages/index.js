@@ -1,4 +1,4 @@
-import { useState } from "react/cjs/react.development";
+import { useState } from "react";
 import Header from "../components/Header/Header"
 import Hello from "../components/LandingPages/Hello"
 import LangSwitcher from "../components/LangSwitcher"
@@ -72,10 +72,10 @@ const HeaderContent = {
     }
 };
 
-export default function index(){
-    
-    const[globalLng, setLang] = useState("eng");
 
+export default function Index(){
+    const[globalLng, setLang] = useState("eng");
+    
     function ToggleLang(){
         globalLng === "ru" ? setLang("eng") : setLang("ru");
     }
