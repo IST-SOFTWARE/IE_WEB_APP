@@ -58,7 +58,7 @@ export default function Hello({HelloLangChecker, content, lang}){
             <div className={styles.HelloContent}>
                 <div className={styles.LeftBlock}>
                     <div>
-                        <MainLabel padding="50px">
+                        <MainLabel padding="140px">
                             {HelloLangChecker(content,
                             "ОБОРУДОВАНИЕ ДЛЯ ЛИФТОВ\nИ ЭСКАЛАТОРОВ"
                             ,"Label", lang)}

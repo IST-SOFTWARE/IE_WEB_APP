@@ -2,6 +2,32 @@ import { useState } from "react";
 import Header from "../components/Header/Header"
 import Hello from "../components/LandingPages/Hello"
 import LangSwitcher from "../components/LangSwitcher"
+import ProductDemo from "../components/LandingPages/ProductDemo";
+import InfoOfDev from "../components/InfoOfDev";
+
+const HeaderContent = {
+    "CatalogTitle":{
+        "ru": "Каталог",
+        "eng": "Catalog"
+    },
+    "SearchPlaceholder":{
+        "ru": "Ищем что-то?",
+        "eng": "Looking for something?"
+    },
+    "ContectsTitle":{
+        "ru": "Контакты",
+        "eng": "Contacts"
+    },
+    "CartTitle":{
+        "ru": "Корзина",
+        "eng": "Cart"
+    },
+    "LoginTitle":{
+        "ru": "Войти",
+        "eng": "LogIn"
+    }
+};
+
 
 const HelloContent = {
     "Label": {
@@ -42,6 +68,40 @@ const HelloContent = {
         "eng": "Scroll down"
     }
 };
+const PDContent = {
+    "Label":{
+        "ru" : "БОЛЬШОЙ ВЫБОР ЗАПЧАСТЕЙ\nДЛЯ ГРУЗОПОДЪЕМНОЙ\nТЕХНИКИ",
+        "eng" : "LARGE SELECTION OF PARTS\nFOR LIFTING EQUIPMENT"
+    },
+    "1stCard":{
+        "img" : "https://res.cloudinary.com/dv9xitsjg/image/upload/v1644157443/ProductCards/lift_card_n1pcei.png",
+        "ru" : "Запчасти для лифтов",
+        "eng" : "Spare parts for elevators"
+    },
+    "2ndCard":{
+        "img" : "https://res.cloudinary.com/dv9xitsjg/image/upload/v1644157443/ProductCards/escal_card_y5u29c.png",
+        "ru" : "Запчасти для эскалаторов",
+        "eng" : "Escalator\nParts"
+    },
+    "3thCard":{
+        "img" : "https://res.cloudinary.com/dv9xitsjg/image/upload/v1644157443/ProductCards/btn_card_y26fg8.png",
+        "ru" : "Модернизация и отделка",
+        "eng" : "Modernization and finishing"
+    },
+    "OpenCatalog":{
+        "ru" : "Открыть каталог",
+        "eng" : "Open catalog"  
+    },
+    "AnyQuestions" :{
+        "ru":"Возникли вопросы?",
+        "eng":"Have questions?"
+    },
+    "LeaveReq" :{
+        "ru": "Оставь {заявку} и мы перезвоним!",
+        "eng": "Leave a {request} and we will call you back!"
+    }
+};
+
 const Languages = {
     "Title" : {
         "ru" : "Язык",
@@ -50,28 +110,6 @@ const Languages = {
     "ChangeText":{
         "ru" : "Переключить язык на \"ENG\" ",
         "eng" : "Switch language to \"RU\" "
-    }
-};
-const HeaderContent = {
-    "CatalogTitle":{
-        "ru": "Каталог",
-        "eng": "Catalog"
-    },
-    "SearchPlaceholder":{
-        "ru": "Ищем что-то?",
-        "eng": "Looking for something?"
-    },
-    "ContectsTitle":{
-        "ru": "Контакты",
-        "eng": "Contacts"
-    },
-    "CartTitle":{
-        "ru": "Корзина",
-        "eng": "Cart"
-    },
-    "LoginTitle":{
-        "ru": "Войти",
-        "eng": "LogIn"
     }
 };
 
@@ -94,6 +132,17 @@ export default function Index(){
 
     return(
         <>
+            <InfoOfDev header="Информация о разработке :D"
+            text={
+                "Пока что делаю странички по отдельности.При переходах\
+                (пролистывании) будут анимации. Так же, как и при 1 загрузке.\
+                Так же все элементы страницы будут реагировать на наведения/нажатия,\
+                но пока делаю всю основу. Потом уже анимации и адаптив. Анимации при\
+                смене язвка тоже будет. Сегодня еще залью версию с фоновым\
+                изображением для 2 страницы))"
+            }
+            />
+
             <Header
                 HeaderLangChecker={LangChecker}
                 content = {HeaderContent}
@@ -109,6 +158,11 @@ export default function Index(){
                 <Hello
                 HelloLangChecker={LangChecker}
                 content={HelloContent}
+                lang={globalLng}/>
+
+                <ProductDemo
+                PDLangChecker={LangChecker}
+                content={PDContent}
                 lang={globalLng}/>
             </div>
         </>

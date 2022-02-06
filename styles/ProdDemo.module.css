@@ -1,0 +1,106 @@
+.ProductDemo{
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+.prTypesList{
+    display: flex;
+    margin-left: 17px;
+    justify-self: center;
+    /* border: solid 1px #fff; */
+    height: 100%;
+    padding: 60px 0px;
+    min-height: 330px;
+}
+.openCatalogCard{
+    width: 250px;
+    height: 331px;
+    background: rgba(20, 26, 32, 0.27);
+    border: 6px solid #93C3F8;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    border-radius: 40px;
+    box-shadow: 0px 0px 10px 1px rgba(41, 41, 41, 0.56);
+    margin-right: 36px;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center
+}
+.openCatalogCard p{
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 24px;
+    line-height: 123.69%;
+    color: #FFFFFF;
+    width: 70%;
+    text-align: center;
+    white-space: pre-line;  
+    vertical-align: bottom;
+}
+.PrTypeCard{
+    width: 250px;
+    height: 331px;
+    background: #93C3F8;
+    border-radius: 40px;
+    box-shadow: 0px 0px 10px 1px rgba(41, 41, 41, 0.56);
+    margin-right: 36px;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.ImgCardBlock{
+    width: 100%;
+    height: 235px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+}
+.PrTypeCard p{
+    max-width: 90%;
+    white-space: pre-line;  
+    vertical-align: bottom;
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 23px;
+    line-height: 123.69%;
+    display: flex;
+    justify-content: center;
+    letter-spacing: 0.03em;
+    text-align: center;
+    color: #4B5787;
+}
+
+.helpBlock{
+    margin-bottom: 44px;
+}
+.helpBlock h3{
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 25px;
+    line-height: 123.69%;
+    color: #FFDF93;
+}
+.helpBlock p{
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 20px;
+    line-height: 123.69%;
+    color: #fff;
+}
+.helpBlock a{
+    text-decoration-line: underline;
+    color: #94C3F8;
+    cursor: pointer;
+}
