@@ -1,9 +1,34 @@
+.PrDemoBG{
+    mix-blend-mode: lighten;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    display: block;
+    overflow:hidden;
+    z-index: 0;
+}
+.PDBackImg{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
+.PDBIContent {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+/* -------------BG END-------------- */
+
+
 .ProductDemo{
     width: 100%;
     height: 100vh;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    overflow:hidden;
 }
 .prTypesList{
     display: flex;
@@ -13,6 +38,7 @@
     height: 100%;
     padding: 60px 0px;
     min-height: 330px;
+    z-index: 1;
 }
 .openCatalogCard{
     width: 250px;
@@ -82,6 +108,7 @@
 
 .helpBlock{
     margin-bottom: 44px;
+    z-index: 1;
 }
 .helpBlock h3{
     font-family: Roboto;
