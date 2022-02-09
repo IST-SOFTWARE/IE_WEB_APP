@@ -1,10 +1,14 @@
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useState} from "react";
 import styles from "../../styles/ProdDemo.module.css"
 import MainLabel from "../MainLabel";
 import PrTypeCard from "../PrTypeCard";
 import PDBackImg from "../PDBackImg";
+import PopUpBase from "../PopUpBase";
+
+
 
 export default function ProductDemo({PDLangChecker, content, lang}){
+    const[puState, setPU] = useState(false);
     
     const parallax = useCallback((e) => {
         document.querySelectorAll('.bg_item').forEach(element => {
@@ -24,16 +28,20 @@ export default function ProductDemo({PDLangChecker, content, lang}){
         document.querySelector("#AnyQ").innerHTML = AnyQ;
     })
 
+
+
     useEffect(()=>{
         linker();
     },[lang])
 
     useEffect(()=>{
         document.addEventListener("mousemove", parallax);
+
     },[])
 
     return(
         <>
+
             <div className={styles.ProductDemo}>
                 <div style={{zIndex:1}}>
                     <MainLabel padding="170px">
@@ -75,7 +83,7 @@ export default function ProductDemo({PDLangChecker, content, lang}){
                             "Возникли вопросы?"
                             ,"AnyQuestions", lang)}
                     </h3>
-                    <p id="AnyQ">
+                    <p id="AnyQ" onClick={()=>setPU(true)}>
                     {PDLangChecker(content,
                             "Оставь {заявку} и мы перезвоним!"
                             ,"LeaveReq", lang)}
@@ -108,6 +116,9 @@ export default function ProductDemo({PDLangChecker, content, lang}){
 
             </div>
 
+            <PopUpBase puState={puState} closer={setPU} header="Заказать звонок">
+                
+            </PopUpBase>
 
         </>
     );

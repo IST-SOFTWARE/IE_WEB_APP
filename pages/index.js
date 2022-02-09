@@ -4,6 +4,8 @@ import Hello from "../components/LandingPages/Hello"
 import LangSwitcher from "../components/LangSwitcher"
 import ProductDemo from "../components/LandingPages/ProductDemo";
 import InfoOfDev from "../components/InfoOfDev";
+import PopUpBase from "../components/PopUpBase";
+
 
 const HeaderContent = {
     "CatalogTitle":{
@@ -116,7 +118,8 @@ const Languages = {
 
 export default function Index(){
     const[globalLng, setLang] = useState("eng");
-    
+
+
     function ToggleLang(){
         globalLng === "ru" ? setLang("eng") : setLang("ru");
     }
@@ -137,6 +140,8 @@ export default function Index(){
                 "Сделал parallax бек для 2 страницы. Сейчас делаю 3. Все на трелло :))"
             }
             />
+
+
 
             <Header
                 HeaderLangChecker={LangChecker}

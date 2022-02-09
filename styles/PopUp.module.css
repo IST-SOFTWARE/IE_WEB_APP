@@ -1,0 +1,70 @@
+.PopUpLayout{
+    min-width: 100vw;
+    min-height: 100%;
+    position: fixed;
+    z-index: 20;
+    display: block;
+    transition: 0.2s;
+    background: rgba(21, 26, 32, 0.72);
+    backdrop-filter: blur(3px);
+    display: block;
+    opacity: 0;
+  }
+  .PopUpBaseCantainer{
+    height: 100vh;
+    /* border: solid 1px #385e8a; */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+  }
+  .PopUpBaseContent{
+    width: 560px; 
+    position: relative;
+    padding-top: 30px;
+    padding-bottom: 15px;
+    padding-left:20px;
+    padding-right:20px;
+    background: #2C3641;
+    box-shadow: 0px 0px 7px rgba(0, 0, 0, 0.25);
+    border-radius: 40px;
+  }
+.PopUpBaseContent::before{
+    content: "";
+    position: absolute;
+    top: -3px;
+    bottom: -3px;
+    left: -3px;
+    right: -3px;
+    background: rgb(118,172,231);
+    background: linear-gradient(142deg, rgba(118,172,231,1) 8%, rgba(204,228,255,1) 87%, rgba(253,240,210,0.8) 100%);
+    border-radius: 40px;
+    z-index: -1;
+}
+.PUB_header{
+    width: 100%;
+    display: flex;
+    margin-bottom: 15px;
+}
+.PUB_header h1{
+    text-align: center;
+    width: 100%;
+    justify-self: center;
+    padding: 0px 40px;
+
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 30px;
+    line-height: 123.69%;
+    letter-spacing: 0.03em;
+    color: #FFFFFF;
+}
+.PUB_header button{
+    background: none;
+    border: none;
+    cursor: pointer;
+    position: absolute;
+    right: 30px;
+    top:30px;
+}

@@ -1,6 +1,7 @@
 import '../styles/global.css'
 import NextNProgress from 'nextjs-progressbar'
 import Head from 'next/head'
+// import PopUpContext from '../components/PopUpContext'
 
 export default function MyApp({Component, PageProps}){
     return(
@@ -17,7 +18,6 @@ export default function MyApp({Component, PageProps}){
         height={3}
         showOnShallow={true}
         />
-
             <Component {...PageProps} />
         </>
     )

@@ -55,7 +55,7 @@ export default function Hello({HelloLangChecker, content, lang}){
     return(
         <>
             <GallaryBG image={image}/>
-            <div className={styles.HelloContent}>
+            <div className={styles.HelloContent} id="CallBack">
                 <div className={styles.LeftBlock}>
                     <div>
                         <MainLabel padding="140px">

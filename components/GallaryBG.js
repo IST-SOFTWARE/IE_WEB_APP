@@ -1,6 +1,6 @@
 import styles from "../styles/Gallary.module.css"
 import Image from "next/image"
-import { useEffect, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 
 // Pixel GIF code adapted from https://stackoverflow.com/a/33919020/266535
 const keyStr =
@@ -20,6 +20,7 @@ const rgbDataURL = (r, g, b) =>
 
 export default function GallaryBG({image}){
 
+
     const [imgSize, setSize] = useState(
         {
             width: "0",
@@ -27,7 +28,13 @@ export default function GallaryBG({image}){
         }
     );
 
+    // const imgInjector = useMemo(()=>{
+    //     lImg = document.querySelector("#lilImgBg");
+    // },[image]);
+
+
     useEffect(()=>{
+        
         let lImg = document.querySelector("#lilImgBg");
         setSize(
                 {
@@ -35,7 +42,7 @@ export default function GallaryBG({image}){
                 height: lImg.naturalHeight
                 }
             )
-
+            
             console.log(imgSize);
     },[])
 
