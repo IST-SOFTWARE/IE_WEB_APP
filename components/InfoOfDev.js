@@ -1,6 +1,6 @@
 import { useState } from "react"
 
-export default function InfoOfDev({header, text}){
+export default function InfoOfDev({header, children}){
 
     const [visible, setVisible] = useState("0");
 
@@ -23,7 +23,7 @@ export default function InfoOfDev({header, text}){
                 </div>
                 <div className="InfoOfDev_content">
                     <p>
-                        {text}
+                        {children}
                     </p>
                 </div>
                 <a href="https://trello.com/b/tyDWCp9I/elevator" target="_blank" rel="noopener noreferrer">
