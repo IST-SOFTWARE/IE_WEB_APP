@@ -4,7 +4,7 @@ import Hello from "../components/LandingPages/Hello"
 import LangSwitcher from "../components/LangSwitcher"
 import ProductDemo from "../components/LandingPages/ProductDemo";
 import InfoOfDev from "../components/InfoOfDev";
-import PopUpBase from "../components/PopUpBase";
+import Progress from "../components/ProgressScroll/Progress";
 
 
 const HeaderContent = {
@@ -157,16 +157,34 @@ export default function Index(){
                 content = {HeaderContent}
                 lang = {globalLng}
             />
+
+            <Progress/>
+
             <LangSwitcher
                 switchFnc={ToggleLang}
                 SwLangChecker={LangChecker}
                 lang={globalLng}
                 content={Languages}
             />
-            <div className="container">
+            <div className="container" id="LandPageContainer">
                 <Hello
                 HelloLangChecker={LangChecker}
                 content={HelloContent}
+                lang={globalLng}/>
+
+                <ProductDemo
+                PDLangChecker={LangChecker}
+                content={PDContent}
+                lang={globalLng}/>
+
+                <ProductDemo
+                PDLangChecker={LangChecker}
+                content={PDContent}
+                lang={globalLng}/>
+
+                <ProductDemo
+                PDLangChecker={LangChecker}
+                content={PDContent}
                 lang={globalLng}/>
 
                 <ProductDemo
