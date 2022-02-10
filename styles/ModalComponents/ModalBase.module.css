@@ -1,0 +1,69 @@
+.ModalFormContent{
+    display: flex;
+    flex-direction: column;
+    width: 480px;
+    margin: 0 auto;
+    align-items: center;
+}
+.ModalFormContent label{
+    display: flex;
+    flex-direction: column;
+    color: #fff;
+    font-family: Roboto;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 500;
+    color: #FFFFFF;
+    margin-bottom: 12px;
+    width: 100%;
+    
+}
+.ModalFormContent input[type="text"]{
+    margin-top: 5px;
+    background: #FCFDFE;
+    border-radius: 0px 89px 89px 100px;
+    height: 50px;
+    border: none;
+    outline: none;
+    padding-left: 20px;
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 18px;
+    line-height: 21px;
+}
+.ModalFormContent input[type="text"]::placeholder{
+    color: #A6A9AD;
+}
+
+.ModalFormContent button{
+    width: max-content;
+    padding: 8px 70px;
+    background: rgba(0, 0, 0, 0);
+    outline: none;
+    border: solid 3px #76ACE7;
+    border-radius: 67px;
+    cursor: pointer;
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 22px;
+    line-height: 123.69%;
+    color: #fff;
+    margin-top: 10px;
+    margin-bottom: 25px;
+    transition: 0.3s;
+}
+.ModalFormContent button:hover{
+    background: #76ACE7;
+}
+.ModalFormContent a{
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 21px;
+    text-decoration-line: underline;
+    color: #76ACE7;
+    cursor: pointer;
+}

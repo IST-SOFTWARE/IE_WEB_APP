@@ -4,7 +4,7 @@ import MainLabel from "../MainLabel";
 import PrTypeCard from "../PrTypeCard";
 import PDBackImg from "../PDBackImg";
 import PopUpBase from "../PopUpBase";
-
+import CallBackModal from "../ModalComponents/CallBackModal";
 
 
 export default function ProductDemo({PDLangChecker, content, lang}){
@@ -117,7 +117,7 @@ export default function ProductDemo({PDLangChecker, content, lang}){
             </div>
 
             <PopUpBase puState={puState} closer={setPU} header="Заказать звонок">
-                
+                <CallBackModal/>
             </PopUpBase>
 
         </>
