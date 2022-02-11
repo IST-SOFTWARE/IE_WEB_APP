@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import styles from "../../styles/ModalComponents/ProgressBar.module.css";
 
-export default function PrPoint({size, id, active}){
+export default function PrPoint({size, id, active, scroll}){
     const[scale, setScale] = useState();
     const[isActive, setActive] = useState(false);
 
@@ -13,15 +13,30 @@ export default function PrPoint({size, id, active}){
         }
     }
 
-    // function isNeighboring(){
-    //     if((id + 1 === active)){
-    //         document.querySelector(`.${styles.circle}`).style.transform = "scale(0.1)";
-    //     }
-    // }
+    function isNeighboring(){
+        if((id + 1 === active) || (id - 1 === active)){
+            setScale("1.3");
+        }
+        else if((id + 2 === active) || (id - 2 === active)){
+            setScale("1.15");
+        }
+        else {
+            setScale("1");
+        }
+    }
+
+    const handlerClick = () =>{
+        console.log("scsdcsdc");
+        window.scrollTo({
+            top: (scroll * (document.documentElement.scrollHeight -
+                document.documentElement.clientHeight))/100,
+            behavior: "smooth"
+        });
+    };
 
     useEffect(()=>{
         isActiveCheck();
-        // isNeighboring();
+        isNeighboring();
     },[active]);
 
     const returned = () => {
@@ -34,7 +49,9 @@ export default function PrPoint({size, id, active}){
             ):
             (
 
-            <div className={styles.circle}>
+            <div className={styles.circle}
+            style={{transform: `scale(${scale})`}}
+            onClick={()=>handlerClick()}>
 
             </div>
 

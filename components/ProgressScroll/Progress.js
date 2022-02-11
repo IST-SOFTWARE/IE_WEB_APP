@@ -6,7 +6,7 @@ export default function Progress(){
     const[PointsNum, setPointsNum] = useState([]);
     const[SizeBlock, SetSize] = useState(0);
     const[activeId, setActive] = useState(0);
-    // const[scrollTop, setScroll] = useState(0);
+    // const[scrollp, setScroll] = useState(0);
     const poiters = [];
 
     
@@ -17,8 +17,8 @@ export default function Progress(){
         const scrolled = (winScroll / height) * 100;
         
         
-        if(PointsNum.find(point => point.scrollTo === Math.round(scrolled)) != undefined){
-                setActive(PointsNum.find(point => point.scrollTo === Math.round(scrolled)).id) ;
+        if(PointsNum.find(point => point.scroll === Math.round(scrolled)) != undefined){
+                setActive(PointsNum.find(point => point.scroll === Math.round(scrolled)).id) ;
                 // console.log(scrolled);
             }
             // console.log(PointsNum);
@@ -28,7 +28,7 @@ export default function Progress(){
         for(let i=0; i < pgVal; i++){
             let add = {
                 id: i,
-                scrollTo: ((i * 100)/(pgVal-1))
+                scroll: ((i * 100)/(pgVal-1))
             };
             
             // console.log(i);
@@ -56,6 +56,7 @@ export default function Progress(){
         size={SizeBlock}
         id={point.id}
         active={activeId}
+        scroll={point.scroll}
         />
     )
 
