@@ -141,6 +141,40 @@
 
 @media (max-width: 1779.98px){
     .search_block{
-        width: 33vw;
+        width: 35vw;
+        height: 48px;
+        margin-right: 20px;
     }
+    .header{
+        height: 85px;
+    }
+    .ContactsBlock{
+        width: 67px;
+        height: 67px;
+        border-radius: 12px;
+    }
+    .ContactsBlock a{
+        font-size: 13px;
+    }
+    .cartAndLoginBlock img{
+        width: 39px;
+        height: 39px;
+    }
+    .CatalogBtn{
+        height: 48px;
+        align-self: center;
+        width: auto;
+        padding: 0px 15px;
+        /* margin-left: 20px; */
+    }
+  }
+  @media (max-width: 1199.98px){
+      .CatalogBtn{
+          font-size: 0px;
+          padding-left: 14px;
+          display: flex;
+      }
+      .CatalogBtn img{
+          margin: 0;
+      }
   }

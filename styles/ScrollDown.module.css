@@ -20,3 +20,15 @@
     font-size: 20px;
     color: #FCFDFE;
 }
+@media (max-width: 1779.98px){
+    .sdBlock img{
+        width: 37px;
+        height: auto;
+        
+        
+    }
+    .sdBlock p{
+        font-size: 17px;
+        margin-left: 15px;
+    }
+}
