@@ -18,10 +18,10 @@ body, html{
   font-family: Roboto;
   font-style: normal;
   font-weight: bold;
-  font-size: 46px;
+  /* font-size: 46px; */
   white-space: pre-line;  
   vertical-align: bottom;
-  /* font-size: calc(23px + (46 - 23) * ((100vw - 300px) / (1920 - 320))); */
+  font-size: calc(23px + (46 - 23) * ((100vw - 300px) / (1920 - 320)));
 }
 
 .LangSwtchrBlock{
@@ -159,25 +159,32 @@ box-shadow : 0px 0px 6px rgba(0, 0, 0, 0.25);
 
 /* Iformation about dev */
 /* ----------------END----------------- */
-
-.container{
-  width: 1410px;
-  padding: 0px 15px;
-  /* border: solid 1px #fff; */
-  margin: 0 auto;
-}
-
 #PopUpBase{
 width: 100%;
 height: 100%;
 position: absolute;
 }
 
-/* @media (max-width: 1919.98px){
+.container{
+  width: 1410px;
+  padding: 0px 15px;
+  border: solid 1px #fff;
+  margin: 0 auto;
+}
+
+
+@media (max-width: 1919.98px){
   .container{
     width: 1410px;
   }
 }
+
+@media (max-width: 1779.98px){
+  .container{
+    width: 1170px;
+  }
+}
+
 
 @media (max-width: 1439.98px){
   .container{
@@ -207,4 +214,4 @@ position: absolute;
   .container{
     width: 290px;
   }
-} */
+}

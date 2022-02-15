@@ -138,3 +138,9 @@
     line-height: 16px;
     color: #fff;
 }
+
+@media (max-width: 1779.98px){
+    .search_block{
+        width: 33vw;
+    }
+  }

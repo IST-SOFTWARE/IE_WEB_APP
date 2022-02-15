@@ -10,6 +10,7 @@
     color: #99A8BA;
     margin-top: 13px;
     margin-left: 8px;
+    /* font-size: calc(9px + (18 - 9) * ((100vw - 300px) / (1920 - 320))); */
 }
 .CallBack a{
     color: #76ACE7;
@@ -86,3 +87,12 @@
     transition: 0.3s;
     box-shadow: 0px 0px 9px rgba(0, 0, 0, 0.5);
 }
+
+@media (max-width: 1779.98px){
+    .CallBack{
+        transform: scale(0.88);
+        transform-origin: left;
+        transition: 0.3s;
+    }
+}
+  

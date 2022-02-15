@@ -31,7 +31,6 @@
     margin-right: 28px;
     /* border: solid 1px #fff; */
     height: max-content;
-
 }
 .pointsBlock{
     width: max-content;
@@ -89,4 +88,18 @@
     mask:url("/g_mask.svg");
     mask-repeat: no-repeat;
     mask-position: right;
+}
+
+@media (max-width: 1779.98px){
+    .gtBlock{
+        width: 90%;
+        height: 15vw;   
+        min-height: 240px; 
+    }
+    .textBlock{
+        width: 100%;
+    }
+    .textBlock p{
+        font-size: calc(15px + (30 - 15) * ((100vw - 300px) / (1920 - 320)));
+    }
 }
