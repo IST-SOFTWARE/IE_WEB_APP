@@ -15,7 +15,9 @@
     top:0;
     left: 0; */
   }
-
+.HeaderMobLogo{
+    display: none;
+}
 .HeaderContent{
     height: max-content;
     display: flex;
@@ -177,4 +179,67 @@
       .CatalogBtn img{
           margin: 0;
       }
+  }
+
+  @media (max-width: 959.98px){
+    .HeaderContent{
+        width: 100%;
+        max-width: calc(100vw - 80px);
+        margin: 0px 40px;
+        position: absolute;
+        left: 0;
+        top:0;
+        height: 85px;
+    }
+    .HeaderBigLogo{
+        display: none;
+    }
+    .HeaderMobLogo{
+        display: block;
+        min-width: 67px;
+        height: 67px;
+        position: relative;
+    }
+    .CatalogBtn{
+        border: none; 
+    }
+    .CatalogBtn img{
+        transform: scale(1.3);
+        transform-origin: center;
+    }
+    .search_block{
+        width: 100%;
+        height: 40px;
+        margin-right: 20px;
+    }
+    .search_block img{
+        width: 25px;
+        height: 25px;
+    }
+    .search{
+        font-size: 16px;
+    }
+    .catalogAndSearch{
+    width: 100%;
+    align-items: center;
+    padding: 0px 1.2vw;
+    }
+    .ContactsBlock{ 
+        margin-right: 0px;
+        box-shadow: none;
+        width: fit-content;
+    }
+    .ContactsBlock a{ 
+        display: none;
+    }
+    .ContactsBlock img{ 
+        width: 36px;
+        height: 36px;
+    }
+    .cartAndLoginBlock{
+        margin-left: 8px;
+    }
+    .cartAndLoginBlock a{
+        display: none;
+    }
   }

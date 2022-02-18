@@ -1,4 +1,5 @@
 import Logo from "../Logo"
+import LogoMobile from "../LogoMobile"
 import CatalogBtn from "./CatalogBtn"
 import Search from "./Search"
 import Contacts from "./Contacts"
@@ -12,7 +13,18 @@ export default function  Header({HeaderLangChecker, content, lang}){
          <div className={styles.header}>
             <div className="container">
                 <div className={styles.HeaderContent}>
-                    <Logo w="218" h="65" href="./"/>
+                    <div className={styles.HeaderBigLogo}>
+                        <Logo
+                        w="218"
+                        h="65"
+                        href="./"/>
+                    </div>
+
+                    <div className={styles.HeaderMobLogo}>
+                    <LogoMobile
+                        href="./"
+                    />
+                    </div>
 
                     <div className={styles.catalogAndSearch}>
                         <CatalogBtn text={
