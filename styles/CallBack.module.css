@@ -1,7 +1,12 @@
 .CallBack{
     /* margin-top: 90px; */
     /* margin-bottom: 20%; */
+    grid-area: CallBack;
 }
+.CallBackMobBtn{
+    display: none;
+}
+
 .CallBack p{
     font-family: Roboto;
     font-style: normal;
@@ -95,4 +100,81 @@
         transition: 0.3s;
     }
 }
-  
+@media (max-width: 959.98px){
+    .CallBack{
+        align-self: center;
+        margin-top: -50px;
+    }
+}
+@media (max-width: 719.98px){
+    .CallBack{
+        width: 100%;
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        transform-origin: center;
+    }
+    .BaseBlock{
+        width: 65vw;
+        height: fit-content;
+        display: flex; 
+        flex-direction: column;
+        align-items: center;
+        padding-bottom: 15px;
+        margin-top: 30px;
+        border-radius: 46px;
+        box-shadow: 14px 14px 22px 0 rgba(0, 0, 0, 0.21);
+        /* border : solid 1px #fff; */
+    }
+    .BaseBlock p{
+        font-size: 20px;
+    }
+}
+@media (max-width: 539.98px){
+    .CallBack{
+        align-self: flex-start;
+    }
+    .InputBlock button{
+        width: 95%;
+    }
+    .BaseBlock{
+        width: 80vw;
+        border-radius: 30px;
+    }
+    .InputBlock{
+        width: 100%;
+        margin:0px;
+        align-items: center;
+    }
+    .InputBlock input[type="text"]{
+        width: 90%;
+        height: 55px;
+        border-radius: 89px;
+        padding-left: 12px;
+        margin-bottom: 9px;
+    }
+}
+
+/* SHOW CALL-BACK POP-UP BTN IN MOBILE V*/
+@media (max-height: 699.98px){
+    .CallBack{
+        display: none;
+    }
+    .CallBackMobBtn{
+        display: block;
+        justify-self: center;
+        align-self: start;
+        height: fit-content;
+    }
+    .CallBackMobBtn button{
+        width:60vw; 
+        padding: 10px 0px;
+        border-radius: 30px;
+        border: solid 3px #76ACE7;
+        background: rgba(0, 0, 0, 0.507);
+        color: #fff;
+        font-size: calc(17px + (25 - 17) * ((100vw - 300px) / (1920 - 320)));
+        font-weight: 600;
+        max-width: 400px;
+    }
+}

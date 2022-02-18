@@ -83,3 +83,29 @@
         font-size: 36px;
     }
 }
+@media (max-width: 539.98px){
+    .PB_container{
+        min-width: auto;
+        width: 70%;
+        justify-content: space-around;
+        height: 50px;
+        padding: 0px 5px;
+    }
+    .fillBlock{
+        max-width: 50px;
+        max-height: 50px;
+        background: rgba(0, 0, 0, 0);
+        box-shadow: none;
+    }
+    .fillBlock p{
+        color: #76ade7d0;
+    }
+    .circle{
+        width: 15px;
+        height: 15px;
+    }
+    .Point{
+        min-width: 40px;
+        min-height: 40px;
+    }
+}

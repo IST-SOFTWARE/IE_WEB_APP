@@ -5,6 +5,9 @@ import ScrollDown from "../ScrollDown";
 import GallaryText from "../GalleryText";
 import GallaryBG from "../GallaryBG";
 import { useEffect, useState } from "react";
+import MobileBtn from "../MobileComponents/MobileBtn";
+import CallBackModal from "../ModalComponents/CallBackModal";
+import PopUpBase from "../PopUpBase";
 
 const gallary = [
     {
@@ -42,6 +45,8 @@ const gallary = [
 
 export default function Hello({HelloLangChecker, content, lang}){
     const [image, setImage] = useState((gallary[0])["img"]);
+    const[puState, setPU] = useState(false);
+
     const imageChenger = (nImg) => {
         setImage(nImg);
     }
@@ -74,7 +79,9 @@ export default function Hello({HelloLangChecker, content, lang}){
                     cbLangChecker={HelloLangChecker}
                     lContent = {content}
                     lng={lang}
+                    puProvider={setPU}
                     />       
+                    
                                      
                     <ScrollDown
                         text=
@@ -99,6 +106,10 @@ export default function Hello({HelloLangChecker, content, lang}){
                     />
                 </div>
             </div>
+
+            <PopUpBase puState={puState} closer={setPU} header="Заказать звонок">
+                        <CallBackModal/>
+            </PopUpBase>
         </>
     )
 }

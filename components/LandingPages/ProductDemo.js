@@ -27,6 +27,7 @@ export default function ProductDemo({PDLangChecker, content, lang}){
         AnyQ = AnyQ.replace(/\}/gi, "</a>");
         document.querySelector("#AnyQ").innerHTML = AnyQ;
     })
+    
 
 
 

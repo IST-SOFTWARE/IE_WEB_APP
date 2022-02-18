@@ -11,7 +11,7 @@
     font-style: normal;
     font-weight: 500;
     /* font-size: 20px; */
-    font-size: calc(10px + (20 - 10) * ((100vw - 300px) / (1920 - 320)));
+    font-size: calc(13px + (20 - 13) * ((100vw - 300px) / (1920 - 320)));
     color: #99A8BA;
     margin-top: 6px;
     white-space: pre-line;  
@@ -27,4 +27,39 @@
     flex-direction: column;
     justify-content: center;
     align-items: flex-end;
+}
+
+@media (max-width: 959.98px){
+    .HelloContent{
+        grid-template-columns: auto;
+        grid-template-rows: auto;
+        justify-content: center;
+    }
+
+    .HelloContent h2{
+        grid-area: slogan;
+        width: 70%;
+        display: block;
+        margin: 10px auto;
+        text-align: end;
+        color: #76ACE7;
+    }
+
+    .RightBlock{
+        grid-area: gtBlock;
+        align-items: center;
+        display: flex;
+        position: absolute;
+        top: 270px;
+        width: 100%;
+    }
+    .LeftBlock{
+        height: 100vh;       
+        display:grid;
+        grid-template-columns: auto;
+        grid-template-rows: 450px auto;
+        grid-template-areas: "label"
+                             "CallBack";
+    }
+
 }

@@ -32,3 +32,8 @@
         margin-left: 15px;
     }
 }
+@media (max-width: 959.98px){
+    .sdBlock{
+        display: none;
+    }
+}

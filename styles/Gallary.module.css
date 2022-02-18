@@ -7,6 +7,9 @@
     justify-items: end;
     grid-template-rows: 187px 60px;
     z-index: 10;
+    /* border: solid 1px #fff; */
+
+    /* grid-area: gtBlock; */
     /* justify-content: center;
     row-gap: 34px; */
 
@@ -110,3 +113,37 @@
         right: -25%;
     }
 }
+
+@media (max-width: 959.98px){
+    .gtBlock{
+        width: 60vw;
+        min-width: 300px;
+        max-height: 150px;   
+        min-height: 150px; 
+        grid-template-rows: 110px 40px;
+        justify-items: center;
+        background: #151a20b7;
+
+    }
+    .textBlock p{
+        text-align: center;
+        display: block;
+        margin: 0px auto;
+        padding: 0px 15px;
+    }
+    .pointsBlock{
+        margin-right: 0px;
+    }
+    .GallaryPoint{
+        width: 2.2vw;
+        height: 2.2vw;
+        min-height: 17px;
+        min-width: 17px;
+    }
+    .gallaryImg::after{
+        opacity: 0.8;
+        background: rgb(21,26,32);
+        background: linear-gradient(0deg, rgba(21,26,32,1) 33%, rgba(0,0,0,0) 100%);
+    }
+}
+

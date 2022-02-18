@@ -1,6 +1,7 @@
 import styles from "../styles/CallBack.module.css"
+import MobileBtn from "./MobileComponents/MobileBtn"
 
-export default function CallBack({cbLangChecker, lContent, lng}) {
+export default function CallBack({cbLangChecker, lContent, lng, puProvider}) {
     return(
         <>
             <div className={styles.CallBack}>
@@ -42,6 +43,10 @@ export default function CallBack({cbLangChecker, lContent, lng}) {
                     </a>
 
                 </p>
+            </div>
+            
+            <div className={styles.CallBackMobBtn}>
+                <MobileBtn PUsetter={puProvider}/>
             </div>
         </>
     )
