@@ -5,8 +5,10 @@ import Search from "./Search"
 import Contacts from "./Contacts"
 import Cart from "./Cart"
 import Login from "./Login"
-
 import styles from "../../styles/Header.module.css"
+import { useEffect, useState } from "react"
+
+
 export default function  Header({HeaderLangChecker, content, lang}){
     return(
         <>
@@ -38,7 +40,8 @@ export default function  Header({HeaderLangChecker, content, lang}){
                             "Ищем что-то?",
                             "SearchPlaceholder",
                             lang)
-                        }/>
+                        }
+                        />
                     </div>
 
                     <div className={styles.infoLoginCart}>
