@@ -27,6 +27,7 @@
     height: 100vh;
     display: flex;
     flex-direction: column;
+    flex-wrap: nowrap;
     justify-content: space-between;
     overflow:hidden;
 }
@@ -35,8 +36,10 @@
     margin-left: 17px;
     justify-self: center;
     /* border: solid 1px #fff; */
-    height: 100%;
-    padding: 60px 0px;
+    /* height: 100%; */
+    /* padding: 60px 0px; */
+    margin-bottom: 80px;
+    padding-top: 10px;
     min-height: 330px;
     z-index: 1;
 }
@@ -108,6 +111,8 @@
 
 .helpBlock{
     margin-bottom: 44px;
+    border: solid 1px #fff;
+    width: fit-content;
     z-index: 1;
 }
 .helpBlock h3{

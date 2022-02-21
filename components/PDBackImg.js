@@ -19,7 +19,7 @@ export default function PDBackImg({url, speed}){
             <style jsx global>{`
             .bg_item{
                 position: absolute;
-                width: 100%;
+                width: calc((1920 / 1080) * 100vh);
                 height: 100%;
                 left: 0;
             }

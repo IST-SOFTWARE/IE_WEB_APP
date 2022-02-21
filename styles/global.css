@@ -27,7 +27,6 @@ body, html{
 .LangSwtchrBlock{
   display: flex;
   flex-direction: column;
-  row-gap: 5px;
   position: fixed;
   bottom: 20px;
   right: 60px;
@@ -35,7 +34,7 @@ body, html{
   background: none;
   border: none;
   cursor: pointer;
-  z-index: 10;
+  z-index: 12;
 }
 
 .LangSwtchrBlock img{
@@ -43,6 +42,7 @@ width: 58px;
 height: 58px;
 border-radius: 100%;
 box-shadow : 0px 0px 6px rgba(0, 0, 0, 0.25);
+margin-bottom: 5px;
 }
 
 .LangSwtchrBlock p{
@@ -225,6 +225,32 @@ position: absolute;
 @media (max-width: 719.98px){
   .container{
     width: 510px;
+  }
+  .LangSwtchrBlock{
+    bottom: 0px;
+    right: auto;
+    left: 0%;
+    z-index: 11;
+  }
+  
+  .LangSwtchrBlock img{
+    width: 50px;
+    height: 50px;
+    border-radius: 0px 150px 0px 0px;
+    box-shadow : 0px 0px 6px rgba(0, 0, 0, 0.25);
+    margin-bottom: 0px;
+    box-shadow: none;
+  }
+  
+  .LangSwtchrBlock p{
+    font-size: 0px;
+    color: #fff;
+    text-align: center;
+    width: 80px;
+    display: none;
+  }
+  .LangSwtchrBlock:hover::before{
+    display: none;
   }
 }
 

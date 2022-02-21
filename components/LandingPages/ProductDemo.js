@@ -45,7 +45,7 @@ export default function ProductDemo({PDLangChecker, content, lang}){
 
             <div className={styles.ProductDemo}>
                 <div style={{zIndex:1}}>
-                    <MainLabel padding="170px">
+                    <MainLabel padding="130px">
                     {PDLangChecker(content,
                                 "БОЛЬШОЙ ВЫБОР ЗАПЧАСТЕЙ\nДЛЯ ГРУЗОПОДЪЕМНОЙ\nТЕХНИКИ"
                                 ,"Label", lang)}

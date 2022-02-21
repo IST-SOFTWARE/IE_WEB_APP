@@ -26,7 +26,7 @@ export default function PrPoint({size, id, active, scroll}){
     }
 
     const handlerClick = () =>{
-        console.log("scsdcsdc");
+        // console.log("scsdcsdc");
         window.scrollTo({
             top: (scroll * (document.documentElement.scrollHeight -
                 document.documentElement.clientHeight))/100,
