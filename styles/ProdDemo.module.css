@@ -136,3 +136,105 @@
     color: #94C3F8;
     cursor: pointer;
 }
+@media (max-width: 1199.98px){
+    .prTypesList{
+        margin-bottom: 10px;
+    }
+    
+    .PrTypeCard{
+        height: 270px;
+    }
+    .PrTypeCard p{
+        font-size: 20px;
+    }
+    .ImgCardBlock{
+        width: auto;
+        height: 70%;
+        display: flex;
+    }
+
+    .openCatalogCard{
+        height: 270px;
+    }
+  }
+@media (max-width: 959.98px){
+    .prTypesList{
+        margin-left:0px;
+        width: 100%;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    .PrTypeCard{
+        margin-right: 0px;
+        margin: 15px;
+        max-width: 190px;
+    }
+
+    .openCatalogCard{
+        max-height: min-content;
+        height: min-content;
+        width: max-content;
+        margin-right: 0px;
+        border: solid 3.5px #93C3F8;
+        padding: 10px 20px;
+        margin-top:10px;
+        display: flex;
+        flex-direction: row;
+    }
+    .openCatalogCard p{
+        width: fit-content;
+        font-weight: 500;
+        font-size: 20px;
+    }
+    .openCatalogCard::before{
+        content: ' ';
+        display: block;
+        position: relative;
+        height: 35px;
+        width: 35px;
+        float: left;
+        margin-right: 10px;
+        background-size: 100%;
+        background-repeat: no-repeat;
+        background-position-y: -2px;
+        background-position-x: right;
+        background-image: url("https://res.cloudinary.com/dv9xitsjg/image/upload/v1645534593/Icons/shopping_bag_1_agbu9s.svg");
+    }
+
+    .openCatalogCard img{
+        display: none;
+    }
+
+
+    .PrDemoBG{
+        background-image: url("https://res.cloudinary.com/dv9xitsjg/image/upload/v1645444475/ProdDemoBG/BG_ZAP_lj0igf.png");
+        background-size: cover;
+        background-position: center;
+    }
+    .PDBIContent {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        opacity: 0;
+    }
+    @media (max-width: 719.98px){
+        .PrTypeCard{
+            margin-right: 0px;
+            width: calc(510px/3 - 15px);
+            height:70%;
+        }
+        .PrTypeCard p{
+            font-size: 18px;
+        }
+        .ImgCardBlock{
+            height: 67%;
+        }
+        .prTypesList{
+            margin-bottom: 50px;
+        }
+        .openCatalogCard{
+            transform-origin: center;
+            transform:scale(0.9);
+        }
+    }
+}
