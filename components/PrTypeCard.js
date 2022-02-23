@@ -10,12 +10,15 @@ export default function PrTypeCard({img, crop, text}){
                     src={img}
                     width={240 * crop}
                     height={240 * crop}
+                    q={100}
                 />
                 </div>
                 <p>
                     {text}
+                    <button >Подробнее...</button>
                 </p>
             </div>
+
         </>
     );
 }

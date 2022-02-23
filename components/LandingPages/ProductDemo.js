@@ -44,7 +44,7 @@ export default function ProductDemo({PDLangChecker, content, lang}){
         <>
 
             <div className={styles.ProductDemo}>
-                <div style={{zIndex:1}}>
+                <div className={styles.PrDemoLabel} style={{zIndex:1}}>
                     <MainLabel padding="130px">
                     {PDLangChecker(content,
                                 "БОЛЬШОЙ ВЫБОР ЗАПЧАСТЕЙ\nДЛЯ ГРУЗОПОДЪЕМНОЙ\nТЕХНИКИ"
@@ -91,6 +91,7 @@ export default function ProductDemo({PDLangChecker, content, lang}){
                     </p>
                 </div>
 
+
                 <div className={styles.PrDemoBG}>
                         <PDBackImg 
                         url="https://res.cloudinary.com/dv9xitsjg/image/upload/v1644234857/ProdDemoBG/1_urgeoc.png"
@@ -121,6 +122,8 @@ export default function ProductDemo({PDLangChecker, content, lang}){
                 <CallBackModal/>
             </PopUpBase>
 
+
+        
         </>
     );
 }
