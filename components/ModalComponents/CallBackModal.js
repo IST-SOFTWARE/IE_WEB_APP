@@ -1,14 +1,21 @@
-import { useState } from "react";
+import { useState, useEffect} from "react";
 import styles from "../../styles/ModalComponents/ModalBase.module.css";
+import Image from "next/image";
 
-export default function CallBackModal(){
+export default function CallBackModal({backImg, w, h}){
     const[callUser, setCallUser] = useState({
         name: "",
         phone: "",
     });
+    const[backImgUrl, setBgImg] = useState("/null_bg.png");
+
+    useEffect(() => {
+        backImg !== undefined ? setBgImg(backImg) : setBgImg("/null_bg.png");
+    },[])
+
     return(
         <>
-            <div className={styles.ModalFormContent}>
+            <div className={styles.ModalFormContent}>            
                 <label>
                     Имя:
                     <input type="text" placeholder="Андрей"
@@ -29,7 +36,17 @@ export default function CallBackModal(){
                 </button>
 
                 <a>+7(000)000-00-00</a>
+                <div className={styles.PUbackImg}>
+                    <Image
+                        src={backImgUrl}
+                        width={w}
+                        height={h}
+                        q={50}
+                    />
+                </div>
             </div>
+            
+
         </>
     );
 }

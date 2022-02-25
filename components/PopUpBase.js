@@ -44,6 +44,9 @@ export default function PopUpBase({puState, children, header, closer}){
                                     {header}
                                 </h1>
 
+                                <p>Есть вопросы? Оставь
+                                заявку, а мы перезвоним!</p>
+
                                 <button
                                 onClick={(e) => backHider(e)}
                                 >
