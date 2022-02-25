@@ -50,7 +50,7 @@ export default function PopUpBase({puState, children, header, closer}){
                                 <button
                                 onClick={(e) => backHider(e)}
                                 >
-                                    <img src="/pu_closer.svg" alt="Close" id="btn_closer"/>
+                                    <img src="/PU_closer.svg" alt="Close" id="btn_closer"/>
                                 </button>
 
                             </div>
