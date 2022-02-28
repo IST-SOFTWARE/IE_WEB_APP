@@ -2,9 +2,9 @@ import { useState } from "react";
 import Header from "../components/Header/Header"
 import Progress from "../components/ProgressScroll/Progress";
 
-import Hello from "../components/LandingPages/Hello"
-import ProductDemo from "../components/LandingPages/ProductDemo";
-import AttachPage from "../components/LandingPages/AttachPage";
+import Hello from "../components/LandingPages/HelloPage/Hello"
+import ProductDemo from "../components/LandingPages/ProductDemo/ProductDemo";
+import AttachPage from "../components/LandingPages/AttachPage/AttachPage";
 
 import LangSwitcher from "../components/LangSwitcher"
 import InfoOfDev from "../components/InfoOfDev";

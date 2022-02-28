@@ -1,5 +1,5 @@
-import styles from "../styles/CallBack.module.css"
-import MobileBtn from "./MobileComponents/MobileBtn"
+import styles from "../../../styles/CallBack.module.css"
+import MobileBtn from "../../MobileComponents/MobileBtn"
 
 export default function CallBack({cbLangChecker, lContent, lng, puProvider}) {
     return(

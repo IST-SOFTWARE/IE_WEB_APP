@@ -1,4 +1,4 @@
-import styles from "../styles/AttachPage.module.css"
+import styles from "../../../styles/AttachPage.module.css"
 
 export default function ATContentBlock({StepNum, children}){
     return(

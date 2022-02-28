@@ -1,8 +1,8 @@
-import styles from "../../styles/AttachPage.module.css"
+import styles from "../../../styles/AttachPage.module.css"
 import Image from "next/image"
-import MainLabel from "../MainLabel"
-import ATContentBlock from "../APContentBlock"
-import APAttachBlock from "../APAttachBlock"
+import MainLabel from "../../MainLabel"
+import ATContentBlock from "./APContentBlock"
+import APAttachBlock from "./APAttachBlock"
 
 export default function AttachPage(){
     return(

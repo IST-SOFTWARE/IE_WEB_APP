@@ -1,4 +1,4 @@
-import styles from "../styles/Gallary.module.css"
+import styles from "../../../../styles/Gallary.module.css"
 import Image from "next/image"
 import { useEffect, useMemo, useState } from "react"
 

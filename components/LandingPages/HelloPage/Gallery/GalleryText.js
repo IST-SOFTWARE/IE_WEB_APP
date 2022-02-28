@@ -1,5 +1,5 @@
 import { useState , useEffect } from "react";
-import styles from "../styles/Gallary.module.css"
+import styles from "../../../../styles/Gallary.module.css"
 import GallaryPoint from "./GallaryPoint"
 
 export default function GallaryText(props) {

@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useReducer} from "react"
-import styles from "../styles/AttachPage.module.css"
+import styles from "../../../styles/AttachPage.module.css"
 
 import {useDropzone} from "react-dropzone"
 import Image from "next/image"
@@ -12,14 +12,22 @@ export default function APAttachBlock(){
     const[ActualContent, setActual] = useState(LoadFile);
     const[ShowRules, setShow] = useState(false);
 
+
     const[fileState, dispatch] = useReducer(reduser, {
         fileLoad: false,
         fileName: ""
     });
 
+    // ACTION GENERATOR: LoadFile
+    const LoadFileGenerator = (payload) => ({
+        type: LoadFile,
+        payload,
+    });
+
+    // LOADED FILE DATA
     function reduser(state, action){
         switch(action.type){
-            case "LoadFile":
+            case LoadFile:
                 return{
                     fileLoad: true,
                     fileName: action.payload
@@ -27,15 +35,11 @@ export default function APAttachBlock(){
         }
     }
 
+    // DROP FILE LISTENER (+ FILE CHECKER)
     const onDrop = useCallback((acceptedFiles, rejectedFiles) => {
-        // console.log('acceptedFiles', acceptedFiles);
-        // console.log('rejectedFiles', rejectedFiles);
 
         if(acceptedFiles && acceptedFiles.length > 0){
-            dispatch({
-                type: "LoadFile",
-                payload: acceptedFiles[0].name
-            });           
+            dispatch(LoadFileGenerator(acceptedFiles[0].name));           
         }
 
         let ErrorMsg = "";
@@ -50,12 +54,13 @@ export default function APAttachBlock(){
         }
     }, [])
 
+    //DROPZONE HOOK
     const{getRootProps, getInputProps, isDragActive} = useDropzone({onDrop,
         multiple:false,
         accept: '.rar, .zip', 
         });
 
-    // FileLoad Content Changer
+    // FILE LOAD/UNLOAD CONTENT CHANGER
     useEffect(()=>{
 
         if(fileState.fileLoad === true && !ShowRules){
@@ -64,6 +69,7 @@ export default function APAttachBlock(){
         }
     }, [fileState, ShowRules])
 
+    // LOAD/RULES BTN ACTIVATOR
     useEffect(() => {
         try{ 
             const activeBtn = document.getElementById(ActualContent);
@@ -74,6 +80,7 @@ export default function APAttachBlock(){
         }
     }, [ActualContent])
 
+    // SHOW RULES SETTER [13: [ShowRules, setShow] def:(false)]
     useEffect(() => {
         try{ 
             if(ActualContent === LoadFile){
@@ -88,6 +95,7 @@ export default function APAttachBlock(){
         }
     }, [ActualContent])
 
+    // DRAG FILE LISTENER
     useEffect(()=>{
         const DZElement = document.querySelector(`.${styles.ABDropBlock}`);
         if(isDragActive === true){
@@ -98,6 +106,7 @@ export default function APAttachBlock(){
         }
     },[isDragActive])
 
+    // ATTACH/RULLES CLICK LISTENER
     const HandlerClick = useCallback((e) =>{
             if(e.target.id !== ActualContent){
             const activeBtn = document.getElementById(ActualContent);
@@ -107,6 +116,7 @@ export default function APAttachBlock(){
             }
     });
 
+    // ATTACH LINKS GENERATOR   ex:[rules {link} rules]
     useEffect(() => {
         if(!ShowRules){
             let RulesLink = document.querySelector(".RulesLink").innerHTML;
@@ -121,6 +131,8 @@ export default function APAttachBlock(){
     return(
         <>
             <div className={styles.ABContainer}>
+
+                {/* ATTACH BLOCK HEADER */}
                 <div className={styles.ABHeader}>
                     <button
                     onClick={(e) => HandlerClick(e)}
@@ -136,14 +148,24 @@ export default function APAttachBlock(){
 
                 </div>
 
+
                 <div className={styles.ABContent}>
                     {ShowRules === true ? 
+                    //SHOW RULES
                     <div className={styles.ABRulesContent}>
                         <p>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+                        sed do eiusmod tempor incididunt ut labore et dolore magna
+                        aliqua. Ut enim ad minim veniam, quis nostrud exercitation
+                        ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                        Duis aute irure dolor in reprehenderit in voluptate velit
+                        esse cillum dolore eu fugiat nulla pariatur. Excepteur
+                        sint occaecat cupidatat non proident, sunt in culpa qui
+                        officia deserunt mollit anim id est laborum.
                         </p>
                     </div>
                 : 
+                    //SHOW ATTACH
                     <div className={styles.ABDropContent}>
 
                         <div {...getRootProps()}>
@@ -179,7 +201,7 @@ export default function APAttachBlock(){
                             </p>
                         </div>
                     </div>
-
+                    
                 }
                 </div>
 

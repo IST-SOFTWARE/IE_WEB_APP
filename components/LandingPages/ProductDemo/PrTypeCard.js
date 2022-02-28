@@ -1,4 +1,4 @@
-import styles from "../styles/ProdDemo.module.css"
+import styles from "../../../styles/ProdDemo.module.css"
 import Image from "next/image";
 
 export default function PrTypeCard({img, crop, text}){

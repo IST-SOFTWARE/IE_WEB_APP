@@ -38,12 +38,13 @@
 
 .APBConteiner{
     width: 95%;
-    height: 424px;
+    height: fit-content;
     background: #2C3641;
     max-width: 670px;
     box-shadow: 14px 14px 22px -13px rgba(0, 0, 0, 0.21);
     border-radius: 46px 46px 46px 0px;
     position: relative;
+    padding-bottom: 40px;
 }
 
 .APBHeaderNum{

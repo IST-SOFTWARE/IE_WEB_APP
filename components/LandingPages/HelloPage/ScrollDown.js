@@ -1,4 +1,4 @@
-import styles from "../styles/ScrollDown.module.css"
+import styles from "../../../styles/ScrollDown.module.css"
 
 export default function ScrollDown({text}){
     return(

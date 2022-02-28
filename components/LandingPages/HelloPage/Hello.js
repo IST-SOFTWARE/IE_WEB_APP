@@ -1,13 +1,14 @@
-import styles from "../../styles/HelloPage.module.css"
-import MainLabel from "../MainLabel";
-import CallBack from "../CallBack";
-import ScrollDown from "../ScrollDown";
-import GallaryText from "../GalleryText";
-import GallaryBG from "../GallaryBG";
 import { useEffect, useState } from "react";
-import MobileBtn from "../MobileComponents/MobileBtn";
-import CallBackModal from "../ModalComponents/CallBackModal";
-import PopUpBase from "../PopUpBase";
+
+import styles from "../../../styles/HelloPage.module.css"
+
+import MainLabel from "../../MainLabel";
+import CallBack from "./CallBack";
+import ScrollDown from "./ScrollDown";
+import GalleryText from "./Gallery/GalleryText"
+import GallaryBG from "./Gallery/GallaryBG";
+import CallBackModal from "../../ModalComponents/CallBackModal";
+import PopUpBase from "../../PopUpBase";
 
 const gallary = [
     {
@@ -92,7 +93,7 @@ export default function Hello({HelloLangChecker, content, lang}){
                 </div>
 
                 <div className={styles.RightBlock}>
-                    <GallaryText 
+                    <GalleryText 
                     gallary={gallary}
                     defText={
                         HelloLangChecker(gallary,

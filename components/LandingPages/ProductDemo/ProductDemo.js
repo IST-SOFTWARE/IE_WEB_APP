@@ -1,10 +1,13 @@
 import { useCallback, useEffect, useState} from "react";
-import styles from "../../styles/ProdDemo.module.css"
-import MainLabel from "../MainLabel";
-import PrTypeCard from "../PrTypeCard";
-import PDBackImg from "../PDBackImg";
-import PopUpBase from "../PopUpBase";
-import CallBackModal from "../ModalComponents/CallBackModal";
+import styles from "../../../styles/ProdDemo.module.css"
+
+import MainLabel from "../../MainLabel";
+
+import PrTypeCard from "./PrTypeCard";
+import PDBackImg from "./PDBackImg";
+
+import PopUpBase from "../../PopUpBase";
+import CallBackModal from "../../ModalComponents/CallBackModal";
 
 
 export default function ProductDemo({PDLangChecker, content, lang}){

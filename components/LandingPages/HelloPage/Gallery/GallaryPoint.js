@@ -1,4 +1,4 @@
-import styles from "../styles/Gallary.module.css"
+import styles from "../../../../styles/Gallary.module.css"
 import { useState, useEffect } from "react";
 
 export default function GallaryPoint(props){
