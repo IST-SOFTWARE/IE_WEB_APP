@@ -1,10 +1,13 @@
 import { useState } from "react";
 import Header from "../components/Header/Header"
-import Hello from "../components/LandingPages/Hello"
-import LangSwitcher from "../components/LangSwitcher"
-import ProductDemo from "../components/LandingPages/ProductDemo";
-import InfoOfDev from "../components/InfoOfDev";
 import Progress from "../components/ProgressScroll/Progress";
+
+import Hello from "../components/LandingPages/Hello"
+import ProductDemo from "../components/LandingPages/ProductDemo";
+import AttachPage from "../components/LandingPages/AttachPage";
+
+import LangSwitcher from "../components/LangSwitcher"
+import InfoOfDev from "../components/InfoOfDev";
 
 
 const HeaderContent = {
@@ -175,7 +178,9 @@ export default function Index(){
                 content={PDContent}
                 lang={globalLng}/>
 
-                <ProductDemo
+                <AttachPage/>
+
+                {/* <ProductDemo
                 PDLangChecker={LangChecker}
                 content={PDContent}
                 lang={globalLng}/>
@@ -183,12 +188,7 @@ export default function Index(){
                 <ProductDemo
                 PDLangChecker={LangChecker}
                 content={PDContent}
-                lang={globalLng}/>
-
-                <ProductDemo
-                PDLangChecker={LangChecker}
-                content={PDContent}
-                lang={globalLng}/>
+                lang={globalLng}/> */}
             </div>
         </>
     )

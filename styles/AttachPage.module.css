@@ -1,0 +1,245 @@
+
+.AttachContent{
+    display: flex;
+    width: 100%;
+    height: 100vh;
+}
+.LeftContent{
+    width: 50%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    z-index: 1;
+}
+.RightContent{
+    width: 50%;
+    height: 100%;
+    z-index: 1;
+}
+.AttachContentBg{
+    position: absolute;
+    right: 0;
+    z-index: 0;
+    width: fit-content;
+    height: 100%;
+    overflow: hidden;
+    z-index: 0;
+    mix-blend-mode: multiply;
+}
+
+/* AP CONTENT BLOCK STYLES */
+
+.APB{
+    display:flex;
+    align-items: center;
+    justify-content: flex-end;
+    height: 100%;
+}
+
+.APBConteiner{
+    width: 95%;
+    height: 424px;
+    background: #2C3641;
+    max-width: 670px;
+    box-shadow: 14px 14px 22px -13px rgba(0, 0, 0, 0.21);
+    border-radius: 46px 46px 46px 0px;
+    position: relative;
+}
+
+.APBHeaderNum{
+    font-size: 50px;
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 70px;
+    height: 70px;
+    color: #FFDF93;
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 100%;
+    border: solid 5px #FFDF93;
+    box-shadow: 0px 0px 6px 1px #FFD064;
+    background: #2C3641;
+}
+.APBContent{
+    height: fit-content;
+    width: 100%;
+}
+
+/* APB ATTACH MODULE BLOCK */
+
+.ABContainer{
+    display: flex;
+    flex-direction: column;
+}
+
+.ABHeader{
+    width: 85%;
+    height: 50px;
+    margin: 13px 0px;
+    display: flex;
+    align-items: center;
+}
+.ABHeaderBtn{
+    width: 50%;
+    background: none;
+    color: #FFDF93;
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 20px;
+    cursor: pointer;
+    border: none;
+    outline: none;
+    height: 100%;
+    position: relative;
+    text-decoration: underline;
+    transition: 0.2s;
+}
+
+.ABHeaderBtn:hover{
+    filter: drop-shadow(0px 0px 7px #4B5B7C);
+    transition: 0.2s;
+    transform-origin: center;
+    transform: scale(1.03);
+}
+.ABHeaderBtn.active{
+    border-radius: 85px;
+    background: #6B93BE;
+    transition: 0.2s;
+    color: #fff;
+    text-decoration: none;
+}
+.ABHeaderBtn.active:hover{
+    box-shadow: 0px 0px 7px #93c4f854;
+    background: #678eb8;
+    transition: 0.2s;
+    transform: scale(1);
+}
+
+/* APB ATTACH MODULE BLOCK [DROP RULES] */
+
+.ABRulesContent{
+    width: fit-content;
+    height: fit-content;
+    margin: 40px;
+}
+.ABRulesContent p{
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 20px;  
+    color: #FFFFFF;
+}
+
+/* APB ATTACH MODULE BLOCK [DROP ZONE] */
+
+.ABDropContent{
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+    align-items: center;
+}
+.ABDropBlock{
+    width: 146px;
+    height: 146px;
+    box-sizing: border-box;
+    border-radius: 39px;
+    border: 5px solid #76ACE7;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px;
+    transition: 0.3s;
+}
+.ABDropBlock.active{
+    transform: scale(1.05);
+    border: 5px dashed #76ACE7;
+    box-shadow: 0px 0px 7px #4B5B7C;
+    transition: 0.3s;
+}
+.ABDropBlockImg{
+    width: 50%;
+    height: 50%;
+    position: relative;
+}
+.ABDropBlockBtn{
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 24px;
+    text-decoration-line: underline;
+    color: #76ACE7;
+    cursor: pointer;
+    background: none;
+    border: none;
+    width: 100%;
+    margin-bottom: 10px;
+    transition: 0.3s;
+}
+
+.ABDropBlockBtn.active{
+    font-size: 18px;
+    transition: 0.3s;
+    margin-bottom: 0px;
+}
+
+.ABDropBlockFileName{
+    color: #fff;
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 24px;
+    text-align: center;
+    margin-top: -9px;
+    max-width: 190px;
+    word-wrap: break-word;
+    max-height: 30px;
+    display: block;
+    overflow: hidden;
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.ABDropInfo{
+    width: 55%;
+    height: 100%;
+}
+.ABDropInfo p{
+    text-align: center;
+    color: #fff;
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 16px;
+}
+.ABDropInfo a{
+    cursor: pointer;
+    color: #FFDF93;
+    position: relative;
+    display: inline-block;
+    width: max-content;
+}
+.ABDropInfo a::after{
+    position: absolute;
+    transform-origin: center;
+    content: " ";
+    width: 100%;
+    height: 2px;
+    background: #FFDF93;
+    bottom: 0;
+    left:0;
+    opacity: 0;
+    transform: translateY(5px);
+    transition: 0.3s;
+}
+.ABDropInfo a:hover::after{
+    opacity: 1;
+    transition: 0.3s;
+    transform: translateY(0.5px);
+}
