@@ -10,11 +10,17 @@
     display: flex;
     flex-direction: column;
     z-index: 1;
+
+    align-items: flex-end;
 }
 .RightContent{
     width: 50%;
     height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
     z-index: 1;
+
 }
 .AttachContentBg{
     position: absolute;
@@ -30,21 +36,17 @@
 /* AP CONTENT BLOCK STYLES */
 
 .APB{
-    display:flex;
-    align-items: center;
-    justify-content: flex-end;
-    height: 100%;
+    height: fit-content;
 }
 
 .APBConteiner{
-    width: 95%;
+    width: 100%;
     height: fit-content;
     background: #2C3641;
-    max-width: 670px;
     box-shadow: 14px 14px 22px -13px rgba(0, 0, 0, 0.21);
     border-radius: 46px 46px 46px 0px;
     position: relative;
-    padding-bottom: 40px;
+
 }
 
 .APBHeaderNum{
@@ -72,7 +74,12 @@
 }
 
 /* APB ATTACH MODULE BLOCK */
-
+.AttachBlockParent{
+    height: 100%;
+    max-width: 95%;
+    display: flex;
+    align-items: center;
+}
 .ABContainer{
     display: flex;
     flex-direction: column;
@@ -210,6 +217,7 @@
 .ABDropInfo{
     width: 55%;
     height: 100%;
+    margin-bottom: 40px;
 }
 .ABDropInfo p{
     text-align: center;
@@ -244,3 +252,152 @@
     transition: 0.3s;
     transform: translateY(0.5px);
 }
+
+/* APB USER INPUT MODULE BLOCK */
+    .ABContainerInput{
+        padding: 30px;
+        padding-bottom: 20px;
+    }
+    .UserInputBlockParent{
+        padding-top: 130px;
+        width: calc((583 * 100%)/705);
+
+    }
+    .ABHeaderInput{
+        height: fit-content;
+        width: fit-content;
+        margin-bottom: 7px;
+    }
+
+    .ABHeaderInput p{
+        font-family: Roboto;
+        font-style: normal;
+        font-weight: bold;
+        font-size: 30px;
+        color: #fff;
+        margin-bottom: 2px;
+    }
+
+    .ABHeaderInput a{
+        font-family: Roboto;
+        font-style: normal;
+        font-weight: bold;
+        font-size: 16px;  
+        text-decoration-line: underline;
+        color: #93C3F8;
+        cursor: pointer;
+    }
+
+/* APB USER INFO MODULE [INPUT BLOCK ITEM]:
+
+    Title
+    [placeholder]
+
+*/
+
+    .InputBlock{
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        margin-top: 18px;
+    }
+    .InputBlock label{
+        font-family: Roboto;
+        font-style: normal;
+        font-weight: bold;
+        font-size: 18px;
+        color: #FFFFFF;
+        margin-bottom: 8px;
+        position: relative;
+    }
+
+    .isNotConfirmed::after{
+        content: " ";
+        cursor: pointer;
+        position: absolute;
+        font-size: 15px;
+        font-family: Roboto;
+        font-style: normal;
+        font-weight: normal;
+        color: #FFDF93;
+        right:20px;
+        top: 0px;
+        width: 23px;
+        height: 23px;
+        background: url('/InputFormShouldBeFill.svg');
+        background-position: right;
+        background-size: auto;  
+        background-repeat: no-repeat;
+        display: block;
+        top: 0;
+        transition: 0.2s;
+    }
+    .isNotConfirmed:hover::after{
+        content: "Obligatory field!";
+        position: absolute;
+        width: fit-content;
+        text-align: left;
+        right: 0px;
+        background-size: auto;
+        background-position: right;
+
+        transform: translateX(-20px);
+        padding-right: 25px;
+        transition: 0.2s;
+    }
+
+    .InputBlock input[type="text"]{
+        height: 50px;
+        background: #FCFDFE;
+        border-radius: 0px 89px 89px 89px;
+        border: none;
+        outline: none;
+        padding-left: 25px;
+
+        font-family: Roboto;
+        font-style: normal;
+        font-weight: normal;
+        font-size: 16px;
+        transition: 0.3s;
+    }
+
+    .ActiveInputForm{
+        transition: 0.3s;
+        box-shadow: 0px 0px 10px #93C3F8;
+        border: 2px solid #93C3F8;
+    }
+    .shouldBeFilled{
+        border: 2px solid #FFDF93;
+        box-sizing: border-box;
+        box-shadow: 0px 0px 10px #FFDF93;
+        position: relative;
+    }
+  
+    .ConfirmedInputData{
+        margin-left: 12px;
+        font-family: Roboto;
+        font-style: normal;
+        font-weight: bold;
+        font-size: 18px;
+        color: #93C3F8;
+        cursor: pointer;
+        width: fit-content;
+        position: relative;
+    }
+    .ConfirmedInputData::after{
+        content: "";
+        position: absolute;
+        width: 100%;
+        height: 2px;
+        background: #93C3F8;
+        left: 0;
+        bottom: 0px;
+        transition: 0.3s;
+        transform: translateY(5px);
+        opacity: 0;
+    }
+    .ConfirmedInputData:hover::after{
+        transform: translateY(0px);
+        opacity: 1;
+        transition: 0.3s;
+    }
