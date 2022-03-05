@@ -4,7 +4,7 @@ import styles from "../../../styles/AttachPage.module.css"
 import {useDropzone} from "react-dropzone"
 import Image from "next/image"
 
-export default function APAttachBlock(){
+export default function APAttachBlock({setAttached}){
 
     const LoadFile = "LoadFile"
     const LoadRules = "LoadRules"
@@ -68,6 +68,11 @@ export default function APAttachBlock(){
             document.querySelector(`.${styles.ABDropBlockBtn}`).className += ` ${styles.active}`
         }
     }, [fileState, ShowRules])
+
+    useEffect(()=>{
+        setAttached(fileState.fileLoad);
+        
+    }, [fileState])
 
     // LOAD/RULES BTN ACTIVATOR
     useEffect(() => {

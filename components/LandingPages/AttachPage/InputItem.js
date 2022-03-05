@@ -1,14 +1,17 @@
 import styles from "../../../styles/AttachPage.module.css"
-import { useState, useEffect, useReducer, useMemo, useCallback} from "react"
+import { useState, useEffect, useReducer, useContext} from "react"
+import InputContext from "../../Context/InputStateContextAP";
 
-
-export default function InputItem({Title, Placeholder}){
+export default function InputItem({Title, Placeholder, counter, setCount}){
 
     //BOILER PLATE`S
     const INPUT_BP = "Input";
     const FOCUS_BP = "focus";
     const CONFIRMED_BP = "Confirmed";
     
+
+    const GlobalInputState = useContext(InputContext)
+
     //SHOW / HIDE INPUT
     const[showInput, setShowInput] = useState(true);
     
@@ -78,7 +81,6 @@ export default function InputItem({Title, Placeholder}){
     }
     // --[]--
 
-
     // BASE EVENTS LISTENER [FOCUSED, CONFIRMED]
     useEffect(()=>{
         if(state.Focus){
@@ -93,6 +95,7 @@ export default function InputItem({Title, Placeholder}){
                     setShowInput(false);
                     setFocus(false);
                } 
+
                 if(state.Value.length === 0){
                     state.Form.target.classList.remove(`${styles.ActiveInputForm}`);
                     state.Form.target.className = `${styles.shouldBeFilled}`;
@@ -102,7 +105,6 @@ export default function InputItem({Title, Placeholder}){
             }
         }
     }, [state.Value, state.Focus, state.Form])
-
 
     // HANDLER FOR EDIT
     function EditField(){
@@ -118,6 +120,9 @@ export default function InputItem({Title, Placeholder}){
         }
     },[focuser])
 
+    useEffect(()=>{
+        GlobalInputState.dispatch(GlobalInputState.AddStateGenerator(!showInput));
+    }, [showInput])
 
     return(
         <>  
