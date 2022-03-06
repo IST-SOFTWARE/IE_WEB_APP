@@ -1,11 +1,15 @@
 import styles from "../../../styles/AttachPage.module.css"
 import Image from "next/image"
+
+import InputContext from "../../Context/InputStateContextAP"
+import { useState, useEffect, useReducer, useMemo} from "react"
+
 import MainLabel from "../../MainLabel"
 import ATContentBlock from "./APContentBlock"
 import APAttachBlock from "./APAttachBlock"
 import InputItem from "./InputItem"
-import { useState, useEffect, useReducer, useMemo} from "react"
-import InputContext from "../../Context/InputStateContextAP"
+import PopUpBase from "../../PopUpBase"
+import FilesAndDataSent from "../../ModalComponents/FIlesAndDataSent"
 
 function statusChanger(arr, satatus){
     let negStatus = -1;
@@ -32,7 +36,8 @@ export default function AttachPage(){
     const ADD_STATE_BP = "AddState"
     const SET_ENUM_BP = "setENum"
     const FILLED_CHECK = "FILLED_CHECK"
-
+    
+    const[puState, setPU] = useState(false);
     const[fileAttached, setAttach] = useState(false);
 
     const[formsFilled, dispatch] = useReducer(reducer, {
@@ -179,7 +184,7 @@ export default function AttachPage(){
                                     </p>
 
                                     <div className={styles.ABsendBtnConteiner}>
-                                        <button>
+                                        <button onClick={()=>setPU(true)}>
                                             Отправить
                                         </button>
                                     </div>
@@ -204,6 +209,16 @@ export default function AttachPage(){
                 </div>  
 
                 </div>
+
+            <PopUpBase puState={puState} closer={setPU}
+            header="Спасибо за сотрудничество!"
+            paragraph="Мы получили ваши данные и скоро свяжемся с вами">
+                <FilesAndDataSent
+                backImg={"https://res.cloudinary.com/dv9xitsjg/image/upload/v1645799192/AttachPageImages/Rectangle_23_rv90lv.png"}
+                w={1920}
+                h={1147}
+                />
+            </PopUpBase>
         </>
     )
 }

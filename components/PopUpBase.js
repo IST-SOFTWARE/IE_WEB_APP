@@ -3,7 +3,7 @@ import { createPortal } from "react-dom";
 import styles from "../styles/PopUp.module.css"
 
 
-export default function PopUpBase({puState, children, header, closer}){
+export default function PopUpBase({puState, children, header, paragraph, closer}){
     const[isBrowser, setIsBrowser] = useState(false);
 
     function backHider(e){
@@ -44,8 +44,7 @@ export default function PopUpBase({puState, children, header, closer}){
                                     {header}
                                 </h1>
 
-                                <p>Есть вопросы? Оставь
-                                заявку, а мы перезвоним!</p>
+                                <p>{paragraph}</p>
 
                                 <button
                                 onClick={(e) => backHider(e)}
