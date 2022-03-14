@@ -2,7 +2,7 @@ import styles from "../../../styles/AttachPage.module.css"
 import Image from "next/image"
 
 import InputContext from "../../Context/InputStateContextAP"
-import { useState, useEffect, useReducer, useMemo} from "react"
+import { useState, useEffect, useReducer, useCallback} from "react"
 
 import MainLabel from "../../MainLabel"
 import ATContentBlock from "./APContentBlock"
@@ -40,6 +40,9 @@ export default function AttachPage(){
     const[puState, setPU] = useState(false);
     const[fileAttached, setAttach] = useState(false);
 
+    // FOR S_SCREEN 
+    const[unwrapForms, setUnwrap] = useState(true);
+    
     const[formsFilled, dispatch] = useReducer(reducer, {
         ElemNum: 0,
         ElemsState: [],
@@ -90,23 +93,40 @@ export default function AttachPage(){
 
 
 
-    // CHECK IS THE FILE ATTACHED
+    // SHOW/HIDE SEND USER DATA BLOCK
     useEffect(()=>{
         const SendForm = document.querySelector(`.${styles.APSendFormParent}`);
+        let timer;
 
         if((!fileAttached || !formsFilled.Filled) && !(SendForm.classList.contains(`${styles.active}`)) ){
             SendForm.className += ` ${styles.active}`;
+            //HIDE
+
+
+            timer = setTimeout(()=>{
+                SendForm.style.display = "none";
+            }, 350)
         }
 
         if(fileAttached && formsFilled.Filled && SendForm.classList.contains(`${styles.active}`)){
-            SendForm.classList.remove(`${styles.active}`);
+            
+            SendForm.style.display = "block";
+            timer = setTimeout(()=>{
+                SendForm.classList.remove(`${styles.active}`);
+            }, 100)
+            //SHOW
+
         }
+
+        return () => {
+            clearTimeout(timer);
+          };
 
     },[fileAttached, formsFilled.Filled])
 
     // CHECKING ALL FIELDS ARE FILLED
     useEffect(()=>{
- 
+        
         if(formsFilled.ElemsState.some((x)=> x === false)){
             dispatch(FilledCheckGenerator(false))
         }
@@ -116,7 +136,55 @@ export default function AttachPage(){
 
     },[formsFilled.ElemsState])
 
-    // SET NUM OF INPUT`S (FIRST LOAD) + GET SEND FORM ELEMENT
+
+    // //HIDE/SHOW FORMS FOR S-SCREENS ------------------------------
+    const FormsUnwrapper = useCallback(event => {
+        const {type} = event;
+
+        if((type === "mouseenter" || type === undefined) ){
+            setUnwrap(true);
+        }
+        else if(type === "mouseleave"){
+            setTimeout(() => setUnwrap(false), 500)
+        }
+    },[]);
+    
+    
+    useEffect(()=>{
+        const LState = formsFilled.Filled;
+        const Inputs = document.querySelector(`.${styles.UserInputBlockParent}`);
+        
+        if(LState){
+            Inputs.className += ` ${styles.active}`;
+            console.log(LState)
+        }
+
+    },[formsFilled.Filled])
+
+    useEffect(()=>{
+        const Inputs = document.querySelector(`.${styles.UserInputBlockParent}`);
+        const L_FF = formsFilled.Filled;
+
+        Inputs.addEventListener("mouseenter", FormsUnwrapper);
+        Inputs.addEventListener("mouseleave", FormsUnwrapper);
+
+        if(unwrapForms && Inputs.classList.contains(`${styles.active}`)){
+            Inputs.classList.remove(`${styles.active}`);
+        }
+        else if(!unwrapForms && !Inputs.classList.contains(`${styles.active}`) && L_FF){
+            Inputs.className += ` ${styles.active}`;
+        }
+
+        return() => {
+            Inputs.removeEventListener("mouseenter", FormsUnwrapper);
+            Inputs.removeEventListener("mouseleave", FormsUnwrapper);
+        }
+    },[FormsUnwrapper, unwrapForms, formsFilled.Filled]);
+
+    // --------------------------------------------------------------
+
+    // SET NUM OF INPUT`S (FIRST LOAD. [6 INPUTS = NUM: 6])
+    //+ GET SEND FORM ELEMENT
     useEffect(()=>{
         const InputForms = document.querySelector(".qSelectIputForms").childElementCount;
         dispatch(SetENumGenerator(InputForms));
@@ -157,6 +225,7 @@ export default function AttachPage(){
                                         <a>Уже зарегистрирован...</a>
                                     </div>
                                     
+                                    <div className={styles.InputBlockLimiter}>
                                     <div className="qSelectIputForms">
                                         <InputContext.Provider value={{dispatch, AddStateGenerator}}>
                                             <InputItem Title={"ИНН Организации"} Placeholder={"1111111111"}/>
@@ -166,6 +235,7 @@ export default function AttachPage(){
                                             <InputItem Title={"Контактный телефон"} Placeholder={"+7(000)000 00 00"}/>
                                             <InputItem Title={"Email"} Placeholder={"info@istlift.ru"}/>
                                         </InputContext.Provider>
+                                    </div>
                                     </div>
                                 </div>
                             </ATContentBlock>
