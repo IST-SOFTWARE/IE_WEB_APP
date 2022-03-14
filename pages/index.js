@@ -180,15 +180,15 @@ export default function Index(){
 
                 <AttachPage/>
 
-                {/* <ProductDemo
-                PDLangChecker={LangChecker}
-                content={PDContent}
-                lang={globalLng}/>
-
                 <ProductDemo
                 PDLangChecker={LangChecker}
                 content={PDContent}
-                lang={globalLng}/> */}
+                lang={globalLng}/>
+                
+                <ProductDemo
+                PDLangChecker={LangChecker}
+                content={PDContent}
+                lang={globalLng}/>
             </div>
         </>
     )

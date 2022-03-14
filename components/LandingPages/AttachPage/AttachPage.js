@@ -42,6 +42,7 @@ export default function AttachPage(){
 
     // FOR S_SCREEN 
     const[unwrapForms, setUnwrap] = useState(true);
+
     
     const[formsFilled, dispatch] = useReducer(reducer, {
         ElemNum: 0,
@@ -98,23 +99,20 @@ export default function AttachPage(){
         const SendForm = document.querySelector(`.${styles.APSendFormParent}`);
         let timer;
 
-        if((!fileAttached || !formsFilled.Filled) && !(SendForm.classList.contains(`${styles.active}`)) ){
-            SendForm.className += ` ${styles.active}`;
+        if((!fileAttached || !formsFilled.Filled) && !(SendForm.classList.contains(`${styles.active}`))){
             //HIDE
-
-
+            SendForm.className += ` ${styles.active}`;
             timer = setTimeout(()=>{
                 SendForm.style.display = "none";
             }, 350)
         }
 
         if(fileAttached && formsFilled.Filled && SendForm.classList.contains(`${styles.active}`)){
-            
             SendForm.style.display = "block";
+            //SHOW
             timer = setTimeout(()=>{
                 SendForm.classList.remove(`${styles.active}`);
             }, 100)
-            //SHOW
 
         }
 
@@ -123,6 +121,20 @@ export default function AttachPage(){
           };
 
     },[fileAttached, formsFilled.Filled])
+
+    useEffect(()=>{
+        const SendForm = document.querySelector(`.${styles.APSendFormParent}`);
+
+        if(window.innerHeight < 810){
+            if(unwrapForms && (formsFilled.Filled || !formsFilled.Filled)){
+                SendForm.style.display = "none";
+            }
+            else if(!unwrapForms && (formsFilled.Filled || !formsFilled.Filled)){
+                SendForm.style.display = "block";
+            }
+        }
+
+    }, [unwrapForms, formsFilled.Filled]);
 
     // CHECKING ALL FIELDS ARE FILLED
     useEffect(()=>{

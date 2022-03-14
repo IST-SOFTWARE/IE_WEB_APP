@@ -477,6 +477,12 @@
     }
 
     @media (max-width: 1779.98px){
+
+        .APBHeaderNum{
+            font-size: calc(35px + (50 - 35) * ((100vw - 300px) / (1920 - 320)));
+        }
+
+
         /* ATTACH BLOCK OPT */
         .ABHeader{
             width: 80%;
@@ -495,9 +501,17 @@
             transition: 0.3s;
         }
         .ABDropBlock{
-            width: 137px;
-            height: 137px;
-            margin: 10px;
+            width: 132px;
+            height: 132px;
+            margin: 15px;
+        }
+
+        .ABRulesContent{
+            margin: 30px;
+        }
+
+        .ABRulesContent p{
+            font-size: calc(15px + (20 - 15) * ((100vw - 300px) / (1920 - 320)));
         }
 
         /* INPUTS BLOCK OPT */
@@ -539,8 +553,24 @@
             transition: 0.3s;
         }
 
+        .InputBlockLimiter::-webkit-scrollbar {
+            width: 8px;
+        }
+         
+        .InputBlockLimiter::-webkit-scrollbar-track {
+            background-color: #3F4D5B;
+            border-radius: 8px 8px 8px 212px;
+        }
+         
+        .InputBlockLimiter::-webkit-scrollbar-thumb {
+            background-color: #76ACE7;
+            border-radius: 9px;
+            background-clip: content-box;
+
+        }
+
         .UserInputBlockParent.active{
-            max-height: 40%;
+            max-height: 50%;
             overflow-y: hidden;
 
             position: relative;
@@ -579,6 +609,8 @@
             box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.315);
 
         }
+
+
 
 
     }
