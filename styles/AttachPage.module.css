@@ -542,6 +542,10 @@
         .UserInputBlockParent{
             padding-right: 7px;
         }
+
+        .ABsendRules p{
+            font-size: calc(12px + (14 - 12) * ((100vw - 300px) / (1920 - 320)));
+        }
     } 
 
     @media (max-height: 809.98px){
@@ -551,6 +555,7 @@
             overflow-y:auto;
             padding-top: 0px;
             transition: 0.3s;
+
         }
 
         .InputBlockLimiter::-webkit-scrollbar {
@@ -582,6 +587,10 @@
             cursor: pointer;
             animation-duration: 0.3s;
             animation-name: slidein;
+        }
+
+        .UserInputBlockParent.active .InputBlockLimiter{
+            overflow: hidden;
         }
 
         .UserInputBlockParent::after{
@@ -741,7 +750,14 @@
         background-color: #76ACE7;
         border-radius: 9px;
         background-clip: content-box;
+    }
 
+    .UserInputBlockParent{
+        padding-top: 100px;
+    }
+
+    .ABContainerInput{
+        padding: 15px;
     }
 
 }

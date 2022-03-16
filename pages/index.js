@@ -161,12 +161,13 @@ export default function Index(){
 
             <Progress/>
 
-            <LangSwitcher
+            {/* <LangSwitcher
                 switchFnc={ToggleLang}
                 SwLangChecker={LangChecker}
                 lang={globalLng}
                 content={Languages}
-            />
+            /> */}
+            
             <div className="container" id="LandPageContainer">
                 <Hello
                 HelloLangChecker={LangChecker}
