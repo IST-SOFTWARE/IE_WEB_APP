@@ -209,12 +209,14 @@ export default function AttachPage(){
         <>
                 <div className={styles.AttachContent}>
                     <div className={styles.LeftContent}>
-                        <MainLabel padding={"130px"}>
-                        ГОТОВЫ ИЗГОТАВЛИВАТЬ
-                        СЛОЖНЫЕ ДЕТАЛИ ПО
-                        ВАШИМ ЧЕРТЕЖАМ И
-                        ЭСКИЗАМ 
-                        </MainLabel>
+                        <div className={styles.AttachMLabel}>
+                            <MainLabel padding={"130px"}>
+                            ГОТОВЫ ИЗГОТАВЛИВАТЬ
+                            СЛОЖНЫЕ ДЕТАЛИ ПО
+                            ВАШИМ ЧЕРТЕЖАМ И
+                            ЭСКИЗАМ 
+                            </MainLabel>
+                        </div>
                         
                         <div className={styles.AttachBlockParent}>
                             <ATContentBlock StepNum={1}>

@@ -141,13 +141,13 @@ export default function APAttachBlock({setAttached}){
                 <div className={styles.ABHeader}>
                     <button
                     onClick={(e) => HandlerClick(e)}
-                    className={styles.ABHeaderBtn} id={LoadFile}>
+                    className={styles.ABHeaderBtn} id={LoadFile} type="LoadFile">
                         Загрузка файла
                     </button>
 
                     <button
                     onClick={(e) => HandlerClick(e)}
-                    className={styles.ABHeaderBtn} id={LoadRules}>
+                    className={styles.ABHeaderBtn} id={LoadRules} type="LoadRules">
                         Что отправлять?
                     </button>
 
