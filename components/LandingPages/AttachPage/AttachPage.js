@@ -203,7 +203,9 @@ export default function AttachPage(){
         console.log(InputForms);
     },[])
 
-
+    useEffect(()=>{
+        console.log(fileAttached);
+    },[fileAttached])
 
     return(
         <>
@@ -218,7 +220,7 @@ export default function AttachPage(){
                             </MainLabel>
                         </div>
                         
-                        <div className={styles.AttachBlockParent}>
+                        <div className={fileAttached ? styles.AttachBlockParent + " " + styles.active : styles.AttachBlockParent}>
                             <ATContentBlock StepNum={1}>
                                 <APAttachBlock
                                 setAttached={setAttach}/>
@@ -229,7 +231,7 @@ export default function AttachPage(){
                     
                     <div className={styles.RightContent}>
 
-                    <div className={styles.UserInputBlockParent}>
+                    <div className={fileAttached ? styles.UserInputBlockParent + " " + styles.mobileShower : styles.UserInputBlockParent}>
                         <ATContentBlock StepNum={2}>
 
                                 <div className={styles.ABContainerInput}>   

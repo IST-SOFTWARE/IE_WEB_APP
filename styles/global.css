@@ -21,7 +21,7 @@ body, html{
   /* font-size: 46px; */
   white-space: pre-line;  
   vertical-align: bottom;
-  font-size: calc(25px + (46 - 25) * ((100vw - 300px) / (1920 - 320)));
+  font-size: calc(25px + (46 - 25) *   ((100vw - 300px) / (1920 - 320)));
 }
 
 .LangSwtchrBlock{

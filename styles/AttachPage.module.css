@@ -759,6 +759,109 @@
     .ABContainerInput{
         padding: 15px;
     }
+}
+@media (max-width: 959.98px){
+    .APBConteiner{
+        border-radius: 40px;
+        box-shadow: 0px 8px 7px -3px rgba(0, 0, 0, 0.25);
+    }
+    .ABDropContent{
+        box-shadow: none;
+        background: none;
+        width: calc(100% - 50px);
+    }
+    .ABDropBlock{
+        width: 115px;
+        height: 115px;
+        border-width: 5px;
+    }
+    .APBHeaderNum{
+        margin: 15px;
+    }
+    .ABHeader{
+        margin-left: 15px;
+        margin-top: 15px;
+    }
+
+    .AttachContent{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    .LeftContent{
+        width: 100%;
+        align-items: center;
+    }
+    .AttachBlockParent{
+        width: 70%;
+        margin-top: 20px;
+    }
+    .AttachBlockParent.active .ABDropBlock{
+        width: 90px;
+        height: 90px;
+        border-width: 3px;
+ 
+    }
+    .AttachBlockParent.active .ABDropInfo{
+        display: none;
+    }
+    .AttachBlockParent.active .ABDropBlockBtn{
+        display: none;
+    }
+
+    .RightContent{
+        width: 100%;
+        align-items: center;
+    }
+
+    .UserInputBlockParent{
+        padding-top: 20px;
+        width: 70%;
+    }
+    .UserInputBlockParent .InputBlockLimiter{
+        height: 0px;
+        margin-top: 15px;
+        overflow: hidden;
+        transition: 0.3s;
+        position: relative;
+    }
+
+    .UserInputBlockParent .InputBlockLimiter::after{
+        content: "First add the file";
+        position: absolute;
+        bottom: 0px;
+        left: 50%;
+        color: #FFDF93;
+        transform: translateX(-50%);
+        font-family: 'Roboto';
+        font-weight: 500;
+    }
+
+    .InputBlockLimiter::-webkit-scrollbar {
+        width: 8px;
+    }
+     
+    .InputBlockLimiter::-webkit-scrollbar-track {
+        background-color: #3F4D5B;
+        border-radius: 8px 8px 8px 212px;
+    }
+     
+    .InputBlockLimiter::-webkit-scrollbar-thumb {
+        background-color: #76ACE7;
+        border-radius: 9px;
+        background-clip: content-box;
+
+    }
+
+    .UserInputBlockParent.mobileShower .InputBlockLimiter{
+        height: 30vh;
+        overflow-y: scroll;
+        margin: auto;
+    }
+    .UserInputBlockParent.mobileShower .InputBlockLimiter::after{
+        display: none;
+    }
+
 
 }
 
