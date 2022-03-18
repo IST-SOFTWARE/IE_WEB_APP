@@ -210,7 +210,7 @@ export default function AttachPage(){
     return(
         <>
                 <div className={styles.AttachContent}>
-                    <div className={styles.LeftContent}>
+                    <div className={fileAttached ? styles.LeftContent + " " + styles.fileAttached : styles.LeftContent}>
                         <div className={styles.AttachMLabel}>
                             <MainLabel padding={"130px"}>
                             ГОТОВЫ ИЗГОТАВЛИВАТЬ
