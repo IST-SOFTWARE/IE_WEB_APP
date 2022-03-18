@@ -3,6 +3,10 @@
     display: flex;
     width: 100%;
     height: 100vh;
+    min-height: 820px;
+    border: solid 1px #fff;
+    overflow-y: hidden;
+
 }
 .LeftContent{
     width: 48%;
@@ -791,6 +795,7 @@
     .LeftContent{
         width: 100%;
         align-items: center;
+        height: fit-content;
     }
     .AttachBlockParent{
         width: 70%;
@@ -857,11 +862,65 @@
         height: 30vh;
         overflow-y: scroll;
         margin: auto;
+        margin-top: 22px;
     }
     .UserInputBlockParent.mobileShower .InputBlockLimiter::after{
         display: none;
     }
 
+    .UserInputBlockParent.active{
+        padding-bottom: 0px;
+        position: relative;
+    }
 
+    .UserInputBlockParent.active .InputBlockLimiter{
+        overflow: hidden;
+        height: 10vh;
+        opacity: 0.6;
+        -webkit-filter: blur(1px);
+        -moz-filter: blur(1px);
+        -o-filter: blur(1px);
+        -ms-filter: blur(1px);
+        filter: blur(1px);
+    }
+    .UserInputBlockParent.active::before{
+        content: "Click to change";
+        position: absolute;
+        color: #ffffff;
+        transform: translateX(-50%);
+        font-family: 'Roboto';
+        font-weight: 500;
+        top: 60%;
+        left: 50%;
+        z-index: 2;
+        padding: 10px 15px;
+        background: #93C3F8;
+        border-radius: 15px;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.288);
+        transition: 0.3s;
+        font-size: 16px;
+        opacity: 1;
+    }
+    .UserInputBlockParent::before{
+        font-size: 0px;
+        opacity: 0;
+        padding: 0;
+        transition: 0.3s;
+    }
+
+    .APSendFormParent{
+        width: 70%;
+    }
+}
+@media (max-width: 539.98px){
+    .AttachBlockParent{
+        width: 100%;
+    }
+    .UserInputBlockParent{
+        width: 100%;
+    }
+    .APSendFormParent{
+        width: 100%;
+    }
 }
 

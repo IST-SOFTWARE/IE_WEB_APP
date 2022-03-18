@@ -125,7 +125,7 @@ export default function AttachPage(){
     useEffect(()=>{
         const SendForm = document.querySelector(`.${styles.APSendFormParent}`);
 
-        if(window.innerHeight < 810){
+        if(window.innerHeight < 810 || window.innerWidth < 960){
             if(unwrapForms && (formsFilled.Filled || !formsFilled.Filled)){
                 SendForm.style.display = "none";
             }
