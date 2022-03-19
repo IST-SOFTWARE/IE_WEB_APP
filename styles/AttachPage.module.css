@@ -921,9 +921,9 @@
         margin: 0px;
     }
     .LeftContent h1 { 
-        font-size: calc(22px + (46 - 22) *   ((100vw - 300px) / (1920 - 320)));
-
+        font-size: calc(21.5px + (46 - 21.5) *   ((100vw - 300px) / (1920 - 320)));
         transition: 0.3s;
+        
     }
     .LeftContent.fileAttached h1 {
         margin-top: -100px;
@@ -1004,5 +1004,41 @@
         height: 38px;
         font-size: 14px;
     }
+    
+    .UserInputBlockParent.keyboardStyle{
+        position: fixed;
+        height: 100vh;
+        background-color: #2C3641;
+        width:98vw;
+        top:0px;
+        padding-top:100px;
+        left: 0;
+    }
+    .UserInputBlockParent.keyboardStyle .InputBlockLimiter{
+        height: 100%;
+    }
+
+    /* .InputBlockLimiter.mobileKeyboardStyler{
+        position: fixed;
+        top: 100px;
+        width: 90%;
+        z-index: 0;
+        left:0px;
+        background: #2C3641;
+        margin-right: 100px;
+        
+    }
+    .InputBlockLimiter.mobileKeyboardStyler::before{
+        content:"";
+        width: 100vw;
+        height: 100vh;
+        background: #2c3641;
+      
+        position: fixed;
+        top: 0;
+        left: 8px;
+        z-index: -1;
+    
+    } */
 }
 

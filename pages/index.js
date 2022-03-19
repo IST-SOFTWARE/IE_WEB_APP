@@ -167,7 +167,7 @@ export default function Index(){
                 lang={globalLng}
                 content={Languages}
             /> */}
-            
+
             <div className="container" id="LandPageContainer">
                 <Hello
                 HelloLangChecker={LangChecker}
@@ -181,15 +181,7 @@ export default function Index(){
 
                 <AttachPage/>
 
-                <ProductDemo
-                PDLangChecker={LangChecker}
-                content={PDContent}
-                lang={globalLng}/>
-                
-                <ProductDemo
-                PDLangChecker={LangChecker}
-                content={PDContent}
-                lang={globalLng}/>
+
             </div>
         </>
     )

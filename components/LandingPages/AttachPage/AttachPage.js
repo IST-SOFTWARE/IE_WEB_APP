@@ -9,6 +9,7 @@ import ATContentBlock from "./APContentBlock"
 import APAttachBlock from "./APAttachBlock"
 import InputItem from "./InputItem"
 import PopUpBase from "../../PopUpBase"
+import KeyboardShow from "../../KeyboardShow"
 import FilesAndDataSent from "../../ModalComponents/FIlesAndDataSent"
 
 function statusChanger(arr, satatus){
@@ -42,13 +43,15 @@ export default function AttachPage(){
 
     // FOR S_SCREEN 
     const[unwrapForms, setUnwrap] = useState(true);
-
+    const[mobUserInputFocus, setUserInputFocus] = useState(false);
     
     const[formsFilled, dispatch] = useReducer(reducer, {
         ElemNum: 0,
-        ElemsState: [],
-        Filled: false
+        ElemsState: [], // .--[1,1,1,1,1] - Filled: True. Ex 0 ? => False 
+        Filled: false // <-.
     });
+
+
 
     function reducer(state, action){
         switch(action.type){
@@ -92,7 +95,27 @@ export default function AttachPage(){
         }
     }
 
+    // FOCUS/UN-FOCUS USER INPUT FOR MOBILE;
+    useEffect(()=>{
+        console.log("FOCUSED: ", mobUserInputFocus);
+        // mobUserInputFocus ? document.body.style.overflowY = "hidden" : document.body.style.overflowY = "auto";
+        if(mobUserInputFocus){
+        document.body.style.height = "0px"
+        }
+        else{
+            document.body.style.height = "auto"
+        }
 
+        const inputBlock = document.querySelector(`.${styles.UserInputBlockParent}`);
+        if(mobUserInputFocus){
+            inputBlock.classList.add(`${styles.keyboardStyle}`);
+        }
+        else{
+            if(inputBlock.classList.contains(`${styles.keyboardStyle}`)){
+                inputBlock.classList.remove(`${styles.keyboardStyle}`);
+            }
+        }
+    },[mobUserInputFocus])
 
     // SHOW/HIDE SEND USER DATA BLOCK
     useEffect(()=>{
@@ -241,9 +264,9 @@ export default function AttachPage(){
                                         <a>Уже зарегистрирован...</a>
                                     </div>
                                     
-                                    <div className={styles.InputBlockLimiter}>
+                                    <div className={mobUserInputFocus ? styles.InputBlockLimiter + " " + styles.mobileKeyboardStyler : styles.InputBlockLimiter}>
                                     <div className="qSelectIputForms">
-                                        <InputContext.Provider value={{dispatch, AddStateGenerator}}>
+                                        <InputContext.Provider value={{dispatch, AddStateGenerator, setUserInputFocus}}>
                                             <InputItem Title={"ИНН Организации"} Placeholder={"1111111111"}/>
                                             <InputItem Title={"Название компании"} Placeholder={"ОТИС Лифт"}/>
                                             <InputItem Title={"ФИО представителя"} Placeholder={"Андреев Андрей Андреевич"}/>

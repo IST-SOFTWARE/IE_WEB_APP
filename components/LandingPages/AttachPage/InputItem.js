@@ -83,6 +83,7 @@ export default function InputItem({Title, Placeholder, counter, setCount}){
 
     // BASE EVENTS LISTENER [FOCUSED, CONFIRMED]
     useEffect(()=>{
+        GlobalInputState.setUserInputFocus(state.Focus);
         if(state.Focus){
             state.Form.target.className = `${styles.ActiveInputForm}`;
             dispatch(setConfirmedGenerator(true));

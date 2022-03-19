@@ -6,6 +6,7 @@ export default function Document() {
       <Head />
       <body>
         <div id="PopUpBase"/>
+        <div id="KeyboardHideContent"/>
         <Main />
         <NextScript />
       </body>
