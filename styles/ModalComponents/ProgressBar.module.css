@@ -90,6 +90,10 @@
         justify-content: space-around;
         height: 50px;
         padding: 0px 5px;
+        display: flex;
+    }
+    .PB_container.mob_hide{
+        display: none;
     }
     .fillBlock{
         max-width: 50px;

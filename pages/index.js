@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useContext } from "react";
 import Header from "../components/Header/Header"
 import Progress from "../components/ProgressScroll/Progress";
 
@@ -8,6 +8,8 @@ import AttachPage from "../components/LandingPages/AttachPage/AttachPage";
 
 import LangSwitcher from "../components/LangSwitcher"
 import InfoOfDev from "../components/InfoOfDev";
+
+import KeyboardFormContext from "../components/Context/KeyboardFormContext";
 
 
 const HeaderContent = {
@@ -121,7 +123,13 @@ const Languages = {
 
 export default function Index(){
     const[globalLng, setLang] = useState("eng");
+    const[height, setHeight] = useState(0);
 
+    const[mbileKeyboardIsOpen, setKeyboardState] = useState(false);
+
+    useEffect(()=>{
+        setHeight(document.body.offsetHeight);
+    },[]);
 
     function ToggleLang(){
         globalLng === "ru" ? setLang("eng") : setLang("ru");
@@ -136,8 +144,11 @@ export default function Index(){
         }
     }
 
+
+
     return(
         <>
+            <KeyboardFormContext.Provider value={{mbileKeyboardIsOpen, setKeyboardState}}>
             {/* <InfoOfDev header="Информация о разработке :D">
                 <b>Такое кол-во одинаковых страниц только для примера работы счетчика страниц</b><br/>
                 План такой(подробнее в trello):<br/>
@@ -161,12 +172,12 @@ export default function Index(){
 
             <Progress/>
 
-            {/* <LangSwitcher
+            <LangSwitcher
                 switchFnc={ToggleLang}
                 SwLangChecker={LangChecker}
                 lang={globalLng}
                 content={Languages}
-            /> */}
+            />
 
             <div className="container" id="LandPageContainer">
                 <Hello
@@ -182,7 +193,27 @@ export default function Index(){
                 <AttachPage/>
 
 
+                <ProductDemo
+                PDLangChecker={LangChecker}
+                content={PDContent}
+                lang={globalLng}/>
+
+                
+                <ProductDemo
+                PDLangChecker={LangChecker}
+                content={PDContent}
+                lang={globalLng}/>
+
             </div>
+            </KeyboardFormContext.Provider>
+
+            <style jsx global>
+                {`
+                    body{
+                        min-height: ${height}px;
+                    }
+                `}
+            </style>
         </>
     )
 }

@@ -1,10 +1,12 @@
 import { useState, useEffect, useCallback} from "react"
 import { createPortal } from "react-dom";
+import ReactDOM from 'react-dom';
 // import styles from "../styles/PopUp.module.css"
 
 
-export default function KeyboardShow({puState, children, closer}){
+export default function KeyboardShow({puState, Form, children, closer}){
     const[isBrowser, setIsBrowser] = useState(false);
+    const[FormContent, setForm] = useState({});
 
     // function backHider(e){
     //     if(e.target.classList.contains(`${styles.PopUpLayout}`) ||
@@ -31,10 +33,19 @@ export default function KeyboardShow({puState, children, closer}){
         setIsBrowser(true);
     },[]);
 
+    useEffect(()=>{
+        console.log("KEYBOARD: ", puState)
+    },[puState]);
+
+    useEffect(()=>{
+        setForm({Data: Form});
+    },[Form]);
+
     const modalContent = puState ? (
-        <>
-            {children}
-        </>
+      <>
+        {children}
+      </>
+
     ) : "";
 
     if(isBrowser){

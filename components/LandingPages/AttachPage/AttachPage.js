@@ -2,14 +2,14 @@ import styles from "../../../styles/AttachPage.module.css"
 import Image from "next/image"
 
 import InputContext from "../../Context/InputStateContextAP"
-import { useState, useEffect, useReducer, useCallback} from "react"
+import { useState, useEffect, useReducer, useCallback, useContext} from "react"
 
 import MainLabel from "../../MainLabel"
 import ATContentBlock from "./APContentBlock"
 import APAttachBlock from "./APAttachBlock"
 import InputItem from "./InputItem"
 import PopUpBase from "../../PopUpBase"
-import KeyboardShow from "../../KeyboardShow"
+import KeyboardFormContext from "../../Context/KeyboardFormContext"
 import FilesAndDataSent from "../../ModalComponents/FIlesAndDataSent"
 
 function statusChanger(arr, satatus){
@@ -44,7 +44,9 @@ export default function AttachPage(){
     // FOR S_SCREEN 
     const[unwrapForms, setUnwrap] = useState(true);
     const[mobUserInputFocus, setUserInputFocus] = useState(false);
-    
+
+    const mobKeyboardListener = useContext(KeyboardFormContext);
+
     const[formsFilled, dispatch] = useReducer(reducer, {
         ElemNum: 0,
         ElemsState: [], // .--[1,1,1,1,1] - Filled: True. Ex 0 ? => False 
@@ -98,24 +100,38 @@ export default function AttachPage(){
     // FOCUS/UN-FOCUS USER INPUT FOR MOBILE;
     useEffect(()=>{
         console.log("FOCUSED: ", mobUserInputFocus);
-        // mobUserInputFocus ? document.body.style.overflowY = "hidden" : document.body.style.overflowY = "auto";
-        if(mobUserInputFocus){
-        document.body.style.height = "0px"
-        }
-        else{
-            document.body.style.height = "auto"
-        }
-
+        const bodyEl = document.body;
         const inputBlock = document.querySelector(`.${styles.UserInputBlockParent}`);
         if(mobUserInputFocus){
             inputBlock.classList.add(`${styles.keyboardStyle}`);
+            mobKeyboardListener.setKeyboardState(true);
+
+            if(window.innerWidth < 600){
+            bodyEl.style.overflowX = "hidden";
+            bodyEl.style.overflowY = "hidden";
+            bodyEl.style.paddingRight = "100vh";
+            window.scrollTo({
+                left: bodyEl.offsetWidth,
+                top: window.scrollY,});
+            
+            }
+            
         }
         else{
+            mobKeyboardListener.setKeyboardState(false);
             if(inputBlock.classList.contains(`${styles.keyboardStyle}`)){
                 inputBlock.classList.remove(`${styles.keyboardStyle}`);
+                if(window.innerWidth < 600){
+                bodyEl.style.overflowY = "auto";
+                bodyEl.style.overflowX = "hidden";
+                bodyEl.style.paddingRight = "0px";
+                }
+    
             }
         }
     },[mobUserInputFocus])
+
+
 
     // SHOW/HIDE SEND USER DATA BLOCK
     useEffect(()=>{
@@ -198,6 +214,7 @@ export default function AttachPage(){
 
     useEffect(()=>{
         const Inputs = document.querySelector(`.${styles.UserInputBlockParent}`);
+        const AcceptDataMobile = document.querySelector(`.${styles.RightContent}`);
         const L_FF = formsFilled.Filled;
 
         Inputs.addEventListener("mouseenter", FormsUnwrapper);
@@ -205,9 +222,14 @@ export default function AttachPage(){
 
         if(unwrapForms && Inputs.classList.contains(`${styles.active}`)){
             Inputs.classList.remove(`${styles.active}`);
+            console.log("!! - FILLED: ", formsFilled.Filled);
+            if(formsFilled.Filled && fileAttached){
+                AcceptDataMobile.classList.add(`${styles.forMobileAccept}`);
+            }
         }
         else if(!unwrapForms && !Inputs.classList.contains(`${styles.active}`) && L_FF){
             Inputs.className += ` ${styles.active}`;
+            AcceptDataMobile.classList.remove(`${styles.forMobileAccept}`);
         }
 
         return() => {

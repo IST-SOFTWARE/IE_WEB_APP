@@ -1,7 +1,13 @@
-import { useState,useEffect } from "react"
+import { useState, useEffect, useContext} from "react"
+import KeyboardFormContext from "./Context/KeyboardFormContext";
 
 export default function LangSwitcher({switchFnc,SwLangChecker,lang,content}){
     const [lLang, setLeng] = useState(lang);
+    const mobKeyboardListener = useContext(KeyboardFormContext);
+
+useEffect(()=>{
+    console.log(mobKeyboardListener);
+},[])
 
     useEffect(()=>{
         setLeng(lang);
@@ -16,7 +22,7 @@ export default function LangSwitcher({switchFnc,SwLangChecker,lang,content}){
                 </ul>
             </div> */}
 
-            <button className="LangSwtchrBlock"
+            <button className={mobKeyboardListener.mbileKeyboardIsOpen ? "LangSwtchrBlock mob_hide" : "LangSwtchrBlock"}
             onClick={switchFnc}
             >
                 <img src={"./" + lang + "_fl.svg"} alt="Language"/>
