@@ -11,6 +11,7 @@ import InfoOfDev from "../components/InfoOfDev";
 
 import KeyboardFormContext from "../components/Context/KeyboardFormContext";
 
+import Catalog from "../components/Catalog/Catalog";
 
 const HeaderContent = {
     "CatalogTitle":{
@@ -148,6 +149,8 @@ export default function Index(){
 
     return(
         <>
+            <Catalog/>
+
             <KeyboardFormContext.Provider value={{mbileKeyboardIsOpen, setKeyboardState}}>
             {/* <InfoOfDev header="Информация о разработке :D">
                 <b>Такое кол-во одинаковых страниц только для примера работы счетчика страниц</b><br/>
@@ -179,7 +182,7 @@ export default function Index(){
                 content={Languages}
             />
 
-            <div className="container" id="LandPageContainer">
+            <div className="nb_container" id="LandPageContainer">
                 <Hello
                 HelloLangChecker={LangChecker}
                 content={HelloContent}

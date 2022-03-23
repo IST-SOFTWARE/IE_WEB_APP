@@ -13,7 +13,7 @@ export default function  Header({HeaderLangChecker, content, lang}){
     return(
         <>
          <div className={styles.header}>
-            <div className="container">
+            <div className="nb_container">
                 <div className={styles.HeaderContent}>
                     <div className={styles.HeaderBigLogo}>
                         <Logo

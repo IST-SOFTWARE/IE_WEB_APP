@@ -36,7 +36,7 @@ export default function PopUpBase({puState, children, header, paragraph, closer}
             <div className={styles.PopUpLayout} 
             onClick={(e) => backHider(e)}
             >
-                <div className="container">
+                <div className="nb_container">
                     <div className={styles.PopUpBaseCantainer}>
                         <div className={styles.PopUpBaseContent}>
                             <div className={styles.PUB_header}>

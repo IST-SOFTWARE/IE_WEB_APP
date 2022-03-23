@@ -99,7 +99,7 @@ export default function AttachPage(){
 
     // FOCUS/UN-FOCUS USER INPUT FOR MOBILE;
     useEffect(()=>{
-        console.log("FOCUSED: ", mobUserInputFocus);
+        // console.log("FOCUSED: ", mobUserInputFocus);
         const bodyEl = document.body;
         const inputBlock = document.querySelector(`.${styles.UserInputBlockParent}`);
         if(mobUserInputFocus){
@@ -207,7 +207,7 @@ export default function AttachPage(){
         
         if(LState){
             Inputs.className += ` ${styles.active}`;
-            console.log(LState)
+            // console.log(LState)
         }
 
     },[formsFilled.Filled])
@@ -222,7 +222,7 @@ export default function AttachPage(){
 
         if(unwrapForms && Inputs.classList.contains(`${styles.active}`)){
             Inputs.classList.remove(`${styles.active}`);
-            console.log("!! - FILLED: ", formsFilled.Filled);
+            // console.log("!! - FILLED: ", formsFilled.Filled);
             if(formsFilled.Filled && fileAttached){
                 AcceptDataMobile.classList.add(`${styles.forMobileAccept}`);
             }
@@ -245,11 +245,11 @@ export default function AttachPage(){
     useEffect(()=>{
         const InputForms = document.querySelector(".qSelectIputForms").childElementCount;
         dispatch(SetENumGenerator(InputForms));
-        console.log(InputForms);
+        // console.log(InputForms);
     },[])
 
     useEffect(()=>{
-        console.log(fileAttached);
+        // console.log(fileAttached);
     },[fileAttached])
 
     return(
