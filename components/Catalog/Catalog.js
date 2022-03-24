@@ -32,11 +32,13 @@ export default function Catalog(){
         return {...state};
     }
 
-    const Item = () => {
+    const Item = (num) => {
         return(
             <>
-                <div className="mb-5 p-0 col-xxl-3 col-xl-3 col-md-4 col-sm-6">
-                    <CatalogProductItem/>
+                <div className="mb-4 p-0 col-xxl-3 col-xl-3 col-md-5 col-sm-7 col-7">
+                    <CatalogProductItem
+                    imgPath={"https://res.cloudinary.com/dv9xitsjg/image/upload/v1648111066/ProductsImages/reductor-glav-priv_y6ujmg.png"}
+                    id={num}/>
                 </div>
             </>
         )
@@ -47,26 +49,33 @@ export default function Catalog(){
         <>
             <div className={styles.CatalogConteiner}>
                 <div className={styles.CatalogBlock}>
-
                         <div className="container">
-                            <div className="row">
+                            <div className="
+                                row
+                                d-flex
+                                justify-content-sm-center
+                                justify-content-md-start">
 
-                                {Item()}
-                                {Item()}
-                                {Item()}
-                                {Item()}
-                                {Item()}
-                                {Item()}
-                                {Item()}
-                                {Item()}
-                                {Item()}
-                                {Item()}
-                                {Item()}
-                                {Item()}
-                                {Item()}
-                                {Item()}
-                                {Item()}
-
+                                {Item(1)}
+                                {Item(2)}
+                                {Item(3)}
+                                {Item(4)}
+                                {Item(5)}
+                                {Item(6)}
+                                {Item(7)}
+                                {Item(8)}
+                                {Item(9)}
+                                {Item(10)}
+                                {Item(11)}
+                                {Item(12)}
+                                {Item(13)}
+                                {Item(14)}
+                                {Item(15)}
+                                {Item(16)}
+                                {Item(17)}
+                                {Item(18)}
+ 
+                                
                             </div>
                         </div>
 
