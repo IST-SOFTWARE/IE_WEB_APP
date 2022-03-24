@@ -4,7 +4,7 @@ export default function Document() {
   return (
     <Html>
       <Head>
-      <link rel="stylesheet" href="/Bootstrap/bootstrap-grid.min.css"/>
+      <link rel="stylesheet" href="/Bootstrap/bootstrap-grid-custom-15col.css"/>
       </Head>
       <body>
         <div id="PopUpBase"/>

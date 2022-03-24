@@ -1,7 +1,8 @@
 import styles from "../../styles/Catalog.module.css"
-import bStyles from "../../styles/Bootstrap/bootstrap.module.css"
 
+import CatalogProductItem from "./CatalogProductItem";
 import CatalogProps from "./CatalogProps";
+
 import { createPortal } from "react-dom";
 import { useEffect, useState, useReducer} from "react";
 
@@ -31,19 +32,44 @@ export default function Catalog(){
         return {...state};
     }
 
+    const Item = () => {
+        return(
+            <>
+                <div className="mb-5 p-0 col-xxl-3 col-xl-3 col-md-4 col-sm-6">
+                    <CatalogProductItem/>
+                </div>
+            </>
+        )
+    }
+
+
     const CatalogBlock = CatalogReducer.isOpen ? (
         <>
-
             <div className={styles.CatalogConteiner}>
                 <div className={styles.CatalogBlock}>
-                    <div className="container">
-                        <div className="row">
-                            <div className="col">sadcasdcsad</div>
-                            <div className="col">sadcasdcsad</div>
-                            <div className="col">sadcasdcsad</div>
-                            <div className="col">sadcasdcsad</div>
+
+                        <div className="container">
+                            <div className="row">
+
+                                {Item()}
+                                {Item()}
+                                {Item()}
+                                {Item()}
+                                {Item()}
+                                {Item()}
+                                {Item()}
+                                {Item()}
+                                {Item()}
+                                {Item()}
+                                {Item()}
+                                {Item()}
+                                {Item()}
+                                {Item()}
+                                {Item()}
+
+                            </div>
                         </div>
-                    </div>
+
                 </div>
             </div>
         </>
