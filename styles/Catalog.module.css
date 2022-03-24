@@ -53,6 +53,7 @@
 .PI_ImageBlock{
     width: 100%;
     height: 253px;
+    overflow:hidden;
 }
 
 @media (max-width: 1400.98px) and (min-width: 1200.98px){
@@ -64,4 +65,9 @@
     .ProductItem{
         height: 258px;
     }
+    .PI_ImageBlock{
+        height: 200px;
+    }
+
+    
 }
