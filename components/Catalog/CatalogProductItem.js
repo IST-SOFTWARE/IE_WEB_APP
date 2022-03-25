@@ -7,7 +7,7 @@ export default function CatalogProductItem({imgPath, id}){
             <div className={styles.ProductItemCont}>
                 <div className={styles.ProductItem}>
                     <div className={styles.PI_ImageBlock}>
-                    <NextImageRatioSaver Img={imgPath} hPrime={true} wPrime={true}/>
+                    <NextImageRatioSaver Img={imgPath} hPrime={true} wPrime={false}/>
                     </div>
                 </div>
             </div>
