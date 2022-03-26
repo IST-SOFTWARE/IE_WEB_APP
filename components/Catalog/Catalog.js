@@ -13,6 +13,7 @@ export default function Catalog(){
         setIsBrowser(true);
     },[]);
 
+    const ToggleCatalog = "ToggleCatalog";
 
     const [CatalogReducer, dispatch] = useReducer(reducer, {
         isOpen: true,          //Open/Close Catalog
@@ -28,8 +29,19 @@ export default function Catalog(){
         Search: "",             //Search Request
     })
 
+    const ToggleCatalogGenerator = (payload) =>({
+        type: ToggleCatalog,
+        payload,
+    })
+
     function reducer(satate, action){
-        return {...state};
+        switch(action.type){
+            case ToggleCatalog:
+                return{
+                    ...satate,
+                    isOpen: payload
+                }                
+            }
     }
 
     const Item = (num) => {
@@ -42,6 +54,7 @@ export default function Catalog(){
             </>
         )
     }
+
 
 
     const CatalogBlock = CatalogReducer.isOpen ? (

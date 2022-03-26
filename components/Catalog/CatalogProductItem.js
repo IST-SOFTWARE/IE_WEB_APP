@@ -1,7 +1,31 @@
+import { useEffect, useState} from "react"
 import styles from "../../styles/Catalog.module.css"
 import NextImageRatioSaver from "../NextImageRatioSaver"
 
-export default function CatalogProductItem({imgPath}){
+export default function CatalogProductItem({imgPath, inCart}){
+    
+    const[isInCart, setInCart] = useState(inCart);
+    const[addRemoveMessage, setMessage] = useState({
+        message: "",
+    });
+
+    useEffect(()=>{
+        if(inCart === undefined){
+            setInCart(false);
+        }
+    },[])
+
+    useEffect(()=>{
+        if(isInCart)
+            setMessage({message: "Убрать из корзины"})
+        else
+            setMessage({message: "Добавить в корзину"})
+    },[isInCart])
+
+    function SetCarState(e){
+        isInCart ? setInCart(false) : setInCart(true);
+    }
+
     return(
         <>
             <div className={styles.ProductItemCont}>
@@ -26,12 +50,12 @@ export default function CatalogProductItem({imgPath}){
                 </div>
 
                 <div className={styles.PI_AddToCart}>
-                            <button className={styles.AddedToCart}>
+                            <button className={isInCart ? styles.AddedToCart : ""}
+                            onClick={(e)=>SetCarState(e)}>
                                 <div className={styles.PI_AddToCart_Message}>
-                                    <p>Добавить в корзину</p>
+                                    <p>{addRemoveMessage.message}</p>
                                 </div>
                             </button>
-
                 </div>
             </div>
         </>
