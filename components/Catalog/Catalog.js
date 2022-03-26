@@ -36,6 +36,7 @@ export default function Catalog(){
         return(
             <>
                 <div className="mb-4 p-0 col-xxl-3 col-xl-3 col-md-5 col-sm-7 col-7">
+                    
                     <CatalogProductItem
                     imgPath={"https://res.cloudinary.com/dv9xitsjg/image/upload/v1648111066/ProductsImages/reductor-glav-priv_y6ujmg.png"}
                     id={num}/>
