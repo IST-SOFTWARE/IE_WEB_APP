@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback, useContext} from "react";
 import styles from "../../styles/ModalComponents/ProgressBar.module.css";
-import KeyboardFormContext from "../Context/KeyboardFormContext";
+import PageLevelsVisContext from "../Context/PageLevelsVisContext";
 import PrPoint from "./PrPoint";
 
 export default function Progress(){
@@ -10,7 +10,7 @@ export default function Progress(){
     // const[scrollp, setScroll] = useState(0);
     const poiters = [];
 
-    const mobKeyboardListener = useContext(KeyboardFormContext);
+    const PageLevelsVis = useContext(PageLevelsVisContext);
     
     const onScroll = () => {
         const winScroll = document.documentElement.scrollTop;
@@ -64,7 +64,7 @@ export default function Progress(){
 
     return(
         <>
-            <div className={mobKeyboardListener.mbileKeyboardIsOpen ? styles.PB_container + " " + styles.mob_hide : styles.PB_container}>
+            <div className={PageLevelsVis.mobilePageLevels ? styles.PB_container + " " + styles.mob_hide : styles.PB_container}>
                 {PointsList}
             </div>
         </>

@@ -1,12 +1,12 @@
 import { useState, useEffect, useContext} from "react"
-import KeyboardFormContext from "./Context/KeyboardFormContext";
+import PageLevelsVisContext from "./Context/PageLevelsVisContext";
 
 export default function LangSwitcher({switchFnc,SwLangChecker,lang,content}){
     const [lLang, setLeng] = useState(lang);
-    const mobKeyboardListener = useContext(KeyboardFormContext);
+    const PageLevelsVis = useContext(PageLevelsVisContext);
 
 useEffect(()=>{
-    console.log(mobKeyboardListener);
+    console.log(PageLevelsVis);
 },[])
 
     useEffect(()=>{
@@ -22,7 +22,7 @@ useEffect(()=>{
                 </ul>
             </div> */}
 
-            <button className={mobKeyboardListener.mbileKeyboardIsOpen ? "LangSwtchrBlock mob_hide" : "LangSwtchrBlock"}
+            <button className={PageLevelsVis.mobilePageLevels ? "LangSwtchrBlock mob_hide" : "LangSwtchrBlock"}
             onClick={switchFnc}
             >
                 <img src={"./" + lang + "_fl.svg"} alt="Language"/>

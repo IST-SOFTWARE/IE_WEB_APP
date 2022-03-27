@@ -9,7 +9,7 @@ import ATContentBlock from "./APContentBlock"
 import APAttachBlock from "./APAttachBlock"
 import InputItem from "./InputItem"
 import PopUpBase from "../../PopUpBase"
-import KeyboardFormContext from "../../Context/KeyboardFormContext"
+import PageLevelsVisContext from "../../Context/PageLevelsVisContext"
 import FilesAndDataSent from "../../ModalComponents/FIlesAndDataSent"
 
 function statusChanger(arr, satatus){
@@ -45,7 +45,7 @@ export default function AttachPage(){
     const[unwrapForms, setUnwrap] = useState(true);
     const[mobUserInputFocus, setUserInputFocus] = useState(false);
 
-    const mobKeyboardListener = useContext(KeyboardFormContext);
+    const PageLevelsVis = useContext(PageLevelsVisContext);
 
     const[formsFilled, dispatch] = useReducer(reducer, {
         ElemNum: 0,
@@ -104,7 +104,7 @@ export default function AttachPage(){
         const inputBlock = document.querySelector(`.${styles.UserInputBlockParent}`);
         if(mobUserInputFocus){
             inputBlock.classList.add(`${styles.keyboardStyle}`);
-            mobKeyboardListener.setKeyboardState(true);
+            PageLevelsVis.setPageLevelsVis(true);
 
             if(window.innerWidth < 600){
             bodyEl.style.overflowX = "hidden";
@@ -118,7 +118,7 @@ export default function AttachPage(){
             
         }
         else{
-            mobKeyboardListener.setKeyboardState(false);
+            PageLevelsVis.setPageLevelsVis(false);
             if(inputBlock.classList.contains(`${styles.keyboardStyle}`)){
                 inputBlock.classList.remove(`${styles.keyboardStyle}`);
                 if(window.innerWidth < 600){
