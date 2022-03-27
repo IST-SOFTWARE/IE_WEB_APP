@@ -6,7 +6,7 @@ import CatalogProps from "./CatalogProps";
 import { createPortal } from "react-dom";
 import { useEffect, useState, useReducer} from "react";
 
-export default function Catalog(){
+export default function Catalog(openState){
     const[isBrowser, setIsBrowser] = useState(false);
 
     useEffect(()=>{
@@ -39,10 +39,14 @@ export default function Catalog(){
             case ToggleCatalog:
                 return{
                     ...satate,
-                    isOpen: payload
+                    isOpen: action.payload
                 }                
             }
     }
+
+    useEffect(()=>{
+        dispatch(ToggleCatalogGenerator(openState.openState));
+    },[openState])
 
     const Item = (num) => {
         return(

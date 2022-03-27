@@ -10,6 +10,7 @@ import LangSwitcher from "../components/LangSwitcher"
 import InfoOfDev from "../components/InfoOfDev";
 
 import KeyboardFormContext from "../components/Context/KeyboardFormContext";
+import CatalogContext from "../components/Context/CatalogContext"
 
 import Catalog from "../components/Catalog/Catalog";
 
@@ -128,9 +129,21 @@ export default function Index(){
 
     const[mbileKeyboardIsOpen, setKeyboardState] = useState(false);
 
+    const[CatalogToggle, setCatalog] = useState(false);
+
+    const CatalogValue = {
+        CatalogToggle,
+        setCatalog
+    }
+
     useEffect(()=>{
         setHeight(document.body.offsetHeight);
     },[]);
+
+    useEffect(()=>{
+        const ScrollSpaceToggle = document.body;
+        CatalogToggle ? ScrollSpaceToggle.style.overflowY = "hidden" :  ScrollSpaceToggle.style.overflowY = "auto"
+    },[CatalogToggle])
 
     function ToggleLang(){
         globalLng === "ru" ? setLang("eng") : setLang("ru");
@@ -149,7 +162,10 @@ export default function Index(){
 
     return(
         <>
-            <Catalog/>
+
+            <CatalogContext.Provider value={CatalogValue}>
+            
+            <Catalog openState={CatalogToggle}/>
 
             <KeyboardFormContext.Provider value={{mbileKeyboardIsOpen, setKeyboardState}}>
             {/* <InfoOfDev header="Информация о разработке :D">
@@ -209,6 +225,7 @@ export default function Index(){
 
             </div>
             </KeyboardFormContext.Provider>
+            </CatalogContext.Provider>
 
             <style jsx global>
                 {`
