@@ -1,15 +1,21 @@
 import styles from "../../styles/Header.module.css"
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useContext} from "react";
+import CatalogContext from "../Context/CatalogContext"
 
 export default function Search({placeholder}){
+    const Catalog = useContext(CatalogContext);
     const [mobSearchActive, msActivator] = useState(false);
 
     const searchStyler = useCallback(e => {
         if(mobSearchActive === true){
+            const inputSpace =  document.querySelector(`.${styles.search}`);
+
             document.querySelector(`.${styles.search_block}`).className += ` ${styles.active}`;
-            document.querySelector(`.${styles.search}`).className += ` ${styles.active}`;
+            inputSpace.className += ` ${styles.active}`;
             document.querySelector(`.${styles.header}`).className += ` ${styles.active}`;
             document.querySelector(`.${styles.sBtn}`).className += ` ${styles.active}`;
+
+            inputSpace.focus();
         }
         else{
             if(document.querySelector(`.${styles.header} .${styles.active}`) !== null){
@@ -41,6 +47,9 @@ export default function Search({placeholder}){
         msActivator(!mobSearchActive);
     }
 
+    function SearchFocusHandler(obj){
+        Catalog.setCatalog(true)
+    }
     
     useEffect(() => {
         document.addEventListener("click", mobSerachCLickCloser);
@@ -57,7 +66,8 @@ export default function Search({placeholder}){
     return(
         <>
             <div className={styles.search_block}>
-                <input type="text" placeholder={placeholder} className={styles.search}/>
+                <input type="text" placeholder={placeholder} className={styles.search}
+                onFocus={(e)=>SearchFocusHandler(e)}/>
                 <button className={styles.sBtn} onClick={() => handlerActivator()}>
                     <img src="./sBtn.png" alt="Search" width="28px"/>
                 </button>

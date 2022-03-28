@@ -46,7 +46,7 @@ export default function Catalog(openState){
 
     useEffect(()=>{
         dispatch(ToggleCatalogGenerator(openState.openState));
-        console.log("openState.openState: ", openState.openState);
+        // console.log("openState.openState: ", openState.openState);
         const CatalogConteiner = document.querySelector(`.${styles.CatalogConteiner}`);
         if(openState.openState){
             CatalogConteiner.classList.add(`${styles.open}`);

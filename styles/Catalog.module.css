@@ -23,13 +23,18 @@
     left:0;
 }
 
+.CatalogBlock{
+    padding-bottom: 100px;
+    height: fit-content;
+}
+
 .CatalogConteiner.open{
     position: fixed;
     top:0;
     left:0;
     padding-top: 100px;
     width: 100%;
-    max-height: 100%;
+    max-height: fit-content;
     height: 100%;
     background: #2C3641;
     z-index: 11;
@@ -101,7 +106,7 @@
     font-family: 'Roboto';
     font-style: normal;
     font-weight: 500;
-    font-size: calc(16px + (18 - 16) * ((100vw - 300px) / (1920 - 320)));
+    font-size: calc(14px + (18 - 14) * ((100vw - 300px) / (1920 - 320)));
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
@@ -127,7 +132,7 @@
     font-family: 'Roboto';
     font-style: normal;
     font-weight: 500;
-    font-size: calc(16px + (18 - 16) *   ((100vw - 300px) / (1920 - 320)));
+    font-size: calc(14px + (18 - 14) *   ((100vw - 300px) / (1920 - 320)));
 
     margin-bottom: 7px;
 }
@@ -232,13 +237,18 @@
 }
 @media (max-width: 400.98px){
     .ProductItem{
-        height: 230px;
+        height: 240px;
     }
     .PI_ImageBlock{
-        min-height: 180px;
+        min-height: 167px;
     }
     .PI_AddToCart button{
-        bottom: 55px;
+        width: 40px;
+        height: 40px;
+        bottom: 80px;
         right: 10px;
+    }
+    .PI_About_Name{
+        margin-bottom: 2px;
     }
 }
