@@ -9,8 +9,9 @@ import ATContentBlock from "./APContentBlock"
 import APAttachBlock from "./APAttachBlock"
 import InputItem from "./InputItem"
 import PopUpBase from "../../PopUpBase"
-import PageLevelsVisContext from "../../Context/PageLevelsVisContext"
 import FilesAndDataSent from "../../ModalComponents/FIlesAndDataSent"
+
+import PageLevelsVisContext from "../../Context/PageLevelsVisContext"
 
 function statusChanger(arr, satatus){
     let negStatus = -1;

@@ -127,13 +127,12 @@ export default function Index(){
     const[globalLng, setLang] = useState("eng");
     const[height, setHeight] = useState(0);
 
+    
     // FOR SHOW/HIDE PAGE LEVELS IN MOBILE
     const[mobilePageLevels, setPageLevelsVis] = useState(true);
-
-    const[mbileKeyboardIsOpen, setKeyboardState] = useState(false);
+    
     const[CatalogToggle, setCatalog] = useState(false);
-
-
+    
     const CatalogValue = {
         CatalogToggle,
         setCatalog
@@ -171,6 +170,7 @@ export default function Index(){
         <>
 
             <CatalogContext.Provider value={CatalogValue}>
+            
             <Catalog openState={CatalogToggle}/>
 
             <PageLevelsVisContext.Provider value={{mobilePageLevels, setPageLevelsVis}}>

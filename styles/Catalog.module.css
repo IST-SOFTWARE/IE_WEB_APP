@@ -16,7 +16,15 @@
 }
 
 .CatalogConteiner{
-    position: absolute;
+    height: 0%;
+    transition: 0.3s;
+    position: fixed;
+    top:0;
+    left:0;
+}
+
+.CatalogConteiner.open{
+    position: fixed;
     top:0;
     left:0;
     padding-top: 100px;
@@ -28,6 +36,7 @@
     color: #fff;
     overflow-y: auto;
     overflow-x: hidden;
+    transition: 0.3s;
 }
 
 
@@ -204,14 +213,32 @@
     .ProductItem{
         height: 300px;
     }
+    .PI_ImageBlock{
+        min-height: 214px;
+    }
 }
+
 @media (max-width: 500.98px){
     .ProductItem{
-        height: 265px;
+        height: 300px;
     }
     .PI_ImageBlock{
         min-height: 214px;
     }
-
-    
+    .PI_AddToCart button{
+        bottom: 95px;
+        right: 10px;
+    }
+}
+@media (max-width: 400.98px){
+    .ProductItem{
+        height: 230px;
+    }
+    .PI_ImageBlock{
+        min-height: 180px;
+    }
+    .PI_AddToCart button{
+        bottom: 55px;
+        right: 10px;
+    }
 }
