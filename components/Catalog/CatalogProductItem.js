@@ -2,7 +2,7 @@ import { useEffect, useState} from "react"
 import styles from "../../styles/Catalog.module.css"
 import NextImageRatioSaver from "../NextImageRatioSaver"
 
-export default function CatalogProductItem({imgPath, inCart}){
+export default function CatalogProductItem({imgPath, Title, Price, inCart}){
     
     const[isInCart, setInCart] = useState(inCart);
     const[addRemoveMessage, setMessage] = useState({
@@ -38,9 +38,9 @@ export default function CatalogProductItem({imgPath, inCart}){
                     <div className={styles.PI_FuncBlock}>
                         <div className={styles.PI_AboutItem}>
                             <div className={styles.PI_About_Name}>
-                                Редуктор главного привода FTJ160R (TD-FT160R) правый для лебедки EC-W1 (п.ч. 49/2)
+                                {Title}
                             </div>
-                            <p>Цена: <a>357 750</a> ₽</p>
+                            <p>Цена: <a>{Price}</a> ₽</p>
                         </div>
                         <div>
 

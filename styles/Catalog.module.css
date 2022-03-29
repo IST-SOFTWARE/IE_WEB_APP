@@ -234,6 +234,10 @@
         bottom: 95px;
         right: 10px;
     }
+    .PI_AddToCart button:hover .PI_AddToCart_Message{
+        display: none;
+    }
+    
 }
 @media (max-width: 400.98px){
     .ProductItem{

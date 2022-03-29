@@ -50,13 +50,18 @@
     display: flex;
     cursor: pointer;
     margin-right: 11px;
-
+    transition: 0.3s;
     font-family: Roboto;
     font-style: normal;
     font-weight: 500;
     font-size: 18px;
     line-height: 21px;
     color: #E6E6E4;
+}
+.CatalogBtn.open{
+    transition: 0.3s;
+    background-color: #76ACE7;
+    box-shadow: 0px 0px 10px #76ACE7;
 }
 .CatalogBtn img{
     margin-right: 9px;
@@ -216,6 +221,9 @@
         width: 25px;
         height: 25px;
     }
+    .CatalogBtn.open img{
+        width: 20px;
+    }
     .search{
         font-size: 16px;
     }
@@ -283,6 +291,15 @@
     }
     .CatalogBtn{
         margin-right: 0px;
+    }
+    .CatalogBtn.open{
+        background-color: transparent;
+        border-radius: 20px;
+        padding: 0px 14px;
+        margin-right: 10px;
+    }
+    .CatalogBtn.open img{
+        
     }
     .catalogAndSearch{
         padding: 0px 0.9vw;
