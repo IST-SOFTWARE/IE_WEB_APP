@@ -8,41 +8,71 @@ import { useEffect, useState, useReducer} from "react";
 
 export default function Catalog(openState){
     const[isBrowser, setIsBrowser] = useState(false);
+    const[products, setProducts] = useState([]);
 
+    const[filteredProducts, setFiltered] = useState([]);
+    const[allProducts, setAllProducts] = useState([]);
+    
     useEffect(()=>{
         setIsBrowser(true);
     },[]);
-
+    
     const ToggleCatalog = "ToggleCatalog";
-
+    const Search_BP = "Search_BP";
+    
     const [CatalogReducer, dispatch] = useReducer(reducer, {
         isOpen: true,          //Open/Close Catalog
-
+        
+        Search: '',             //For Search
         ForLift: false,         //For Lift CheckBox
         ForEscalator: false,    //For Escalator CheckBox
         Availability: false,    //Availability CheckBox
-
+        
         Manufacturer: [],       //Manufacturer List
         Type: [],               //Type List
         Unit: [],               //Unit List
-
+        
         Search: "",             //Search Request
     })
-
+    
     const ToggleCatalogGenerator = (payload) =>({
         type: ToggleCatalog,
         payload,
     })
 
+    const SearchCatalogGenerator = (payload) =>({
+        type: Search_BP,
+        payload,
+    })
+    
     function reducer(satate, action){
         switch(action.type){
             case ToggleCatalog:
                 return{
                     ...satate,
                     isOpen: action.payload
-                }                
+                }    
+            case ToggleCatalog:
+                return{
+                    ...satate,
+                    Search: action.payload.ToString()
+                }              
             }
-    }
+        }
+
+        useEffect(()=>{
+            (
+                async ()=> {
+                    const response = await fetch("https://fakestoreapi.com/products",{
+                        method: `get`,
+    
+                    });
+                    const content = await response.json();
+    
+                    setProducts(content);
+                }
+            )()
+        },[CatalogReducer.isOpen])
 
     useEffect(()=>{
         dispatch(ToggleCatalogGenerator(openState.openState));
@@ -58,7 +88,7 @@ export default function Catalog(openState){
         }
     },[openState])
 
-    const Item = (num) => {
+    const Item = () => {
         return(
             <>
                 <div className="mb-4 p-0 col-xxl-3 col-xl-3 col-md-5 col-sm-7 col-7">
@@ -86,15 +116,17 @@ export default function Catalog(openState){
                                 justify-content-sm-center
                                 justify-content-md-start">
 
-                                {Item()}
-                                {Item()}
-                                {Item()}
-                                {Item()}
-                                {Item()}
-                                {Item()}
-                                {Item()}
-                                {Item()}
-                                {Item()}
+                                {products.map(product =>{
+                                    return(
+                                        <div className="mb-4 p-0 col-xxl-3 col-xl-3 col-md-5 col-sm-7 col-7" key={product.id}>
+                                            <CatalogProductItem
+                                            imgPath={"https://res.cloudinary.com/dv9xitsjg/image/upload/v1648111066/ProductsImages/reductor-glav-priv_y6ujmg.png"}
+                                            Title={product.title}
+                                            Price={product.price}
+                                            />
+                                        </div>
+                                    )
+                                })}
                             
                             </div>
                         </div>
