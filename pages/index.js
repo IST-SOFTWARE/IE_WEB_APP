@@ -126,7 +126,10 @@ const Languages = {
 export default function Index(){
     const[globalLng, setLang] = useState("eng");
     const[height, setHeight] = useState(0);
-
+    
+    const[ProductSearch, setProductSearch] = useState({
+        s: ''
+    })
     
     // FOR SHOW/HIDE PAGE LEVELS IN MOBILE
     const[mobilePageLevels, setPageLevelsVis] = useState(true);
@@ -135,7 +138,10 @@ export default function Index(){
     
     const CatalogValue = {
         CatalogToggle,
-        setCatalog
+        setCatalog,
+
+        ProductSearch,
+        setProductSearch
     }
 
     useEffect(()=>{
@@ -164,14 +170,12 @@ export default function Index(){
         }
     }
 
-
-
     return(
         <>
 
             <CatalogContext.Provider value={CatalogValue}>
             
-            <Catalog openState={CatalogToggle}/>
+            <Catalog openState={CatalogToggle} searchFilter={ProductSearch.s}/>
 
             <PageLevelsVisContext.Provider value={{mobilePageLevels, setPageLevelsVis}}>
             {/* <InfoOfDev header="Информация о разработке :D">

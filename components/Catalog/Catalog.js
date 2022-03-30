@@ -2,16 +2,19 @@ import styles from "../../styles/Catalog.module.css"
 
 import CatalogProductItem from "./CatalogProductItem";
 import CatalogProps from "./CatalogProps";
+import CatalogContext from "../Context/CatalogContext";
 
 import { createPortal } from "react-dom";
-import { useEffect, useState, useReducer} from "react";
+import { useEffect, useState, useReducer, useContext} from "react";
 
-export default function Catalog(openState){
+export default function Catalog(openState, searchFilter){
     const[isBrowser, setIsBrowser] = useState(false);
     const[products, setProducts] = useState([]);
 
     const[filteredProducts, setFiltered] = useState([]);
-    const[allProducts, setAllProducts] = useState([]);
+    const[AllProducts, setAllProducts] = useState([]);
+    
+    const Catalog_cont = useContext(CatalogContext);
     
     useEffect(()=>{
         setIsBrowser(true);
@@ -52,10 +55,10 @@ export default function Catalog(openState){
                     ...satate,
                     isOpen: action.payload
                 }    
-            case ToggleCatalog:
+            case Search_BP:
                 return{
                     ...satate,
-                    Search: action.payload.ToString()
+                    Search: action.payload
                 }              
             }
         }
@@ -70,9 +73,31 @@ export default function Catalog(openState){
                     const content = await response.json();
     
                     setProducts(content);
+                    setFiltered(content);
                 }
             )()
         },[CatalogReducer.isOpen])
+
+    useEffect(()=>{
+        dispatch(SearchCatalogGenerator(Catalog_cont.ProductSearch.s));
+    },[Catalog_cont.ProductSearch])
+
+    useEffect(()=>{
+        let s_products = products.filter(p => p.title.toLowerCase().indexOf(CatalogReducer.Search.toLowerCase()) >= 0);
+        setFiltered(s_products);
+    },[CatalogReducer.Search]);
+
+    useEffect(()=>{
+        const nf = document.querySelector(`.${styles.SearchResults}`);
+        if(filteredProducts.length === 0 && nf)
+        {
+            nf.classList.add(`${styles.active}`);
+        }
+        else if(filteredProducts.length > 0 && nf && nf.classList.contains(`${styles.active}`)){
+            nf.classList.remove(`${styles.active}`);
+        }
+
+    },[filteredProducts])
 
     useEffect(()=>{
         dispatch(ToggleCatalogGenerator(openState.openState));
@@ -110,13 +135,18 @@ export default function Catalog(openState){
             <div className={styles.CatalogConteiner}>
                 <div className={styles.CatalogBlock}>
                         <div className="container">
+
+                            <div className={styles.SearchResults}>
+                                <p>Не найдено :(</p>
+                            </div>
+
                             <div className="
                                 row
                                 d-flex
                                 justify-content-sm-center
                                 justify-content-md-start">
 
-                                {products.map(product =>{
+                                {filteredProducts.map(product =>{
                                     return(
                                         <div className="mb-4 p-0 col-xxl-3 col-xl-3 col-md-5 col-sm-7 col-7" key={product.id}>
                                             <CatalogProductItem

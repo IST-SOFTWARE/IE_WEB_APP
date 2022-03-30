@@ -50,6 +50,12 @@ export default function Search({placeholder}){
     function SearchFocusHandler(obj){
         Catalog.setCatalog(true)
     }
+
+    const SerachingFnc = (s) =>{
+        Catalog.setProductSearch({
+            s
+        })
+    }
     
     useEffect(() => {
         document.addEventListener("click", mobSerachCLickCloser);
@@ -63,11 +69,13 @@ export default function Search({placeholder}){
         searchStyler()
     },[mobSearchActive])
 
+
+
     return(
         <>
             <div className={styles.search_block}>
                 <input type="text" placeholder={placeholder} className={styles.search}
-                onFocus={(e)=>SearchFocusHandler(e)}/>
+                onFocus={(e)=>SearchFocusHandler(e)} onChange={e => SerachingFnc(e.target.value)}/>
                 <button className={styles.sBtn} onClick={() => handlerActivator()}>
                     <img src="./sBtn.png" alt="Search" width="28px"/>
                 </button>
