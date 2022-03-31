@@ -241,6 +241,17 @@
     width: fit-content;
 }
 
+.LoadingIndicator{
+    margin: 0px auto;
+    width: fit-content;
+    font-family: Roboto;
+    font-weight: 300;
+    font-size: 25px;
+    text-align: center;
+    margin-top: 30px;
+    color: #93C3F8;
+}
+
 @media (max-width: 1400.98px) and (min-width: 1200.98px){
     .ProductItem{
         height: 300px;

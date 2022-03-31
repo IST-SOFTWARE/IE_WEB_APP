@@ -17,7 +17,7 @@ export default function CatalogBtn({text}){
         else{
             if(CatalogBtn && CatalogBtn.classList.contains(`${styles.open}`)){
                 CatalogBtn.classList.remove(`${styles.open}`);
-                console.log("Catalog.CatalogToggle: ", Catalog.CatalogToggle);
+                // console.log("Catalog.CatalogToggle: ", Catalog.CatalogToggle);
             }
             setBurgerImg("./Menu_btn.svg");
         }

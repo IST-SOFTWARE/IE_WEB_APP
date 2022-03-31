@@ -1,11 +1,13 @@
 import styles from "../../styles/Catalog.module.css"
 
-import CatalogProductItem from "./CatalogProductItem";
+const CatalogProductItem = lazy(() => import("./CatalogProductItem"));
+// import CatalogProductItem from "./CatalogProductItem";
 import CatalogProps from "./CatalogProps";
 import CatalogContext from "../Context/CatalogContext";
 
 import { createPortal } from "react-dom";
 import { useEffect, useState, useReducer, useContext} from "react";
+import { Suspense,lazy } from "react";
 
 export default function Catalog(openState, searchFilter){
     const[isBrowser, setIsBrowser] = useState(false);
@@ -63,17 +65,34 @@ export default function Catalog(openState, searchFilter){
             }
         }
 
+        const delay = (ms) => {
+            return new Promise(r => setTimeout(()=> r(), ms));
+        }
+
         useEffect(()=>{
             (
                 async ()=> {
+                    try{
                     const response = await fetch("https://fakestoreapi.com/products",{
                         method: `get`,
-    
+                        origin: "*"
                     });
                     const content = await response.json();
-    
-                    setProducts(content);
-                    setFiltered(content);
+
+                    if(CatalogReducer.isOpen){
+                        await delay(300);
+                        setProducts(content);
+                        setFiltered(content);
+                        console.log("opened");
+                    } else{
+                        setProducts([]);
+                        setFiltered([]);
+                        console.log("closed");
+                    }
+                } catch(e){
+                        console.log("Failed to fetch[Catalog items]: ", e);
+                    }
+
                 }
             )()
         },[CatalogReducer.isOpen])
@@ -101,7 +120,7 @@ export default function Catalog(openState, searchFilter){
 
     useEffect(()=>{
         dispatch(ToggleCatalogGenerator(openState.openState));
-        // console.log("openState.openState: ", openState.openState);
+      
         const CatalogConteiner = document.querySelector(`.${styles.CatalogConteiner}`);
         if(openState.openState){
             CatalogConteiner.classList.add(`${styles.open}`);
@@ -113,22 +132,6 @@ export default function Catalog(openState, searchFilter){
         }
     },[openState])
 
-    const Item = () => {
-        return(
-            <>
-                <div className="mb-4 p-0 col-xxl-3 col-xl-3 col-md-5 col-sm-7 col-7">
-                    <CatalogProductItem
-                    imgPath={"https://res.cloudinary.com/dv9xitsjg/image/upload/v1648111066/ProductsImages/reductor-glav-priv_y6ujmg.png"}
-                    Title={"Редуктор главного привода FTJ160R (TD-FT160R) правый для лебедки EC-W1 (п.ч. 49/2)"}
-                    Price={"357 750"}
-                    />
-                </div>
-            </>
-        )
-    }
-    
-
-
 
     const CatalogBlock = CatalogReducer.isOpen ? (
         <>
@@ -139,14 +142,20 @@ export default function Catalog(openState, searchFilter){
                             <div className={styles.SearchResults}>
                                 <p>Не найдено :(</p>
                             </div>
+                            
 
                             <div className="
                                 row
                                 d-flex
                                 justify-content-sm-center
                                 justify-content-md-start">
-
-                                {filteredProducts.map(product =>{
+                                
+                                <Suspense fallback={
+                                <div className={styles.LoadingIndicator}>
+                                    Loading...
+                                </div>}>
+                    
+                                {filteredProducts.map((product, index) =>{
                                     return(
                                         <div className="mb-4 p-0 col-xxl-3 col-xl-3 col-md-5 col-sm-7 col-7" key={product.id}>
                                             <CatalogProductItem
@@ -155,8 +164,9 @@ export default function Catalog(openState, searchFilter){
                                             Price={product.price}
                                             />
                                         </div>
-                                    )
+                                    )       
                                 })}
+                                </Suspense>
                             
                             </div>
                         </div>
