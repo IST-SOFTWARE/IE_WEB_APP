@@ -3,6 +3,7 @@ import styles from "../../styles/Catalog.module.css"
 const CatalogProductItem = lazy(() => import("./CatalogProductItem"));
 // import CatalogProductItem from "./CatalogProductItem";
 import CatalogProps from "./CatalogProps";
+import CatalogItemLoader from "./CatalogItemLoader";
 import CatalogContext from "../Context/CatalogContext";
 
 import { createPortal } from "react-dom";
@@ -11,15 +12,19 @@ import { Suspense,lazy } from "react";
 
 export default function Catalog(openState, searchFilter){
     const[isBrowser, setIsBrowser] = useState(false);
-    const[products, setProducts] = useState([]);
 
+    const[products, setProducts] = useState([]);
+    
     const[filteredProducts, setFiltered] = useState([]);
     const[AllProducts, setAllProducts] = useState([]);
+
+    const[productsLoaded, setPrLoaded] = useState(false);
     
     const Catalog_cont = useContext(CatalogContext);
     
     useEffect(()=>{
         setIsBrowser(true);
+        setPrLoaded(false);
     },[]);
     
     const ToggleCatalog = "ToggleCatalog";
@@ -73,18 +78,23 @@ export default function Catalog(openState, searchFilter){
             (
                 async ()=> {
                     try{
-                    const response = await fetch("https://fakestoreapi.com/products",{
+                    const response = await fetch("https://jsonplaceholder.typicode.com/posts",{
                         method: `get`,
                         origin: "*"
                     });
                     const content = await response.json();
 
+                
+
                     if(CatalogReducer.isOpen){
-                        await delay(300);
+                        await delay(600);
+                        setPrLoaded(true);
+
                         setProducts(content);
                         setFiltered(content);
-                        console.log("opened");
                     } else{
+                        setPrLoaded(false);
+
                         setProducts([]);
                         setFiltered([]);
                         console.log("closed");
@@ -101,6 +111,7 @@ export default function Catalog(openState, searchFilter){
         dispatch(SearchCatalogGenerator(Catalog_cont.ProductSearch.s));
     },[Catalog_cont.ProductSearch])
 
+    
     useEffect(()=>{
         let s_products = products.filter(p => p.title.toLowerCase().indexOf(CatalogReducer.Search.toLowerCase()) >= 0);
         setFiltered(s_products);
@@ -121,14 +132,19 @@ export default function Catalog(openState, searchFilter){
     useEffect(()=>{
         dispatch(ToggleCatalogGenerator(openState.openState));
       
-        const CatalogConteiner = document.querySelector(`.${styles.CatalogConteiner}`);
-        if(openState.openState){
-            CatalogConteiner.classList.add(`${styles.open}`);
-        }
-        else{
-            if(CatalogConteiner && CatalogConteiner.classList.contains(`${styles.open}`)){
-                CatalogConteiner.classList.remove(`${styles.open}`)
+        try{
+            const CatalogConteiner = document.querySelector(`.${styles.CatalogConteiner}`);
+            if(openState.openState){
+                CatalogConteiner.classList.add(`${styles.open}`);
             }
+            else{
+                if(CatalogConteiner && CatalogConteiner.classList.contains(`${styles.open}`)){
+                    CatalogConteiner.classList.remove(`${styles.open}`)
+                }
+            }
+        }
+        catch{
+            alert("Что-то пощло не так :(\nПерезагрузите страницу");
         }
     },[openState])
 
@@ -143,6 +159,7 @@ export default function Catalog(openState, searchFilter){
                                 <p>Не найдено :(</p>
                             </div>
                             
+                            <CatalogItemLoader LoadersNum={15} Loaded={productsLoaded}/>
 
                             <div className="
                                 row
@@ -150,10 +167,9 @@ export default function Catalog(openState, searchFilter){
                                 justify-content-sm-center
                                 justify-content-md-start">
                                 
-                                <Suspense fallback={
-                                <div className={styles.LoadingIndicator}>
-                                    Loading...
-                                </div>}>
+                                
+
+                                <Suspense fallback={<CatalogItemLoader Loaded={productsLoaded}/>}>
                     
                                 {filteredProducts.map((product, index) =>{
                                     return(
@@ -161,7 +177,7 @@ export default function Catalog(openState, searchFilter){
                                             <CatalogProductItem
                                             imgPath={"https://res.cloudinary.com/dv9xitsjg/image/upload/v1648111066/ProductsImages/reductor-glav-priv_y6ujmg.png"}
                                             Title={product.title}
-                                            Price={product.price}
+                                            Price={product.id}
                                             />
                                         </div>
                                     )       
