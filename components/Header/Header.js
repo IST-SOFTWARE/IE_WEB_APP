@@ -23,45 +23,51 @@ export default function  Header({HeaderLangChecker, content, lang}){
                     </div>
 
                     <div className={styles.HeaderMobLogo}>
-                    <LogoMobile
-                        href="./"
-                    />
+                        <LogoMobile
+                            href="./"
+                        />
                     </div>
 
                     <div className={styles.catalogAndSearch}>
                         <CatalogBtn text={
-                           HeaderLangChecker(content,
-                            "Каталог",
-                            "CatalogTitle",
-                            lang)
+                        //    HeaderLangChecker(content,
+                        //     "Каталог",
+                        //     "CatalogTitle",
+                        //     lang)
+
+                        "Каталог"
                         }/>
                         <Search placeholder={
-                           HeaderLangChecker(content,
-                            "Ищем что-то?",
-                            "SearchPlaceholder",
-                            lang)
+                        //    HeaderLangChecker(content,
+                        //     "Ищем что-то?",
+                        //     "SearchPlaceholder",
+                        //     lang)
+                        "Ищем что-то?"
                         }
                         />
                     </div>
 
                     <div className={styles.infoLoginCart}>
                         <Contacts contTitle={
-                           HeaderLangChecker(content,
-                            "Контакты",
-                            "ContectsTitle",
-                            lang)
+                        //    HeaderLangChecker(content,
+                        //     "Контакты",
+                        //     "ContectsTitle",
+                        //     lang)
+                        "Контакты"
                         }/>
                         <Cart cartTitle={
-                           HeaderLangChecker(content,
-                            "Корзина",
-                            "CartTitle",
-                            lang)
+                        //    HeaderLangChecker(content,
+                        //     "Корзина",
+                        //     "CartTitle",
+                        //     lang)
+                        "Корзина"
                         }/>
                         <Login loginTitle={
-                           HeaderLangChecker(content,
-                            "Войти",
-                            "LoginTitle",
-                            lang)
+                        //    HeaderLangChecker(content,
+                        //     "Войти",
+                        //     "LoginTitle",
+                        //     lang)
+                        "Войти"
                         }/>
                     </div>
                 </div>

@@ -1,9 +1,45 @@
+import { useState, useEffect, useContext } from "react";
+
 import '../styles/global.css'
+import Header from '../components/Header/Header'
+import Catalog from "../components/Catalog/Catalog";
+
 import NextNProgress from 'nextjs-progressbar'
 import Head from 'next/head'
+import CatalogContext from "../components/Context/CatalogContext"
+import PageLevelsVisContext from "../components/Context/PageLevelsVisContext";
 // import PopUpContext from '../components/PopUpContext'
 
 export default function MyApp({Component, PageProps}){
+
+    // FOR SHOW/HIDE PAGE LEVELS IN MOBILE
+    const[mobilePageLevels, setPageLevelsVis] = useState(true);
+
+
+    const[ProductSearch, setProductSearch] = useState({
+        s: ''
+    })
+    
+    const[CatalogToggle, setCatalog] = useState(false);
+    
+    const CatalogValue = {
+        CatalogToggle,
+        setCatalog,
+
+        ProductSearch,
+        setProductSearch
+    }
+
+    useEffect(()=>{
+        setPageLevelsVis(CatalogToggle);
+    },[CatalogToggle]);
+
+
+    useEffect(()=>{
+        const ScrollSpaceToggle = document.body;
+        CatalogToggle ? ScrollSpaceToggle.style.overflowY = "hidden" :  ScrollSpaceToggle.style.overflowY = "auto"
+    },[CatalogToggle])
+
     return(
         <>
         <Head>
@@ -20,8 +56,20 @@ export default function MyApp({Component, PageProps}){
         height={3}
         showOnShallow={true}
         />
+
+        <PageLevelsVisContext.Provider value={{mobilePageLevels, setPageLevelsVis}}>
+        <CatalogContext.Provider value={CatalogValue}>
+        <Catalog openState={CatalogToggle} searchFilter={ProductSearch.s}/>
+        <Header
+            // HeaderLangChecker={LangChecker}
+            // content = {HeaderContent}
+            // lang = {globalLng}
+        />
             
-            <Component {...PageProps} />
+        <Component {...PageProps} />
+
+        </CatalogContext.Provider>
+        </PageLevelsVisContext.Provider>
         </>
     )
 }

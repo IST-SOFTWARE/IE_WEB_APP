@@ -25,13 +25,14 @@ export default function Catalog(openState, searchFilter){
     useEffect(()=>{
         setIsBrowser(true);
         setPrLoaded(false);
+        
     },[]);
     
     const ToggleCatalog = "ToggleCatalog";
     const Search_BP = "Search_BP";
     
     const [CatalogReducer, dispatch] = useReducer(reducer, {
-        isOpen: true,          //Open/Close Catalog
+        isOpen: false,          //Open/Close Catalog
         
         Search: '',             //For Search
         ForLift: false,         //For Lift CheckBox
@@ -92,12 +93,13 @@ export default function Catalog(openState, searchFilter){
 
                         setProducts(content);
                         setFiltered(content);
+                        // console.log("opened");
                     } else{
                         setPrLoaded(false);
 
                         setProducts([]);
                         setFiltered([]);
-                        console.log("closed");
+                        // console.log("closed");
                     }
                 } catch(e){
                         console.log("Failed to fetch[Catalog items]: ", e);
@@ -111,7 +113,7 @@ export default function Catalog(openState, searchFilter){
         dispatch(SearchCatalogGenerator(Catalog_cont.ProductSearch.s));
     },[Catalog_cont.ProductSearch])
 
-    
+
     useEffect(()=>{
         let s_products = products.filter(p => p.title.toLowerCase().indexOf(CatalogReducer.Search.toLowerCase()) >= 0);
         setFiltered(s_products);

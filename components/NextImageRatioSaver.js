@@ -79,7 +79,7 @@ export default function NextImageRatioSaver({Img, wPrime, hPrime}){
             })
         }
         else if(PrimeOpt.height){
-        
+  
             setCalibrated({
                 width: (imageSize.width/imageSize.height) * CalibrationItem.offsetHeight,
                 height: CalibrationItem.offsetHeight
@@ -125,16 +125,27 @@ export default function NextImageRatioSaver({Img, wPrime, hPrime}){
     },[imageSize])
 
 
+    // useEffect(()=>{
+    // if(lilImgLoad){
+    //    const lImg = document.querySelector("#lil_img_");
+    //    setSize(
+    //     {
+    //         width: lImg.naturalWidth,
+    //         height: lImg.naturalHeight
+    //     })
+    // }
+    // },[lilImgLoad]);
+
+
+    // WAS CHENGED. Prev Wersion --^
     useEffect(()=>{
-    if(lilImgLoad){
-       const lImg = document.querySelector("#lil_img_");
-       setSize(
-        {
-            width: lImg.naturalWidth,
-            height: lImg.naturalHeight
-        })
-    }
-    },[lilImgLoad]);
+        const lImg = document.querySelector("#lil_img_");
+        setSize(
+         {
+             width: lImg.naturalWidth,
+             height: lImg.naturalHeight
+         })
+     },[]);
 
 
     return(

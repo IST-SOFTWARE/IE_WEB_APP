@@ -9,10 +9,7 @@ import AttachPage from "../components/LandingPages/AttachPage/AttachPage";
 import LangSwitcher from "../components/LangSwitcher"
 import InfoOfDev from "../components/InfoOfDev";
 
-import PageLevelsVisContext from "../components/Context/PageLevelsVisContext";
-import CatalogContext from "../components/Context/CatalogContext"
 
-import Catalog from "../components/Catalog/Catalog";
 
 const HeaderContent = {
     "CatalogTitle":{
@@ -36,7 +33,6 @@ const HeaderContent = {
         "eng": "LogIn"
     }
 };
-
 
 const HelloContent = {
     "Label": {
@@ -127,35 +123,9 @@ export default function Index(){
     const[globalLng, setLang] = useState("eng");
     const[height, setHeight] = useState(0);
     
-    const[ProductSearch, setProductSearch] = useState({
-        s: ''
-    })
-    
-    // FOR SHOW/HIDE PAGE LEVELS IN MOBILE
-    const[mobilePageLevels, setPageLevelsVis] = useState(true);
-    
-    const[CatalogToggle, setCatalog] = useState(false);
-    
-    const CatalogValue = {
-        CatalogToggle,
-        setCatalog,
-
-        ProductSearch,
-        setProductSearch
-    }
-
-    useEffect(()=>{
-        setPageLevelsVis(CatalogToggle);
-    },[CatalogToggle]);
-
     useEffect(()=>{
         setHeight(document.body.offsetHeight);
     },[]);
-
-    useEffect(()=>{
-        const ScrollSpaceToggle = document.body;
-        CatalogToggle ? ScrollSpaceToggle.style.overflowY = "hidden" :  ScrollSpaceToggle.style.overflowY = "auto"
-    },[CatalogToggle])
 
     function ToggleLang(){
         globalLng === "ru" ? setLang("eng") : setLang("ru");
@@ -173,11 +143,9 @@ export default function Index(){
     return(
         <>
 
-            <CatalogContext.Provider value={CatalogValue}>
-            
-            <Catalog openState={CatalogToggle} searchFilter={ProductSearch.s}/>
+          
 
-            <PageLevelsVisContext.Provider value={{mobilePageLevels, setPageLevelsVis}}>
+           
             {/* <InfoOfDev header="Информация о разработке :D">
                 <b>Такое кол-во одинаковых страниц только для примера работы счетчика страниц</b><br/>
                 План такой(подробнее в trello):<br/>
@@ -193,11 +161,7 @@ export default function Index(){
             </InfoOfDev> */}
 
 
-            <Header
-                HeaderLangChecker={LangChecker}
-                content = {HeaderContent}
-                lang = {globalLng}
-            />
+
 
             <Progress/>
 
@@ -234,8 +198,8 @@ export default function Index(){
                 lang={globalLng}/>
 
             </div>
-            </PageLevelsVisContext.Provider>
-            </CatalogContext.Provider>
+
+
 
             <style jsx global>
                 {`
