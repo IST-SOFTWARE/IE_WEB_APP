@@ -26,13 +26,18 @@ export default function CartPage({}){
 
                                 </div>
                                 <div className={styles.AddedProducts}>
-                                    {[...Array(2)].map(i =>
+                                    
                                         <CartItem
                                         image={"https://res.cloudinary.com/dv9xitsjg/image/upload/v1648111066/ProductsImages/reductor-glav-priv_y6ujmg.png"}
                                         name={"Редуктор главного привода FTJ160R (TD-FT160R) правый для лебедки EC-W1 (п.ч. 49/2)"}
                                         vendCode={"000000000 "}
                                         />
-                                    )}
+                                        <CartItem
+                                        image={"https://res.cloudinary.com/dv9xitsjg/image/upload/v1648111066/ProductsImages/reductor-glav-priv_y6ujmg.png"}
+                                        name={"Редуктор главного привода FTJ160R (TD-FT160R) правый для лебедки EC-W1 (п.ч. 49/2)"}
+                                        vendCode={"000000000 "}
+                                        />
+                                  
                                 </div>
                             </div>
                         </div>
