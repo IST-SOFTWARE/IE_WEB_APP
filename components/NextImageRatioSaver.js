@@ -139,6 +139,7 @@ export default function NextImageRatioSaver({Img, wPrime, hPrime}){
 
     // WAS CHENGED. Prev Wersion --^
     useEffect(()=>{
+
         const lImg = document.querySelector("#lil_img_");
         setSize(
          {

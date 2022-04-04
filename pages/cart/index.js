@@ -31,11 +31,13 @@ export default function CartPage({}){
                                         image={"https://res.cloudinary.com/dv9xitsjg/image/upload/v1648111066/ProductsImages/reductor-glav-priv_y6ujmg.png"}
                                         name={"Редуктор главного привода FTJ160R (TD-FT160R) правый для лебедки EC-W1 (п.ч. 49/2)"}
                                         vendCode={"000000000 "}
+                                        price={"357 750"}
                                         />
                                         <CartItem
                                         image={"https://res.cloudinary.com/dv9xitsjg/image/upload/v1648111066/ProductsImages/reductor-glav-priv_y6ujmg.png"}
                                         name={"Редуктор главного привода FTJ160R (TD-FT160R) правый для лебедки EC-W1 (п.ч. 49/2)"}
                                         vendCode={"000000000 "}
+                                        price={"357 750"}
                                         />
                                   
                                 </div>

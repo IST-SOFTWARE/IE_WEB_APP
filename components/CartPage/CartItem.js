@@ -1,6 +1,8 @@
-import IST_CheckBox from "../../components/IST_CheckBox"
 import styles from "../../styles/CartPage/CartPage.module.css"
+
+import IST_CheckBox from "../../components/IST_CheckBox"
 import NextImageRatioSaver from "../NextImageRatioSaver"
+import QuantityEditor from "./QuantityEditor"
 
 export default function CartItem({image, name, vendCode, price}){
     return(
@@ -15,11 +17,13 @@ export default function CartItem({image, name, vendCode, price}){
                     <p>{name}</p>
                     <a>Артикул: {vendCode}</a>
                     <div className={styles.qAndPrice}>
-
+                        <QuantityEditor/>
+                        <p>Цена: {price} руб</p>
                     </div>
-                    
                 </div>
-                <IST_CheckBox/>
+                <div className={styles.CheckBoxBlock}>
+                    <IST_CheckBox/>
+                </div>
             </div>
         </>
     )
