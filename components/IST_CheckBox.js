@@ -1,32 +1,34 @@
-import { useState, useEffect} from "react";
 import styles from "../styles/IST_CheckBox.module.css"
 
+import { useState, useEffect, useContext} from "react";
 
-export default function IST_CheckBox({state, label, children}){
+
+export default function IST_CheckBox({state, feedback, children}){
 
     const[isChecked, setChecked] = useState(false);
+    const[classChecked, setClassChecked] = useState(isChecked ? 
+        `${styles.active}` : ``)
 
-    const CheckBoxToggle = () =>{
+    // useEffect(()=>{
+    //     feedback = state;
+    // },[])
+
+    const HandlerClick = () => {
         setChecked(!isChecked);
+        if(feedback !== undefined){
+            feedback(!isChecked);
+        }
     }
 
-
     useEffect(()=>{
-        if(state !== undefined && typeof state === "boolean"){
-            setChecked(state);
-        }
+        setChecked(state);
     },[state])
 
     useEffect(()=>{
-        const checkbox = document.querySelector(`.${styles.checkmark}`);
-        // console.log(checkbox.checked);
-        if(isChecked){
-            checkbox.classList.add(`${styles.active}`);
-        }
-        else{
-            checkbox.classList.remove(`${styles.active}`);
-        }
+        isChecked ? 
+        setClassChecked(`${styles.active}`) : setClassChecked("");
     },[isChecked])
+
 
     return(
         <>
@@ -34,12 +36,12 @@ export default function IST_CheckBox({state, label, children}){
                 <label>{children}</label>
                 <div className={styles.CheckBoxContainer}>
                     <input type="checkbox"
-                    className={styles.checkmark}
+                    className={styles.checkmark + " " + classChecked}
                     defaultChecked={isChecked}
-                    onChange={(e)=>CheckBoxToggle()}/>
-
+                    onClick={()=>HandlerClick()}/>
+{/*                   
                     <button className={styles.Checked}
-                    onClick={()=>CheckBoxToggle()}></button>
+                    onClick={()=>CheckBoxToggle()}></button> */}
                 </div>
             </div>
         </>
