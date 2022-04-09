@@ -8,9 +8,10 @@ import { useState, useEffect, useCallback, useMemeo} from "react";
 
     // hp-true + wp-none => hp
 
-export default function NextImageRatioSaver({Img, wPrime, hPrime}){
+export default function NextImageRatioSaver({Img, wPrime, hPrime, q, unique}){
       
     const[lilImgLoad, setLilLoad] = useState(false);
+    const[quality, setQuality] = useState(75);
 
     const[imageSize, setSize] = useState({
         width: 0,
@@ -26,6 +27,8 @@ export default function NextImageRatioSaver({Img, wPrime, hPrime}){
         width: true,
         height: false
     });
+
+    const[uniqueName, setUnique] = useState("");
 
 
     // W-PRIME IS DEF 
@@ -70,12 +73,30 @@ export default function NextImageRatioSaver({Img, wPrime, hPrime}){
 
     },[])
 
+    useEffect(()=>{
+        if(q !== undefined && typeof q === "number"){
+            console.log(q);
+            setQuality(q);
+        }
+    }, [q])
+
+    useEffect(()=>{
+        if(unique !== undefined){
+            try{
+                setUnique(unique.toString());
+            }catch(err){
+                setUnique("");
+                console.error("Unique type is not correct: ", err);
+            }
+        }
+    },[unique])
+
     const resizer = (CalibrationItem) => {
         if(PrimeOpt.width){
            
             setCalibrated({
                 width: CalibrationItem.offsetWidth,
-                height: (imageSize.width/imageSize.height) * CalibrationItem.offsetWidth
+                height: (imageSize.height/imageSize.width) * CalibrationItem.offsetWidth
             })
         }
         else if(PrimeOpt.height){
@@ -88,7 +109,7 @@ export default function NextImageRatioSaver({Img, wPrime, hPrime}){
     }
 
     const windowSizeListener = () => {
-        const CalibrationItem = document.querySelector(".CalibrationBlock");
+        const CalibrationItem = document.querySelector(".CalibrationBlock" + uniqueName);
         
         if(calibratedSize.height > 0 && (calibratedSize.height !== CalibrationItem.offsetHeight) && PrimeOpt.height){
             resizer(CalibrationItem);
@@ -113,7 +134,7 @@ export default function NextImageRatioSaver({Img, wPrime, hPrime}){
     },[calibratedSize, PrimeOpt])
 
     useEffect(()=>{
-        const CalibrationItem = document.querySelector(".CalibrationBlock");
+        const CalibrationItem = document.querySelector(".CalibrationBlock" + uniqueName);
 
         if(!CalibrationItem.classList.contains(".Ex")){
         CalibrationItem.classList.add("Ex");
@@ -156,13 +177,13 @@ export default function NextImageRatioSaver({Img, wPrime, hPrime}){
                 id={"lil_img_"}
                 onLoad={()=>setLilLoad(true)}/>
                     
-                <div className="CalibrationBlock"
+                <div className={"CalibrationBlock" + uniqueName} 
                     style={{width: `100%`,
                     height: `100%`,
                     position: `absolute`}}>
                 </div>
 
-                <div className={"NextImageRatioSaver"}
+                <div className={"NextImageRatioSaver" + uniqueName}
                     style={{width: calibratedSize.width + `px`,
                     height: calibratedSize.height + `px`,
                     position: `relative`}}>
@@ -170,6 +191,7 @@ export default function NextImageRatioSaver({Img, wPrime, hPrime}){
                     <Image
                     src={Img}
                     layout="fill"
+                    q={quality}
                 /> 
                 </div>
                
