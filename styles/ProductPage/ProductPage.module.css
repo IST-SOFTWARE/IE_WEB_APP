@@ -153,11 +153,6 @@
     font-weight: 700;
     font-size: 21px;
     line-height: 26px;
-    /* identical to box height */
-
-    display: flex;
-    align-items: center;
-
     color: #FFFFFF;
 }
 
