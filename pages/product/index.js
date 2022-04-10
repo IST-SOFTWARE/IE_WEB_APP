@@ -52,7 +52,7 @@ export default function ProductPage(){
                                         Img={"https://res.cloudinary.com/dv9xitsjg/image/upload/v1649417232/ProductsImages/image_6_1_gz9vki.png"}
                                         wPrime={true}
                                         q={100}
-                                        unique={"_MainProductImage"}
+                                        unique={"_MainPI"}
                                         />
                                     </div>
     
@@ -87,7 +87,9 @@ export default function ProductPage(){
                                 <AvailabilityStatus status={1}/>
 
                                 <div className={styles.ProductParams}>
-                                    <p>Характеристики:</p>
+                                    <p className={styles.CharacteristicsTitle}>
+                                        Характеристики:
+                                    </p>
                                     <div className={styles.ParamsWrapper}>
                                         <DescriptionEntry Title={"Марка"} Params={"OTIS"}/>
                                         <DescriptionEntry Title={"Узел"} Params={"Главный привод, лебедка эскалатора, тормоз"}/>
