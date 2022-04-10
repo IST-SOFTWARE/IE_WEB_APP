@@ -38,12 +38,12 @@
     height: 414px;
 }
 .ProductImage{
-    height: 100%;
-    width: 100%;
+    height: calc(100% - 1px);
+    width: calc(100% - 1px);
     overflow: hidden;
     border-radius: 48px;
     box-shadow: 0px 0px 12px #587BA0;
-
+    position: relative;
 }
 .ProductImage > div{
     display: flex;
@@ -51,6 +51,7 @@
     align-items: center;
     min-width: min-content;
     min-height: min-content;
+    position: relative;
 }
 .ProductReplacement{
     width: fit-content;

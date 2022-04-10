@@ -102,7 +102,7 @@
     .AvailabilityStatus p{
         font-family: 'Roboto';
         font-style: normal;
-        font-weight: 500;
+        font-weight: 500 !important;
         font-size: 18px;
         color: #C4D4E5;
     }
@@ -142,7 +142,7 @@
     .DescEntryItem p{
         font-family: 'Roboto';
         font-style: normal;
-        font-weight: 500;
+        font-weight: 500 !important;
         font-size: 18px;
         color: #E6E6E4;
         background: #2C3641;  
