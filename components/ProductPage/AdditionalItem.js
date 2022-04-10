@@ -17,7 +17,7 @@ export default function AdditionalItem({img, name, vendCode}){
                         unique={"AdditionalItem"}
                     />
                 
-                <p>
+                <p className={styles.AdditionalTitle}>
                 Частотный преобразователь Kone KDL16L 14 Ампер (модернизация для V3F16L) с энкодером и кабелем
                 </p>
             </div>

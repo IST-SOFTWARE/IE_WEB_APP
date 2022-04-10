@@ -52,7 +52,7 @@ export default function ProductPage(){
                                         Img={"https://res.cloudinary.com/dv9xitsjg/image/upload/v1649417232/ProductsImages/image_6_1_gz9vki.png"}
                                         wPrime={true}
                                         q={100}
-                                        unique={"MainProductImage"}
+                                        unique={"_MainProductImage"}
                                         />
                                     </div>
     

@@ -53,15 +53,15 @@
         background: linear-gradient(360deg, #151A20 0%, rgba(15, 19, 23, 0.728041) 52.6%, rgba(0, 0, 0, 0) 100%);
         z-index: 0;
     }
-    .AdditionalContainer p{
+    .AdditionalTitle{
         font-family: 'Roboto';
         font-style: normal;
         font-weight: 500;
-        font-size: calc(14px + (18 - 14) *   ((100vw - 300px) / (1920 - 320)));
+        font-size: calc(14px + (18 - 14) *   ((100vw - 300px) / (1920 - 320))) !important;
         padding: 10px;
 
         height: fit-content;
-        line-height: 23px;
+
         position: absolute;
         padding-bottom: 0px !important;
         left: 0;
