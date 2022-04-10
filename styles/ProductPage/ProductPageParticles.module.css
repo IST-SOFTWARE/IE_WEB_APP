@@ -17,7 +17,7 @@
         font-family: 'Roboto';
         font-style: normal;
         font-weight: 500 !important;
-        font-size: 18px;
+        font-size: calc(15px + (18 - 15) *   ((100vw - 300px) / (1920 - 320)));
         color: #C4D4E5;
     }
 
@@ -55,7 +55,7 @@
         font-family: 'Roboto';
         font-style: normal;
         font-weight: 500 !important;
-        font-size: 18px;
+        font-size: calc(16px + (18 - 16) *   ((100vw - 300px) / (1920 - 320)));
         color: #E6E6E4;
         background: #2C3641;  
         z-index: 1;
@@ -223,7 +223,7 @@
     font-family: 'Roboto';
     font-style: normal;
     font-weight: 500;
-    font-size: 20px;
+    font-size: calc(15px + (20 - 15) *   ((100vw - 300px) / (1920 - 320)));
     color: #FFFFFF;
     width: 100%;
     margin: 0px 15px;

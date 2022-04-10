@@ -40,6 +40,10 @@ export default function MyApp({Component, PageProps}){
         CatalogToggle ? ScrollSpaceToggle.style.overflowY = "hidden" :  ScrollSpaceToggle.style.overflowY = "auto"
     },[CatalogToggle])
 
+    useEffect(()=>{
+        setCatalog(false);
+    },[Component, PageProps])
+
     return(
         <>
         <Head>

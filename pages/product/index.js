@@ -35,7 +35,7 @@ export default function ProductPage(){
         <div className={styles.ProductPage}>
             <div className="container">
                 <div className="row">
-                    <div className="col-8">
+                    <div className="col-xl-8 col-15">
                         <div className={styles.ProductBlock}>
                             <p>
                                 Редуктор главного привода FTJ160R (TD-FT160R)
@@ -81,7 +81,7 @@ export default function ProductPage(){
                         </div>
                     </div>
 
-                    <div className="col-7">
+                    <div className="col-15 col-xl-7">
                         <div className={styles.ProductDescription_wrapper}>
                             <div className={styles.ProductDescription}>
                                 <AvailabilityStatus status={1}/>

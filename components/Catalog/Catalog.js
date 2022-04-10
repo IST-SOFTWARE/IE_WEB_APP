@@ -108,6 +108,7 @@ export default function Catalog(openState, searchFilter){
                 }
             )()
         },[CatalogReducer.isOpen])
+    
 
     useEffect(()=>{
         dispatch(SearchCatalogGenerator(Catalog_cont.ProductSearch.s));
@@ -170,7 +171,6 @@ export default function Catalog(openState, searchFilter){
                                 justify-content-md-start">
                                 
                                 
-
                                 <Suspense fallback={<CatalogItemLoader Loaded={productsLoaded}/>}>
                     
                                 {filteredProducts.map((product, index) =>{

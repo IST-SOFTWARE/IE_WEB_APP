@@ -1,6 +1,7 @@
 import { useEffect, useState} from "react"
 import styles from "../../styles/Catalog.module.css"
 import NextImageRatioSaver from "../NextImageRatioSaver"
+import Link from 'next/link'
 
 export default function CatalogProductItem({imgPath, Title, Price, inCart}){
     
@@ -29,7 +30,7 @@ export default function CatalogProductItem({imgPath, Title, Price, inCart}){
     return(
         <>
             <div className={styles.ProductItemCont}>
-
+                <Link href={"/product"}>
                 <div className={styles.ProductItem}>
                     <div className={styles.PI_ImageBlock}>
                     <NextImageRatioSaver Img={imgPath} hPrime={true} wPrime={false}/>
@@ -48,6 +49,7 @@ export default function CatalogProductItem({imgPath, Title, Price, inCart}){
                     </div>
 
                 </div>
+                </Link>
 
                 <div className={styles.PI_AddToCart}>
                             <button className={isInCart ? styles.AddedToCart : ""}

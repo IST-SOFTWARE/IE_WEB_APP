@@ -6,6 +6,8 @@ import IST_CheckBox from "../../components/IST_CheckBox"
 import NextImageRatioSaver from "../NextImageRatioSaver"
 import QuantityEditor from "./QuantityEditor"
 
+import Link from "next/link"
+
 export default function CartItem({image, name, vendCode, price, isSelected, feedback}){
 
     const[itemChecked, setItemChecked] = useState(isSelected);
@@ -28,11 +30,13 @@ export default function CartItem({image, name, vendCode, price, isSelected, feed
     return(
         <>
             <div className={styles.CartItemContainer}>
+                <Link href={"/product"}>
                 <div className={styles.ItemImg}>
                     <NextImageRatioSaver
                     Img={image}
                     hPrime={true}/>
                 </div>
+                </Link>
                 <div className={styles.ItemDescription}>
                     <div>
                         <p>{name}</p>

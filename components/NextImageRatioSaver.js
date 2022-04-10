@@ -176,7 +176,7 @@ export default function NextImageRatioSaver({Img, wPrime, hPrime, q, unique}){
              height: lImg.naturalHeight
          })
 
-         console.log(uniqueName);
+        //  console.log(uniqueName);
      },[]);
 
 
