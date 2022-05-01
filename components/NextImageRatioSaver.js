@@ -178,7 +178,7 @@ export default function NextImageRatioSaver({Img, wPrime, hPrime, q, unique}){
          })
 
         //  console.log("Rendered!!");
-        }, 100);
+        }, 150);
     
         //  console.log(uniqueName);
      },[]);

@@ -42,7 +42,7 @@ export default function GallaryBG({image}){
                     height: lImg.naturalHeight
                     }
                 )
-        }, 100);
+        }, 150);
             console.log(imgSize);
     },[])
 
@@ -74,7 +74,7 @@ export default function GallaryBG({image}){
                         z-index: 0;
                         height: 100vh;
                         width: calc((${imgSize.width} / ${imgSize.height}) * 100vh);  
-                        max-width: 100vw;             
+                              
                 }
             `}</style>
         </>
