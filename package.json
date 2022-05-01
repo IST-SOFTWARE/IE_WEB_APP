@@ -8,6 +8,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "cloudinary-build-url": "^0.2.4",
     "next": "^12.0.10",
     "nextjs-progressbar": "^0.0.13",
     "probe-image-size": "^7.2.3",

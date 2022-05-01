@@ -4,14 +4,20 @@ import NextImageRatioSaver from "../../components/NextImageRatioSaver"
 import ReplacementItem from "../../components/ProductPage/ReplacementItem"
 import AdditionalItem from "../../components/ProductPage/AdditionalItem"
 
-import { useRef, useEffect} from "react";
 import AvailabilityStatus from "../../components/ProductPage/AvailabilityStatus";
 import DescriptionEntry from "../../components/ProductPage/DescriptionEntry";
 import GeometryViewer from "../../components/ProductPage/GeometryViewer";
+import BlureProdImage from "../../components/ProductPage/BlureProdImage";
+
+import PopUpBase from "../../components/PopUpBase";
+
+import { useRef, useEffect, useState} from "react";
 
 export default function ProductPage(){
-    let ref = useRef();
     
+    const[puState, setPU] = useState(false);
+    let ref = useRef();
+
     useEffect(()=>{
         const el = ref.current
         if(el){
@@ -35,7 +41,7 @@ export default function ProductPage(){
         <div className={styles.ProductPage}>
             <div className="container">
                 <div className="row">
-                    <div className="col-xl-8 col-15">
+                    <div className="col-xl-8 col-lg-8 col-15">
                         <div className={styles.ProductBlock}>
                             <p>
                                 Редуктор главного привода FTJ160R (TD-FT160R)
@@ -47,13 +53,26 @@ export default function ProductPage(){
 
                                 <div className={styles.Image_and_replacement}>
                                 
-                                    <div className={styles.ProductImage}>
-                                        <NextImageRatioSaver
-                                        Img={"https://res.cloudinary.com/dv9xitsjg/image/upload/v1649417232/ProductsImages/image_6_1_gz9vki.png"}
-                                        wPrime={true}
-                                        q={100}
-                                        unique={"_MainPI"}
-                                        />
+                                    <div className={styles.ProductImage}
+                                        style = {{
+                                            backgroundImage: `url(${
+                                                BlureProdImage("https://res.cloudinary.com/dv9xitsjg/image/upload/v1649426240/ProductsImages/M02914-1_rwco0s.jpg")
+                                            })`,
+                                            backgroundPosition: 'center center',
+                                            backgroundSize: 'cover',
+                                            backgroundRepeat: 'no-repeat'
+                                        }}
+                                        onClick={()=> setPU(true)} 
+                                    >
+                                            <div>
+                                                <NextImageRatioSaver
+                                                Img={"https://res.cloudinary.com/dv9xitsjg/image/upload/v1649426240/ProductsImages/M02914-1_rwco0s.jpg"}
+                                                wPrime={true}
+                                                q={100}
+                                                unique={"_MainPI"}
+                                                />
+                                            </div>
+                                        
                                     </div>
     
                                     <div className={styles.ProductReplacement}>
@@ -81,7 +100,7 @@ export default function ProductPage(){
                         </div>
                     </div>
 
-                    <div className="col-15 col-xl-7">
+                    <div className="col-15 col-lg-7 col-xl-7">
                         <div className={styles.ProductDescription_wrapper}>
                             <div className={styles.ProductDescription}>
                                 <AvailabilityStatus status={1}/>
@@ -138,6 +157,8 @@ export default function ProductPage(){
 
             </div>
         </div>
+
+
         </>
     )
 }

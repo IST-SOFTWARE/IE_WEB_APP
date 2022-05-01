@@ -168,7 +168,8 @@ export default function NextImageRatioSaver({Img, wPrime, hPrime, q, unique}){
 
     // WAS CHENGED. Prev Wersion --^
     useEffect(()=>{
-
+        if(lilImgLoad){
+        setTimeout(() => {
         const lImg = document.querySelector("#lil_img_"+uniqueName);
         setSize(
          {
@@ -176,8 +177,11 @@ export default function NextImageRatioSaver({Img, wPrime, hPrime, q, unique}){
              height: lImg.naturalHeight
          })
 
+        //  console.log("Rendered!!");
+        }, 100);
+    }
         //  console.log(uniqueName);
-     },[]);
+     },[lilImgLoad]);
 
 
     return(
