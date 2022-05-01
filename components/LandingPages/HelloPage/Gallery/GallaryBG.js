@@ -34,15 +34,15 @@ export default function GallaryBG({image}){
 
 
     useEffect(()=>{
-        
-        let lImg = document.querySelector("#lilImgBg");
-        setSize(
-                {
-                width: lImg.naturalWidth,
-                height: lImg.naturalHeight
-                }
-            )
-            
+        setTimeout(() => {
+            let lImg = document.querySelector("#lilImgBg");
+            setSize(
+                    {
+                    width: lImg.naturalWidth,
+                    height: lImg.naturalHeight
+                    }
+                )
+        }, 100);
             console.log(imgSize);
     },[])
 
@@ -73,7 +73,8 @@ export default function GallaryBG({image}){
                         top:0;
                         z-index: 0;
                         height: 100vh;
-                        width: calc((${imgSize.width} / ${imgSize.height}) * 100vh);                 
+                        width: calc((${imgSize.width} / ${imgSize.height}) * 100vh);  
+                        max-width: 100vw;             
                 }
             `}</style>
         </>
