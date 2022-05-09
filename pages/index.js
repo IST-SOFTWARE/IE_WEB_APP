@@ -124,9 +124,9 @@ export default function Index(){
     const[globalLng, setLang] = useState("eng");
     const[height, setHeight] = useState(0);
 
-    const {status, data: homePageContent, error, isFetching, isSuccess} = useQuery("HomePage_Main", async() => await getHomePageContent())
+    // const {status, data: homePageContent, error, isFetching, isSuccess} = useQuery("HomePage_Main", async() => await getHomePageContent())
     
-    console.log(homePageContent);
+    // console.log(homePageContent);
 
     useEffect(()=>{
         setHeight(document.body.offsetHeight);
