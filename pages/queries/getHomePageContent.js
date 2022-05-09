@@ -1,18 +1,18 @@
-import fetchData from "../helpers/fetchData"
+// import fetchData from "../helpers/fetchData"
 
-export const getHomePageContent = async() => {
+// export const getHomePageContent = async() => {
 
-    const data = await fetchData(
-        `
-            HomePage_Main{
-                Title
-            }
-        `,
-        {
-            variables: {}
-        }
-    )
+//     const data = await fetchData(
+//         `
+//             HomePage_Main{
+//                 Title
+//             }
+//         `,
+//         {
+//             variables: {}
+//         }
+//     )
 
-    return data;
+//     return data;
 
-}
+// }
