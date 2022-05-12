@@ -9,8 +9,8 @@ import AttachPage from "../components/LandingPages/AttachPage/AttachPage";
 import LangSwitcher from "../components/LangSwitcher"
 import InfoOfDev from "../components/InfoOfDev";
 
-// import { useQuery } from "react-query";
-// import { getHomePageContent } from "./queries/getHomePageContent";
+import { useQuery } from "react-query";
+import { getHomePageContent } from "../queries/getHomePageContent";
 
 const HeaderContent = {
     "CatalogTitle":{
@@ -124,9 +124,9 @@ export default function Index(){
     const[globalLng, setLang] = useState("eng");
     const[height, setHeight] = useState(0);
 
-    // const {status, data: homePageContent, error, isFetching, isSuccess} = useQuery("HomePage_Main", async() => await getHomePageContent())
+    const {status, data: homePageContent, error, isFetching, isSuccess} = useQuery("HomePage_Main", async() => await getHomePageContent())
     
-    // console.log(homePageContent);
+    console.log(homePageContent);
 
     useEffect(()=>{
         setHeight(document.body.offsetHeight);
