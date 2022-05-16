@@ -128,7 +128,7 @@ export default function Index({api_cont}){
 
     // const {status, data: homePageContent, error, isFetching, isSuccess} = useQuery("HomePage_Main", async() => await getHomePageContent())
     
-    
+    console.log("is_index: ", api_cont);
     
     useEffect(()=>{
         setHeight(document.body.offsetHeight);
@@ -217,3 +217,9 @@ export default function Index({api_cont}){
     )
 }
 
+
+Index.getInitialProps = async () => {
+    let api_cont = await getHomePageContent();
+    console.log("::", api_cont);
+    return {api_cont};
+}

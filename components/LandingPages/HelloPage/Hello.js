@@ -46,9 +46,11 @@ const gallary = [
     ]
 
 
-export default function Hello({HelloLangChecker, content, lang}){
+export default function Hello({HelloLangChecker, content, lang, api_cont}){
     const [image, setImage] = useState((gallary[0])["img"]);
     const[puState, setPU] = useState(false);
+
+    // console.log("is Hello:" ,api_cont);
 
     const imageChenger = (nImg) => {
         setImage(nImg);
@@ -116,5 +118,11 @@ export default function Hello({HelloLangChecker, content, lang}){
         </>
     )
 }
+
+// export async function getServerSideProps() {
+//     let api_cont = await getHomePageContent();
+//     console.log("1", api_cont);
+//     return {props: {api_cont}}
+// }
 
 
