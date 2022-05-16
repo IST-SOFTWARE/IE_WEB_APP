@@ -9,7 +9,6 @@ import AttachPage from "../components/LandingPages/AttachPage/AttachPage";
 import LangSwitcher from "../components/LangSwitcher"
 import InfoOfDev from "../components/InfoOfDev";
 
-import { useQuery } from "react-query";
 import { getHomePageContent } from "../queries/getHomePageContent";
 
 const HeaderContent = {
