@@ -8,12 +8,16 @@ import NextNProgress from 'nextjs-progressbar'
 import Head from 'next/head'
 import CatalogContext from "../components/Context/CatalogContext"
 import PageLevelsVisContext from "../components/Context/PageLevelsVisContext";
-import { QueryClientProvider, QueryClient } from "react-query";
+
+import { getHomePageContent } from "../queries/getHomePageContent";
+// import { QueryClientProvider, QueryClient } from "react-query";
 // import PopUpContext from '../components/PopUpContext'
 
-const queryClient = new QueryClient();
+// const queryClient = new QueryClient();
 
-export default function MyApp({Component, PageProps}){
+export default function MyApp({Component, PageProps, api_cont}){
+
+    console.log("2", api_cont);
 
     // FOR SHOW/HIDE PAGE LEVELS IN MOBILE
     const[mobilePageLevels, setPageLevelsVis] = useState(true);
@@ -49,7 +53,7 @@ export default function MyApp({Component, PageProps}){
 
     return(
         <>
-        <QueryClientProvider client={queryClient}>
+        
             <Head>
                 <title>IST ELEVATOR</title>
                 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
@@ -79,7 +83,13 @@ export default function MyApp({Component, PageProps}){
 
             </CatalogContext.Provider>
             </PageLevelsVisContext.Provider>
-        </QueryClientProvider>
+       
         </>
     )
+}
+
+MyApp.getInitialProps = async () => {
+    let api_cont = await getHomePageContent();
+    console.log("1", api_cont);
+    return {api_cont};
 }

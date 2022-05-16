@@ -171,11 +171,16 @@ export default function NextImageRatioSaver({Img, wPrime, hPrime, q, unique}){
 
         setTimeout(() => {
         const lImg = document.querySelector("#lil_img_"+uniqueName);
-        setSize(
-         {
-             width: lImg.naturalWidth,
-             height: lImg.naturalHeight
-         })
+        
+        try{
+            setSize(
+            {
+                width: lImg.naturalWidth,
+                height: lImg.naturalHeight
+            })
+        }catch{
+
+        }
 
         //  console.log("Rendered!!");
         }, 150);

@@ -120,16 +120,21 @@ const Languages = {
 };
 
 
-export default function Index(){
+
+
+
+export default function Index({api_cont}){
     const[globalLng, setLang] = useState("eng");
     const[height, setHeight] = useState(0);
 
-    const {status, data: homePageContent, error, isFetching, isSuccess} = useQuery("HomePage_Main", async() => await getHomePageContent())
+    // const {status, data: homePageContent, error, isFetching, isSuccess} = useQuery("HomePage_Main", async() => await getHomePageContent())
     
-    console.log(homePageContent);
-
+    
+    
     useEffect(()=>{
         setHeight(document.body.offsetHeight);
+        // Index.getInitialProps();
+
     },[]);
 
     function ToggleLang(){
@@ -212,3 +217,4 @@ export default function Index(){
         </>
     )
 }
+

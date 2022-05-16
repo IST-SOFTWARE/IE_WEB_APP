@@ -3,7 +3,7 @@ const graphQLAPI  = process.env.NEXT_PUBLIC_GRAPHQL
 const fetchData = async (query, { variables = {} }) => {
     const headers = { 'Content-Type': 'application/json' }
 
-    // console.log("HERE - ", graphQLAPI);
+    // console.log(query, variables);
 
     const res = await fetch(graphQLAPI , {
         method: 'POST',

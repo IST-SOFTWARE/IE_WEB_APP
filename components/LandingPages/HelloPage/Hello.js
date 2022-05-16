@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 
+
+
 import styles from "../../../styles/HelloPage.module.css"
 
 import MainLabel from "../../MainLabel";
@@ -51,7 +53,7 @@ export default function Hello({HelloLangChecker, content, lang}){
     const imageChenger = (nImg) => {
         setImage(nImg);
     }
-
+ 
     // function LangChecker(def, settings, lng){ 
     //     return ((content[settings])[lng] === undefined) ? 
     //     def : 
@@ -114,3 +116,5 @@ export default function Hello({HelloLangChecker, content, lang}){
         </>
     )
 }
+
+

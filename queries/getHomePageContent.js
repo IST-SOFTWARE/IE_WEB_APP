@@ -6,6 +6,7 @@ export const getHomePageContent = async() => {
         query HomePageData{
             HomePage_Main{
                 Title
+                Title_RU
             }
         }
         `,
