@@ -5,7 +5,7 @@ const fetchData = async (query, { variables = {} }) => {
 
     // console.log(query, variables);
 
-    const res = await fetch(graphQLAPI , {
+    const res = await fetch("http://80.78.251.17:8055/graphql" , {
         method: 'POST',
         headers,
         body: JSON.stringify({
