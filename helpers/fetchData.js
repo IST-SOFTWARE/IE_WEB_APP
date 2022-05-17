@@ -16,13 +16,13 @@ const fetchData = async (query, { variables = {} }) => {
 
     const json = await res.json()
 
-    // if (json.errors) {
-    //     throw new Error(json.errors);
-    //     // console.error("[helpers/FetchData] fetching error");
-    //     // return null;
-    // }
+    if (json.errors) {
+        // throw new Error(json.errors);
+        console.error("[helpers/FetchData] fetching error");
+        return null;
+    }
 
-    return json
+    return json ? json : null;
 }
 
 
