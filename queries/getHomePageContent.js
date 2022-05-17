@@ -16,5 +16,5 @@ export const getHomePageContent = async() => {
     )
     
 
-    return data ? data.data.HomePage_Main : null;
+    return data.data.HomePage_Main;
 }
