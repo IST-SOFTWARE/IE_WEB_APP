@@ -21,9 +21,7 @@ const fetchData = async (query, { variables = {} }) => {
         // console.error("[helpers/FetchData] fetching error");
         // return null;
     }
-
-
-
+    
     return json
 }
 

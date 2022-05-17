@@ -1,5 +1,5 @@
 import { useState, useEffect, useContext } from "react";
-import App from "next/app";
+
 
 import '../styles/global.css'
 import Header from '../components/Header/Header'
@@ -10,7 +10,6 @@ import Head from 'next/head'
 import CatalogContext from "../components/Context/CatalogContext"
 import PageLevelsVisContext from "../components/Context/PageLevelsVisContext";
 
-import { getHomePageContent } from "../queries/getHomePageContent";
 
 
 export default function MyApp({Component, PageProps}){
