@@ -1,7 +1,5 @@
 import { useEffect, useState } from "react";
 
-
-
 import styles from "../../../styles/HelloPage.module.css"
 
 import MainLabel from "../../MainLabel";
@@ -11,6 +9,9 @@ import GalleryText from "./Gallery/GalleryText"
 import GallaryBG from "./Gallery/GallaryBG";
 import CallBackModal from "../../ModalComponents/CallBackModal";
 import PopUpBase from "../../PopUpBase";
+import LabelLoader from "../../ModalComponents/LabelLoader";
+
+import { getHomePageContent } from "../../../queries/getHomePageContent";
 
 const gallary = [
     {
@@ -45,34 +46,35 @@ const gallary = [
     }
     ]
 
-
 export default function Hello({HelloLangChecker, content, lang, api_cont}){
     const [image, setImage] = useState((gallary[0])["img"]);
     const[puState, setPU] = useState(false);
 
-    // console.log("is Hello:" ,api_cont);
 
     const imageChenger = (nImg) => {
         setImage(nImg);
     }
  
-    // function LangChecker(def, settings, lng){ 
-    //     return ((content[settings])[lng] === undefined) ? 
-    //     def : 
-    //     (content[settings])[lng];
-    // }
-
     return(
         <>
             <GallaryBG image={image}/>
             <div className={styles.HelloContent} id="CallBack">
                 <div className={styles.LeftBlock}>
                     <div>
-                        <MainLabel padding="140px">
-                            {HelloLangChecker(content,
-                            "ОБОРУДОВАНИЕ ДЛЯ ЛИФТОВ\nИ ЭСКАЛАТОРОВ"
-                            ,"Label", lang)}
-                        </MainLabel>
+
+                            <MainLabel padding="140px">
+                                {/* {api_cont.Title_RU} */}
+                                {/* {HelloLangChecker(content,
+                                "ОБОРУДОВАНИЕ ДЛЯ ЛИФТОВ\nИ ЭСКАЛАТОРОВ"
+                                ,"Label", lang)} */}
+
+                                <LabelLoader field={"Title_RU"} data={api_cont}
+                                LoadSizeInSymbols={26}
+                                />
+
+                            </MainLabel>
+
+                        
                         <h2>
                             {HelloLangChecker(content,
                                 "Lift your business up\nwith IST Elevator."
@@ -118,6 +120,11 @@ export default function Hello({HelloLangChecker, content, lang, api_cont}){
         </>
     )
 }
+
+
+
+
+
 
 // export async function getServerSideProps() {
 //     let api_cont = await getHomePageContent();

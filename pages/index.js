@@ -122,18 +122,33 @@ const Languages = {
 
 
 
-export default function Index({api_cont}){
+export default function Index(){
     const[globalLng, setLang] = useState("eng");
     const[height, setHeight] = useState(0);
 
+
+    const[helloPageData, setHelloPageData] = useState();
     // const {status, data: homePageContent, error, isFetching, isSuccess} = useQuery("HomePage_Main", async() => await getHomePageContent())
     
-    console.log("is_index: ", api_cont);
+    useEffect(()=>{
+        async function helloLoad(){
+            const response = await getHomePageContent();
+            setHelloPageData(response);
+        }
+
+        if(!helloPageData){
+            helloLoad();
+        }
+    },[]);
+
     
+    // useEffect(()=>{
+    //     console.log("is_index: ", api_cont);
+    // });
+
     useEffect(()=>{
         setHeight(document.body.offsetHeight);
-        // Index.getInitialProps();
-
+        
     },[]);
 
     function ToggleLang(){
@@ -165,9 +180,6 @@ export default function Index({api_cont}){
                 закончу с нынешним шаблоном
             </InfoOfDev> */}
 
-
-
-
             <Progress/>
 
             <LangSwitcher
@@ -181,7 +193,8 @@ export default function Index({api_cont}){
                 <Hello
                 HelloLangChecker={LangChecker}
                 content={HelloContent}
-                lang={globalLng}/>
+                lang={globalLng}
+                api_cont = {helloPageData}/>
 
                 <ProductDemo
                 PDLangChecker={LangChecker}
@@ -191,12 +204,12 @@ export default function Index({api_cont}){
                 <AttachPage/>
 
 
+
                 <ProductDemo
                 PDLangChecker={LangChecker}
                 content={PDContent}
                 lang={globalLng}/>
 
-                
                 <ProductDemo
                 PDLangChecker={LangChecker}
                 content={PDContent}
@@ -218,8 +231,8 @@ export default function Index({api_cont}){
 }
 
 
-Index.getInitialProps = async () => {
-    let api_cont = await getHomePageContent();
-    console.log("::", api_cont);
-    return {api_cont};
-}
+// Index.getInitialProps = async () => {
+//     let api_cont = await getHomePageContent();
+//     console.log("::", api_cont);
+//     return {api_cont}
+// }

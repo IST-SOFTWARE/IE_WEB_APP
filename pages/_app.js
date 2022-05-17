@@ -1,7 +1,6 @@
 import { useState, useEffect, useContext } from "react";
 import App from "next/app";
 
-
 import '../styles/global.css'
 import Header from '../components/Header/Header'
 import Catalog from "../components/Catalog/Catalog";
@@ -14,9 +13,8 @@ import PageLevelsVisContext from "../components/Context/PageLevelsVisContext";
 import { getHomePageContent } from "../queries/getHomePageContent";
 
 
-export default function MyApp({Component, PageProps, api_cont}){
+export default function MyApp({Component, PageProps}){
 
-    console.log("2", api_cont);
 
     // FOR SHOW/HIDE PAGE LEVELS IN MOBILE
     const[mobilePageLevels, setPageLevelsVis] = useState(true);
@@ -87,23 +85,41 @@ export default function MyApp({Component, PageProps, api_cont}){
     )
 }
 
-MyApp.getInitialProps = async (context) => {
-    const pageProps = await App.getInitialProps(context); // Retrieves page's `getInitialProps`
-    let api_cont = await getHomePageContent();
-    return {
-        ...pageProps,
-        api_cont
-    };
-};
 
-// MyApp.getInitialProps = async () => {
-    
-//     return {api_cont};
-// }
+// App.getInitialProps = async ({Component, ctx}) => {
+//     let pageProps = {};
+//     if(Component.getInitialProps){
+//       pageProps = await Component.getInitialProps(ctx)
+//     }
+//     return {pageProps};
+//   }
 
-// export async function getServerSideProps() {
+// MyApp.getInitialProps = async (appContext) => {
+//     const appProps = await App.getInitialProps(appContext)
+//     return { ...appProps }
+//   }
+
+
+
+
+// MyApp.getInitialProps = async (context) => {
+//     const pageProps = await App.getInitialProps(context); // Retrieves page's `getInitialProps`
 //     let api_cont = await getHomePageContent();
-//     console.log("1", api_cont);
-//     return {props: {api_cont}}
-// }
+//     console.log(pageProps, api_cont);
+//     return {
+//         ...pageProps,
+//         api_cont
+//     };
+// };
+
+// // MyApp.getInitialProps = async () => {
+    
+// //     return {api_cont};
+// // }
+
+// // export async function getServerSideProps() {
+// //     let api_cont = await getHomePageContent();
+// //     console.log("1", api_cont);
+// //     return {props: {api_cont}}
+// // }
 
