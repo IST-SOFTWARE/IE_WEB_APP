@@ -14,6 +14,29 @@
     row-gap: 34px; */
 
 }
+.gtBlock.unload{
+     animation-duration: 1.7s;
+    animation-fill-mode: forwards;
+    animation-iteration-count: infinite;
+    animation-name: placeHolderShimmer;
+    animation-timing-function:  cubic-bezier(0.1, 0.7, 0.1);
+    background: transparent;
+    background: linear-gradient(90deg, rgba(44, 54, 65, 0.3) 0%, rgba(147,195,248,0.15) 50%, rgba(44, 54, 65, 0.3) 100%);
+    background-size: 1000px 640px;
+    max-width: 570px;
+    position: relative;
+}
+
+
+@keyframes placeHolderShimmer{
+    0%{
+        background-position: -350px 0
+    }
+    100%{
+        background-position: 650px 0
+    }
+}
+
 .textBlock{
     width: 580px;
     height: max-content;

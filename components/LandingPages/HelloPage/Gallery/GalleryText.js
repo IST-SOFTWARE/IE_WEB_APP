@@ -90,7 +90,9 @@ export default function GallaryText(props) {
     ) :
     (
         <>
-        
+            <div className={styles.gtBlock + " " + styles.unload}>
+
+            </div>
         </>
     )
 }
