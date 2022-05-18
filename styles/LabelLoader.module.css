@@ -2,7 +2,7 @@
     /* background-color: #000; */
     font-weight: normal;
     color: transparent;
-   
+    margin: 3px 0px;
     height: fit-content;   
     cursor: context-menu;
 
@@ -12,7 +12,7 @@
     animation-name: placeHolderShimmer;
     animation-timing-function:  cubic-bezier(0.1, 0.7, 0.1);
     background: transparent;
-    background: linear-gradient(150deg, rgba(2,0,36,0) 0%, rgba(147,195,248,0.3) 100%);
+    background: linear-gradient(150deg, rgba(44, 54, 65, 0.3) 0%, rgba(147,195,248,0.3) 100%);
     background-size: 1000px 640px;
     
     position: relative;

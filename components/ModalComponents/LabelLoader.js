@@ -14,17 +14,17 @@ export default function LabelLoader({data, field, LoadSizeInSymbols, LoadSizeTex
             }
             result+= characters;
        }
-
+       
        return result;
 
-       var arr = result.split(/\s+/);
-        for(var i = 0; i < arr.length; i++)
-        {
-            if(arr[i]){
-                arr[i] = '<span className={styles.Loader}>'+arr[i]+'</span>';
-            }
-        }
-       return arr.join('');
+    //    var arr = result.split(/\s+/);
+    //     for(var i = 0; i < arr.length; i++)
+    //     {
+    //         if(arr[i]){
+    //             arr[i] = '<span className={styles.Loader}>'+arr[i]+'</span>';
+    //         }
+    //     }
+    //    return arr.join('');
     
     }
 
@@ -69,7 +69,7 @@ export default function LabelLoader({data, field, LoadSizeInSymbols, LoadSizeTex
             const res_keys = Object.keys(data);
             if(res_keys.includes(field)){
                 const return_val = Object.getOwnPropertyDescriptor(data, field).value;
-                setReturn(return_val);
+                setReturn(return_val.replace("\\n", "\n"));
             }
         }
     },[isLoaded])

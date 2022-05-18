@@ -76,9 +76,13 @@ export default function Hello({HelloLangChecker, content, lang, api_cont}){
 
                         
                         <h2>
-                            {HelloLangChecker(content,
+                            {/* {HelloLangChecker(content,
+                        
                                 "Lift your business up\nwith IST Elevator."
-                                ,"Tagline", lang)}
+                                ,"Tagline", lang)} */}
+                                <LabelLoader field={"TagLine"} data={api_cont}
+                                LoadSizeInSymbols={15}
+                                />
                         </h2>
                     </div>
 

@@ -7,6 +7,7 @@ export const getHomePageContent = async() => {
             HomePage_Main{
                 Title
                 Title_RU
+                TagLine
             }
         }
         `,
