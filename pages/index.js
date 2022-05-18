@@ -130,6 +130,8 @@ export default function Index(){
     const[helloPageData, setHelloPageData] = useState();
     // const {status, data: homePageContent, error, isFetching, isSuccess} = useQuery("HomePage_Main", async() => await getHomePageContent())
     
+
+    // [1] MainPage get data
     useEffect(()=>{
         async function helloLoad(){
             const response = await getHomePageContent();

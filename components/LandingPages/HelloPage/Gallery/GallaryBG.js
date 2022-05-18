@@ -20,6 +20,7 @@ const rgbDataURL = (r, g, b) =>
 
 export default function GallaryBG({image}){
 
+    const [isLoaded, setLoad] = useState(false);
 
     const [imgSize, setSize] = useState(
         {
@@ -32,8 +33,14 @@ export default function GallaryBG({image}){
     //     lImg = document.querySelector("#lilImgBg");
     // },[image]);
 
+    useEffect(()=>{
+        if(image && image !== null){
+            setLoad(true);
+        }
+    })
 
     useEffect(()=>{
+        if(isLoaded){
         setTimeout(() => {
             let lImg = document.querySelector("#lilImgBg");
             setSize(
@@ -43,10 +50,11 @@ export default function GallaryBG({image}){
                     }
                 )
         }, 150);
-            console.log(imgSize);
-    },[])
+    }
+            // console.log(imgSize);
+    },[isLoaded])
 
-    return(
+    return isLoaded ? (
         <>
             <div className="GallaryBlock">
                 <img src={image} width="0px" id="lilImgBg"/>
@@ -78,5 +86,14 @@ export default function GallaryBG({image}){
                 }
             `}</style>
         </>
+    ) :
+    (
+        <>
+        <div className="GallaryBlock">
+
+        </div>
+
+    </>
     )
+                
 }

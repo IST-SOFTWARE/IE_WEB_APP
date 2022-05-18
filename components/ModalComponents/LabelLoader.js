@@ -60,7 +60,7 @@ export default function LabelLoader({data, field, LoadSizeInSymbols, LoadSizeTex
 
 
     useEffect(() => {
-        if(data !== undefined)
+        if(data !== undefined && data !== null)
             setLoaded(true);
     });
 
