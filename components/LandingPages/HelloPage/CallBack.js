@@ -63,13 +63,13 @@ export default function CallBack({cbLangChecker, lContent, lng, puProvider, api_
                 {/* {cbLangChecker(lContent,                    
                 "Наш телефон"
                 ,"SendFormPhoneTitle", lng) + ": "} */}
-                Наш телефон:&nbsp;
+                
                     <a>
                     {/* {cbLangChecker(lContent,               
                     "+7(000)000-00-00"
                     ,"CompanyPhone", lng)} */}
                     {callBackData
-                    ? callBackData.Phone_Num_Ru : ""}
+                    ? "Наш телефон: " + callBackData.Phone_Num_Ru : ""}
                     </a>
 
                 </p>
