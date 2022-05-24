@@ -12,6 +12,11 @@ export const getProdDemoPageContent = async() => {
                 Linker
                 Linker_Ru
             }
+            ProdDemo_Cards{
+                id
+                Image
+                Title
+            }
         }
         `,
         {
@@ -19,6 +24,6 @@ export const getProdDemoPageContent = async() => {
         }
     )
     
-
-    return data.data.Home_Page_our_products;
+        // console.log(data);
+    return data.data;
 }

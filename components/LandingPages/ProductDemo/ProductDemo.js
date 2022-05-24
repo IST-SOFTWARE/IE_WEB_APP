@@ -10,10 +10,17 @@ import PopUpBase from "../../PopUpBase";
 import CallBackModal from "../../ModalComponents/CallBackModal";
 
 import LabelLoader from "../../ModalComponents/LabelLoader";
+import ComponentLoader from "../../ComponentLoader";
 
-export default function ProductDemo({PDLangChecker, content, lang, api_cont}){
+export default function ProductDemo({PDLangChecker, content, lang, api_cont, callBack_api}){
+    
     const[puState, setPU] = useState(false);
-    const[linkerValue, setLinkerValue] = useState();
+    const [compLoaderData, setCompLoaderData] = useState();     // For Pop-Up
+
+    const[linkerValue, setLinkerValue] = useState();            // For Linker
+
+    const [pdPageData, setPdData] = useState();                 // For MainCont
+    const [cardsData, setCardsData] = useState();               // For Cards
 
     const parallax = useCallback((e) => {
         document.querySelectorAll('.bg_item').forEach(element => {
@@ -34,9 +41,13 @@ export default function ProductDemo({PDLangChecker, content, lang, api_cont}){
         document.querySelector("#AnyQ").innerHTML = AnyQ;
     })
     
-    // useEffect(()=>{
-    //     api_cont ? setIsLoaded(true) : setIsLoaded(false);
-    // })
+    useEffect(()=>{
+        if(api_cont){
+            setPdData(api_cont.Home_Page_our_products);
+            setCardsData(api_cont.ProdDemo_Cards);
+            console.log(cardsData);
+        }
+    })
 
     useEffect(()=>{
         if(linkerValue){
@@ -46,6 +57,7 @@ export default function ProductDemo({PDLangChecker, content, lang, api_cont}){
 
     useEffect(()=>{
         document.addEventListener("mousemove", parallax);
+        
     },[])
 
     return(
@@ -57,7 +69,7 @@ export default function ProductDemo({PDLangChecker, content, lang, api_cont}){
                     {/* {PDLangChecker(content,
                                 "БОЛЬШОЙ ВЫБОР ЗАПЧАСТЕЙ\nДЛЯ ГРУЗОПОДЪЕМНОЙ\nТЕХНИКИ"
                                 ,"Label", lang)} */}
-                        <LabelLoader LoadSizeInSymbols={30} field={"Title_Ru"} data={api_cont}/>
+                        <LabelLoader LoadSizeInSymbols={30} field={"Title_Ru"} data={pdPageData}/>
                     </MainLabel>
                 </div>
                 <div className={styles.prTypesList}>
@@ -93,14 +105,18 @@ export default function ProductDemo({PDLangChecker, content, lang, api_cont}){
                             "Возникли вопросы?"
                             ,"AnyQuestions", lang)} */}
 
-                            <LabelLoader LoadSizeInSymbols={30} field={"Have_q_label_Ru"} data={api_cont}/>
+                            <LabelLoader LoadSizeInSymbols={18} field={"Have_q_label_Ru"} data={pdPageData}/>
                     </h3>
+
                     <p id="AnyQ" onClick={()=>setPU(true)}>
-                            <LabelLoader LoadSizeInSymbols={15} field={"Linker_Ru"} data={api_cont} stateSetter={setLinkerValue}/>
-                            {linkerValue}
-                    {/* {PDLangChecker(content,
-                            "Оставь {заявку} и мы перезвоним!"
-                            ,"LeaveReq", lang)} */}
+                   
+                        <LabelLoader LoadSizeInSymbols={15} field={"Linker_Ru"} data={pdPageData} stateSetter={setLinkerValue}/>
+                        {linkerValue}
+                        
+                        {/* {PDLangChecker(content,
+                        "Оставь {заявку} и мы перезвоним!"
+                        ,"LeaveReq", lang)} */}
+             
                     </p>
                 </div>
 
@@ -131,13 +147,17 @@ export default function ProductDemo({PDLangChecker, content, lang, api_cont}){
 
             </div>
 
-            <PopUpBase puState={puState} closer={setPU} header="Заказать звонок" paragraph="Есть вопросы? Оставь заявку, а мы перезвоним!">
-                <CallBackModal
-                backImg={"https://res.cloudinary.com/dv9xitsjg/image/upload/v1645444475/ProdDemoBG/BG_ZAP_lj0igf.png"}
-                />
+
+            <PopUpBase puState={puState} closer={setPU}
+                header={compLoaderData ? compLoaderData.CallBack_Title_Ru : ""}
+                paragraph={compLoaderData ? compLoaderData.CallBack_subtitle_Ru : ""}
+                >
+                    <ComponentLoader data={callBack_api} data_setter={setCompLoaderData}>
+                        <CallBackModal
+                        backImg={compLoaderData ? compLoaderData.BackImage : ""}
+                        actPhone={compLoaderData ? compLoaderData.Phone_Num_Ru : ""}/>    
+                    </ComponentLoader>        
             </PopUpBase>
-
-
         
         </>
     );
