@@ -124,8 +124,6 @@ export default function ProductDemo({PDLangChecker, content, lang}){
             <PopUpBase puState={puState} closer={setPU} header="Заказать звонок" paragraph="Есть вопросы? Оставь заявку, а мы перезвоним!">
                 <CallBackModal
                 backImg={"https://res.cloudinary.com/dv9xitsjg/image/upload/v1645444475/ProdDemoBG/BG_ZAP_lj0igf.png"}
-                w={1920}
-                h={1147}
                 />
             </PopUpBase>
 

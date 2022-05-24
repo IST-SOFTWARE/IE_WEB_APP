@@ -11,6 +11,8 @@ import InfoOfDev from "../components/InfoOfDev";
 
 import { getHomePageContent } from "../queries/getHomePageContent";
 import { getCallBackModuleContent } from "../queries/getCallBackModuleContent";
+import { getProdDemoPageContent } from "../queries/getProdDemoPageContent";
+
 const HeaderContent = {
     "CatalogTitle":{
         "ru": "Каталог",
@@ -129,6 +131,7 @@ export default function Index(){
 
     const[helloPageData, setHelloPageData] = useState();
     const[callBackReqContent, setcallBackReqContent] = useState();
+    const[prodDemoContent, setProdDemoContent]= useState();
     // const {status, data: homePageContent, error, isFetching, isSuccess} = useQuery("HomePage_Main", async() => await getHomePageContent())
     
 
@@ -154,6 +157,18 @@ export default function Index(){
 
         if(!callBackReqContent){
             CallBack();
+        }
+    },[]);
+
+    // [2] ProdDemo get data
+    useEffect(()=>{
+        async function ProdLoad(){
+            const response = await getProdDemoPageContent();
+            setProdDemoContent(response);
+        }
+
+        if(!prodDemoContent){
+            ProdLoad();
         }
     },[]);
 

@@ -1,8 +1,9 @@
 import { useState, useEffect} from "react";
 import styles from "../../styles/ModalComponents/ModalBase.module.css";
 import Image from "next/image";
+import NextImageRatioSaver from "../NextImageRatioSaver"
 
-export default function CallBackModal({backImg, w, h}){
+export default function CallBackModal({backImg, actPhone}){
     const[callUser, setCallUser] = useState({
         name: "",
         phone: "",
@@ -11,6 +12,7 @@ export default function CallBackModal({backImg, w, h}){
 
     useEffect(() => {
         backImg !== undefined ? setBgImg(backImg) : setBgImg("/null_bg.png");
+        // console.log(backImg);
     },[])
 
     return(
@@ -35,14 +37,21 @@ export default function CallBackModal({backImg, w, h}){
                     Отправить
                 </button>
 
-                <a>+7(000)000-00-00</a>
+                <a>{actPhone}</a>
                 <div className={styles.PUbackImg}>
-                    <Image
-                        src={backImgUrl}
-                        width={w}
-                        height={h}
+                    <NextImageRatioSaver
+                        Img={backImgUrl}
+                        unique={"pop_up_back_image"}
                         q={50}
-                    />
+                        wPrime={true}
+                    >
+                    </NextImageRatioSaver>
+                    {/* <Image
+                        src={backImgUrl}
+                        width={w !== undefined ? w : 0}
+                        height={h !== undefined ? h : 0}
+                        q={50}
+                    /> */}
                 </div>
             </div>
             

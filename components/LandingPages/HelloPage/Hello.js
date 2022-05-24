@@ -11,7 +11,7 @@ import CallBackModal from "../../ModalComponents/CallBackModal";
 import PopUpBase from "../../PopUpBase";
 import LabelLoader from "../../ModalComponents/LabelLoader";
 
-import { getHomePageContent } from "../../../queries/getHomePageContent";
+import ComponentLoader from "../../ComponentLoader";
 
 // const gallary = [
 //     {
@@ -50,6 +50,8 @@ export default function Hello({HelloLangChecker, content, lang, api_cont, callBa
 
     const [pageContent, setPageContent] = useState(null);
     const [pageGallery, setGalleryContent] = useState(null);
+
+    const [compLoaderData, setCompLoaderData] = useState();
 
     useEffect(()=>{
         if(api_cont && api_cont !== null){
@@ -118,9 +120,10 @@ export default function Hello({HelloLangChecker, content, lang, api_cont, callBa
                                      
                     <ScrollDown
                         text=
-                        {HelloLangChecker(content,
-                        "Листай вниз"
-                        ,"ScrollDown", lang)}
+                        // {HelloLangChecker(content,
+                        // "Листай вниз"
+                        // ,"ScrollDown", lang)}
+                        {"Листай вниз"}
                     />
                 </div>
 
@@ -141,8 +144,15 @@ export default function Hello({HelloLangChecker, content, lang, api_cont, callBa
                 </div>
             </div>
 
-            <PopUpBase puState={puState} closer={setPU} header="Заказать звонок">
-                        <CallBackModal/>
+            <PopUpBase puState={puState} closer={setPU}
+                header={compLoaderData ? compLoaderData.CallBack_Title_Ru : ""}
+                paragraph={compLoaderData ? compLoaderData.CallBack_subtitle_Ru : ""}
+                >
+                    <ComponentLoader data={callBack_api} data_setter={setCompLoaderData}>
+                        <CallBackModal
+                        backImg={compLoaderData ? compLoaderData.BackImage : ""}
+                        actPhone={compLoaderData ? compLoaderData.Phone_Num_Ru : ""}/>    
+                    </ComponentLoader>        
             </PopUpBase>
         </>
     )
