@@ -9,10 +9,12 @@ import PDBackImg from "./PDBackImg";
 import PopUpBase from "../../PopUpBase";
 import CallBackModal from "../../ModalComponents/CallBackModal";
 
+import LabelLoader from "../../ModalComponents/LabelLoader";
 
-export default function ProductDemo({PDLangChecker, content, lang}){
+export default function ProductDemo({PDLangChecker, content, lang, api_cont}){
     const[puState, setPU] = useState(false);
-    
+    const[linkerValue, setLinkerValue] = useState();
+
     const parallax = useCallback((e) => {
         document.querySelectorAll('.bg_item').forEach(element => {
             const speed = element.getAttribute('data-speed');
@@ -24,6 +26,7 @@ export default function ProductDemo({PDLangChecker, content, lang}){
         });
     }, []);
 
+    
     const linker = useCallback(()=>{
         let AnyQ = document.querySelector("#AnyQ").innerHTML;
         AnyQ = AnyQ.replace(/\{/gi, "<a>");
@@ -31,16 +34,18 @@ export default function ProductDemo({PDLangChecker, content, lang}){
         document.querySelector("#AnyQ").innerHTML = AnyQ;
     })
     
-
-
+    // useEffect(()=>{
+    //     api_cont ? setIsLoaded(true) : setIsLoaded(false);
+    // })
 
     useEffect(()=>{
-        linker();
-    },[lang])
+        if(linkerValue){
+                linker();
+        }
+    },[linkerValue])
 
     useEffect(()=>{
         document.addEventListener("mousemove", parallax);
-
     },[])
 
     return(
@@ -49,9 +54,10 @@ export default function ProductDemo({PDLangChecker, content, lang}){
             <div className={styles.ProductDemo}>
                 <div className={styles.PrDemoLabel} style={{zIndex:1}}>
                     <MainLabel padding="130px">
-                    {PDLangChecker(content,
+                    {/* {PDLangChecker(content,
                                 "БОЛЬШОЙ ВЫБОР ЗАПЧАСТЕЙ\nДЛЯ ГРУЗОПОДЪЕМНОЙ\nТЕХНИКИ"
-                                ,"Label", lang)}
+                                ,"Label", lang)} */}
+                        <LabelLoader LoadSizeInSymbols={30} field={"Title_Ru"} data={api_cont}/>
                     </MainLabel>
                 </div>
                 <div className={styles.prTypesList}>
@@ -83,14 +89,18 @@ export default function ProductDemo({PDLangChecker, content, lang}){
                 </div>
                 <div className={styles.helpBlock}>
                     <h3>
-                    {PDLangChecker(content,
+                    {/* {PDLangChecker(content,
                             "Возникли вопросы?"
-                            ,"AnyQuestions", lang)}
+                            ,"AnyQuestions", lang)} */}
+
+                            <LabelLoader LoadSizeInSymbols={30} field={"Have_q_label_Ru"} data={api_cont}/>
                     </h3>
                     <p id="AnyQ" onClick={()=>setPU(true)}>
-                    {PDLangChecker(content,
+                            <LabelLoader LoadSizeInSymbols={15} field={"Linker_Ru"} data={api_cont} stateSetter={setLinkerValue}/>
+                            {linkerValue}
+                    {/* {PDLangChecker(content,
                             "Оставь {заявку} и мы перезвоним!"
-                            ,"LeaveReq", lang)}
+                            ,"LeaveReq", lang)} */}
                     </p>
                 </div>
 

@@ -231,7 +231,8 @@ export default function Index(){
                 <ProductDemo
                 PDLangChecker={LangChecker}
                 content={PDContent}
-                lang={globalLng}/>
+                lang={globalLng}
+                api_cont={prodDemoContent}/>
 
                 <AttachPage/>
 

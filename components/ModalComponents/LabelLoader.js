@@ -1,7 +1,7 @@
 import { useEffect, useState} from "react"
 import styles from "../../styles/LabelLoader.module.css"
 
-export default function LabelLoader({data, field, LoadSizeInSymbols, LoadSizeText}){
+export default function LabelLoader({data, field, LoadSizeInSymbols, LoadSizeText, stateSetter}){
 
     function generate_string(length) {
         var result           = '';
@@ -36,7 +36,6 @@ export default function LabelLoader({data, field, LoadSizeInSymbols, LoadSizeTex
         "Loading..."
     );
 
-
     useEffect(()=>{
         if(LoadSizeInSymbols)
             setLoadSymbols(LoadSizeInSymbols);
@@ -51,12 +50,11 @@ export default function LabelLoader({data, field, LoadSizeInSymbols, LoadSizeTex
             setLoadSymbols(15);
     },[])
 
-    useEffect(()=>{
-        if(!isLoaded && laodSymbols){
-            setLoadingVal(generate_string(laodSymbols));
-        }
-    },[isLoaded, laodSymbols])
-
+    // useEffect(()=>{
+    //     if(stateSetter){
+    //         setReturnValMode(false);
+    //     }
+    // },[stateSetter])
 
 
     useEffect(() => {
@@ -64,18 +62,30 @@ export default function LabelLoader({data, field, LoadSizeInSymbols, LoadSizeTex
             setLoaded(true);
     });
 
+
+    useEffect(()=>{
+        if(!isLoaded && laodSymbols){
+            setLoadingVal(generate_string(laodSymbols));
+        }
+    },[isLoaded, laodSymbols])
+
+
     useEffect(() => {   
         if(isLoaded){
             const res_keys = Object.keys(data);
             if(res_keys.includes(field)){
                 const return_val = Object.getOwnPropertyDescriptor(data, field).value;
-                setReturn(return_val.replace("\\n", "\n"));
+                setReturn(return_val.replaceAll("\\n", "\n"));
+                if(stateSetter){
+                    stateSetter(return_val);
+                }
             }
         }
     },[isLoaded])
 
-    return (isLoaded) ? 
-        returnVal
+    return (isLoaded) ? (
+        !stateSetter ? returnVal : ""
+    )
     :
     (
         <>
