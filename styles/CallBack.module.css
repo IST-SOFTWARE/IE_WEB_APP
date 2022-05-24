@@ -19,6 +19,10 @@
     box-shadow: none;
 
     position: relative;
+
+}
+.BaseBlock.unload *{
+    display: none;
 }
 
 @keyframes placeHolderShimmer{
