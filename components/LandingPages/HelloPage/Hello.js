@@ -46,11 +46,10 @@ import { getHomePageContent } from "../../../queries/getHomePageContent";
 //     }
 //     ]
 
-export default function Hello({HelloLangChecker, content, lang, api_cont}){
+export default function Hello({HelloLangChecker, content, lang, api_cont, callBack_api}){
 
     const [pageContent, setPageContent] = useState(null);
     const [pageGallery, setGalleryContent] = useState(null);
-
 
     useEffect(()=>{
         if(api_cont && api_cont !== null){
@@ -74,6 +73,8 @@ export default function Hello({HelloLangChecker, content, lang, api_cont}){
     const imageChenger = (nImg) => {
         setImage(nImg);
     }
+
+ 
 
     return(
         <>
@@ -111,6 +112,7 @@ export default function Hello({HelloLangChecker, content, lang, api_cont}){
                     lContent = {content}
                     lng={lang}
                     puProvider={setPU}
+                    api_data = {callBack_api}
                     />       
                     
                                      

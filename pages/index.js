@@ -10,7 +10,7 @@ import LangSwitcher from "../components/LangSwitcher"
 import InfoOfDev from "../components/InfoOfDev";
 
 import { getHomePageContent } from "../queries/getHomePageContent";
-
+import { getCallBackModuleContent } from "../queries/getCallBackModuleContent";
 const HeaderContent = {
     "CatalogTitle":{
         "ru": "Каталог",
@@ -128,6 +128,7 @@ export default function Index(){
 
 
     const[helloPageData, setHelloPageData] = useState();
+    const[callBackReqContent, setcallBackReqContent] = useState();
     // const {status, data: homePageContent, error, isFetching, isSuccess} = useQuery("HomePage_Main", async() => await getHomePageContent())
     
 
@@ -140,6 +141,19 @@ export default function Index(){
 
         if(!helloPageData){
             helloLoad();
+        }
+    },[]);
+
+
+    //[CallBack Req] 
+    useEffect(()=>{
+        async function CallBack(){
+            const response = await getCallBackModuleContent();
+            setcallBackReqContent(response);
+        }
+
+        if(!callBackReqContent){
+            CallBack();
         }
     },[]);
 
@@ -196,7 +210,8 @@ export default function Index(){
                 HelloLangChecker={LangChecker}
                 content={HelloContent}
                 lang={globalLng}
-                api_cont = {helloPageData}/>
+                api_cont = {helloPageData}
+                callBack_api = {callBackReqContent}/>
 
                 <ProductDemo
                 PDLangChecker={LangChecker}

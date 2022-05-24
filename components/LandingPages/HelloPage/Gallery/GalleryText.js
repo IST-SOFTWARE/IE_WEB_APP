@@ -29,7 +29,7 @@ export default function GallaryText(props) {
             }
             else{
                 setLoad(true);
-                console.log();
+                // console.log();
             }
 
         }
@@ -41,7 +41,7 @@ export default function GallaryText(props) {
         if(imageLoaded){
             setId((mainGallery[0])["id"]);
             setSlide((mainGallery[0])["eng"]);
-            console.log(mainGallery);
+            // console.log(mainGallery);
         }
     },[imageLoaded]);
 
