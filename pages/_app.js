@@ -9,7 +9,9 @@ import NextNProgress from 'nextjs-progressbar'
 import Head from 'next/head'
 import CatalogContext from "../components/Context/CatalogContext"
 import PageLevelsVisContext from "../components/Context/PageLevelsVisContext";
+import { QueryClient, QueryClientProvider, useQuery } from 'react-query'
 
+const queryClient = new QueryClient()
 
 
 export default function MyApp({Component, PageProps}){
@@ -58,6 +60,8 @@ export default function MyApp({Component, PageProps}){
                 <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet"/>
 
             </Head>
+
+            <QueryClientProvider client={queryClient}>
             <NextNProgress
             color="#29D"
             startPosition={0.3}
@@ -79,7 +83,7 @@ export default function MyApp({Component, PageProps}){
 
             </CatalogContext.Provider>
             </PageLevelsVisContext.Provider>
-       
+            </QueryClientProvider>
         </>
     )
 }

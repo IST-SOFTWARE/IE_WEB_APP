@@ -72,33 +72,41 @@ export default function ProductDemo({PDLangChecker, content, lang, api_cont, cal
                         <LabelLoader LoadSizeInSymbols={30} field={"Title_Ru"} data={pdPageData}/>
                     </MainLabel>
                 </div>
+
                 <div className={styles.prTypesList}>
-                    <PrTypeCard img={(content["1stCard"])["img"]} crop= "1.3"
-                        text={PDLangChecker(content,
-                            "Запчасти для лифтов"
-                            ,"1stCard", lang)}
-                    />
-                    <PrTypeCard img={(content["2ndCard"])["img"]} crop= "0.95"
-                            text={PDLangChecker(content,
-                            "Запчасти для лифтов"
-                            ,"2ndCard", lang)}
-                    />
-                    <PrTypeCard img={(content["3thCard"])["img"]} crop= "0.9"
-                            text={PDLangChecker(content,
-                            "Запчасти для лифтов"
-                            ,"3thCard", lang)}
-                    />
+                    <ComponentLoader data={cardsData} margin={20} fill_percent={75}>
 
-                    <div className={styles.openCatalogCard}>
-                        <img src="/op_catalog.svg" width="95px"/>
-                        <p>
-                        {PDLangChecker(content,
-                            "Открыть каталог"
-                            ,"OpenCatalog", lang)}
-                        </p>
-                    </div>
+                        <PrTypeCard img={
+                            cardsData ? cardsData[0].Image : null
+                        } crop= "1.3"
+                            text={cardsData ? cardsData[0].Title : null}
+                        />
 
+                        <PrTypeCard img={
+                            cardsData ? cardsData[1].Image : null
+                        } crop= "0.95"
+                            text={cardsData ? cardsData[1].Title : null}
+                        />
+
+                        <PrTypeCard img={
+                            cardsData ? cardsData[2].Image : null
+                        }crop= "0.9"
+                            text={cardsData ? cardsData[2].Title : null}
+                        />
+
+                        <div className={styles.openCatalogCard}>
+                            <img src="/op_catalog.svg" width="95px"/>
+                            <p>
+                            {PDLangChecker(content,
+                                "Открыть каталог"
+                                ,"OpenCatalog", lang)}
+                            </p>
+                        </div>
+
+                    </ComponentLoader>
                 </div>
+
+
                 <div className={styles.helpBlock}>
                     <h3>
                     {/* {PDLangChecker(content,

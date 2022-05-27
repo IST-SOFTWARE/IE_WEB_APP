@@ -1,7 +1,7 @@
 import { useEffect, useState} from "react"
 import styles from "../styles/LabelLoader.module.css"
 
-export default function ComponentLoader({data, children, data_setter}){
+export default function ComponentLoader({data, children, data_setter, margin, fill_percent}){
 
     const[isLoaded, setLoaded] = useState(false);
     const[returnVal, setReturn] = useState("Loading Error...");
@@ -14,7 +14,9 @@ export default function ComponentLoader({data, children, data_setter}){
 
     useEffect(() => {   
         setReturn(data);
-        data_setter(data);
+        if(data_setter){
+            data_setter(data);
+        }
     },[isLoaded])
 
     return (isLoaded) ? (
@@ -25,7 +27,21 @@ export default function ComponentLoader({data, children, data_setter}){
     :
     (
         <>
-            <div className={styles.ComponentLoader}>
+            <div className={styles.ComponentLoader} style={
+            margin && fill_percent ? {
+                marginTop: margin + "px",
+                width : fill_percent + "%",
+
+                marginLeft: 50 + "%",
+                transform: "translateX(-50%)",
+
+            } : margin ? {
+                marginTop: margin + "px"
+            } : fill_percent ? {
+                width : fill_percent + "%",
+                
+            } : null}
+            >
                
             </div>
         </>

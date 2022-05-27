@@ -1,11 +1,18 @@
 import styles from "../../../styles/CallBack.module.css"
 import MobileBtn from "../../MobileComponents/MobileBtn"
 import { useEffect, useState } from "react";
+import setData from "../../../helpers/setCallBackReq";
+import { CreateCallBack } from "../../../queries/CallBack";
+import { Query, useMutation } from "react-query";
 
 export default function CallBack({cbLangChecker, lContent, lng, puProvider, api_data}) {
     
     const[callBackData, setCallBackData] = useState(null);
-
+    
+    const[client_name, setName] = useState("");
+    const[client_phone, setPhone] = useState("");
+    const mutation = useMutation((newSession) => {setData(CreateCallBack, {data: newSession})})
+  
     useEffect(()=>{
         setCallBackData(api_data);
     })
@@ -23,6 +30,10 @@ export default function CallBack({cbLangChecker, lContent, lng, puProvider, api_
         }
 
     },[callBackData])
+
+    function sendPhoneNum(num, phone){
+        setData(CreateCallBack, {data: {client_name, client_phone}})
+    }
 
     return(
         <>
@@ -42,6 +53,8 @@ export default function CallBack({cbLangChecker, lContent, lng, puProvider, api_
                             // "Имя"
                             // ,"SendFormName", lng) + ":"}
                             "Имя:"
+                            onChange={(e) => setName(e.target.value)}
+                            value={client_name}
                             
                         />
                         <input type="text" placeholder=
@@ -49,11 +62,15 @@ export default function CallBack({cbLangChecker, lContent, lng, puProvider, api_
                             // "Телефон"
                             // ,"SendFormPhone", lng) + ":"}
                             "Телефон:"
+
+                            onChange={(e) => setPhone(e.target.value)}
+                            value={client_phone}
                         />
-                        <button>
+                        <button onClick={(e) => {mutation.mutate({status: "draft"})}}>
                         {/* {cbLangChecker(lContent,                    
                             "Телефон"
                             ,"SendFormSender", lng)} */}
+                        
 
                         Отправить заявку
                         </button>

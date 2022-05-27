@@ -42,6 +42,7 @@
     padding-top: 10px;
     min-height: 330px;
     z-index: 1;
+    position: relative;
 }
 .openCatalogCard{
     width: 250px;
