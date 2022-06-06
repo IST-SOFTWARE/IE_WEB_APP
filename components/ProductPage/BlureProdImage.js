@@ -22,17 +22,20 @@ function parse_url(url) {
 
 export default function BlureProdImage(baseLink){
 
-    const[imagePath, setImPath] = useState("ProductsImages/" + parse_url(baseLink).script);
-    const[clUser, setUser] = useState(parse_url(baseLink).user);
-    const[outUrl, setUrl] = useState("");
-
+    const[imagePath, setImPath] = useState();
+    const[clUser, setUser] = useState();
+    const[outUrl, setUrl] = useState();
 
     useEffect(()=>{
+      if(baseLink){
+        setImPath("ProductsImages/" + parse_url(baseLink).script);
         setUser(parse_url(baseLink).user);
-        if(baseLink !== undefined){
-         
-        
+      }
+    })
 
+    useEffect(()=>{
+      if(clUser,imagePath, baseLink){
+        setUser(parse_url(baseLink).user);
         const src = buildUrl(imagePath, {
             cloud: {
               cloudName: clUser,
@@ -46,8 +49,8 @@ export default function BlureProdImage(baseLink){
           })
           
           setUrl(src);
-        }
-    }, [])
+      }
+    }, [imagePath, clUser, imagePath])
 
     // https://res.cloudinary.com/dv9xitsjg/image/upload/v1648111066/ProductsImages/reductor-glav-priv_y6ujmg.png
     return outUrl;

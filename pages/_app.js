@@ -10,30 +10,53 @@ import Head from 'next/head'
 import CatalogContext from "../components/Context/CatalogContext"
 import PageLevelsVisContext from "../components/Context/PageLevelsVisContext";
 import { QueryClient, QueryClientProvider, useQuery } from 'react-query'
+import {getProducts} from "../queries/getProducts"
+
+import { useRouter } from 'next/router'
 
 const queryClient = new QueryClient()
 
 
-export default function MyApp({Component, PageProps}){
 
+
+export default function MyApp({Component, pageProps}){
 
     // FOR SHOW/HIDE PAGE LEVELS IN MOBILE
     const[mobilePageLevels, setPageLevelsVis] = useState(true);
+    const[CatalogProducts, setCatalogProducts] = useState();
 
-
+    const[CatalogToggle, setCatalog] = useState(false);
+    
     const[ProductSearch, setProductSearch] = useState({
         s: ''
     })
+
+    const router = useRouter()
+    // GET CATALOG PRODUCTS
+    useEffect(()=>{
+        async function ProdLoad(){
+            const response = await getProducts();
+            setCatalogProducts(response);
+            // console.log(response);
+        }
+
+        if(!CatalogProducts){
+            ProdLoad();
+        }
+    },[]);
     
-    const[CatalogToggle, setCatalog] = useState(false);
-    
+
+    //CatalogVontyext VALUE
     const CatalogValue = {
         CatalogToggle,
         setCatalog,
 
         ProductSearch,
-        setProductSearch
+        setProductSearch,
+
+        CatalogProducts
     }
+
 
     useEffect(()=>{
         setPageLevelsVis(CatalogToggle);
@@ -47,7 +70,7 @@ export default function MyApp({Component, PageProps}){
 
     useEffect(()=>{
         setCatalog(false);
-    },[Component, PageProps])
+    },[Component, pageProps])
 
     return(
         <>
@@ -79,50 +102,18 @@ export default function MyApp({Component, PageProps}){
                 // lang = {globalLng}
             />
                 
-            <Component {...PageProps} />
+            <Component {...pageProps} key={router.asPath}/>
 
             </CatalogContext.Provider>
             </PageLevelsVisContext.Provider>
             </QueryClientProvider>
         </>
     )
+    
 }
 
-
-// App.getInitialProps = async ({Component, ctx}) => {
-//     let pageProps = {};
-//     if(Component.getInitialProps){
-//       pageProps = await Component.getInitialProps(ctx)
-//     }
-//     return {pageProps};
-//   }
-
 // MyApp.getInitialProps = async (appContext) => {
-//     const appProps = await App.getInitialProps(appContext)
-//     return { ...appProps }
-//   }
-
-
-
-
-// MyApp.getInitialProps = async (context) => {
-//     const pageProps = await App.getInitialProps(context); // Retrieves page's `getInitialProps`
-//     let api_cont = await getHomePageContent();
-//     console.log(pageProps, api_cont);
-//     return {
-//         ...pageProps,
-//         api_cont
-//     };
-// };
-
-// // MyApp.getInitialProps = async () => {
-    
-// //     return {api_cont};
-// // }
-
-// // export async function getServerSideProps() {
-// //     let api_cont = await getHomePageContent();
-// //     console.log("1", api_cont);
-// //     return {props: {api_cont}}
-// // }
-
+//     const PageProps = await App.getInitialProps(appContext);
+//     console.log(PageProps);
+//     return { ...PageProps }
+// }

@@ -2,7 +2,7 @@ import styles from "../../../styles/CallBack.module.css"
 import MobileBtn from "../../MobileComponents/MobileBtn"
 import { useEffect, useState } from "react";
 import setData from "../../../helpers/setCallBackReq";
-import { CreateCallBack } from "../../../queries/CallBack";
+import { CreateCallBack, updateCallBack } from "../../../queries/CallBack";
 import { Query, useMutation } from "react-query";
 
 export default function CallBack({cbLangChecker, lContent, lng, puProvider, api_data}) {
@@ -11,11 +11,37 @@ export default function CallBack({cbLangChecker, lContent, lng, puProvider, api_
     
     const[client_name, setName] = useState("");
     const[client_phone, setPhone] = useState("");
-    const mutation = useMutation((newSession) => {setData(CreateCallBack, {data: newSession})})
-  
+    const[isSessionSet, setSession] = useState(typeof window !== 'undefined' && localStorage.getItem('session_id') !== null)
+
+    const mutation = useMutation((newSession) => 
+    {
+        if(!isSessionSet){
+            setData(CreateCallBack, {data: newSession}).then(resp =>
+                {
+                    localStorage.setItem('session_id', resp.create_CB_Requests_item.id)
+                })
+            setSession(true);
+        }
+        else{
+            setData(updateCallBack, {data: newSession, id: localStorage.getItem('session_id')})
+        }
+    })
+    
+    const sendPhoneNum = () => {
+        mutation.mutate({
+            status: "draft",
+            cb_order:[
+                {
+                    client_name: client_name,
+                    client_phone: client_phone
+                }
+            ]
+        })
+    }
     useEffect(()=>{
         setCallBackData(api_data);
     })
+    
 
     useEffect(()=>{
         const callBack = document.querySelector(`.${styles.BaseBlock}`);
@@ -31,9 +57,6 @@ export default function CallBack({cbLangChecker, lContent, lng, puProvider, api_
 
     },[callBackData])
 
-    function sendPhoneNum(num, phone){
-        setData(CreateCallBack, {data: {client_name, client_phone}})
-    }
 
     return(
         <>
@@ -66,7 +89,7 @@ export default function CallBack({cbLangChecker, lContent, lng, puProvider, api_
                             onChange={(e) => setPhone(e.target.value)}
                             value={client_phone}
                         />
-                        <button onClick={(e) => {mutation.mutate({status: "draft"})}}>
+                        <button onClick={(e) => sendPhoneNum()}>
                         {/* {cbLangChecker(lContent,                    
                             "Телефон"
                             ,"SendFormSender", lng)} */}

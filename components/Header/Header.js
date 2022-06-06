@@ -19,12 +19,12 @@ export default function  Header({HeaderLangChecker, content, lang}){
                         <Logo
                         w="218"
                         h="65"
-                        href="./"/>
+                        href="/"/>
                     </div>
 
                     <div className={styles.HeaderMobLogo}>
                         <LogoMobile
-                            href="./"
+                            href="/"
                         />
                     </div>
 

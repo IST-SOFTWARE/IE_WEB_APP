@@ -13,7 +13,6 @@ export default function AvailabilityStatus({status, value}){
         const el = ref.current;
         
         if(status && el){
-
             el.className = `${styles.AvailabilityStatus}`
 
             if(status === -1){
@@ -26,7 +25,7 @@ export default function AvailabilityStatus({status, value}){
             }
             
         }
-    },[status])
+    },[])
 
     return(
         <>

@@ -2,8 +2,9 @@ import { useEffect, useState} from "react"
 import styles from "../../styles/Catalog.module.css"
 import NextImageRatioSaver from "../NextImageRatioSaver"
 import Link from 'next/link'
+import * as React from "react";
 
-export default function CatalogProductItem({imgPath, Title, Price, inCart}){
+export default function CatalogProductItem({imgPath, Title, Price, inCart, slug}){
     
     const[isInCart, setInCart] = useState(inCart);
     const[addRemoveMessage, setMessage] = useState({
@@ -30,7 +31,7 @@ export default function CatalogProductItem({imgPath, Title, Price, inCart}){
     return(
         <>
             <div className={styles.ProductItemCont}>
-                <Link href={"/product"}>
+                <Link href={`/products/${slug}`}>
                 <div className={styles.ProductItem}>
                     <div className={styles.PI_ImageBlock}>
                     <NextImageRatioSaver Img={imgPath} hPrime={true} wPrime={false}/>

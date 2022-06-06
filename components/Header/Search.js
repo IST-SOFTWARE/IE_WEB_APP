@@ -77,7 +77,7 @@ export default function Search({placeholder}){
                 <input type="text" placeholder={placeholder} className={styles.search}
                 onFocus={(e)=>SearchFocusHandler(e)} onChange={e => SerachingFnc(e.target.value)}/>
                 <button className={styles.sBtn} onClick={() => handlerActivator()}>
-                    <img src="./sBtn.png" alt="Search" width="28px"/>
+                    <img src="/sBtn.png" alt="Search" width="28px"/>
                 </button>
             </div>
         </>

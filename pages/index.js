@@ -12,6 +12,7 @@ import InfoOfDev from "../components/InfoOfDev";
 import { getHomePageContent } from "../queries/getHomePageContent";
 import { getCallBackModuleContent } from "../queries/getCallBackModuleContent";
 import { getProdDemoPageContent } from "../queries/getProdDemoPageContent";
+import { getAttachPageContent } from "../queries/getAttachPageContent";
 
 const HeaderContent = {
     "CatalogTitle":{
@@ -132,6 +133,7 @@ export default function Index(){
     const[helloPageData, setHelloPageData] = useState();
     const[callBackReqContent, setcallBackReqContent] = useState();
     const[prodDemoContent, setProdDemoContent]= useState();
+    const[attachPageContent, setAttachPageContent] = useState();
     // const {status, data: homePageContent, error, isFetching, isSuccess} = useQuery("HomePage_Main", async() => await getHomePageContent())
     
 
@@ -172,6 +174,17 @@ export default function Index(){
         }
     },[]);
 
+    // [3] AttachPage get data
+    useEffect(()=>{
+        async function AttachLoad(){
+            const response = await getAttachPageContent();
+            setAttachPageContent(response);
+        }
+
+        if(!prodDemoContent){
+            AttachLoad();
+        }
+    },[]);
     
     // useEffect(()=>{
     //     console.log("is_index: ", api_cont);
@@ -213,12 +226,12 @@ export default function Index(){
 
             <Progress/>
 
-            <LangSwitcher
+            {/* <LangSwitcher
                 switchFnc={ToggleLang}
                 SwLangChecker={LangChecker}
                 lang={globalLng}
                 content={Languages}
-            />
+            /> */}
 
             <div className="nb_container" id="LandPageContainer">
                 <Hello
@@ -236,7 +249,6 @@ export default function Index(){
                 callBack_api= {callBackReqContent}/>
                 
                 <AttachPage/>
-
 
 
                 <ProductDemo

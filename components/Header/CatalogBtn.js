@@ -5,21 +5,21 @@ import CatalogContext from "../Context/CatalogContext"
 export default function CatalogBtn({text}){
 
     const Catalog = useContext(CatalogContext);
-    const [catalogBorgerImg, setBurgerImg] = useState("./Menu_btn.svg");
+    const [catalogBorgerImg, setBurgerImg] = useState("/Menu_btn.svg");
 
     useEffect(()=>{
         const CatalogBtn = document.querySelector(`.${styles.CatalogBtn}`);
 
         if(Catalog.CatalogToggle){
             CatalogBtn.classList.add(`${styles.open}`);
-            setBurgerImg("./CatalogClose_ico.svg");
+            setBurgerImg("/CatalogClose_ico.svg");
         }
         else{
             if(CatalogBtn && CatalogBtn.classList.contains(`${styles.open}`)){
                 CatalogBtn.classList.remove(`${styles.open}`);
                 // console.log("Catalog.CatalogToggle: ", Catalog.CatalogToggle);
             }
-            setBurgerImg("./Menu_btn.svg");
+            setBurgerImg("/Menu_btn.svg");
         }
 
     }, [Catalog.CatalogToggle]);

@@ -10,22 +10,24 @@ import { createPortal } from "react-dom";
 import { useEffect, useState, useReducer, useContext} from "react";
 import { Suspense,lazy } from "react";
 
+
 export default function Catalog(openState, searchFilter){
     const[isBrowser, setIsBrowser] = useState(false);
 
+
     const[products, setProducts] = useState([]);
-    
     const[filteredProducts, setFiltered] = useState([]);
-    const[AllProducts, setAllProducts] = useState([]);
+
+    // const[AllProducts, setAllProducts] = useState([]);
 
     const[productsLoaded, setPrLoaded] = useState(false);
     
     const Catalog_cont = useContext(CatalogContext);
     
+
     useEffect(()=>{
         setIsBrowser(true);
         setPrLoaded(false);
-        
     },[]);
     
     const ToggleCatalog = "ToggleCatalog";
@@ -75,34 +77,33 @@ export default function Catalog(openState, searchFilter){
             return new Promise(r => setTimeout(()=> r(), ms));
         }
 
+
+
         useEffect(()=>{
             (
                 async ()=> {
                     try{
-                    const response = await fetch("https://jsonplaceholder.typicode.com/posts",{
-                        method: `get`,
-                        origin: "*"
-                    });
-                    const content = await response.json();
 
-                
+                        if(CatalogReducer.isOpen){
+                            if(Catalog_cont.CatalogProducts){
+                            await delay(300);
+                            setPrLoaded(true);
 
-                    if(CatalogReducer.isOpen){
-                        await delay(600);
-                        setPrLoaded(true);
+                            setProducts(Catalog_cont.CatalogProducts);
+                            setFiltered(Catalog_cont.CatalogProducts);
+                            // console.log("opened");
+                            }
+                            
+                        } else{
+                            setPrLoaded(false);
 
-                        setProducts(content);
-                        setFiltered(content);
-                        // console.log("opened");
-                    } else{
-                        setPrLoaded(false);
+                            setProducts([]);
+                            setFiltered([]);
+                            // console.log("closed");
+                        }
 
-                        setProducts([]);
-                        setFiltered([]);
-                        // console.log("closed");
-                    }
                 } catch(e){
-                        console.log("Failed to fetch[Catalog items]: ", e);
+                        console.error("Failed to fetch[Catalog items]: ", e);
                     }
 
                 }
@@ -116,7 +117,7 @@ export default function Catalog(openState, searchFilter){
 
 
     useEffect(()=>{
-        let s_products = products.filter(p => p.title.toLowerCase().indexOf(CatalogReducer.Search.toLowerCase()) >= 0);
+        let s_products = products.filter(p => p.product_name_ru.toLowerCase().indexOf(CatalogReducer.Search.toLowerCase()) >= 0);
         setFiltered(s_products);
     },[CatalogReducer.Search]);
 
@@ -152,6 +153,7 @@ export default function Catalog(openState, searchFilter){
     },[openState])
 
 
+
     const CatalogBlock = CatalogReducer.isOpen ? (
         <>
             <div className={styles.CatalogConteiner}>
@@ -177,9 +179,10 @@ export default function Catalog(openState, searchFilter){
                                     return(
                                         <div className="mb-4 p-0 col-xxl-3 col-xl-3 col-md-5 col-sm-7 col-7" key={product.id}>
                                             <CatalogProductItem
-                                            imgPath={"https://res.cloudinary.com/dv9xitsjg/image/upload/v1648111066/ProductsImages/reductor-glav-priv_y6ujmg.png"}
-                                            Title={product.title}
-                                            Price={product.id}
+                                            imgPath={product.image_url}
+                                            Title={product.product_name_ru}
+                                            Price={new Intl.NumberFormat('ru-RU').format(product.price)}
+                                            slug={product.slug}
                                             />
                                         </div>
                                     )       
@@ -204,4 +207,5 @@ export default function Catalog(openState, searchFilter){
         return null;
     }
 
+    
 }
