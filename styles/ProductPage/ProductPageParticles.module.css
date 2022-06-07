@@ -105,6 +105,8 @@
         border-radius: 24px;
         background-color: #2C3641;
         margin: 6px;
+        cursor: pointer;
+        
     }
     .AdditionalItem::before{
         content: "";
@@ -119,6 +121,7 @@
         background: rgb(118,172,231);
         background: linear-gradient(162deg, rgba(118,172,231,1) 0%, rgba(204,222,240,1) 50%, rgba(255,251,240,1) 100%);
         z-index: -1;
+        transition: 0.3s;
     }
 
     .AdditionalContainer{
@@ -127,6 +130,7 @@
         overflow: hidden;
         position: relative;
         border-radius: 25px;    
+
     }
     .AdditionalContainer::after{
         position: absolute;
@@ -137,6 +141,7 @@
         left: 0;
         background: linear-gradient(360deg, #151A20 0%, rgba(15, 19, 23, 0.728041) 52.6%, rgba(0, 0, 0, 0) 100%);
         z-index: 0;
+  
     }
     .AdditionalTitle{
         font-family: 'Roboto';

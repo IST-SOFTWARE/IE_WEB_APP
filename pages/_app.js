@@ -1,6 +1,5 @@
 import { useState, useEffect, useContext } from "react";
 
-
 import '../styles/global.css'
 import Header from '../components/Header/Header'
 import Catalog from "../components/Catalog/Catalog";

@@ -3,7 +3,7 @@ import styles from "../../styles/Catalog.module.css"
 import NextImageRatioSaver from "../NextImageRatioSaver"
 import Link from 'next/link'
 import * as React from "react";
-
+import BlureProdImage from "../ProductPage/BlureProdImage";
 export default function CatalogProductItem({imgPath, Title, Price, inCart, slug}){
     
     const[isInCart, setInCart] = useState(inCart);
@@ -34,7 +34,7 @@ export default function CatalogProductItem({imgPath, Title, Price, inCart, slug}
                 <Link href={`/products/${slug}`}>
                 <div className={styles.ProductItem}>
                     <div className={styles.PI_ImageBlock}>
-                    <NextImageRatioSaver Img={imgPath} hPrime={true} wPrime={false}/>
+                    <NextImageRatioSaver Img={imgPath} hPrime={true} unique={slug}/>
                     </div>
 
                     <div className={styles.PI_FuncBlock}>

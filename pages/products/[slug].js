@@ -10,14 +10,16 @@ import GeometryViewer from "../../components/ProductPage/GeometryViewer";
 import BlureProdImage from "../../components/ProductPage/BlureProdImage";
 
 import PopUpBase from "../../components/PopUpBase";
+import ComponentLoader from "../../components/ComponentLoader";
+import LabelLoader from "../../components/ModalComponents/LabelLoader";
+
 
 import { useRef, useEffect, useState} from "react";
 import { useRouter } from "next/router";
 
+import { cartCreateAct, inCart } from "../../cartActions/cartActions";
 import getData from "../../queries/getData";
 import { getProductData } from "../../queries/getProductData";
-import ComponentLoader from "../../components/ComponentLoader";
-import LabelLoader from "../../components/ModalComponents/LabelLoader";
 
 
 export default function ProductPage(){
@@ -26,8 +28,11 @@ export default function ProductPage(){
     const[puState, setPU] = useState(false);
     const[productData, setProductData] = useState();
     
+    const[addToCartResp, setCartResp] = useState(null);
+    const[prodInCart, setInCart] = useState(false);
+    const[linkPath, setLinkPath] = useState("");
 
-
+//Hor. Scroll Controller
     let ref = useRef();
 
     useEffect(()=>{
@@ -47,10 +52,10 @@ export default function ProductPage(){
             return () => el.removeEventListener('wheel', onWheel);
         }
     },[])
-
+//---------------------
   
   
-
+// Get Prod Data
     useEffect(()=>{
         
         const {slug} = router.query;
@@ -65,6 +70,52 @@ export default function ProductPage(){
             ProdLoad();
         }
     });
+//--------------
+
+useEffect(()=>{
+    if(productData){
+        inCart(productData.id).
+        then(elem => {
+            setInCart(elem);
+        });
+    }
+},[productData, addToCartResp])
+
+useEffect(()=>{
+    if(prodInCart && productData){
+        const addToCartBtn = document.getElementById(`AddToCartAction_${productData.slug}`);
+        const createOrder = document.querySelector(`.${styles.sendOrderAction}`);
+
+        if(addToCartBtn !== null){
+            addToCartBtn.innerHTML = "Моя корзина";
+            addToCartBtn.classList.add(`${styles.active}`);
+        }
+        if((createOrder).classList.contains(`${styles.active}`))
+        createOrder.classList.remove(`${styles.active}`);
+    }
+    else if(!prodInCart && productData){
+        const addToCartBtn = document.getElementById(`AddToCartAction_${productData.slug}`);
+        const createOrder = document.querySelector(`.${styles.sendOrderAction}`);
+
+        if(addToCartBtn !== null){
+            addToCartBtn.innerHTML = "Добавить в корзину";
+            createOrder.classList.add(`${styles.active}`);
+            if(addToCartBtn.classList.contains(`${styles.active}`))
+                addToCartBtn.classList.remove(`${styles.active}`);
+        }
+    }
+}, [prodInCart, productData])
+
+const addToCart = (id, q, p) =>{
+    if(!prodInCart){
+        cartCreateAct(id, q, p).then(elem => {
+            setCartResp(elem);
+        });
+    }
+    else{
+        router.push("/cart");
+    }
+}
 
     return(
         <>
@@ -125,8 +176,12 @@ export default function ProductPage(){
 
                                 {!productData ? [1,2,3].map(i => {
                                     return <AdditionalItem key={i}/>
-                                 }) : (productData.additional_items).map((row) => {
-                                     return <AdditionalItem key={row.uniqueId}/>
+                                 }) : (productData.additional_items).map(el => {
+                                     return <AdditionalItem key={el.slug}
+                                     img={el.related_Products_id.image_url}
+                                     name={el.related_Products_id.product_name_ru}
+                                     slug={el.related_Products_id.slug}
+                                     />
                                  })}
                                  
                             </div>
@@ -209,9 +264,14 @@ export default function ProductPage(){
                                             ): ""}
                                         </div>
                                         <div className={styles.Actions}>
-                                            <button className={styles.AddToCartAction}>
-                                                Добавить в корзину
-                                            </button>
+                                                <button id={productData ? 
+                                                    'AddToCartAction_' + productData.slug :
+                                                ""}
+                                                onClick={() => addToCart(
+                                                    productData.id, 1, productData.price
+                                                )}>
+                                                    
+                                                </button>
 
                                             <button className={styles.sendOrderAction}>
                                                 Оформить заказ

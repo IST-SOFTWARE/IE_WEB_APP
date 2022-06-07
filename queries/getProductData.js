@@ -15,10 +15,11 @@ export const getProductData =
                 a,b,c,d,e,f,
                 price, 
                 additional_items{
-                    Products_id{
+                    related_Products_id{
                         product_name_ru,
                         product_name,
-                        image_url
+                        image_url,
+                        slug
                     }
                 }
 

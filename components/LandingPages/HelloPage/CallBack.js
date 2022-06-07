@@ -1,7 +1,7 @@
 import styles from "../../../styles/CallBack.module.css"
 import MobileBtn from "../../MobileComponents/MobileBtn"
 import { useEffect, useState } from "react";
-import setData from "../../../helpers/setCallBackReq";
+import setData from "../../../helpers/setData";
 import { CreateCallBack, updateCallBack } from "../../../queries/CallBack";
 import { Query, useMutation } from "react-query";
 

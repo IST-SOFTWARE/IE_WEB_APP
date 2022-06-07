@@ -1,27 +1,49 @@
 import styles from "../../styles/ProductPage/ProductPageParticles.module.css";
 import NextImageRatioSaver from "../NextImageRatioSaver";
-import { useRef, useEffect} from "react";
+import { useRef, useEffect, useState} from "react";
+import ComponentLoader from "../ComponentLoader";
+import Link from 'next/link'
 
-export default function AdditionalItem({img, name, vendCode}){
+export default function AdditionalItem({img, name, slug}){
 
+    const[data, setData] = useState();
+
+    useEffect(()=>{
+        if(img && name && slug){
+            setData({
+                img,
+                name,
+                slug
+            })
+        }
+    },[])
 
     return(
     <>  
-        <div className={styles.AdditionalItem}>
-            <div className={styles.AdditionalContainer}>
-
+    <Link href={data ? `/products/${slug}` : "/"}>
+        <div className={styles.AdditionalItem} 
+            style={!data ? {
+                margin: 20 + "px",
+                Width: 80 + '%',
+                minWidth: 0
+            } : null}
+        >
+            <ComponentLoader data={data} >
+                <div className={styles.AdditionalContainer}>
                     <NextImageRatioSaver
-                        Img={"https://res.cloudinary.com/dv9xitsjg/image/upload/v1649426240/ProductsImages/M02914-1_rwco0s.jpg"}
+                        Img={data ? data.img : ""}
                         wPrime={true}
                         q={100}
                         unique={"AdditionalItem"}
                     />
                 
-                <p className={styles.AdditionalTitle}>
-                Частотный преобразователь Kone KDL16L 14 Ампер (модернизация для V3F16L) с энкодером и кабелем
-                </p>
-            </div>
+                    <p className={styles.AdditionalTitle}>
+                    {data ? data.name : ""}
+                    </p>
+                </div>
+            </ComponentLoader>
         </div>
+    </Link>
     </>
     )
 }

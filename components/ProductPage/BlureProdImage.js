@@ -30,6 +30,7 @@ export default function BlureProdImage(baseLink){
       if(baseLink){
         setImPath("ProductsImages/" + parse_url(baseLink).script);
         setUser(parse_url(baseLink).user);
+
       }
     })
 

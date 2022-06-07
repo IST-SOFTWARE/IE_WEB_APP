@@ -177,12 +177,13 @@ export default function Catalog(openState, searchFilter){
                     
                                 {filteredProducts.map((product, index) =>{
                                     return(
-                                        <div className="mb-4 p-0 col-xxl-3 col-xl-3 col-md-5 col-sm-7 col-7" key={product.id}>
+                                        <div className="mb-4 p-0 col-xxl-3 col-xl-3 col-md-5 col-sm-7 col-7">
                                             <CatalogProductItem
                                             imgPath={product.image_url}
                                             Title={product.product_name_ru}
                                             Price={new Intl.NumberFormat('ru-RU').format(product.price)}
                                             slug={product.slug}
+                                            key={product.id}
                                             />
                                         </div>
                                     )       
