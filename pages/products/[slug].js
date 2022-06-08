@@ -203,10 +203,11 @@ const addToCart = (id, q, p) =>{
                                 {!productData ? [1,2,3].map(i => {
                                     return <AdditionalItem key={i}/>
                                  }) : (productData.additional_items).map(el => {
-                                     return <AdditionalItem key={el.slug}
+                                     return <AdditionalItem
                                      img={el.related_Products_id.image_url}
                                      name={el.related_Products_id.product_name_ru}
                                      slug={el.related_Products_id.slug}
+                                     key={el.related_Products_id.slug}
                                      />
                                  })}
                                  
@@ -326,14 +327,18 @@ const addToCart = (id, q, p) =>{
 
                         {productData && isPuType === Analogue ?
                             (productData.analogue).map(el => {
-                            return <Link href={`/products/${el.related_Products_id.slug}`}><li key={el.related_Products_id.product_name_ru}>
+                            return <Link href={`/products/${el.related_Products_id.slug}`}
+                            key={el.related_Products_id.slug}>
+                                <li>
                                     {el.related_Products_id.product_name_ru}
-                                    </li></Link>
+                                </li></Link>
                                 
                         }): productData && isPuType === Replacement ?
                             (productData.replacement).map(el => {
-                            return <Link href={`/products/${el.related_Products_id.slug}`}><li key={el.related_Products_id.product_name_ru}>
-                                    {el.related_Products_id.product_name_ru}
+                            return <Link href={`/products/${el.related_Products_id.slug}`}
+                            key={el.related_Products_id.slug}>
+                                    <li>
+                                        {el.related_Products_id.product_name_ru}
                                     </li></Link>
                         }): productData && isPuType === Included ?
                             (productData.products_included).map(el => {
