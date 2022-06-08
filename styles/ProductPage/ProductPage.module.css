@@ -273,6 +273,56 @@
 }
 
 
+.slug_PuBaseList{
+    width: 90%;
+    padding: 0px 15px;
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 400;
+    font-size: calc(18px + (20 - 18) *   ((100vw - 300px) / (1920 - 320)));
+    color: #FFFFFF;
+    list-style: none;
+    margin-bottom: 15px;
+    max-height: 50vh;
+    overflow-y: auto;
+    position: relative;
+}
+
+.slug_PuBaseList li{
+    max-width: 100%;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    padding: 5px 20px;
+    cursor: pointer;
+    border-radius: 15px;
+    background: #414F5F;
+    transition: 0.3s;
+    margin-bottom: 5px;
+}
+.slug_PuBaseList li:hover{
+    transition: 0.3s;
+    background-color: #151A20;
+}
+
+.slug_PuBaseList::-webkit-scrollbar {
+    width: 6px;
+}
+    
+.slug_PuBaseList::-webkit-scrollbar-track {
+    background-color: #3F4D5B;
+    border-radius: 300px 300px 300px 300px;
+
+}
+    
+.slug_PuBaseList::-webkit-scrollbar-thumb {
+    background-color: #76ACE7;
+    border-radius: 9px;
+    background-clip: content-box;
+
+}
+
+
 .Actions button:hover{
     transition: 0.3s;
     box-shadow: 0px 0px 5px #76ACE7;

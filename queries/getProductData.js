@@ -14,6 +14,7 @@ export const getProductData =
                 available_status,
                 a,b,c,d,e,f,
                 price, 
+                included_in,
                 additional_items{
                     related_Products_id{
                         product_name_ru,
@@ -24,18 +25,28 @@ export const getProductData =
                 }
 
                 replacement{
-                    Products_id{
+                    related_Products_id{
                         product_name_ru,
                         product_name,
-                        image_url
+                        image_url,
+                        slug
+                    }
+                }
+
+                products_included{
+                    related_Products_id{
+                            product_name_ru,
+                            product_name,
+                            image_url
                     }
                 }
 
                 analogue{
-                    Products_id{
+                    related_Products_id{
                         product_name_ru,
                         product_name,
-                        image_url
+                        image_url,
+                        slug
                     }
                 }
 

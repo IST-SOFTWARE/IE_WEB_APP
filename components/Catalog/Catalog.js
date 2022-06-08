@@ -117,7 +117,8 @@ export default function Catalog(openState, searchFilter){
 
 
     useEffect(()=>{
-        let s_products = products.filter(p => p.product_name_ru.toLowerCase().indexOf(CatalogReducer.Search.toLowerCase()) >= 0);
+        let s_products = products.filter(p => p.product_name_ru.toLowerCase().indexOf(CatalogReducer.Search.toLowerCase()) >= 0 
+        || p.vend_code.toLowerCase().indexOf(CatalogReducer.Search.toLowerCase()) >= 0);
         setFiltered(s_products);
     },[CatalogReducer.Search]);
 
@@ -183,6 +184,7 @@ export default function Catalog(openState, searchFilter){
                                             Title={product.product_name_ru}
                                             Price={new Intl.NumberFormat('ru-RU').format(product.price)}
                                             slug={product.slug}
+                                            id={product.id}
                                             />
                                         </div>
                                     )       

@@ -11,7 +11,8 @@ export const getProducts = async() => {
                 image_url,
                 slug,
                 text_description,
-                price
+                price,
+                vend_code
             }
         }
         `,

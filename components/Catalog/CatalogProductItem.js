@@ -2,11 +2,17 @@ import { useEffect, useState} from "react"
 import styles from "../../styles/Catalog.module.css"
 import NextImageRatioSaver from "../NextImageRatioSaver"
 import Link from 'next/link'
-import * as React from "react";
+
 import BlureProdImage from "../ProductPage/BlureProdImage";
-export default function CatalogProductItem({imgPath, Title, Price, inCart, slug}){
+import { inCart, cartCreateAct } from "../../cartActions/cartActions";
+
+export default function CatalogProductItem({imgPath, Title, Price, id, slug}){
     
-    const[isInCart, setInCart] = useState(inCart);
+
+
+    const[addToCartResp, setCartResp] = useState(null);
+    const[prodInCart, setInCart] = useState(false);
+
     const[addRemoveMessage, setMessage] = useState({
         message: "",
     });
@@ -18,14 +24,24 @@ export default function CatalogProductItem({imgPath, Title, Price, inCart, slug}
     },[])
 
     useEffect(()=>{
-        if(isInCart)
+        if(prodInCart)
             setMessage({message: "Убрать из корзины"})
         else
             setMessage({message: "Добавить в корзину"})
-    },[isInCart])
+    },[prodInCart])
 
-    function SetCarState(e){
-        isInCart ? setInCart(false) : setInCart(true);
+    useEffect(()=>{
+        inCart(id).
+        then(elem => {
+            setInCart(elem);
+        });
+    },[addToCartResp])
+
+    function SetCarState(id, q, p){
+        cartCreateAct(id, q, p).then(elem => {
+            setCartResp(elem);
+        });
+
     }
 
     return(
@@ -53,8 +69,8 @@ export default function CatalogProductItem({imgPath, Title, Price, inCart, slug}
                 </Link>
 
                 <div className={styles.PI_AddToCart}>
-                            <button className={isInCart ? styles.AddedToCart : ""}
-                            onClick={(e)=>SetCarState(e)}>
+                            <button className={prodInCart ? styles.AddedToCart : ""}
+                            onClick={(e)=>SetCarState(id, 1, Price)}>
                                 <div className={styles.PI_AddToCart_Message}>
                                     <p>{addRemoveMessage.message}</p>
                                 </div>

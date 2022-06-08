@@ -13,6 +13,7 @@ import PopUpBase from "../../components/PopUpBase";
 import ComponentLoader from "../../components/ComponentLoader";
 import LabelLoader from "../../components/ModalComponents/LabelLoader";
 
+import Link from 'next/link'
 
 import { useRef, useEffect, useState} from "react";
 import { useRouter } from "next/router";
@@ -25,12 +26,25 @@ import { getProductData } from "../../queries/getProductData";
 export default function ProductPage(){
     
     const router = useRouter();
+
+    const[isPuType, setIsPuType] = useState("");
     const[puState, setPU] = useState(false);
+    const[puHeaders, setPuHeaders] = useState({
+        header: "",
+        paragraph: ""
+    })
+
+    const Analogue = "Analogue";
+    const Replacement = "Replacement";
+    const Included = "Included";
+
+
     const[productData, setProductData] = useState();
     
     const[addToCartResp, setCartResp] = useState(null);
     const[prodInCart, setInCart] = useState(false);
     const[linkPath, setLinkPath] = useState("");
+
 
 //Hor. Scroll Controller
     let ref = useRef();
@@ -146,7 +160,7 @@ const addToCart = (id, q, p) =>{
                                                 backgroundSize: 'cover',
                                                 backgroundRepeat: 'no-repeat'
                                             }}
-                                            onClick={()=> setPU(true)} 
+                                            
                                         >
                                                 <div>
                                                     <NextImageRatioSaver
@@ -160,9 +174,21 @@ const addToCart = (id, q, p) =>{
                                         </div>
         
                                         <div className={styles.ProductReplacement}>
-                                            <ReplacementItem/>
-                                            <ReplacementItem/>
-                                            <ReplacementItem/>
+                                            <ReplacementItem text={"Аналог"}
+                                            pu={setPU} headersSet={setPuHeaders}
+                                            data={productData ? productData.product_name_ru : ""}
+                                            puTyper={setIsPuType} isType={Analogue}/>
+
+                                            <ReplacementItem text={"Замена"}    
+                                            pu={setPU} headersSet={setPuHeaders}
+                                            data={productData ? productData.product_name_ru : ""}
+                                            puTyper={setIsPuType} isType={Replacement}/>
+
+                                            <ReplacementItem text={"Входит в состав..."}
+                                            pu={setPU} headersSet={setPuHeaders}
+                                            paragraph={""}
+                                            data={productData ? productData.product_name_ru: ""}
+                                            puTyper={setIsPuType} isType={Included}/>
                                         </div>
 
                                 </ComponentLoader>
@@ -288,6 +314,38 @@ const addToCart = (id, q, p) =>{
 
             </div>
         </div>
+
+        <PopUpBase puState={puState} closer={setPU}
+                header={ puHeaders ? puHeaders.header : ""}
+                paragraph={ puHeaders ? puHeaders.paragraph : ""}
+                >
+                    
+                <ComponentLoader data={productData}>
+                    <ul className={styles.slug_PuBaseList}>
+    
+
+                        {productData && isPuType === Analogue ?
+                            (productData.analogue).map(el => {
+                            return <Link href={`/products/${el.related_Products_id.slug}`}><li key={el.related_Products_id.product_name_ru}>
+                                    {el.related_Products_id.product_name_ru}
+                                    </li></Link>
+                                
+                        }): productData && isPuType === Replacement ?
+                            (productData.replacement).map(el => {
+                            return <Link href={`/products/${el.related_Products_id.slug}`}><li key={el.related_Products_id.product_name_ru}>
+                                    {el.related_Products_id.product_name_ru}
+                                    </li></Link>
+                        }): productData && isPuType === Included ?
+                            (productData.products_included).map(el => {
+                            // return <li key={el.related_Products_id.product_name_ru}>
+                            //         {el.related_Products_id.product_name_ru}
+                            //         </li>
+                        }): ""}
+                    </ul>
+                </ComponentLoader>  
+                
+
+        </PopUpBase>
 
         </>
     )
