@@ -18,7 +18,7 @@ export default function CatalogProductItem({imgPath, Title, Price, id, slug}){
     });
 
     useEffect(()=>{
-        if(inCart === undefined){
+        if(!inCart()){
             setInCart(false);
         }
     },[])
