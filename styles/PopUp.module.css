@@ -19,7 +19,7 @@
     justify-content: center;   
   }
   .PopUpBaseContent{
-    max-width: 560px; 
+    max-width: 90%;
     width: fit-content;
     position: relative;
     padding-top: 30px;
@@ -87,7 +87,7 @@
     margin-left: -5%;
   }
   .PopUpBaseContent{
-    width: 100%; 
+    width: 100%;
     position: relative;
     padding-top: 30px;
     padding-bottom: 30px;

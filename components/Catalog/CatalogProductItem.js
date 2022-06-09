@@ -4,7 +4,7 @@ import NextImageRatioSaver from "../NextImageRatioSaver"
 import Link from 'next/link'
 
 import BlureProdImage from "../ProductPage/BlureProdImage";
-import { inCart, cartCreateAct } from "../../cartActions/cartActions";
+import { inCart, cartCreateAct, rmeoveItem } from "../../cartActions/cartActions";
 
 export default function CatalogProductItem({imgPath, Title, Price, id, slug}){
     
@@ -31,16 +31,23 @@ export default function CatalogProductItem({imgPath, Title, Price, id, slug}){
     },[prodInCart])
 
     useEffect(()=>{
-        inCart(id).
-        then(elem => {
-            setInCart(elem);
-        });
+            inCart(id).
+            then(elem => {
+                setInCart(elem);
+            })
     },[addToCartResp])
 
     function SetCarState(id, q, p){
-        cartCreateAct(id, q, p).then(elem => {
-            setCartResp(elem);
-        });
+        if(!prodInCart){
+            cartCreateAct(id, q, p).then(elem => {
+                setCartResp(elem);
+            });
+        }
+        else{
+            rmeoveItem(id).then(elem => {
+                setCartResp(elem);
+            });
+        }
 
     }
 

@@ -111,8 +111,8 @@
         padding: 0px;
         max-width: 100%;
         word-wrap: break-word;
-        font-size: calc(18px + (20 - 18) *   ((100vw - 300px) / (1920 - 320)));
-        color: #E6E6E4;
+        font-size: calc(18px + (20 - 18) * ((100vw - 300px) / (1920 - 320))) !important;
+        color: #E6E6E4 !important;
     }
 
 /* ------------------ */

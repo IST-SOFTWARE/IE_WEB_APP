@@ -38,7 +38,7 @@ export async function cartCreateAct(id, quantity, price){
                 }
             });
             
-            if(BaseCart && BaseCart.length > 0){
+            if(BaseCart && BaseCart.length >= 0){
                 BaseCart.map(elem => {
                     newCartItem.cart_model.push(elem);
                 })
@@ -87,6 +87,36 @@ export async function inCart(id){
     }
 }
 
-export function cartUpdateAct(quantity, id, price){
+export async function rmeoveItem(id){
 
+    let newCartItem = {
+        status: "draft",
+        cart_model:[
+  
+        ]
+    }
+
+    await getData(getCart, 'cartCollection_by_id', {id: localStorage.getItem('cart_session')}).
+    then(elem =>{
+        if(elem && elem.cart_model){
+            elem.cart_model.map((product, index) => {
+                if(product.product_id !== id){
+                    let item = {
+                        id: product.product_id,
+                        quantity: product.quantity,
+                        price: product.price
+                    }
+                    newCartItem.cart_model.push(item);
+                }
+            })
+        }else{
+            console.error("Get cart items error");
+        }
+    });
+    if(newCartItem){
+        await setData(updateCart, {data: newCartItem, id: localStorage.getItem('cart_session')});
+        return newCartItem;
+    }
+    else return null;
+    
 }
