@@ -93,6 +93,7 @@
     height: 100%;
     width: 209px;
     position: relative;
+    cursor: pointer;
 }
 .ItemDescription{
     display: flex;

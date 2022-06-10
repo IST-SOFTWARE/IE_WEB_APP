@@ -5,14 +5,31 @@ import IST_CheckBox from "../../components/IST_CheckBox"
 import CartItem from "../../components/CartPage/CartItem"
 import CartTotalSum from "../../components/CartPage/CartTotalSum"
 
+import { getCartItems } from "../../cartActions/cartActions"
+import ComponentLoader from "../../components/ComponentLoader"
+
 export default function CartPage({}){
 
     const ADD_BP = "Add";
     const REMOVE_BP = "Remove";
 
     const[SelectAll, setSelect] = useState(false);
-    const[AllItemsList, setItemsList] = useState([]);
+    const[AllItemsList, setItemsList] = useState();
     
+
+    useEffect(()=>{
+        async function ProdLoad(){
+            const response = await getCartItems();
+            setItemsList(response);
+            // console.log(response);
+        }
+
+        if(!AllItemsList){
+            ProdLoad();
+        }
+        
+    },[]);
+
 
     const[selectedItems, dispatch] = useReducer(reducer, {
         ProdList: {},
@@ -56,6 +73,7 @@ export default function CartPage({}){
     // },[]);  
     
 
+
     
     function SelectedListener(state, price, vc, q){
         if(state){
@@ -96,61 +114,33 @@ export default function CartPage({}){
                                     </div>
 
                                 </div>
+                                
                                 <div className={styles.AddedProducts}>
+                                    {AllItemsList ? AllItemsList.map(product=>(
+                                            <CartItem
+                                            id={product.product_id}
+                                            image={"https://res.cloudinary.com/dv9xitsjg/image/upload/v1648111066/ProductsImages/reductor-glav-priv_y6ujmg.png"}
+                                            name={"Редуктор главного привода FTJ160R (TD-FT160R) правый для лебедки EC-W1 (п.ч. 49/2)"}
+                                            vendCode={"000000000 "}
+                                            price={"357 750"}
+                                            isSelected={SelectAll}
+                                            feedback={SelectedListener}
+                                            />
+                                    )) : null}
+
                                     
-                                        <CartItem
-                                        image={"https://res.cloudinary.com/dv9xitsjg/image/upload/v1648111066/ProductsImages/reductor-glav-priv_y6ujmg.png"}
-                                        name={"Редуктор главного привода FTJ160R (TD-FT160R) правый для лебедки EC-W1 (п.ч. 49/2)"}
-                                        vendCode={"000000000 "}
-                                        price={"357 750"}
-                                        isSelected={SelectAll}
-                                        feedback={SelectedListener}
-                                        />
-                                        <CartItem
-                                        image={"https://res.cloudinary.com/dv9xitsjg/image/upload/v1648111066/ProductsImages/reductor-glav-priv_y6ujmg.png"}
-                                        name={"Редуктор главного привода FTJ160R (TD-FT160R) правый для лебедки EC-W1 (п.ч. 49/2)"}
-                                        vendCode={"000000000 "}
-                                        price={"357 750"}
-                                        isSelected={SelectAll}
-                                        />
-                                        <CartItem
-                                        image={"https://res.cloudinary.com/dv9xitsjg/image/upload/v1648111066/ProductsImages/reductor-glav-priv_y6ujmg.png"}
-                                        name={"Редуктор главного привода FTJ160R (TD-FT160R) правый для лебедки EC-W1 (п.ч. 49/2)"}
-                                        vendCode={"000000000 "}
-                                        price={"357 750"}
-                                        isSelected={SelectAll}
-                                        />
-                                        <CartItem
-                                        image={"https://res.cloudinary.com/dv9xitsjg/image/upload/v1648111066/ProductsImages/reductor-glav-priv_y6ujmg.png"}
-                                        name={"Редуктор главного привода FTJ160R (TD-FT160R) правый для лебедки EC-W1 (п.ч. 49/2)"}
-                                        vendCode={"000000000 "}
-                                        price={"357 750"}
-                                        isSelected={SelectAll}
-                                        />
-                                        <CartItem
-                                        image={"https://res.cloudinary.com/dv9xitsjg/image/upload/v1648111066/ProductsImages/reductor-glav-priv_y6ujmg.png"}
-                                        name={"Редуктор главного привода FTJ160R (TD-FT160R) правый для лебедки EC-W1 (п.ч. 49/2)"}
-                                        vendCode={"000000000 "}
-                                        price={"357 750"}
-                                        isSelected={SelectAll}
-                                        />
-                                        <CartItem
-                                        image={"https://res.cloudinary.com/dv9xitsjg/image/upload/v1648111066/ProductsImages/reductor-glav-priv_y6ujmg.png"}
-                                        name={"Редуктор главного привода FTJ160R (TD-FT160R) правый для лебедки EC-W1 (п.ч. 49/2)"}
-                                        vendCode={"000000000 "}
-                                        price={"357 750"}
-                                        isSelected={SelectAll}
-                                        />
-                                  
                                 </div>
                             </div>
                         </div>
 
                         <div className="col-xxl-7 col-xl-6 col-lg-6">
-                            <div className={styles.FinalyDataBlock}>
-                                <CartTotalSum/>
-                            </div>
+                                    
+                                <div className={styles.FinalyDataBlock}>
+                                        <CartTotalSum/>
+                                </div>
+                                   
                         </div>
+
                     </div>
                 </div>
             </div>

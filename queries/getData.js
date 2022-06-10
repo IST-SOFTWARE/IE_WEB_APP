@@ -7,6 +7,7 @@ const getData = async(query, dataName, variables = {}) => {
             variables
         }
     )
+    console.log(query, dataName, variables);
     return data.data[dataName]
 }
 
