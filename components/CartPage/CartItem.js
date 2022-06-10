@@ -31,6 +31,8 @@ export default function CartItem({id, price, isSelected, feedback, q_editor}){
         }
     }, [isSelected])
 
+
+    
     useEffect(()=>{
         // console.log(itemChecked);
         if(itemChecked !== null && (itemChecked === true || itemChecked === false)){
