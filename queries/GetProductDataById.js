@@ -1,6 +1,6 @@
 export const getProductDataById = 
         `
-        query GetProductData($id: Float){
+        query getProductData($id: Float){
             Products(filter: {id: {_eq: $id}}){
                 product_name_ru,
                 product_name,
