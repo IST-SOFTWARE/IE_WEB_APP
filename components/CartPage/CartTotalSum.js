@@ -56,7 +56,7 @@ export default function CartTotalSum(){
                     <div className={styles.TotalFinalyBlock}>
                         <p className={styles.TotalSum_FinSum}>Сумма: 1 420 155₽</p>
 
-                        <button className={styles.SendOrderBtn}>
+                        <button className={styles.SendOrderBtn + " " + styles.disbled}>
                             Оформить заказ
                         </button>
                     </div>

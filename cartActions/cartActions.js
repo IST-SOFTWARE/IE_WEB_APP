@@ -112,11 +112,11 @@ export async function rmeoveItem(id){
 
     await getCartItems().
     then(elem =>{
-        if(elem && elem.cart_model){
-            elem.cart_model.map((product, index) => {
+        if(elem){
+            elem.map(product => {
                 if(product.product_id !== id){
                     let item = {
-                        id: product.product_id,
+                        product_id: product.product_id,
                         quantity: product.quantity,
                         price: product.price
                     }
@@ -125,6 +125,8 @@ export async function rmeoveItem(id){
             })
         }
     });
+
+    // console.log(newCartItem);
 
     if(newCartItem){
         await setData(updateCart, {data: newCartItem, id: localStorage.getItem('cart_session')});

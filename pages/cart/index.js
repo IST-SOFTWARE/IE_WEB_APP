@@ -1,97 +1,127 @@
 import styles from "../../styles/CartPage/CartPage.module.css"
-import { useState, useEffect, useReducer} from "react"
+import { useState, useEffect, useReducer, useContext} from "react"
 
 import IST_CheckBox from "../../components/IST_CheckBox"
 import CartItem from "../../components/CartPage/CartItem"
 import CartTotalSum from "../../components/CartPage/CartTotalSum"
 
+import CatalogContext from "../../components/Context/CatalogContext"
 import { getCartItems } from "../../cartActions/cartActions"
 import ComponentLoader from "../../components/ComponentLoader"
+
 
 export default function CartPage({}){
 
     const ADD_BP = "Add";
     const REMOVE_BP = "Remove";
 
-    const[SelectAll, setSelect] = useState(false);
+    const[SelectAll, setSelect] = useState(null)
+
+    const Catalog_cont = useContext(CatalogContext);
     const[AllItemsList, setItemsList] = useState();
     
+    const[selectedItems, dispatch] = useReducer(reducer, {
+        ProdList: [],
+        TotalQuentity: 0,
+        TotalSum: 0
+    })
 
     useEffect(()=>{
         async function ProdLoad(){
             const response = await getCartItems();
             setItemsList(response);
-            // console.log(response);
         }
 
-        if(!AllItemsList){
+        if(!AllItemsList || AllItemsList.length !== {...AllItemsList.length}){
             ProdLoad();
         }
-        
-    },[]);
 
-
-    const[selectedItems, dispatch] = useReducer(reducer, {
-        ProdList: {},
-        TotalQuentity: 0,
-        TotalSum: 0,
-    })
+    },[Catalog_cont]);
 
     function reducer(state, action){
         switch(action.type){
             case ADD_BP:
                 return{
-
+                    TotalQuentity: action.quentity,
+                    TotalSum: state.TotalSum + parseInt(action.price.replace(/\s+/g, ''))
                 }
             case REMOVE_BP:
-                return{
-                    
+                return {
+                    ...state,
+                    TotalQuentity: action.quentity,
+                    TotalSum: state.TotalSum - parseInt(action.price.replace(/\s+/g, ''))
                 }
         }
     }
 
-    const AddItem_AG = (quentity, price, vc) =>({
+
+    const AddItem_AG = (quentity, price, id) =>({
         type: ADD_BP,
         quentity,
         price,
-        vc
+        id
     })
 
-    const RemoveItem_AG = (quentity, price, vc) =>({
+    const RemoveItem_AG = (quentity, price, id) =>({
         type: REMOVE_BP,
         quentity,
         price,
-        vc
+        id
     })
-    // useEffect(()=>{
-    //     const prodNum = document.querySelector(`.${styles.AddedProducts}`).childElementCount;
-    //     const arr = [];
-    //     for(let i = 0; i < prodNum; i++){
-    //         arr.push(SelectAll.toString());
-    //     }
-    //     setItemsList(arr);
-    // },[]);  
+
+
+
+    useEffect(()=>{
+        // const prodNum = document.querySelector(`.${styles.AddedProducts}`).childElementCount;
+        // const arr = [];
+        // for(let i = 0; i < prodNum; i++){
+        //     arr.push(SelectAll.toString());
+        // }
+        // setItemsList(arr);
+        console.log(selectedItems, 1);
+    },[selectedItems]);  
     
 
 
     
-    function SelectedListener(state, price, vc, q){
-        if(state){
-            dispatch(AddItem_AG(q, price, vc));
+    function SelectedListener(operation, price, id, q){
+        if(price && id && q){
+            switch(operation){
+                case "sum":{
+                    dispatch(AddItem_AG(selectedItems.TotalQuentity + q, price, id))
+                    console.log("SUM");
+                }
+                case "sub":{
+                    dispatch(RemoveItem_AG(selectedItems.TotalQuentity - q, price, id))
+                }
+            }
         }
-        else{
-            dispatch(RemoveItem_AG(q, price, vc));
-        }
-        // console.log(
-        //     "State: ", state,
-        //     "Price: ", price,
-        //     "VC: ", vc,
-        //     "Q: ", q,
-        // )
+
+        // if(state && price && id && q){
+        //     dispatch(AddItem_AG(q, price, id));
+        // }
+        // else if(!state && price && id && q){
+        //     dispatch(RemoveItem_AG(q, price, id));
+        // }
     }
 
 
-    return(
+    return AllItemsList && AllItemsList.length === 0 ? (
+        <>
+            <div className="container">
+                <div className="row ">
+                    <div className="col-xxl-8 col-xl-9 col-lg-9 col-md-15">
+                        <div className={styles.CartPageCont}>
+                            <div className={styles.noProductsBlock}>
+                                <p>Корзина пуста</p>
+                                <a>Воспользуйтесь поиском, чтобы найти всё что нужно.</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </>
+    ) : (
         <>
             <div className={styles.CartPageCont}>
                 <div className="container">
@@ -118,11 +148,9 @@ export default function CartPage({}){
                                 <div className={styles.AddedProducts}>
                                     {AllItemsList ? AllItemsList.map(product=>(
                                             <CartItem
+                                            key={product.product_id}
                                             id={product.product_id}
-                                            image={"https://res.cloudinary.com/dv9xitsjg/image/upload/v1648111066/ProductsImages/reductor-glav-priv_y6ujmg.png"}
-                                            name={"Редуктор главного привода FTJ160R (TD-FT160R) правый для лебедки EC-W1 (п.ч. 49/2)"}
-                                            vendCode={"000000000 "}
-                                            price={"357 750"}
+                                            price={product.price}
                                             isSelected={SelectAll}
                                             feedback={SelectedListener}
                                             />
