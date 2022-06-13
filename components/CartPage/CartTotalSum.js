@@ -30,7 +30,7 @@ export default function CartTotalSum(){
         <>
             <div className={styles.CartData}>
                 <div className={styles.header}>
-                        <h1>Ваша Корзина</h1>
+                        <h1>Выбрано товаров</h1>
                         <label>15</label>
                         <button className={styles.MoreAboutOrder}
                             onClick={(e)=>handlerClick(e, MoreInfActive)}

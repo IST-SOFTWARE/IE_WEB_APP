@@ -3,6 +3,8 @@ import styles from "../../styles/CartPage/CartPage.module.css"
 import { useState, useEffect } from "react"
 import { getProductDataById } from "../../queries/getProductDataById"
 import getData from "../../queries/getData"
+import { cartCreateAct } from "../../cartActions/cartActions"
+
 
 import IST_CheckBox from "../../components/IST_CheckBox"
 import NextImageRatioSaver from "../NextImageRatioSaver"
@@ -11,41 +13,37 @@ import QuantityEditor from "./QuantityEditor"
 import Link from "next/link"
 import ComponentLoader from "../ComponentLoader"
 
-export default function CartItem({id, price, isSelected, feedback, q_editor}){
+export default function CartItem({id, price, quantity, isSelected}){
 
     const[productData, setProductData] = useState();
     const[itemChecked, setItemChecked] = useState(null);
 
-    const[quentity, setQuentity] = useState(null);
+    const[loadedData, setloaded] = useState(null);
 
-    const FeedBackSender = (s, p, id, q) => {
-        if(feedback && id && price && quentity){
-            feedback(s, p, id, q);
-        }
+    // const FeedBackSender = (p, id, q) => {
+    //     cartCreateAct(id, q, p);
+    // }
+
+    const handleClick = (q) => {
+        if(q && q !== null)
+            cartCreateAct(id, q, price);
+        
     }
 
-    useEffect(()=>{
-        // console.log(itemChecked);
-        if(isSelected !== null && (isSelected === true || isSelected === false)){
-            setItemChecked(isSelected);
-        }
-    }, [isSelected])
+    // useEffect(()=>{
+    //     // console.log(itemChecked);
+    //     if(isSelected !== null && (isSelected === true || isSelected === false)){
+    //         setItemChecked(isSelected);
+    //     }
+    // }, [isSelected])
 
 
-
-    useEffect(()=>{
-        // console.log(itemChecked);
-        if(itemChecked !== null && (itemChecked === true || itemChecked === false)){
-                FeedBackSender(itemChecked, price, id, quentity)
-        }
-    }, [itemChecked])
-
-    useEffect(()=>{
-        if(quentity !== null && quentity)
-            FeedBackSender(true, price, id, quentity);
-            // console.log(quentity);
-    }, [quentity])
-
+    // useEffect(()=>{
+    //     // console.log(itemChecked);
+    //     if(itemChecked !== null && (itemChecked === true || itemChecked === false)){
+    //             FeedBackSender(itemChecked, price, id, quentity)
+    //     }
+    // }, [itemChecked])
 
 
     useEffect(()=>{
@@ -62,7 +60,6 @@ export default function CartItem({id, price, isSelected, feedback, q_editor}){
         }
     });
 
-
     return(
         <>
             <div className={styles.CartItemContainer} style={!productData ?{
@@ -70,7 +67,7 @@ export default function CartItem({id, price, isSelected, feedback, q_editor}){
             }:{
                     marginTop: ""
             }}>
-            <ComponentLoader data={productData}>
+            <ComponentLoader data={productData} data_setter={setloaded}>
                 <Link href={`/products/${productData ? productData.slug : null}`}>
                 <div className={styles.ItemImg}>
                     <NextImageRatioSaver
@@ -84,7 +81,9 @@ export default function CartItem({id, price, isSelected, feedback, q_editor}){
                     </div>
                     <a>Артикул: {productData ? productData.vend_code : ""}</a>
                     <div className={styles.qAndPrice}>
-                            <QuantityEditor getQuentity={setQuentity}/>
+                        <QuantityEditor clickEvent={handleClick} value={
+                            quantity
+                        } />
                         
                         <p>
                             <span className={styles.priceTag}>Цена: </span>

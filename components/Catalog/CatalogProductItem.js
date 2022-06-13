@@ -9,7 +9,6 @@ import { inCart, cartCreateAct, rmeoveItem } from "../../cartActions/cartActions
 export default function CatalogProductItem({imgPath, Title, Price, id, slug}){
     
 
-
     const[addToCartResp, setCartResp] = useState(null);
     const[prodInCart, setInCart] = useState(false);
 
@@ -18,20 +17,14 @@ export default function CatalogProductItem({imgPath, Title, Price, id, slug}){
     });
 
     useEffect(()=>{
-        if(!inCart()){
-            setInCart(false);
-        }
-    },[])
-
-    useEffect(()=>{
         if(prodInCart)
             setMessage({message: "Убрать из корзины"})
         else
             setMessage({message: "Добавить в корзину"})
     },[prodInCart])
 
-    useEffect(()=>{
-            inCart(id).
+    useEffect(async ()=>{
+            await inCart(id).
             then(elem => {
                 setInCart(elem);
             })
@@ -41,6 +34,7 @@ export default function CatalogProductItem({imgPath, Title, Price, id, slug}){
         if(!prodInCart){
             cartCreateAct(id, q, p).then(elem => {
                 setCartResp(elem);
+                console.log(elem);
             });
         }
         else{

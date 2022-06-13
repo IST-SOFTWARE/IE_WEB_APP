@@ -5,27 +5,33 @@ import getData from "../queries/getData";
 
 export async function getCartItems(){
 
-    let BaseCart = [];
-    await getData(getCart, 'cartCollection_by_id', {id: localStorage.getItem('cart_session')}).
-    then(elem => {
-            if(elem){
-                BaseCart = elem.cart_model;
-            }else{
-                BaseCart = null;
-                console.warn("getCartItems: Get cart items error:\n");
-            }
-    });
-
-    return BaseCart;
-}
-
-export async function cartCreateAct(id, quantity, price){
     let isSessionSet = 
         typeof window !== 'undefined' && localStorage.getItem('cart_session') !== null;
+
+        if(!isSessionSet){
+            return null;
+        } else {
+
+        let BaseCart = [];
+        await getData(getCart, 'cartCollection_by_id', {id: localStorage.getItem('cart_session')}).
+        then(elem => {
+                if(elem){
+                    BaseCart = elem.cart_model;
+                }else{
+                    BaseCart = null;
+                    console.warn("getCartItems: session does not defined\n");
+                }
+        });
+        return BaseCart;
+    }
+}
+
+
+
+export async function cartCreateAct(id, quantity, price){
     let finResponse = null;
 
     if(id && quantity && price){
-        
         let newCartItem = {
             status: "draft",
             cart_model:[
@@ -37,45 +43,46 @@ export async function cartCreateAct(id, quantity, price){
             ]
         }
 
-        if(!isSessionSet){
+        let BaseCart = [];
+        BaseCart = await getCartItems();
+
+        if(BaseCart === null){
             await setData(createCart, {data: newCartItem}).then(response=> {
-                localStorage.setItem('cart_session', response.create_cartCollection_item.id);
-                finResponse = response.create_cartCollection_item.id;
+                localStorage.setItem('cart_session', response.create_cartCollection_item.id);          
             })
-        } else {
-            
-            let BaseCart = [];
-            BaseCart = await getCartItems();
-
-            if(BaseCart !== null && BaseCart.length >= 0){
-                BaseCart.map(elem => {
-                    newCartItem.cart_model.push(elem);
-                })
-            
-                await setData(updateCart, {data: newCartItem, id: localStorage.getItem('cart_session')}).then(response=>{
-                    finResponse = newCartItem ? newCartItem : null;
-                    
-                })
-
-            }else{
-                //dangerous idea
-                finResponse = null;
-                localStorage.removeItem('cart_session');
-                return await cartCreateAct(id, quantity, price);
-            }
-            
+            await cartCreateAct(id, quantity, price).then(resp => finResponse = resp);
         }
+        
+        else if(BaseCart !== null && BaseCart.length >= 0){
+            BaseCart.map(async (elem) => {
+                if(elem)
+                {
+                    if(elem.product_id !== id){
+                        newCartItem.cart_model.push(elem);
+                        
+                    }
+                    else
+                        elem.quantity = quantity;
+                    
+                }
+                
+            })
+        
+            await setData(updateCart, {data: newCartItem, id: localStorage.getItem('cart_session')}).then(response=>{
+                finResponse = newCartItem ? newCartItem : null;
+            })
+
+        }
+        
     }
 
     return finResponse;
 }
 
 export async function inCart(id){
-    let isSessionSet = typeof window !== 'undefined' && localStorage.getItem('cart_session') !== null;
+   
     let finRes = false;
-    if(!isSessionSet)
-        return false;
-    else{
+
         let BaseCart = [];
         BaseCart = await getCartItems();
 
@@ -95,8 +102,7 @@ export async function inCart(id){
         }
         else
             finRes = false;
-
-    }
+    
 
     return finRes
 }

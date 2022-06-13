@@ -1,7 +1,7 @@
 import styles from "../../styles/CartPage/QuantityEditor.module.css"
 import { useEffect, useState, useReducer } from "react"
 
-export default function QuantityEditor({getQuentity}){
+export default function QuantityEditor({clickEvent, value}){
 
 const Inc_BP = "increment"
 const Decr_BP = "decrement"
@@ -11,17 +11,18 @@ const k = 1;        // INC/DEC
 const maxQ = 10;    // Max Quantity for one product position
 
 const[isFocus, setFocus] = useState(false);
-const[inputVal, setInputVal] = useState("1");
+const[inputVal, setInputVal] = useState(value);
 
 const[state, dispatch] = useReducer(reducer, {
-    quantity: 1,
+    quantity: value,
 });
 
 const QuentityGetter = () => {
-    if(getQuentity !== undefined ){
-        getQuentity(state.quantity);
+    if(clickEvent !== undefined ){
+        clickEvent(state.quantity);
     }
 }
+
 
 function reducer(state, action){
     switch(action.type){
@@ -88,8 +89,11 @@ useEffect(()=>{
 },[inputVal, isFocus])
 
 useEffect(()=>{
-    setInputVal(state.quantity);
-    QuentityGetter();
+    if(value && value !== null){
+        setInputVal(state.quantity);
+        if({...state} !== state)
+            QuentityGetter();
+    }
 },[state])
 
     return(
@@ -97,7 +101,9 @@ useEffect(()=>{
             <div className={styles.QuantityEditor}>
                 <div className={styles.ActionsContainer}>
                     <button className={styles.lButton}
-                    onClick={()=>dispatch(Decrement_AG(k))}
+                    onClick={()=>{
+                        dispatch(Decrement_AG(k))
+                    }}
                     >-</button>
 
                     <input type="text"
@@ -109,7 +115,9 @@ useEffect(()=>{
                     />
 
                     <button className={styles.rButton}
-                    onClick={()=>dispatch(Increment_AG(k))}
+                    onClick={()=>{
+                        dispatch(Increment_AG(k))
+                    }}
                     >+</button>
                 </div>
             </div>

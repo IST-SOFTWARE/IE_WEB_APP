@@ -18,13 +18,13 @@ export default function CartPage({}){
     const[SelectAll, setSelect] = useState(null)
 
     const Catalog_cont = useContext(CatalogContext);
-    const[AllItemsList, setItemsList] = useState();
+    const[AllItemsList, setItemsList] = useState([]);
     
-    const[selectedItems, dispatch] = useReducer(reducer, {
-        ProdList: [],
-        TotalQuentity: 0,
-        TotalSum: 0
-    })
+    // const[selectedItems, dispatch] = useReducer(reducer, {
+    //     ProdList: [],
+    //     TotalQuentity: 0,
+    //     TotalSum: 0
+    // })
 
     useEffect(()=>{
         async function ProdLoad(){
@@ -38,75 +38,71 @@ export default function CartPage({}){
 
     },[Catalog_cont]);
 
-    function reducer(state, action){
-        switch(action.type){
-            case ADD_BP:
-                return{
-                    TotalQuentity: action.quentity,
-                    TotalSum: state.TotalSum + parseInt(action.price.replace(/\s+/g, ''))
-                }
-            case REMOVE_BP:
-                return {
-                    ...state,
-                    TotalQuentity: action.quentity,
-                    TotalSum: state.TotalSum - parseInt(action.price.replace(/\s+/g, ''))
-                }
-        }
-    }
+    // function reducer(state, action){
+    //     switch(action.type){
+    //         case ADD_BP:
+    //             return{
+    //                 TotalQuentity: action.quentity,
+    //                 TotalSum: state.TotalSum + parseInt(action.price.replace(/\s+/g, ''))
+    //             }
+    //         case REMOVE_BP:
+    //             return {
+    //                 ...state,
+    //                 TotalQuentity: action.quentity,
+    //                 TotalSum: state.TotalSum - parseInt(action.price.replace(/\s+/g, ''))
+    //             }
+    //     }
+    // }
 
 
-    const AddItem_AG = (quentity, price, id) =>({
-        type: ADD_BP,
-        quentity,
-        price,
-        id
-    })
+    // const AddItem_AG = (quentity, price, id) =>({
+    //     type: ADD_BP,
+    //     quentity,
+    //     price,
+    //     id
+    // })
 
-    const RemoveItem_AG = (quentity, price, id) =>({
-        type: REMOVE_BP,
-        quentity,
-        price,
-        id
-    })
+    // const RemoveItem_AG = (quentity, price, id) =>({
+    //     type: REMOVE_BP,
+    //     quentity,
+    //     price,
+    //     id
+    // })
 
 
 
-    useEffect(()=>{
-        // const prodNum = document.querySelector(`.${styles.AddedProducts}`).childElementCount;
-        // const arr = [];
-        // for(let i = 0; i < prodNum; i++){
-        //     arr.push(SelectAll.toString());
-        // }
-        // setItemsList(arr);
-        console.log(selectedItems, 1);
-    },[selectedItems]);  
+    // useEffect(()=>{
+    //     // const prodNum = document.querySelector(`.${styles.AddedProducts}`).childElementCount;
+    //     // const arr = [];
+    //     // for(let i = 0; i < prodNum; i++){
+    //     //     arr.push(SelectAll.toString());
+    //     // }
+    //     // setItemsList(arr);
+    //     console.log(selectedItems, 1);
+    // },[selectedItems]);  
     
 
 
     
-    function SelectedListener(operation, price, id, q){
-        if(price && id && q){
-            switch(operation){
-                case "sum":{
-                    dispatch(AddItem_AG(selectedItems.TotalQuentity + q, price, id))
-                    console.log("SUM");
-                }
-                case "sub":{
-                    dispatch(RemoveItem_AG(selectedItems.TotalQuentity - q, price, id))
-                }
-            }
-        }
+    // function SelectedListener(operation, price, id, q){
+    //     if(price && id && q){
+    //         switch(operation){
+    //             case "sum":{
+    //                 dispatch(AddItem_AG(selectedItems.TotalQuentity + q, price, id))
+    //                 console.log("SUM");
+    //             }
+    //             case "sub":{
+    //                 dispatch(RemoveItem_AG(selectedItems.TotalQuentity - q, price, id))
+    //             }
+    //         }
+    //     }
 
-        // if(state && price && id && q){
-        //     dispatch(AddItem_AG(q, price, id));
-        // }
-        // else if(!state && price && id && q){
-        //     dispatch(RemoveItem_AG(q, price, id));
-        // }
-    }
+    // }
 
 
-    return AllItemsList && AllItemsList.length === 0 ? (
+    return AllItemsList && 
+    AllItemsList.length === 0  || 
+    AllItemsList === null? (
         <>
             <div className="container">
                 <div className="row ">
@@ -152,7 +148,8 @@ export default function CartPage({}){
                                             id={product.product_id}
                                             price={product.price}
                                             isSelected={SelectAll}
-                                            feedback={SelectedListener}
+                                            quantity={product.quantity}
+                                            // feedback={SelectedListener}
                                             />
                                     )) : null}
 
