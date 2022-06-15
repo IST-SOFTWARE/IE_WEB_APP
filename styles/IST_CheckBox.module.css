@@ -3,6 +3,18 @@
     width: 35px;
     height: 35px;
     margin: 9px;
+
+    -webkit-width: 35px;
+    -webkit-height: 35px;
+    -webkit-margin: 9px;
+
+    -moz-width: 10%;
+    -moz-height: 10%;
+    -moz-margin: 10%;
+
+    /* -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box; */
 }
 .checkmark{
     width: 0px;
@@ -30,6 +42,8 @@
     background: #2C3641;
     cursor: pointer;
     filter: drop-shadow(0px 0px 5px #76ACE7);
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
     box-sizing: border-box;
     margin: 0px;
     padding: 0px;

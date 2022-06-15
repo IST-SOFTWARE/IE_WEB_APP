@@ -1,6 +1,6 @@
 import styles from "../../styles/CartPage/CartPage.module.css"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect,useCallback  } from "react"
 import { getProductDataById } from "../../queries/getProductDataById"
 import getData from "../../queries/getData"
 import { cartCreateAct } from "../../cartActions/cartActions"
@@ -13,29 +13,43 @@ import QuantityEditor from "./QuantityEditor"
 import Link from "next/link"
 import ComponentLoader from "../ComponentLoader"
 
-export default function CartItem({id, price, quantity, isSelected}){
+export default function CartItem({id, quantity, isSelected, feedback}){
 
+    const[Loaded, setLoaded] = useState(false);
     const[productData, setProductData] = useState();
-    const[itemChecked, setItemChecked] = useState(null);
-
-    const[loadedData, setloaded] = useState(null);
+    const[itemChecked, setItemChecked] = useState(false);
+    const[actualQuantity, setQuantity] = useState(0);
 
     // const FeedBackSender = (p, id, q) => {
     //     cartCreateAct(id, q, p);
     // }
 
     const handleClick = (q) => {
-        if(q && q !== null)
-            cartCreateAct(id, q, price);
-        
+            if(q && q !== null){
+                cartCreateAct(id, q, productData ? productData.price : "");
+                if(actualQuantity !== {actualQuantity}){
+                    setQuantity(q);
+                }
+            }
     }
 
-    // useEffect(()=>{
-    //     // console.log(itemChecked);
-    //     if(isSelected !== null && (isSelected === true || isSelected === false)){
-    //         setItemChecked(isSelected);
-    //     }
-    // }, [isSelected])
+    useEffect(()=>{
+        let resp = false;
+        if(isSelected.ProdList.length > 0){
+            isSelected.ProdList.map(elem => { 
+                if(elem.id === id){
+                    resp = true;
+                }
+            })
+        }
+        setItemChecked(resp);
+    },[isSelected])
+
+
+
+    useEffect(()=>{
+        feedback(id, actualQuantity,  productData ? productData.price : "", itemChecked);
+    }, [itemChecked, actualQuantity])
 
 
     // useEffect(()=>{
@@ -67,12 +81,13 @@ export default function CartItem({id, price, quantity, isSelected}){
             }:{
                     marginTop: ""
             }}>
-            <ComponentLoader data={productData} data_setter={setloaded}>
+            <ComponentLoader data={productData}>
                 <Link href={`/products/${productData ? productData.slug : null}`}>
                 <div className={styles.ItemImg}>
                     <NextImageRatioSaver
                     Img={productData ? productData.image_url : ""}
-                    hPrime={true}/>
+                    hPrime={true}
+                    unique={productData ? productData.slug : ""}/>
                 </div>
                 </Link>
                 <div className={styles.ItemDescription}>
@@ -100,7 +115,7 @@ export default function CartItem({id, price, quantity, isSelected}){
                     </div>
                 </div>
                 <div className={styles.CheckBoxBlock}>
-                    <IST_CheckBox state={isSelected}
+                    <IST_CheckBox state={itemChecked}
                     feedback={setItemChecked}/>
                 </div>
             </ComponentLoader>

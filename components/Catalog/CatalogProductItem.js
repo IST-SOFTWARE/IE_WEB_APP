@@ -34,7 +34,7 @@ export default function CatalogProductItem({imgPath, Title, Price, id, slug}){
         if(!prodInCart){
             cartCreateAct(id, q, p).then(elem => {
                 setCartResp(elem);
-                console.log(elem);
+                // console.log(elem);
             });
         }
         else{
@@ -59,7 +59,7 @@ export default function CatalogProductItem({imgPath, Title, Price, id, slug}){
                             <div className={styles.PI_About_Name}>
                                 {Title}
                             </div>
-                            <p>Цена: <a>{Price}</a> ₽</p>
+                            <p>Цена: <a>{new Intl.NumberFormat('ru-RU').format(Price)}</a> ₽</p>
                         </div>
                         <div>
 

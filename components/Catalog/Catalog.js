@@ -182,7 +182,7 @@ export default function Catalog(openState, searchFilter){
                                             <CatalogProductItem
                                             imgPath={product.image_url}
                                             Title={product.product_name_ru}
-                                            Price={new Intl.NumberFormat('ru-RU').format(product.price)}
+                                            Price={product.price}
                                             slug={product.slug}
                                             id={product.id}
                                             />

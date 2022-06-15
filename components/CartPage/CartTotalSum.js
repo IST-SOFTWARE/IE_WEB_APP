@@ -1,7 +1,7 @@
 import styles from "../../styles/CartPage/CartPage.module.css"
 import { useState, useEffect} from "react"
 
-export default function CartTotalSum(){
+export default function CartTotalSum({quantity, price}){
 
     const[MoreInfActive, setActive] = useState(false);
 
@@ -31,7 +31,7 @@ export default function CartTotalSum(){
             <div className={styles.CartData}>
                 <div className={styles.header}>
                         <h1>Выбрано товаров</h1>
-                        <label>15</label>
+                        <label>{quantity}</label>
                         <button className={styles.MoreAboutOrder}
                             onClick={(e)=>handlerClick(e, MoreInfActive)}
                         />
@@ -42,19 +42,19 @@ export default function CartTotalSum(){
                         <div className={
                             styles.TotalCol + " " +
                             styles.TotalProducts}>
-                            <a>Товары(15):</a>
-                            <a>1 431 000₽</a>
+                            <a>Товары({quantity}):</a>
+                            <a>{new Intl.NumberFormat('ru-RU').format(price)}₽</a>
                         </div>
-                        <div className={
+                        {/* <div className={
                             styles.TotalCol + " " +
                             styles.TotalDiscount}>
                             <a>Скидка:</a>
                             <a>10 845₽</a>
-                        </div>
+                        </div> */}
            
                     </div>
                     <div className={styles.TotalFinalyBlock}>
-                        <p className={styles.TotalSum_FinSum}>Сумма: 1 420 155₽</p>
+                        <p className={styles.TotalSum_FinSum}>Сумма: {new Intl.NumberFormat('ru-RU').format(price)}₽</p>
 
                         <button className={styles.SendOrderBtn + " " + styles.disbled}>
                             Оформить заказ

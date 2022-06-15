@@ -1,5 +1,5 @@
 import styles from "../../styles/CartPage/CartPage.module.css"
-import { useState, useEffect, useReducer, useContext} from "react"
+import { useState, useEffect, useReducer, useContext, useCallback} from "react"
 
 import IST_CheckBox from "../../components/IST_CheckBox"
 import CartItem from "../../components/CartPage/CartItem"
@@ -10,21 +10,19 @@ import { getCartItems } from "../../cartActions/cartActions"
 import ComponentLoader from "../../components/ComponentLoader"
 
 
+
 export default function CartPage({}){
 
     const ADD_BP = "Add";
     const REMOVE_BP = "Remove";
+    const UPDT_BP = "Update";
 
-    const[SelectAll, setSelect] = useState(null)
+    const[SelectAll, setSelect] = useState(false)
 
     const Catalog_cont = useContext(CatalogContext);
     const[AllItemsList, setItemsList] = useState([]);
     
-    // const[selectedItems, dispatch] = useReducer(reducer, {
-    //     ProdList: [],
-    //     TotalQuentity: 0,
-    //     TotalSum: 0
-    // })
+
 
     useEffect(()=>{
         async function ProdLoad(){
@@ -38,67 +36,121 @@ export default function CartPage({}){
 
     },[Catalog_cont]);
 
-    // function reducer(state, action){
-    //     switch(action.type){
-    //         case ADD_BP:
-    //             return{
-    //                 TotalQuentity: action.quentity,
-    //                 TotalSum: state.TotalSum + parseInt(action.price.replace(/\s+/g, ''))
-    //             }
-    //         case REMOVE_BP:
-    //             return {
-    //                 ...state,
-    //                 TotalQuentity: action.quentity,
-    //                 TotalSum: state.TotalSum - parseInt(action.price.replace(/\s+/g, ''))
-    //             }
-    //     }
-    // }
+
+    const[selectedItems, dispatch] = useReducer(reducer, {
+        ProdList: [],
+        TotalQuentity: 0,
+        TotalSum: 0
+    })
 
 
-    // const AddItem_AG = (quentity, price, id) =>({
-    //     type: ADD_BP,
-    //     quentity,
-    //     price,
-    //     id
-    // })
-
-    // const RemoveItem_AG = (quentity, price, id) =>({
-    //     type: REMOVE_BP,
-    //     quentity,
-    //     price,
-    //     id
-    // })
-
-
-
-    // useEffect(()=>{
-    //     // const prodNum = document.querySelector(`.${styles.AddedProducts}`).childElementCount;
-    //     // const arr = [];
-    //     // for(let i = 0; i < prodNum; i++){
-    //     //     arr.push(SelectAll.toString());
-    //     // }
-    //     // setItemsList(arr);
-    //     console.log(selectedItems, 1);
-    // },[selectedItems]);  
-    
+    function reducer(state, action){
+        switch(action.type){
+            case ADD_BP:
+                return{
+                    ProdList: action.payload,
+                    ...state,
+                    
+                }
+            case REMOVE_BP:
+                return {
+                    ProdList: action.payload,
+                    ...state,
+                    // TotalQuentity: action.quentity,
+                    // TotalSum: state.TotalSum - parseInt(action.price.replace(/\s+/g, ''))
+                }
+            case UPDT_BP:
+                return{
+                    ...state, 
+                    TotalQuentity: action.q,
+                    TotalSum: action.p
+                }
+        }
+    }
 
 
-    
-    // function SelectedListener(operation, price, id, q){
-    //     if(price && id && q){
-    //         switch(operation){
-    //             case "sum":{
-    //                 dispatch(AddItem_AG(selectedItems.TotalQuentity + q, price, id))
-    //                 console.log("SUM");
-    //             }
-    //             case "sub":{
-    //                 dispatch(RemoveItem_AG(selectedItems.TotalQuentity - q, price, id))
-    //             }
-    //         }
-    //     }
+    const AddItem_AG = (payload) =>({
+        type: ADD_BP,
+        payload,
+    })
 
-    // }
+    const RemoveItem_AG = (payload) =>({
+        type: REMOVE_BP,
+        payload
+    })
 
+    const UpdateTotal_AG = (q, p) => ({
+        type: UPDT_BP,
+        q,p
+    })
+
+    const TotalsUpdater = useCallback(() => {
+
+        let totalQ = 0;
+        let totalPrice = 0;
+
+        if(selectedItems.ProdList.length > 0){
+            selectedItems.ProdList.map(
+                elem=>{
+                    totalQ += elem.q;
+                    totalPrice += elem.q * parseFloat(elem.p);
+                }
+            )
+        }
+        dispatch(UpdateTotal_AG(totalQ, totalPrice));
+
+    },[])
+
+
+    const SelectedListener = useCallback((id, q, p, s) => {
+        if(s){
+            const obj = {
+                id,q,p
+            }
+            let memArr = selectedItems.ProdList;
+            memArr.map((elem,i) => {
+                if(elem.id === id)
+                    memArr.splice(i, 1);
+            })
+            memArr.push(obj);
+
+            dispatch(AddItem_AG(memArr));
+            TotalsUpdater();
+        }
+        else{
+            let memArr = selectedItems.ProdList;
+            if(memArr && memArr.length > 0){
+                memArr.map((elem, i) => {
+                    if(elem.id === id)
+                        memArr.splice(i, 1);
+                })
+            }
+
+            dispatch(RemoveItem_AG(memArr));
+            TotalsUpdater();
+        }
+    },[])
+
+
+    const handleSelect = (state) => {
+        AllItemsList.map(elem => {
+            SelectedListener(elem.product_id, elem.quantity, elem.price, state)
+        })
+    }
+
+    useEffect(()=>{
+
+
+        if(AllItemsList && selectedItems && AllItemsList.length > 0)
+            if(AllItemsList.length === selectedItems.ProdList.length){
+                // console.log(AllItemsList, selectedItems.ProdList)
+                setSelect(true);
+            }
+            else{
+                setSelect(false);
+            }
+                
+    },[AllItemsList, selectedItems]);
 
     return AllItemsList && 
     AllItemsList.length === 0  || 
@@ -127,7 +179,7 @@ export default function CartPage({}){
                                 
                                 <div className={styles.CartActions}>
                                     <div className={styles.SelectAllBtn}>
-                                            <div onClick={()=>setSelect(!SelectAll)}>
+                                            <div onClick={()=>handleSelect(!SelectAll)}>
                                                 <IST_CheckBox
                                                 state={SelectAll}>
                                                     Выбрать всё
@@ -146,10 +198,10 @@ export default function CartPage({}){
                                             <CartItem
                                             key={product.product_id}
                                             id={product.product_id}
-                                            price={product.price}
-                                            isSelected={SelectAll}
                                             quantity={product.quantity}
-                                            // feedback={SelectedListener}
+
+                                            isSelected={selectedItems}
+                                            feedback={SelectedListener}
                                             />
                                     )) : null}
 
@@ -161,7 +213,10 @@ export default function CartPage({}){
                         <div className="col-xxl-7 col-xl-6 col-lg-6">
                                     
                                 <div className={styles.FinalyDataBlock}>
-                                        <CartTotalSum/>
+                                        <CartTotalSum
+                                        quantity={selectedItems.TotalQuentity}
+                                        price={selectedItems.TotalSum}
+                                        />
                                 </div>
                                    
                         </div>
