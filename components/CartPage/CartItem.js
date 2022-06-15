@@ -1,7 +1,7 @@
 import styles from "../../styles/CartPage/CartPage.module.css"
 
 import { useState, useEffect,useCallback  } from "react"
-import { getProductDataById } from "../../queries/getProductDataById"
+import { getProductBy_id} from "../../queries/getProductBy_id"
 import getData from "../../queries/getData"
 import { cartCreateAct } from "../../cartActions/cartActions"
 
@@ -63,7 +63,7 @@ export default function CartItem({id, quantity, isSelected, feedback}){
     useEffect(()=>{
         const ProdLoad = async() => {
             if(id && id !== null){
-                const data = await getData(getProductDataById, 'Products', {id: parseFloat(id)});
+                const data = await getData(getProductBy_id, 'Products', {id: parseFloat(id)});
                 setProductData(data[0]);
                 // console.log(data);
             }

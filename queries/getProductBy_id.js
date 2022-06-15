@@ -1,4 +1,4 @@
-export const getProductDataById = 
+export const getProductBy_id = 
         `
         query getProductData($id: Float){
             Products(filter: {id: {_eq: $id}}){
