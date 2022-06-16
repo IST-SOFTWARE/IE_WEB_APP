@@ -6,7 +6,7 @@ import CartItem from "../../components/CartPage/CartItem"
 import CartTotalSum from "../../components/CartPage/CartTotalSum"
 
 import CatalogContext from "../../components/Context/CatalogContext"
-import { getCartItems } from "../../cartActions/cartActions"
+import { getCartItems, rmeoveItem } from "../../cartActions/cartActions"
 import ComponentLoader from "../../components/ComponentLoader"
 
 
@@ -16,26 +16,14 @@ export default function CartPage({}){
     const ADD_BP = "Add";
     const REMOVE_BP = "Remove";
     const UPDT_BP = "Update";
+    const CLEAR_BP = "clear"
 
     const[SelectAll, setSelect] = useState(false)
 
     const Catalog_cont = useContext(CatalogContext);
     const[AllItemsList, setItemsList] = useState([]);
     
-
-
-    useEffect(()=>{
-        async function ProdLoad(){
-            const response = await getCartItems();
-            setItemsList(response);
-        }
-
-        if(!AllItemsList || AllItemsList.length !== {...AllItemsList.length}){
-            ProdLoad();
-        }
-
-    },[Catalog_cont]);
-
+    const[cartUpdater, setUpdater] = useState(false);
 
     const[selectedItems, dispatch] = useReducer(reducer, {
         ProdList: [],
@@ -65,6 +53,12 @@ export default function CartPage({}){
                     TotalQuentity: action.q,
                     TotalSum: action.p
                 }
+            case CLEAR_BP:
+                return{
+                    ProdList: [],
+                    TotalQuentity: 0,
+                    TotalSum: 0
+                }
         }
     }
 
@@ -83,6 +77,25 @@ export default function CartPage({}){
         type: UPDT_BP,
         q,p
     })
+
+    const ClearCart_AG = () => ({
+        type: CLEAR_BP,
+    })
+
+
+
+    useEffect(()=>{
+        async function ProdLoad(){
+            const response = await getCartItems();
+            setItemsList(response);
+        }
+
+        if(!AllItemsList || AllItemsList.length !== {...AllItemsList.length}){
+            ProdLoad();
+        }
+
+    },[Catalog_cont, cartUpdater]);
+
 
     const TotalsUpdater = useCallback(() => {
 
@@ -138,8 +151,22 @@ export default function CartPage({}){
         })
     }
 
-    useEffect(()=>{
 
+    const handleRemove = async() => {
+        if(selectedItems.ProdList.length !== 0){
+            let removeCave = Array.from(selectedItems.ProdList);
+
+            for(let i=0; i < removeCave.length; i++){
+                // console.log(removeCave[i].id);
+                await rmeoveItem(removeCave[i].id);
+                SelectedListener(removeCave[i].id, 0, 0, false);
+            }
+
+        }
+        setUpdater(!cartUpdater);
+    }
+
+    useEffect(()=>{
 
         if(AllItemsList && selectedItems && AllItemsList.length > 0)
             if(AllItemsList.length === selectedItems.ProdList.length){
@@ -151,6 +178,15 @@ export default function CartPage({}){
             }
                 
     },[AllItemsList, selectedItems]);
+
+    useEffect(()=>{
+        const RemoveSelectedBtn = document.querySelector(`.${styles.RemoveSelectedBtn}`);
+        if(RemoveSelectedBtn && selectedItems.ProdList.length === 0)
+            RemoveSelectedBtn.classList.add(`${styles.disabled}`);
+        else if(RemoveSelectedBtn && selectedItems.ProdList.length !== 0)
+            RemoveSelectedBtn.classList.remove(`${styles.disabled}`);
+        
+    },[selectedItems]);
 
     return AllItemsList && 
     AllItemsList.length === 0  || 
@@ -188,7 +224,11 @@ export default function CartPage({}){
                                     </div>
 
                                     <div className={styles.RemoveSelectedBtn}>
-                                        <button>Удалить выбранное</button>
+                                        <button onClick={()=>{
+                                            handleRemove()
+                                        }}>
+                                            Удалить выбранное
+                                        </button>
                                     </div>
 
                                 </div>
