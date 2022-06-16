@@ -151,7 +151,7 @@
     font-weight: 500;
     font-size: calc(16px + (20 - 16) *   ((100vw - 300px) / (1920 - 320)));
 
-    line-height: 26px;
+    line-height: 21px;
     color: #FFFFFF;
     height: fit-content;
     word-break: break-word;
@@ -171,7 +171,7 @@
     font-family: 'Roboto';
     font-style: normal;
     font-weight: 500;
-    font-size: calc(12px + (16 - 12) *   ((100vw - 300px) / (1920 - 320)));
+    font-size: calc(14px + (16 - 14) *   ((100vw - 300px) / (1920 - 320)));
     line-height: 19px;
     color: #76ACE7;
     margin-top: 3px;
@@ -196,6 +196,7 @@
     font-weight: 500;
     font-size: calc(16px + (21 - 16) *   ((100vw - 300px) / (1920 - 320)));
     color: #D3E8FF;
+    transform: translateY(25%);
 }
 .priceLilTag{
     display: none;
@@ -339,6 +340,9 @@
         padding-top: 15px;
         width: 57%;
     }
+
+
+
     .SendOrderBtn{
         height: 50px;
     }
@@ -353,8 +357,19 @@
         padding-top: 70px;
     }
     .ItemDescription{
-        width: 65%;
+        width: 55%;
     }
+
+    .CartItemContainer{
+        width: 80%;
+        margin-left:50%;
+        transform: translateX(-50%);
+    }
+
+    .ItemDescription p{
+        font-size: calc(16px + (20 - 16) *   ((100vw - 300px) / (993 - 320)));
+    }
+
     .CartPageCont::after{
         content: "";
         width: 100%;
@@ -420,8 +435,8 @@
     
     .MoreAboutOrder{
         display: block;
-        right: 25%;
-        transform: translateY(-50%);
+        right: 15%;
+        transform: translateY(-20%);
         position: absolute;
         width: 25px;
         height: 20px;
@@ -453,6 +468,9 @@
     
     .CartItemContainer{
         height: 170px;
+        margin-left: 0px;
+        transform: none;
+        width: auto;
     }
     .ItemDescription{
         width: 60%;
@@ -470,7 +488,7 @@
     }
     .CartItemContainer{
         max-width: calc(100vw - 30px);
-        height: 150px;
+        height: 140px;
     } 
     .RemoveSelectedBtn button{
         display: flex;
@@ -506,6 +524,7 @@
         border-radius: 30px;
         background-color: #76ACE7;
         color: #fff;
+       
     }
     .SendOrderBtn{
         height: 45px;

@@ -22,12 +22,14 @@
     position: absolute;
     top: 0;
     left: 0;
+    -moz-appearance:initial
 }
 
 .checkmark.active{
     position: absolute;
     margin: 0px;
     padding: 0px;
+    -moz-appearance:initial
 }
 
 .checkmark::after{
@@ -47,6 +49,7 @@
     box-sizing: border-box;
     margin: 0px;
     padding: 0px;
+    
 }
 
 .checkmark.active::before{
