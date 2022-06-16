@@ -297,7 +297,7 @@ const addToCart = (id, q, p) =>{
                                                 onClick={() => addToCart(
                                                     productData.id, 1, productData.price
                                                 )}>
-                                                    
+                                                    Добавить в корзину
                                                 </button>
 
                                             <button className={styles.sendOrderAction}>
