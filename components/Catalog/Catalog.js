@@ -2,18 +2,21 @@ import styles from "../../styles/Catalog.module.css"
 
 const CatalogProductItem = lazy(() => import("./CatalogProductItem"));
 // import CatalogProductItem from "./CatalogProductItem";
-import CatalogProps from "./CatalogProps";
+
 import CatalogItemLoader from "./CatalogItemLoader";
 import CatalogContext from "../Context/CatalogContext";
+import CatalogFilterItem from "./CatalogFilterItem";
+import CatalogFilter from "./CatalogFilter";
 
 import { createPortal } from "react-dom";
 import { useEffect, useState, useReducer, useContext} from "react";
 import { Suspense,lazy } from "react";
 
+import reducer from "./Reducer/reducer";
+import { ToggleCatalogGenerator, SearchCatalogGenerator, UpdateUTM } from "./Reducer/actions";
 
 export default function Catalog(openState, searchFilter){
     const[isBrowser, setIsBrowser] = useState(false);
-
 
     const[products, setProducts] = useState([]);
     const[filteredProducts, setFiltered] = useState([]);
@@ -24,14 +27,15 @@ export default function Catalog(openState, searchFilter){
     
     const Catalog_cont = useContext(CatalogContext);
     
+    const delay = (ms) => {
+        return new Promise(r => setTimeout(()=> r(), ms));
+    }
 
     useEffect(()=>{
         setIsBrowser(true);
         setPrLoaded(false);
     },[]);
     
-    const ToggleCatalog = "ToggleCatalog";
-    const Search_BP = "Search_BP";
     
     const [CatalogReducer, dispatch] = useReducer(reducer, {
         isOpen: false,          //Open/Close Catalog
@@ -41,97 +45,74 @@ export default function Catalog(openState, searchFilter){
         ForEscalator: false,    //For Escalator CheckBox
         Availability: false,    //Availability CheckBox
         
-        Manufacturer: [],       //Manufacturer List
-        Type: [],               //Type List
-        Unit: [],               //Unit List
+        Manufacturers: [],       //Manufacturer List
+        Types: [],               //Type List
+        Units: [],               //Unit List
         
         Search: "",             //Search Request
     })
     
-    const ToggleCatalogGenerator = (payload) =>({
-        type: ToggleCatalog,
-        payload,
-    })
 
-    const SearchCatalogGenerator = (payload) =>({
-        type: Search_BP,
-        payload,
-    })
-    
-    function reducer(satate, action){
-        switch(action.type){
-            case ToggleCatalog:
-                return{
-                    ...satate,
-                    isOpen: action.payload
-                }    
-            case Search_BP:
-                return{
-                    ...satate,
-                    Search: action.payload
-                }              
-            }
-        }
+    useEffect(()=>{
+        (
+            async ()=> {
+                try{
 
-        const delay = (ms) => {
-            return new Promise(r => setTimeout(()=> r(), ms));
-        }
+                    if(CatalogReducer && CatalogReducer.isOpen){
+                        if(Catalog_cont.CatalogProducts){
+                        await delay(300);
+                        setPrLoaded(true);
 
-
-
-        useEffect(()=>{
-            (
-                async ()=> {
-                    try{
-
-                        if(CatalogReducer.isOpen){
-                            if(Catalog_cont.CatalogProducts){
-                            await delay(300);
-                            setPrLoaded(true);
-
-                            setProducts(Catalog_cont.CatalogProducts);
-                            setFiltered(Catalog_cont.CatalogProducts);
-                            // console.log("opened");
-                            }
-                            
-                        } else{
-                            setPrLoaded(false);
-
-                            setProducts([]);
-                            setFiltered([]);
-                            // console.log("closed");
+                        setProducts(Catalog_cont.CatalogProducts);
+                        setFiltered(Catalog_cont.CatalogProducts);
+                        // console.log("opened");
                         }
+                        
+                    } else{
+                        setPrLoaded(false);
 
-                } catch(e){
-                        console.error("Failed to fetch[Catalog items]: ", e);
+                        setProducts([]);
+                        setFiltered([]);
+                        // console.log("closed");
                     }
 
+            } catch(e){
+                    console.error("Failed to fetch[Catalog items]: ", e);
                 }
-            )()
-        },[CatalogReducer.isOpen])
+
+            }
+        )()
+    },[CatalogReducer.isOpen])
     
 
     useEffect(()=>{
-        dispatch(SearchCatalogGenerator(Catalog_cont.ProductSearch.s));
-    },[Catalog_cont.ProductSearch])
+        if(Catalog_cont)
+            dispatch(SearchCatalogGenerator(Catalog_cont.ProductSearch.s));
+    },[Catalog_cont])
 
 
     useEffect(()=>{
-        let s_products = products.filter(p => p.product_name_ru.toLowerCase().indexOf(CatalogReducer.Search.toLowerCase()) >= 0 
-        || p.vend_code.toLowerCase().indexOf(CatalogReducer.Search.toLowerCase()) >= 0);
-        setFiltered(s_products);
-    },[CatalogReducer.Search]);
+        if(CatalogReducer){
+            let s_products = products.filter(p => p.product_name_ru.toLowerCase().indexOf(CatalogReducer.Search.toLowerCase()) >= 0 
+            || p.vend_code.toLowerCase().indexOf(CatalogReducer.Search.toLowerCase()) >= 0);
+            setFiltered(s_products);
+        }
+    },[CatalogReducer]);
 
     useEffect(()=>{
         const nf = document.querySelector(`.${styles.SearchResults}`);
-        if(filteredProducts.length === 0 && nf)
-        {
-            nf.classList.add(`${styles.active}`);
-        }
-        else if(filteredProducts.length > 0 && nf && nf.classList.contains(`${styles.active}`)){
-            nf.classList.remove(`${styles.active}`);
-        }
+        
+            if(filteredProducts.length === 0 && nf
+            && CatalogReducer && CatalogReducer.Search.length !== 0)
+                nf.classList.add(`${styles.active}`);
+            
+            else if(filteredProducts.length > 0 && nf && nf.classList.contains(`${styles.active}`))
+                nf.classList.remove(`${styles.active}`);
+            
+    },[filteredProducts, CatalogReducer])
 
+    useEffect(()=>{
+        console.log(filteredProducts);  
     },[filteredProducts])
 
     useEffect(()=>{
@@ -155,11 +136,25 @@ export default function Catalog(openState, searchFilter){
 
 
 
-    const CatalogBlock = CatalogReducer.isOpen ? (
+
+    const CatalogBlock = CatalogReducer && CatalogReducer.isOpen ? (
         <>
             <div className={styles.CatalogConteiner}>
                 <div className={styles.CatalogBlock}>
                         <div className="container">
+
+                        <div className="
+                                row
+                                d-flex
+                                justify-content-sm-center
+                                justify-content-md-start">
+                                    
+                            <CatalogFilter CatalogReducer={CatalogReducer}>
+                                <CatalogFilterItem label={"CheckBox"} isChecBox={true}/>
+                                <CatalogFilterItem label={"CheckBox"} isChecBox={true}/>
+                                <CatalogFilterItem label={"CheckBox"} isChecBox={true}/>
+                            </CatalogFilter>
+                        </div>
 
                             <div className={styles.SearchResults}>
                                 <p>Не найдено :(</p>
