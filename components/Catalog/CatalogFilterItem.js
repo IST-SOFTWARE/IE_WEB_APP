@@ -1,12 +1,16 @@
 import styles from "../../styles/ModalComponents/CatalogFilter.module.css"
 import IST_CheckBox from "../IST_CheckBox"
+
 import { useState, useEffect, useReducer } from "react"
 
 export default function CatalogFilterItem({isChecBox, state, list, label, filtered}){
 
     const[itemLabel, setLabel] = useState(label);
+    const[menuState, setMenuState]=useState(false);
+
     const[filterValuesList, setValuesList] = useState([]);
-    const[menuState, toggleMenu] = useState(false);
+    const[filters, setFilters] = useState([]);
+
 
 
     const labelDescriptor = {
@@ -14,6 +18,63 @@ export default function CatalogFilterItem({isChecBox, state, list, label, filter
         Types: "Тип",
         Units: "Узел"
     } 
+
+    function compareValues(key, order = 'asc') {
+        return function innerSort(a, b) {
+          if (!a.hasOwnProperty(key) || !b.hasOwnProperty(key)) {
+            // property doesn't exist on either object
+            return 0;
+          }
+      
+          const varA = (typeof a[key] === 'string')
+            ? a[key].toUpperCase() : a[key];
+          const varB = (typeof b[key] === 'string')
+            ? b[key].toUpperCase() : b[key];
+      
+          let comparison = 0;
+          if (varA > varB) {
+            comparison = 1;
+          } else if (varA < varB) {
+            comparison = -1;
+          }
+          return (
+            (order === 'desc') ? (comparison * -1) : comparison
+          );
+        };
+    }
+
+
+    function addFilterToList(elem){
+        const filtersList = Array.from(filters);
+        const fullList = Array.from(filterValuesList);
+        filtersList.push(elem);
+
+        fullList.map((item,i) => {
+            if(elem.id === item.id)
+                fullList.splice(i, 1);
+        })
+
+        filtersList.sort(compareValues('id'));
+        fullList.sort(compareValues('id'))
+        setFilters(filtersList);
+        setValuesList(fullList);
+    }
+
+    function removeFilterFromList(elem){
+        const filtersList = Array.from(filters);
+        const fullList = Array.from(filterValuesList);
+        fullList.push(elem);
+
+        filtersList.map((item,i) => {
+            if(elem.id === item.id)
+            filtersList.splice(i, 1);
+        })
+        filtersList.sort(compareValues('id'));
+        fullList.sort(compareValues('id'))
+        setFilters(filtersList);
+        setValuesList(fullList);
+    }
+
 
     useEffect(()=>{
         if(itemLabel.toString().match(/[MFG][Manufacture]/gi) !== null)
@@ -29,44 +90,88 @@ export default function CatalogFilterItem({isChecBox, state, list, label, filter
     useEffect(() =>{
         if(list){
             const itemsList = Object.values(list)[0];
-            // itemsList.map(item => {
-            //     if(Object.keys(item).includes("id")){
-            //         delete item.id
-            //     }
-            // })
-            setValuesList(itemsList);
+            setValuesList(itemsList.sort(compareValues('id')));
         }
     },[])
 
+
     function FilterViewer(elem){
-        let item = elem;
+        let item = Object.assign({}, elem);
         if(Object.keys(item).includes("id"))
              delete item.id
-        
+
         return item;
     }
 
-    // useEffect(() =>{
-    //     console.log(filterValuesList);
-    // },[filterValuesList])
 
     function handleClick(){
 
+        const clickedAdder = document.getElementById((label ? label : "") + "_addBtn");
         const clickedBlock = document.getElementById((label ? label : "") + "_dropList");
         let allLists = document.querySelectorAll(`.${styles.FilterValuesList}`);
+        let allBtns = document.querySelectorAll(`.${styles.addFilterParam}`);
 
+
+        //hide all lists 
         allLists.forEach(elem => {
             if(elem.classList.contains(`${styles.active}`) && elem !== clickedBlock)
                 elem.classList.remove(`${styles.active}`);
         })
-        
 
-        if(clickedBlock.classList.contains(`${styles.active}`))
+        //unactive all btns 
+        allBtns.forEach(elem => {
+            if(elem.classList.contains(`${styles.active}`) && elem !== clickedAdder)
+                elem.classList.remove(`${styles.active}`);
+        })
+
+        //show/hide list
+        if(clickedBlock.classList.contains(`${styles.active}`)){
             clickedBlock.classList.remove(`${styles.active}`);
-        else
+        }
+        else{
             clickedBlock.classList.add(`${styles.active}`);
+        }
+
+        //active/disactive btn
+        if(clickedAdder.classList.contains(`${styles.active}`)){
+            clickedAdder.classList.remove(`${styles.active}`);
+        }
+        else{
+            clickedAdder.classList.add(`${styles.active}`);
+        }
 
     }
+
+
+    function ListsHider(event){
+        let allLists = document.querySelectorAll(`.${styles.FilterValuesList}`);
+        let allBtns = document.querySelectorAll(`.${styles.addFilterParam}`);
+        if(
+            (!event.target.classList.contains(`${styles.addFilterParam}`))&&
+            (!event.target.classList.contains(`${styles.ListItems}`))&&
+            (!event.target.classList.contains(`${styles.FilterValuesList}`))&&
+            (!event.target.classList.contains(`FilterValuesList_UL`))
+            
+        ){
+            allLists.forEach(elem => {
+                if(elem.classList.contains(`${styles.active}`))
+                    elem.classList.remove(`${styles.active}`);
+            })
+
+            allBtns.forEach(elem => {
+                if(elem.classList.contains(`${styles.active}`))
+                    elem.classList.remove(`${styles.active}`);
+            })
+        }
+    }
+
+    useEffect(()=>{ 
+        window.addEventListener("click", ListsHider);
+        return () => {
+            window.removeEventListener("click", ListsHider);
+          };
+    },[])
+
 
     const checkTypeItem = () =>{
         return(
@@ -79,15 +184,48 @@ export default function CatalogFilterItem({isChecBox, state, list, label, filter
     const listTypeItem = () =>{
         return(
             <>
+                <div className={styles.selectedFilters}>
+                    {filters && filters.length > 0 ? (
+                        filters.map((elem, i) =>{
+                            if(i <= 1)
+                                return  <p onClick={()=>removeFilterFromList(elem)}>
+                                            {Object.values(FilterViewer(elem))}
+                                        </p>
+                            else
+                                null
+                        })
+                    )
+                    : null}
+                    {filters && filters.length >= 3 ? (
+                        <a>...</a>
+                    ) : null}
+                </div>
+
                <button className={styles.addFilterParam}
-               onClick={(e)=>handleClick(e)}/>
+               onClick={(e)=>handleClick(e)} id={(label ? label : "") + "_addBtn"}/>
 
                <div className={styles.FilterValuesList} id={(label ? label : "") + "_dropList"}>
-                   <ul>{
-                        
+                   <ul className="FilterValuesList_UL">
+                    {filters && filters.length > 0 ? 
+                        filters.map((elem, i)=>{
+                            return(
+                                <li key={elem.id}
+                                className={styles.ListItems + " " + styles.selected}
+                                onClick={()=>removeFilterFromList(elem)}>
+                                {Object.values(FilterViewer(elem))}
+                                <button/>
+                            </li>
+                            )
+                        })
+                    : null}
+                    {
                         filterValuesList.map((elem, i) => {
                             return(
-                            <li key={i}>{Object.values(FilterViewer(elem))}</li>
+                            <li key={elem.id}
+                            className={styles.ListItems}
+                            onClick={()=>addFilterToList(elem)}>
+                                {Object.values(FilterViewer(elem))}
+                            </li>
                             )
                         })
                         

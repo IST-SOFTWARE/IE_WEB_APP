@@ -1,4 +1,6 @@
 import { useState, useEffect, useReducer } from "react"
+import styles from "../../styles/Catalog.module.css"
+
 
 import CatalogFilterItem from "./CatalogFilterItem";
 import ComponentLoader from "../ComponentLoader";
@@ -11,6 +13,7 @@ import { getUnits } from "../../queries/FilterQueries/getUnits";
 export default function CatalogFilter({children, CatalogReducer}){
 
     const [filters, setFilters] = useState();
+    const[size, setSize] = useState();
 
     const FilterSetter = (Manufacturers, Types, Units) =>{
         const allFilters = [
@@ -39,19 +42,44 @@ export default function CatalogFilter({children, CatalogReducer}){
     },[])
 
     useEffect(()=>{
-        console.log(filters);
-    },[filters])
+        const filersBlock = document.querySelector(`.${styles.CatalogFilterBlock}`);
+
+        const filersBlockWidth = filersBlock.offsetWidth;
+        const fbParentWidth = (filersBlock.parentElement).offsetWidth;
+
+        console.log(fbParentWidth);
+        if(filersBlockWidth + 24 >= fbParentWidth){
+            console.log(fbParentWidth);
+        }
+    },[])
+
+    // useEffect(()=>{
+    //     console.log(filters);
+    // },[filters])
+    const resizeChecker = (e) => {
+        console.log(e);
+    }
+
+    useEffect(()=>{ 
+        const filersBlock = document.querySelector(`.${styles.CatalogFilterBlock}`);
+
+        filersBlock.addEventListener("resize", resizeChecker);
+        return () => {
+            filersBlock.removeEventListener("resize", resizeChecker);
+          };
+    },[])
 
     return(
         <>
+            <div className={styles.CatalogFilterBlock}>
             <ComponentLoader data={filters}>
-                
-                {filters ? filters.map((elem, index) => 
-                    <CatalogFilterItem label={Object.keys(elem)} list={elem} key={index}/>
-                ) : ""}
+                    {filters ? filters.map((elem, index) => 
+                        <CatalogFilterItem label={Object.keys(elem)} list={elem} key={index}/>
+                    ) : ""}
 
-                {children}
+                    {children}
             </ComponentLoader>
+            </div>
         </>
     )
 }

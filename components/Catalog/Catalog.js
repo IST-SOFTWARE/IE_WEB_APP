@@ -60,7 +60,7 @@ export default function Catalog(openState, searchFilter){
 
                     if(CatalogReducer && CatalogReducer.isOpen){
                         if(Catalog_cont.CatalogProducts){
-                        await delay(300);
+                        await delay(500);
                         setPrLoaded(true);
 
                         setProducts(Catalog_cont.CatalogProducts);
@@ -111,9 +111,9 @@ export default function Catalog(openState, searchFilter){
             
     },[filteredProducts, CatalogReducer])
 
-    useEffect(()=>{
-        console.log(filteredProducts);  
-    },[filteredProducts])
+    // useEffect(()=>{
+    //     console.log(filteredProducts);  
+    // },[filteredProducts])
 
     useEffect(()=>{
         dispatch(ToggleCatalogGenerator(openState.openState));
@@ -143,17 +143,14 @@ export default function Catalog(openState, searchFilter){
                 <div className={styles.CatalogBlock}>
                         <div className="container">
 
-                        <div className="
-                                row
-                                d-flex
-                                justify-content-sm-center
-                                justify-content-md-start">
-                                    
-                            <CatalogFilter CatalogReducer={CatalogReducer}>
-                                <CatalogFilterItem label={"CheckBox"} isChecBox={true}/>
-                                <CatalogFilterItem label={"CheckBox"} isChecBox={true}/>
-                                <CatalogFilterItem label={"CheckBox"} isChecBox={true}/>
-                            </CatalogFilter>
+                        <div className="row">
+                            <div className="col-15">
+                                <CatalogFilter CatalogReducer={CatalogReducer}>
+                                    <CatalogFilterItem label={"Для лифта"} isChecBox={true}/>
+                                    <CatalogFilterItem label={"Для эскалатора"} isChecBox={true}/>
+                                    <CatalogFilterItem label={"Наличие"} isChecBox={true}/>
+                                </CatalogFilter>
+                            </div>
                         </div>
 
                             <div className={styles.SearchResults}>
