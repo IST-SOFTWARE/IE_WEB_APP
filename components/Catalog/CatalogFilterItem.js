@@ -1,23 +1,43 @@
 import styles from "../../styles/ModalComponents/CatalogFilter.module.css"
 import IST_CheckBox from "../IST_CheckBox"
 
-import { useState, useEffect, useReducer } from "react"
+import { SetAvailability_BP } from "./Reducer/boilerplates";
+import { SetAvailabilityGenerator } from "./Reducer/actions";
 
-export default function CatalogFilterItem({isChecBox, state, list, label, filtered}){
+import { useState, useEffect, useReducer, useCallback } from "react"
+
+export default function CatalogFilterItem({isChecBox, list, label, boilerplate, filterUpdater}){
 
     const[itemLabel, setLabel] = useState(label);
-    const[menuState, setMenuState]=useState(false);
+    const[itemBP, setItemBP] = useState("");
 
     const[filterValuesList, setValuesList] = useState([]);
     const[filters, setFilters] = useState([]);
+    const[boolFilter, setBoolFilter] = useState(false);
 
 
+    const stateUpdater = useCallback((bp, state) =>{
+        const newState = {
+            bp,
+            state
+        }
+        return newState;
+    },[itemBP, filters, boolFilter])
 
-    const labelDescriptor = {
-        Manufacturers: "Производитель",
-        Types: "Тип",
-        Units: "Узел"
-    } 
+
+    useEffect(()=>{
+        if(isChecBox && boilerplate && boilerplate !== null){
+            const newState = stateUpdater(boilerplate, boolFilter);
+            filterUpdater(newState);
+        }
+    },[boolFilter])
+
+    useEffect(()=>{
+        if(boilerplate && boilerplate !== null && filters && !isChecBox){
+            const newState = stateUpdater(boilerplate, filters);
+            filterUpdater(newState);
+        }
+    },[filters])
 
     function compareValues(key, order = 'asc') {
         return function innerSort(a, b) {
@@ -42,7 +62,6 @@ export default function CatalogFilterItem({isChecBox, state, list, label, filter
           );
         };
     }
-
 
     function addFilterToList(elem){
         const filtersList = Array.from(filters);
@@ -76,16 +95,16 @@ export default function CatalogFilterItem({isChecBox, state, list, label, filter
     }
 
 
-    useEffect(()=>{
-        if(itemLabel.toString().match(/[MFG][Manufacture]/gi) !== null)
-            setLabel(labelDescriptor.Manufacturers)
+    // useEffect(()=>{
+    //     if(itemLabel.toString().match(/[MFG][Manufacture]/gi) !== null)
+    //         setLabel(labelDescriptor.Manufacturers)
 
-        if(itemLabel.toString().match(/type/gi) !== null)
-            setLabel(labelDescriptor.Types)
+    //     if(itemLabel.toString().match(/type/gi) !== null)
+    //         setLabel(labelDescriptor.Types)
 
-        if(itemLabel.toString().match(/Unit/gi) !== null)
-            setLabel(labelDescriptor.Units)
-    },[])
+    //     if(itemLabel.toString().match(/Unit/gi) !== null)
+    //         setLabel(labelDescriptor.Units)
+    // },[])
 
     useEffect(() =>{
         if(list){
@@ -176,7 +195,7 @@ export default function CatalogFilterItem({isChecBox, state, list, label, filter
     const checkTypeItem = () =>{
         return(
             <>
-                <IST_CheckBox/>
+                <IST_CheckBox feedback={setBoolFilter}/>
             </>
         )
     }

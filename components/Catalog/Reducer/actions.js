@@ -1,4 +1,4 @@
-import { Search_BP, ToggleCatalog, UPD_UTM_BP} from "./boilerplates"
+import { Search_BP, ToggleCatalog, SetAvailability_BP} from "./boilerplates"
 
 export const ToggleCatalogGenerator = (payload) =>{
     return{
@@ -14,11 +14,9 @@ export const SearchCatalogGenerator = (payload) =>{
     }
 }
 
-export const UpdateUTM = (mfg, types, units) => {
+export const SetNewFilterGenerator = (type, payload) => {
     return{
-        type: UPD_UTM_BP,
-        mfg,
-        types,
-        units
+        type,
+        payload,
     }
 }

@@ -12,7 +12,30 @@ export const getProducts = async() => {
                 slug,
                 text_description,
                 price,
-                vend_code
+                vend_code,
+                type_of_equipment,
+                available_status
+   
+                product_manufacturer{
+                    manufacturer_category_id{
+                        id
+                        manufacturer_name
+                    }
+                }
+
+                product_type{
+                    Type_category_id{
+                        id,
+                        type_name
+                    }
+                }
+
+                product_unit{
+                    Unit_category_id{
+                        id,
+                        unit_name
+                    }
+                }
             }
         }
         `,

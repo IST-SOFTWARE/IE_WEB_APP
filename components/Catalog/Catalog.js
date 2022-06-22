@@ -13,7 +13,9 @@ import { useEffect, useState, useReducer, useContext} from "react";
 import { Suspense,lazy } from "react";
 
 import reducer from "./Reducer/reducer";
-import { ToggleCatalogGenerator, SearchCatalogGenerator, UpdateUTM } from "./Reducer/actions";
+import { ToggleCatalogGenerator, SearchCatalogGenerator} from "./Reducer/actions";
+
+
 
 export default function Catalog(openState, searchFilter){
     const[isBrowser, setIsBrowser] = useState(false);
@@ -91,6 +93,14 @@ export default function Catalog(openState, searchFilter){
     },[Catalog_cont])
 
 
+    const elevatorSelector = "elevator";
+    const escalatorSelector = "escalator";
+
+    const availableTrueSelector = "1"
+    const availableFalseSelector = "-1"
+    const availableCBP_Selector = "1"
+
+  
     useEffect(()=>{
         if(CatalogReducer){
             let s_products = products.filter(p => p.product_name_ru.toLowerCase().indexOf(CatalogReducer.Search.toLowerCase()) >= 0 
@@ -98,6 +108,57 @@ export default function Catalog(openState, searchFilter){
             setFiltered(s_products);
         }
     },[CatalogReducer]);
+
+    useEffect(()=>{
+        if(CatalogReducer && products){
+            console.log("reduce");
+
+            let ProdList = Array.from(products);    //filteredProducts
+            let Buffer = new Array();
+
+            let ProducsMFGList = new Array();
+            let FilterMFGList = new Array();
+
+            products.map(elem => {
+                elem.product_manufacturer.map(item=>{
+                    let mfgId = item.manufacturer_category_id.id;
+                    if(!ProducsMFGList.includes(mfgId)){
+                        ProducsMFGList.push(mfgId);
+                    }
+                })
+            })
+
+            CatalogReducer.Manufacturers.map(elem=>{
+                let mfgId = elem.id;
+                if(!FilterMFGList.includes(mfgId)){
+                    FilterMFGList.push(mfgId);
+                }
+            })
+
+            if(FilterMFGList.length !== 0){
+    
+                ProdList.map((elem, i) => {
+                    elem.product_manufacturer.map(item=>{
+                        let mfgId = item.manufacturer_category_id.id;
+                        console.log("ID", mfgId)
+                        if(FilterMFGList.includes(mfgId)){
+                            Buffer.push(elem);
+                        }
+                    })
+                })
+
+                console.log("Filter", FilterMFGList);
+                console.log("List", ProducsMFGList);
+                console.log(Buffer);
+                setFiltered(Buffer);
+            }
+            
+
+        }
+    },[CatalogReducer]);
+
+
+
 
     useEffect(()=>{
         const nf = document.querySelector(`.${styles.SearchResults}`);
@@ -112,8 +173,9 @@ export default function Catalog(openState, searchFilter){
     },[filteredProducts, CatalogReducer])
 
     // useEffect(()=>{
-    //     console.log(filteredProducts);  
-    // },[filteredProducts])
+    //     console.log(CatalogReducer);  
+    // },[CatalogReducer])
+
 
     useEffect(()=>{
         dispatch(ToggleCatalogGenerator(openState.openState));
@@ -145,11 +207,10 @@ export default function Catalog(openState, searchFilter){
 
                         <div className="row">
                             <div className="col-15">
-                                <CatalogFilter CatalogReducer={CatalogReducer}>
-                                    <CatalogFilterItem label={"Для лифта"} isChecBox={true}/>
-                                    <CatalogFilterItem label={"Для эскалатора"} isChecBox={true}/>
-                                    <CatalogFilterItem label={"Наличие"} isChecBox={true}/>
-                                </CatalogFilter>
+                                <CatalogFilter
+                                CatalogReducer={CatalogReducer}
+                                reducer={dispatch}/>
+              
                             </div>
                         </div>
 
