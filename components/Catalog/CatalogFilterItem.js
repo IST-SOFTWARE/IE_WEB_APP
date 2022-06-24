@@ -73,7 +73,7 @@ export default function CatalogFilterItem({isChecBox, list, label, boilerplate, 
                 fullList.splice(i, 1);
         })
 
-        filtersList.sort(compareValues('id'));
+
         fullList.sort(compareValues('id'))
         setFilters(filtersList);
         setValuesList(fullList);
@@ -88,7 +88,7 @@ export default function CatalogFilterItem({isChecBox, list, label, boilerplate, 
             if(elem.id === item.id)
             filtersList.splice(i, 1);
         })
-        filtersList.sort(compareValues('id'));
+  
         fullList.sort(compareValues('id'))
         setFilters(filtersList);
         setValuesList(fullList);
@@ -228,7 +228,7 @@ export default function CatalogFilterItem({isChecBox, list, label, boilerplate, 
                     {filters && filters.length > 0 ? 
                         filters.map((elem, i)=>{
                             return(
-                                <li key={elem.id}
+                                <li key={(i + 1) * 1000}
                                 className={styles.ListItems + " " + styles.selected}
                                 onClick={()=>removeFilterFromList(elem)}>
                                 {Object.values(FilterViewer(elem))}
@@ -240,7 +240,7 @@ export default function CatalogFilterItem({isChecBox, list, label, boilerplate, 
                     {
                         filterValuesList.map((elem, i) => {
                             return(
-                            <li key={elem.id}
+                            <li key={(i + 1) + 1000}
                             className={styles.ListItems}
                             onClick={()=>addFilterToList(elem)}>
                                 {Object.values(FilterViewer(elem))}

@@ -6,7 +6,7 @@ import Link from 'next/link'
 import BlureProdImage from "../ProductPage/BlureProdImage";
 import { inCart, cartCreateAct, rmeoveItem } from "../../cartActions/cartActions";
 
-export default function CatalogProductItem({imgPath, Title, Price, id, slug}){
+export default function CatalogProductItem({imgPath, Title, Price, id, slug, isExcluded}){
     
 
     const[addToCartResp, setCartResp] = useState(null);
@@ -45,7 +45,8 @@ export default function CatalogProductItem({imgPath, Title, Price, id, slug}){
 
     }
 
-    return(
+    
+    return isExcluded ? null : (
         <>
             <div className={styles.ProductItemCont}>
                 <Link href={`/products/${slug}`}>

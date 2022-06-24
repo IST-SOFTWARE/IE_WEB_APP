@@ -109,7 +109,8 @@ export default function CatalogFilter({reducer}){
             <ComponentLoader data={filters}>
                     {filters ? filters.map((elem, index) => 
                         <CatalogFilterItem
-                        key={index + 1}
+                        key={GetPropLabel(FiltersProps, Object.keys(elem)) + "1"}
+
                         label={GetPropLabel(FiltersProps, Object.keys(elem))}
                         boilerplate={GetPropBP(FiltersProps, Object.keys(elem))}
                         list={elem}

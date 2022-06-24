@@ -15,6 +15,7 @@ import { Suspense,lazy } from "react";
 import reducer from "./Reducer/reducer";
 import { ToggleCatalogGenerator, SearchCatalogGenerator} from "./Reducer/actions";
 
+import Filter from "./Filters/Filter";
 
 
 export default function Catalog(openState, searchFilter){
@@ -100,6 +101,11 @@ export default function Catalog(openState, searchFilter){
     const availableFalseSelector = "-1"
     const availableCBP_Selector = "1"
 
+    const excluded_product = "excluded"
+
+    const MFG_FilterReducer = "Manufacturers";
+    const Types_FilterReducer = "Types";
+    const Units_FilterReducer = "Units";
   
     useEffect(()=>{
         if(CatalogReducer){
@@ -109,53 +115,59 @@ export default function Catalog(openState, searchFilter){
         }
     },[CatalogReducer]);
 
-    useEffect(()=>{
-        if(CatalogReducer && products){
-            console.log("reduce");
 
-            let ProdList = Array.from(products);    //filteredProducts
-            let Buffer = new Array();
+    useEffect(()=>{ 
 
-            let ProducsMFGList = new Array();
-            let FilterMFGList = new Array();
+        let productsCategoriesList = new Array();
+        let buffer = new Array();
+        let PrItem = new Object();
 
-            products.map(elem => {
+        let ProductFilters = [
+            MFG_FilterReducer,
+            Types_FilterReducer,
+            Units_FilterReducer
+        ];
+
+        if(CatalogReducer && products){ 
+        
+            products.map((elem, i) => {
+
+                // set product id
+                PrItem["id"] = elem.id;
+
+                // set product Types
+                elem.product_type.map(item=>{
+                    let mfgId = item.Type_category_id.id;
+                    buffer.push(mfgId);
+                })
+                PrItem[Types_FilterReducer] = buffer;
+                buffer = [];
+
+                // set product Units
+                elem.product_unit.map(item=>{
+                    let mfgId = item.Unit_category_id.id;
+                    buffer.push(mfgId);
+                })
+                PrItem[Units_FilterReducer] = buffer;
+                buffer = [];
+
+                // set product MFG
                 elem.product_manufacturer.map(item=>{
                     let mfgId = item.manufacturer_category_id.id;
-                    if(!ProducsMFGList.includes(mfgId)){
-                        ProducsMFGList.push(mfgId);
-                    }
+                    buffer.push(mfgId);
                 })
-            })
+                PrItem[MFG_FilterReducer] = buffer;
+                productsCategoriesList.push(PrItem);
 
-            CatalogReducer.Manufacturers.map(elem=>{
-                let mfgId = elem.id;
-                if(!FilterMFGList.includes(mfgId)){
-                    FilterMFGList.push(mfgId);
-                }
-            })
-
-            if(FilterMFGList.length !== 0){
-    
-                ProdList.map((elem, i) => {
-                    elem.product_manufacturer.map(item=>{
-                        let mfgId = item.manufacturer_category_id.id;
-                        console.log("ID", mfgId)
-                        if(FilterMFGList.includes(mfgId)){
-                            Buffer.push(elem);
-                        }
-                    })
-                })
-
-                console.log("Filter", FilterMFGList);
-                console.log("List", ProducsMFGList);
-                console.log(Buffer);
-                setFiltered(Buffer);
-            }
+                buffer = [];
+                PrItem = {};
+            });
             
-
+            
+            Filter(CatalogReducer, productsCategoriesList, ProductFilters, filteredProducts, setFiltered);
         }
-    },[CatalogReducer]);
+        
+    },[CatalogReducer,products]);
 
 
 
@@ -228,19 +240,22 @@ export default function Catalog(openState, searchFilter){
                                 
                                 
                                 <Suspense fallback={<CatalogItemLoader Loaded={productsLoaded}/>}>
-                    
                                 {filteredProducts.map((product, index) =>{
-                                    return(
-                                        <div className="mb-4 p-0 col-xxl-3 col-xl-3 col-md-5 col-sm-7 col-7" key={product.id}>
-                                            <CatalogProductItem
-                                            imgPath={product.image_url}
-                                            Title={product.product_name_ru}
-                                            Price={product.price}
-                                            slug={product.slug}
-                                            id={product.id}
-                                            />
-                                        </div>
-                                    )       
+                                    if(!(product[excluded_product] !== undefined ? product[excluded_product] : false)) {
+                                        return(
+                                            <div className="mb-4 p-0 col-xxl-3 col-xl-3 col-md-5 col-sm-7 col-7"
+                                            key={product.id}>
+                                                <CatalogProductItem
+                                                // isExcluded={}
+                                                imgPath={product.image_url}
+                                                Title={product.product_name_ru}
+                                                Price={product.price}
+                                                slug={product.slug}
+                                                id={product.id}
+                                                />
+                                            </div>
+                                        )    
+                                    }  
                                 })}
                                 </Suspense>
                             

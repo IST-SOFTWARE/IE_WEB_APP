@@ -45,7 +45,7 @@ export default function ProductDemo({PDLangChecker, content, lang, api_cont, cal
         if(api_cont){
             setPdData(api_cont.Home_Page_our_products);
             setCardsData(api_cont.ProdDemo_Cards);
-            console.log(cardsData);
+            // console.log(cardsData);
         }
     })
 
