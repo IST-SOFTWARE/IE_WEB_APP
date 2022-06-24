@@ -16,7 +16,8 @@ import reducer from "./Reducer/reducer";
 import { ToggleCatalogGenerator, SearchCatalogGenerator} from "./Reducer/actions";
 
 import Filter from "./Filters/Filter";
-
+import BooleanFilter from "./Filters/BooleanFilter";
+import Excluder from "./Filters/Excluder";
 
 export default function Catalog(openState, searchFilter){
     const[isBrowser, setIsBrowser] = useState(false);
@@ -106,6 +107,9 @@ export default function Catalog(openState, searchFilter){
     const MFG_FilterReducer = "Manufacturers";
     const Types_FilterReducer = "Types";
     const Units_FilterReducer = "Units";
+    const Availability_FilterReducer = "Availability";
+    const ForLift_FilterReducer = "ForLift";
+    const ForEscalator_FilterReducer = "ForEscalator";
   
     useEffect(()=>{
         if(CatalogReducer){
@@ -128,12 +132,45 @@ export default function Catalog(openState, searchFilter){
             Units_FilterReducer
         ];
 
+        let BooleanFilters = [
+            Availability_FilterReducer,
+            ForLift_FilterReducer,
+            ForEscalator_FilterReducer
+        ];
+
         if(CatalogReducer && products){ 
         
             products.map((elem, i) => {
 
                 // set product id
                 PrItem["id"] = elem.id;
+
+                // set product type_of_equipment
+                if((elem.type_of_equipment.includes(elevatorSelector)) && (elem.type_of_equipment.includes(escalatorSelector))){
+                    PrItem[ForLift_FilterReducer] = true;
+                    PrItem[ForEscalator_FilterReducer] = true;
+                }
+                
+                else if((elem.type_of_equipment.includes(elevatorSelector)) && !(elem.type_of_equipment.includes(escalatorSelector))){
+                    PrItem[ForLift_FilterReducer] = true;
+                    PrItem[ForEscalator_FilterReducer] = false;
+                }
+
+                else if(!(elem.type_of_equipment.includes(elevatorSelector)) && (elem.type_of_equipment.includes(escalatorSelector))){
+                    PrItem[ForLift_FilterReducer] = false;
+                    PrItem[ForEscalator_FilterReducer] = true;
+                }
+                else{
+                    PrItem[ForLift_FilterReducer] = false;
+                    PrItem[ForEscalator_FilterReducer] = false;
+                }
+
+                // set available_status
+                if(elem.available_status === availableFalseSelector)
+                    PrItem[Availability_FilterReducer] = false;
+                else
+                    PrItem[Availability_FilterReducer] = true;
+    
 
                 // set product Types
                 elem.product_type.map(item=>{
@@ -163,15 +200,17 @@ export default function Catalog(openState, searchFilter){
                 PrItem = {};
             });
             
-            
-            Filter(CatalogReducer, productsCategoriesList, ProductFilters, filteredProducts, setFiltered);
+            if(filteredProducts.length > 0){
+            // Filtering by parameters
+                let BoolFilter = BooleanFilter(CatalogReducer, productsCategoriesList, BooleanFilters, filteredProducts);
+                let paramsFilter = Filter(CatalogReducer, productsCategoriesList, ProductFilters, filteredProducts);
+                Excluder(BoolFilter, paramsFilter, filteredProducts, setFiltered);
+            }
         }
         
     },[CatalogReducer,products]);
 
-
-
-
+    
     useEffect(()=>{
         const nf = document.querySelector(`.${styles.SearchResults}`);
         
@@ -241,6 +280,7 @@ export default function Catalog(openState, searchFilter){
                                 
                                 <Suspense fallback={<CatalogItemLoader Loaded={productsLoaded}/>}>
                                 {filteredProducts.map((product, index) =>{
+                                    // Check product filtered status
                                     if(!(product[excluded_product] !== undefined ? product[excluded_product] : false)) {
                                         return(
                                             <div className="mb-4 p-0 col-xxl-3 col-xl-3 col-md-5 col-sm-7 col-7"

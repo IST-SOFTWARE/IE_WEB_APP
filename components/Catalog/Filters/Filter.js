@@ -1,4 +1,4 @@
-export default function Filter(reducer, products, filters, OutputList, SetFiltered){
+export default function Filter(reducer, products, filters, OutputList){
 
     const elevatorSelector = "elevator";
     const escalatorSelector = "escalator";
@@ -13,12 +13,14 @@ export default function Filter(reducer, products, filters, OutputList, SetFilter
     const Types_FilterReducer = "Types";
     const Units_FilterReducer = "Units";
 
-    
     // let ProdList = Array.from(filteredProducts); 
 
     let filtersResults = new Object();
     let localReducerFilters = new Object();
-    // let OutputItems = new Array.from();
+
+    let local_outputList = Array.from(OutputList);
+    
+    let FilteredList = new Array();
 
     const IncludesCheck = (arr1, arr2) => {
         let res = false;
@@ -62,17 +64,26 @@ export default function Filter(reducer, products, filters, OutputList, SetFilter
 
         // console.log(prod.id,":")
         // console.log(Object.values(filtersResults));
-        
-        OutputList.map(item => {
+
+        local_outputList.map(item => {
             if((item.id === prod.id) && Object.values(filtersResults).includes(false)){
-                item[excluded_product] = true;
+                    FilteredList.push({
+                        "id": prod.id,
+                        [excluded_product]: true
+                    })
+                    
             }
             else if((item.id === prod.id) && !Object.values(filtersResults).includes(false)){
-                item[excluded_product] = false;
+                FilteredList.push({
+                    "id": prod.id,
+                    [excluded_product]: false
+                })
             }
         })
     })
-    
+
+    return FilteredList;
+
     // console.log(filter, prod[filter] + " - " + prod.id + ": ");
 
         // console.log("FilteredList", filtersResults);
