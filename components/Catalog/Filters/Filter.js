@@ -1,17 +1,6 @@
+import { excluded_product } from "../ReducerGlobalBoilerplates";
+
 export default function Filter(reducer, products, filters, OutputList){
-
-    const elevatorSelector = "elevator";
-    const escalatorSelector = "escalator";
-
-    const availableTrueSelector = "1"
-    const availableFalseSelector = "-1"
-    const availableCBP_Selector = "1"
-
-    const excluded_product = "excluded"
-
-    const MFG_FilterReducer = "Manufacturers";
-    const Types_FilterReducer = "Types";
-    const Units_FilterReducer = "Units";
 
     // let ProdList = Array.from(filteredProducts); 
 

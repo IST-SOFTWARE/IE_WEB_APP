@@ -9,7 +9,7 @@ import styles from "../../styles/Header.module.css"
 import { useEffect, useState } from "react"
 
 
-export default function  Header({HeaderLangChecker, content, lang}){
+export default function Header({HeaderLangChecker, content, lang}){
     return(
         <>
          <div className={styles.header}>

@@ -22,10 +22,10 @@ export default function MyApp({Component, pageProps}){
 
     // FOR SHOW/HIDE PAGE LEVELS IN MOBILE
     const[mobilePageLevels, setPageLevelsVis] = useState(true);
-    const[CatalogProducts, setCatalogProducts] = useState();
 
+    const[CatalogProducts, setCatalogProducts] = useState();
     const[CatalogToggle, setCatalog] = useState(false);
-    
+    const[CatalogLoad, setCatalogLoad] = useState(false);
     const[ProductSearch, setProductSearch] = useState({
         s: ''
     })

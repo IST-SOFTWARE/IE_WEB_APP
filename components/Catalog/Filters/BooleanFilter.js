@@ -1,7 +1,8 @@
+import { excluded_product, ForLift_FilterReducer, ForEscalator_FilterReducer, Availability_FilterReducer} from "../ReducerGlobalBoilerplates";
+
 export default function BooleanFilter(reducer, products, filters, OutputList){
 
-    const excluded_product = "excluded"
-    
+
     let local_outputList = Array.from(OutputList);
     let filtersResults = new Object();
     let FilteredList = new Array();
@@ -16,9 +17,9 @@ export default function BooleanFilter(reducer, products, filters, OutputList){
 
                     if(reducer[filter]){
                         if(prod[filter])
-                            filtersResults[filter] = false;
-                        else
                             filtersResults[filter] = true;
+                        else
+                            filtersResults[filter] = false;
                     }
                         
                 }
@@ -27,7 +28,31 @@ export default function BooleanFilter(reducer, products, filters, OutputList){
 
 
         local_outputList.map(item => {
-            if((item.id === prod.id) && Object.values(filtersResults).includes(false)){
+
+            //Specific options for [ForLift[*]][ForEscalator[*]] displaying
+            if(
+                (item.id === prod.id) &&
+                (reducer[ForLift_FilterReducer] && reducer[ForEscalator_FilterReducer]) &&
+                (prod[ForLift_FilterReducer] || prod[ForEscalator_FilterReducer]))
+            {
+                if(reducer[Availability_FilterReducer] && !prod[Availability_FilterReducer]){
+                    FilteredList.push({
+                        "id": prod.id,
+                        [excluded_product]: true
+                    })
+                }
+                else{
+                    FilteredList.push({
+                        "id": prod.id,
+                        [excluded_product]: false
+                    })
+                }
+            }
+            //-------------------------------------------------------------
+
+
+            
+            else if((item.id === prod.id) && Object.values(filtersResults).includes(false)){
                     FilteredList.push({
                         "id": prod.id,
                         [excluded_product]: true
@@ -39,7 +64,11 @@ export default function BooleanFilter(reducer, products, filters, OutputList){
                     "id": prod.id,
                     [excluded_product]: false
                 })
+                
             }
+
+ 
+            // console.log("Lift: ", reducer[ForLift_FilterReducer], "Esc: " , reducer[ForEscalator_FilterReducer])
         })
     
     })

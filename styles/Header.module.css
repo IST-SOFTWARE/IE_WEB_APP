@@ -15,6 +15,19 @@
     top:0;
     left: 0; */
   }
+
+/* .header::after{
+    position: fixed;
+    top:94px;
+    height: 2px;
+    width: 100%;
+    content: "";
+
+    box-shadow: 0px 2px 5px 3px #6B93BE;
+    background: #6B93BE;
+} */
+
+
 .HeaderMobLogo{
     display: none;
 }

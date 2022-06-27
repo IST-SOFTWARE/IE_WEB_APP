@@ -15,8 +15,11 @@ import { Suspense,lazy } from "react";
 import reducer from "./Reducer/reducer";
 import { ToggleCatalogGenerator, SearchCatalogGenerator} from "./Reducer/actions";
 
+import "../../helpers/debounce"
+import * as GlobalBP from "./ReducerGlobalBoilerplates";
 import Filter from "./Filters/Filter";
 import BooleanFilter from "./Filters/BooleanFilter";
+import SearchFilter from "./Filters/SearchFilter";
 import Excluder from "./Filters/Excluder";
 
 export default function Catalog(openState, searchFilter){
@@ -94,30 +97,14 @@ export default function Catalog(openState, searchFilter){
             dispatch(SearchCatalogGenerator(Catalog_cont.ProductSearch.s));
     },[Catalog_cont])
 
-
-    const elevatorSelector = "elevator";
-    const escalatorSelector = "escalator";
-
-    const availableTrueSelector = "1"
-    const availableFalseSelector = "-1"
-    const availableCBP_Selector = "1"
-
-    const excluded_product = "excluded"
-
-    const MFG_FilterReducer = "Manufacturers";
-    const Types_FilterReducer = "Types";
-    const Units_FilterReducer = "Units";
-    const Availability_FilterReducer = "Availability";
-    const ForLift_FilterReducer = "ForLift";
-    const ForEscalator_FilterReducer = "ForEscalator";
   
-    useEffect(()=>{
-        if(CatalogReducer){
-            let s_products = products.filter(p => p.product_name_ru.toLowerCase().indexOf(CatalogReducer.Search.toLowerCase()) >= 0 
-            || p.vend_code.toLowerCase().indexOf(CatalogReducer.Search.toLowerCase()) >= 0);
-            setFiltered(s_products);
-        }
-    },[CatalogReducer]);
+    // useEffect(()=>{
+    //     if(CatalogReducer){
+    //         let s_products = products.filter(p => p.product_name_ru.toLowerCase().indexOf(CatalogReducer.Search.toLowerCase()) >= 0 
+    //         || p.vend_code.toLowerCase().indexOf(CatalogReducer.Search.toLowerCase()) >= 0);
+    //         setFiltered(s_products);
+    //     }
+    // },[CatalogReducer]);
 
 
     useEffect(()=>{ 
@@ -127,15 +114,15 @@ export default function Catalog(openState, searchFilter){
         let PrItem = new Object();
 
         let ProductFilters = [
-            MFG_FilterReducer,
-            Types_FilterReducer,
-            Units_FilterReducer
+            GlobalBP.MFG_FilterReducer,
+            GlobalBP.Types_FilterReducer,
+            GlobalBP.Units_FilterReducer
         ];
 
         let BooleanFilters = [
-            Availability_FilterReducer,
-            ForLift_FilterReducer,
-            ForEscalator_FilterReducer
+            GlobalBP.Availability_FilterReducer,
+            GlobalBP.ForLift_FilterReducer,
+            GlobalBP.ForEscalator_FilterReducer
         ];
 
         if(CatalogReducer && products){ 
@@ -145,39 +132,44 @@ export default function Catalog(openState, searchFilter){
                 // set product id
                 PrItem["id"] = elem.id;
 
+                PrItem[GlobalBP.ProdName_SearchFilter] = elem.product_name_ru;
+                PrItem[GlobalBP.ProdDesc_SearchFilter] = elem.text_description;
+                PrItem[GlobalBP.ProdVendCode_SearchFilter] = elem.vend_code;
+
                 // set product type_of_equipment
-                if((elem.type_of_equipment.includes(elevatorSelector)) && (elem.type_of_equipment.includes(escalatorSelector))){
-                    PrItem[ForLift_FilterReducer] = true;
-                    PrItem[ForEscalator_FilterReducer] = true;
+                if((elem.type_of_equipment.includes(GlobalBP.elevatorSelector)) && (elem.type_of_equipment.includes(GlobalBP.escalatorSelector))){
+                    PrItem[GlobalBP.ForLift_FilterReducer] = true;
+                    PrItem[GlobalBP.ForEscalator_FilterReducer] = true;
                 }
                 
-                else if((elem.type_of_equipment.includes(elevatorSelector)) && !(elem.type_of_equipment.includes(escalatorSelector))){
-                    PrItem[ForLift_FilterReducer] = true;
-                    PrItem[ForEscalator_FilterReducer] = false;
+                else if((elem.type_of_equipment.includes(GlobalBP.elevatorSelector)) && !(elem.type_of_equipment.includes(GlobalBP.escalatorSelector))){
+                    PrItem[GlobalBP.ForLift_FilterReducer] = true;
+                    PrItem[GlobalBP.ForEscalator_FilterReducer] = false;
                 }
 
-                else if(!(elem.type_of_equipment.includes(elevatorSelector)) && (elem.type_of_equipment.includes(escalatorSelector))){
-                    PrItem[ForLift_FilterReducer] = false;
-                    PrItem[ForEscalator_FilterReducer] = true;
+                else if(!(elem.type_of_equipment.includes(GlobalBP.elevatorSelector)) && (elem.type_of_equipment.includes(GlobalBP.escalatorSelector))){
+                    PrItem[GlobalBP.ForLift_FilterReducer] = false;
+                    PrItem[GlobalBP.ForEscalator_FilterReducer] = true;
                 }
                 else{
-                    PrItem[ForLift_FilterReducer] = false;
-                    PrItem[ForEscalator_FilterReducer] = false;
+                    PrItem[GlobalBP.ForLift_FilterReducer] = false;
+                    PrItem[GlobalBP.ForEscalator_FilterReducer] = false;
                 }
 
                 // set available_status
-                if(elem.available_status === availableFalseSelector)
-                    PrItem[Availability_FilterReducer] = false;
+                if(elem.available_status === GlobalBP.availableFalseSelector)
+                    PrItem[GlobalBP.Availability_FilterReducer] = false;
                 else
-                    PrItem[Availability_FilterReducer] = true;
-    
+                    PrItem[GlobalBP.Availability_FilterReducer] = true;
+                
+                
 
                 // set product Types
                 elem.product_type.map(item=>{
                     let mfgId = item.Type_category_id.id;
                     buffer.push(mfgId);
                 })
-                PrItem[Types_FilterReducer] = buffer;
+                PrItem[GlobalBP.Types_FilterReducer] = buffer;
                 buffer = [];
 
                 // set product Units
@@ -185,7 +177,7 @@ export default function Catalog(openState, searchFilter){
                     let mfgId = item.Unit_category_id.id;
                     buffer.push(mfgId);
                 })
-                PrItem[Units_FilterReducer] = buffer;
+                PrItem[GlobalBP.Units_FilterReducer] = buffer;
                 buffer = [];
 
                 // set product MFG
@@ -193,24 +185,31 @@ export default function Catalog(openState, searchFilter){
                     let mfgId = item.manufacturer_category_id.id;
                     buffer.push(mfgId);
                 })
-                PrItem[MFG_FilterReducer] = buffer;
+                PrItem[GlobalBP.MFG_FilterReducer] = buffer;
                 productsCategoriesList.push(PrItem);
 
                 buffer = [];
                 PrItem = {};
             });
             
-            if(filteredProducts.length > 0){
-            // Filtering by parameters
-                let BoolFilter = BooleanFilter(CatalogReducer, productsCategoriesList, BooleanFilters, filteredProducts);
-                let paramsFilter = Filter(CatalogReducer, productsCategoriesList, ProductFilters, filteredProducts);
-                Excluder(BoolFilter, paramsFilter, filteredProducts, setFiltered);
-            }
+            const timer = setTimeout(() => {
+                if(filteredProducts.length > 0){
+                // Filtering by parameters
+                    let BoolFilter = BooleanFilter(CatalogReducer, productsCategoriesList, BooleanFilters, filteredProducts);
+                    let paramsFilter = Filter(CatalogReducer, productsCategoriesList, ProductFilters, filteredProducts);
+                    let srchFilter = SearchFilter(CatalogReducer, productsCategoriesList, filteredProducts);
+                    Excluder(BoolFilter, paramsFilter, srchFilter, filteredProducts, setFiltered);
+                }
+            }, 500);
+            return () => clearTimeout(timer);
         }
         
     },[CatalogReducer,products]);
 
-    
+    useEffect(()=>{
+
+    },[CatalogReducer.Search])
+
     useEffect(()=>{
         const nf = document.querySelector(`.${styles.SearchResults}`);
         
@@ -281,7 +280,7 @@ export default function Catalog(openState, searchFilter){
                                 <Suspense fallback={<CatalogItemLoader Loaded={productsLoaded}/>}>
                                 {filteredProducts.map((product, index) =>{
                                     // Check product filtered status
-                                    if(!(product[excluded_product] !== undefined ? product[excluded_product] : false)) {
+                                    if(!(product[GlobalBP.excluded_product] !== undefined ? product[GlobalBP.excluded_product] : false)) {
                                         return(
                                             <div className="mb-4 p-0 col-xxl-3 col-xl-3 col-md-5 col-sm-7 col-7"
                                             key={product.id}>
