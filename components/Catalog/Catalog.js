@@ -1,4 +1,5 @@
 import styles from "../../styles/Catalog.module.css"
+import HeaderStyles from "../../styles/Header.module.css"
 
 const CatalogProductItem = lazy(() => import("./CatalogProductItem"));
 // import CatalogProductItem from "./CatalogProductItem";
@@ -9,7 +10,7 @@ import CatalogFilterItem from "./CatalogFilterItem";
 import CatalogFilter from "./CatalogFilter";
 
 import { createPortal } from "react-dom";
-import { useEffect, useState, useReducer, useContext} from "react";
+import { useEffect, useState, useReducer, useContext, useRef} from "react";
 import { Suspense,lazy } from "react";
 
 import reducer from "./Reducer/reducer";
@@ -22,12 +23,14 @@ import BooleanFilter from "./Filters/BooleanFilter";
 import SearchFilter from "./Filters/SearchFilter";
 import Excluder from "./Filters/Excluder";
 
-export default function Catalog(openState, searchFilter){
+export default function Catalog({openState, searchFilter, HeaderForLoader}){
     const[isBrowser, setIsBrowser] = useState(false);
 
     const[products, setProducts] = useState([]);
     const[filteredProducts, setFiltered] = useState([]);
 
+    const[filteringProcess, setFilteringProcess] = useState(false);
+    const[isFirstRender, setFirstRender] = useState(true);
     // const[AllProducts, setAllProducts] = useState([]);
 
     const[productsLoaded, setPrLoaded] = useState(false);
@@ -96,15 +99,6 @@ export default function Catalog(openState, searchFilter){
         if(Catalog_cont)
             dispatch(SearchCatalogGenerator(Catalog_cont.ProductSearch.s));
     },[Catalog_cont])
-
-  
-    // useEffect(()=>{
-    //     if(CatalogReducer){
-    //         let s_products = products.filter(p => p.product_name_ru.toLowerCase().indexOf(CatalogReducer.Search.toLowerCase()) >= 0 
-    //         || p.vend_code.toLowerCase().indexOf(CatalogReducer.Search.toLowerCase()) >= 0);
-    //         setFiltered(s_products);
-    //     }
-    // },[CatalogReducer]);
 
 
     useEffect(()=>{ 
@@ -199,40 +193,75 @@ export default function Catalog(openState, searchFilter){
                     let paramsFilter = Filter(CatalogReducer, productsCategoriesList, ProductFilters, filteredProducts);
                     let srchFilter = SearchFilter(CatalogReducer, productsCategoriesList, filteredProducts);
                     Excluder(BoolFilter, paramsFilter, srchFilter, filteredProducts, setFiltered);
+                                
                 }
             }, 500);
             return () => clearTimeout(timer);
         }
+         
+    },[CatalogReducer])
+
+    const firstRenderChecker= useRef(true)
+
+    useEffect(()=>{
+    if(firstRenderChecker.current){
+        firstRenderChecker.current=false
+    }
+        setFirstRender(firstRenderChecker.current);
+    },[])
+
+    useEffect(()=> {
+        if(!isFirstRender && products.length > 0){
+            setFilteringProcess(true);
+        }
+    },[isFirstRender, CatalogReducer])
+
+    useEffect(()=> {
+        if(!isFirstRender){
+            setFilteringProcess(false);
+            console.log(filteredProducts);
+        }
+    },[isFirstRender, filteredProducts])
+
+    useEffect(()=>{
+        if(HeaderForLoader){
+            if(filteringProcess)
+                HeaderForLoader.classList.add(`${HeaderStyles.active}`);
+                
+            else
+                HeaderForLoader.classList.remove(`${HeaderStyles.active}`);
+        }
+    },[HeaderForLoader, filteringProcess])
+
+
+    useEffect(()=>{
+
+        let showNf = true;
+        filteredProducts.map(product => {
+            if(
+            product[GlobalBP.excluded_product] !== undefined && 
+            product[GlobalBP.excluded_product] === false
+            ){
+                showNf = false;
+            }
+        });
         
-    },[CatalogReducer,products]);
-
-    useEffect(()=>{
-
-    },[CatalogReducer.Search])
-
-    useEffect(()=>{
         const nf = document.querySelector(`.${styles.SearchResults}`);
-        
-            if(filteredProducts.length === 0 && nf
+            if(showNf && nf
             && CatalogReducer && CatalogReducer.Search.length !== 0)
                 nf.classList.add(`${styles.active}`);
             
-            else if(filteredProducts.length > 0 && nf && nf.classList.contains(`${styles.active}`))
+            else if(!showNf && nf && nf.classList.contains(`${styles.active}`))
                 nf.classList.remove(`${styles.active}`);
             
     },[filteredProducts, CatalogReducer])
 
-    // useEffect(()=>{
-    //     console.log(CatalogReducer);  
-    // },[CatalogReducer])
-
-
     useEffect(()=>{
-        dispatch(ToggleCatalogGenerator(openState.openState));
+        dispatch(ToggleCatalogGenerator(openState));
       
         try{
             const CatalogConteiner = document.querySelector(`.${styles.CatalogConteiner}`);
-            if(openState.openState){
+            if(openState){
                 CatalogConteiner.classList.add(`${styles.open}`);
             }
             else{

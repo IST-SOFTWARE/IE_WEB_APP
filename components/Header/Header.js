@@ -6,13 +6,14 @@ import Contacts from "./Contacts"
 import Cart from "./Cart"
 import Login from "./Login"
 import styles from "../../styles/Header.module.css"
-import { useEffect, useState } from "react"
+import { useEffect, useState, forwardRef} from "react"
 
 
-export default function Header({HeaderLangChecker, content, lang}){
+const Header = forwardRef(({HeaderLangChecker, content, lang}, ref) => {
+
     return(
         <>
-         <div className={styles.header}>
+         <div className={styles.header} ref={ref}>
             <div className="nb_container">
                 <div className={styles.HeaderContent}>
                     <div className={styles.HeaderBigLogo}>
@@ -75,4 +76,6 @@ export default function Header({HeaderLangChecker, content, lang}){
          </div>
         </>
     )
-}
+});
+
+export default Header;

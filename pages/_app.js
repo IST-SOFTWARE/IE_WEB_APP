@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect, useContext, useRef} from "react";
 
 import '../styles/global.css'
 import Header from '../components/Header/Header'
@@ -16,8 +16,6 @@ import { useRouter } from 'next/router'
 const queryClient = new QueryClient()
 
 
-
-
 export default function MyApp({Component, pageProps}){
 
     // FOR SHOW/HIDE PAGE LEVELS IN MOBILE
@@ -25,10 +23,13 @@ export default function MyApp({Component, pageProps}){
 
     const[CatalogProducts, setCatalogProducts] = useState();
     const[CatalogToggle, setCatalog] = useState(false);
-    const[CatalogLoad, setCatalogLoad] = useState(false);
+
+    const[LoaderShow, setLoaderShow] = useState(false);
     const[ProductSearch, setProductSearch] = useState({
         s: ''
     })
+
+    const HeaderRef = useRef();
 
     const router = useRouter()
     // GET CATALOG PRODUCTS
@@ -45,7 +46,7 @@ export default function MyApp({Component, pageProps}){
     },[]);
     
 
-    //CatalogVontyext VALUE
+    //CatalogContext VALUES
     const CatalogValue = {
         CatalogToggle,
         setCatalog,
@@ -71,6 +72,7 @@ export default function MyApp({Component, pageProps}){
         setCatalog(false);
     },[Component, pageProps])
 
+
     return(
         <>
         
@@ -94,11 +96,13 @@ export default function MyApp({Component, pageProps}){
 
             <PageLevelsVisContext.Provider value={{mobilePageLevels, setPageLevelsVis}}>
             <CatalogContext.Provider value={CatalogValue}>
-            <Catalog openState={CatalogToggle} searchFilter={ProductSearch.s}/>
+            <Catalog openState={CatalogToggle} searchFilter={ProductSearch.s} HeaderForLoader={HeaderRef.current}/>
             <Header
+                ref={HeaderRef}
                 // HeaderLangChecker={LangChecker}
                 // content = {HeaderContent}
                 // lang = {globalLng}
+                loaderShow = {LoaderShow} 
             />
                 
             <Component {...pageProps} key={router.asPath}/>

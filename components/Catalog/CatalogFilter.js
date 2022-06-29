@@ -85,23 +85,13 @@ export default function CatalogFilter({reducer}){
     },[])
 
     useEffect(()=>{
+        console.log(filters);
+    },[filters])
+
+    useEffect(()=>{
         if(newFilter)
             reducer(SetNewFilterGenerator(newFilter.bp, newFilter.state));
     },[newFilter])
-
-    // useEffect(()=>{
-    //     const filersBlock = document.querySelector(`.${styles.CatalogFilterBlock}`);
-
-    //     const filersBlockWidth = filersBlock.offsetWidth;
-    //     const fbParentWidth = (filersBlock.parentElement).offsetWidth;
-
-    //     console.log(fbParentWidth);
-    //     if(filersBlockWidth + 24 >= fbParentWidth){
-    //         console.log(fbParentWidth);
-    //     }
-    // },[])
-
-
 
     return(
         <>
@@ -110,13 +100,13 @@ export default function CatalogFilter({reducer}){
                     {filters ? filters.map((elem, index) => 
                         <CatalogFilterItem
                         key={GetPropLabel(FiltersProps, Object.keys(elem)) + "1"}
-
+                        
                         label={GetPropLabel(FiltersProps, Object.keys(elem))}
                         boilerplate={GetPropBP(FiltersProps, Object.keys(elem))}
                         list={elem}
                         filterUpdater={setNewFilter}
                         />
-                    ) : ""}
+                        ) : ""}
 
                     {/* You can add any filters here */}
                     <CatalogFilterItem label={"Для лифта"}

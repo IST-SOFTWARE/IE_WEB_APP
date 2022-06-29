@@ -95,17 +95,6 @@ export default function CatalogFilterItem({isChecBox, list, label, boilerplate, 
     }
 
 
-    // useEffect(()=>{
-    //     if(itemLabel.toString().match(/[MFG][Manufacture]/gi) !== null)
-    //         setLabel(labelDescriptor.Manufacturers)
-
-    //     if(itemLabel.toString().match(/type/gi) !== null)
-    //         setLabel(labelDescriptor.Types)
-
-    //     if(itemLabel.toString().match(/Unit/gi) !== null)
-    //         setLabel(labelDescriptor.Units)
-    // },[])
-
     useEffect(() =>{
         if(list){
             const itemsList = Object.values(list)[0];
