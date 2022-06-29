@@ -78,4 +78,5 @@ const Header = forwardRef(({HeaderLangChecker, content, lang}, ref) => {
     )
 });
 
+Header.displayName = 'Header';
 export default Header;
