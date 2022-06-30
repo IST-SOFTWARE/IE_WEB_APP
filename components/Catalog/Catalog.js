@@ -119,7 +119,7 @@ export default function Catalog({openState, searchFilter, HeaderForLoader}){
             GlobalBP.ForEscalator_FilterReducer
         ];
 
-        if(CatalogReducer && products){ 
+        if(CatalogReducer && products && products.length > 0){ 
         
             products.map((elem, i) => {
 
@@ -186,6 +186,7 @@ export default function Catalog({openState, searchFilter, HeaderForLoader}){
                 PrItem = {};
             });
             
+            console.log("LOG");
             const timer = setTimeout(() => {
                 if(filteredProducts.length > 0){
                 // Filtering by parameters
