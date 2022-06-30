@@ -34,7 +34,7 @@ const FiltersProps = {
     }
 }
 
-export default function CatalogFilter({reducer}){
+export default function CatalogFilter({CatalogReducer, reducer}){
 
     const [filters, setFilters] = useState();
     const [newFilter, setNewFilter] = useState();
@@ -84,9 +84,10 @@ export default function CatalogFilter({reducer}){
     
     },[])
 
-    useEffect(()=>{
-        console.log(filters);
-    },[filters])
+    // useEffect(()=>{
+    //     console.log("Filters: ", filters);
+    //     console.log("Reducer: ", CatalogReducer);
+    // },[filters])
 
     useEffect(()=>{
         if(newFilter)
@@ -105,6 +106,7 @@ export default function CatalogFilter({reducer}){
                         boilerplate={GetPropBP(FiltersProps, Object.keys(elem))}
                         list={elem}
                         filterUpdater={setNewFilter}
+                        CatalogReducer={CatalogReducer}
                         />
                         ) : ""}
 
@@ -113,16 +115,19 @@ export default function CatalogFilter({reducer}){
                         isChecBox={true} 
                         boilerplate={SetElevator_BP}
                         filterUpdater={setNewFilter}
+                        CatalogReducer={CatalogReducer}
                     />
                     <CatalogFilterItem label={"Для эскалатора"}
                         isChecBox={true} 
                         boilerplate={SetEscalator_BP}
                         filterUpdater={setNewFilter}
+                        CatalogReducer={CatalogReducer}
                     />
                     <CatalogFilterItem label={"Наличие"}
                         isChecBox={true} 
                         boilerplate={SetAvailability_BP}
                         filterUpdater={setNewFilter}
+                        CatalogReducer={CatalogReducer}
                     />
                     {/* ---------------------------- */}
 

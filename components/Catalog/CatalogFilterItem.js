@@ -6,7 +6,7 @@ import { SetAvailabilityGenerator } from "./Reducer/actions";
 
 import { useState, useEffect, useReducer, useCallback } from "react"
 
-export default function CatalogFilterItem({isChecBox, list, label, boilerplate, filterUpdater}){
+export default function CatalogFilterItem({isChecBox, list, label, boilerplate, filterUpdater, CatalogReducer}){
 
     const[itemLabel, setLabel] = useState(label);
     const[itemBP, setItemBP] = useState("");
@@ -78,6 +78,7 @@ export default function CatalogFilterItem({isChecBox, list, label, boilerplate, 
         setFilters(filtersList);
         setValuesList(fullList);
     }
+
 
     function removeFilterFromList(elem){
         const filtersList = Array.from(filters);
@@ -180,11 +181,31 @@ export default function CatalogFilterItem({isChecBox, list, label, boilerplate, 
           };
     },[])
 
+    useEffect(()=>{
+        if(CatalogReducer && boilerplate){
+            const loadedFilters = CatalogReducer[boilerplate];
+            // console.log("loadedFilters: ", loadedFilters);
+            if(loadedFilters.length > 0){
+                loadedFilters.map(elem =>{
+                    addFilterToList(elem);
+                })
+            }
+        }
+    },[])
+
+    useEffect(()=>{
+        if(isChecBox && CatalogReducer && boilerplate){
+            const loadedFilters = CatalogReducer[boilerplate];
+            if(loadedFilters !== undefined)
+                setBoolFilter(loadedFilters);
+        }
+    },[])
+
 
     const checkTypeItem = () =>{
         return(
             <>
-                <IST_CheckBox feedback={setBoolFilter}/>
+                <IST_CheckBox feedback={setBoolFilter} state={boolFilter}/>
             </>
         )
     }
@@ -228,6 +249,7 @@ export default function CatalogFilterItem({isChecBox, list, label, boilerplate, 
                     : null}
                     {
                         filterValuesList.map((elem, i) => {
+                            // console.log(elem);
                             return(
                             <li key={(i + 1) + 1000}
                             className={styles.ListItems}

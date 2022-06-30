@@ -219,7 +219,7 @@ export default function Catalog({openState, searchFilter, HeaderForLoader}){
     useEffect(()=> {
         if(!isFirstRender){
             setFilteringProcess(false);
-            console.log(filteredProducts);
+            // console.log(filteredProducts);
         }
     },[isFirstRender, filteredProducts])
 
