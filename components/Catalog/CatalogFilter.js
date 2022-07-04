@@ -1,5 +1,5 @@
-import { useState, useEffect, useReducer } from "react"
-import styles from "../../styles/Catalog.module.css"
+import { useState, useEffect, useRef } from "react"
+import styles from "../../styles/ModalComponents/CatalogFilter.module.css"
 
 import CatalogFilterItem from "./CatalogFilterItem";
 import ComponentLoader from "../ComponentLoader";
@@ -38,6 +38,8 @@ export default function CatalogFilter({CatalogReducer, reducer}){
 
     const [filters, setFilters] = useState();
     const [newFilter, setNewFilter] = useState();
+
+    const [mobFilterShower, setMobFilterShower] = useState(false); 
 
     const FilterSetter = (Manufacturers, Types, Units) =>{
         const allFilters = [
@@ -84,6 +86,8 @@ export default function CatalogFilter({CatalogReducer, reducer}){
     
     },[])
 
+
+
     // useEffect(()=>{
     //     console.log("Filters: ", filters);
     //     console.log("Reducer: ", CatalogReducer);
@@ -94,8 +98,40 @@ export default function CatalogFilter({CatalogReducer, reducer}){
             reducer(SetNewFilterGenerator(newFilter.bp, newFilter.state));
     },[newFilter])
 
+
+
+    const showFiltersMobile = () => {
+
+        const filters = document.querySelector(`.${styles.CatalogFilterBlock}`);
+        const filtersBtn =  document.querySelector(`.${styles.ShowFiltersBtn}`);
+        if(mobFilterShower){
+            filters.classList.add(`${styles.active}`);
+            filtersBtn.classList.add(`${styles.active}`);
+        }
+        else{
+            filters.classList.remove(`${styles.active}`);
+            filtersBtn.classList.remove(`${styles.active}`);
+        }
+
+        
+    }
+
+    useEffect(()=>{
+        showFiltersMobile();
+    },[mobFilterShower])
+
     return(
         <>
+            <button className={styles.ShowFiltersBtn}
+            onClick={()=>setMobFilterShower(!mobFilterShower)}>
+                <p>
+                    {mobFilterShower ? "Скрыть фильтры" : "Открыть фильтр"}
+                </p>
+                <span>
+
+                </span>
+            </button>
+
             <div className={styles.CatalogFilterBlock}>
             <ComponentLoader data={filters}>
                     {filters ? filters.map((elem, index) => 

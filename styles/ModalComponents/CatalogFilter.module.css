@@ -1,10 +1,24 @@
+.CatalogFilterBlock{
+    width: 100%;
+    max-width: 100%;
+    display: flex;
+    position: relative;
+    flex-wrap: wrap;
+    margin-bottom: 25px;
+    margin-top: 15px;
+}
+
+.ShowFiltersBtn{
+    display: none;
+}
+
 .filterItemContainer{
     height: 50px;
     display: flex;
     background-color: #2C3641;
     box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.34);
     border-radius: 100px;
-    max-width: fit-content;
+    max-width: max-content;
     align-items: center;
     margin: 7px 0px;
     padding-left: 20px;
@@ -85,6 +99,7 @@
 .addFilterParam{
     width: 35px;
     height: 35px;
+    min-width: 35px;
     border: 2px solid #BFD5ED;
     box-shadow: 0px 0px 5px #76ACE7;
     box-sizing: border-box;
@@ -138,18 +153,17 @@
     border-radius: 20px;
     padding: 10px 0px;
     z-index: 10;
-    visibility: hidden;
+    visibility:collapse;
     opacity: 0;
     overflow: hidden;
-    transition: visibility 0.35s, opacity 0.35s;
+    transition: opacity 0.35s;
     
 }
 
 .FilterValuesList.active{
-    opacity: 1;
     visibility: visible;
-    transition: visibility 0.35s, opacity 0.35s;
-    
+    opacity: 1;
+    transition: opacity 0.35s;
 }
 
 /* .FilterValuesList.active::before{
@@ -243,4 +257,116 @@
     border-color: #BFD5ED;
     box-shadow: 0px 0px 5px #BFD5ED;
     transition: 0.3s;
+}
+
+@media (max-width: 768.98px){
+    .CatalogFilterBlock{
+        flex-direction: column;
+        align-items: center;
+        margin-left: -15px;
+        overflow-y: hidden;
+        height: 0px;
+       
+    }
+    .CatalogFilterBlock.active{
+        overflow-y: auto;
+        height: 100%;
+
+    }
+
+    .ShowFiltersBtn{
+        display: flex;
+        position: relative;
+        width: 85%;
+        height: 80px;
+        background: #C4D4E5;
+        border-radius: 20px;
+        margin-left: 50%;
+        transform: translateX(-56%);
+        justify-content: space-between;
+        align-items: center;
+        border: none;
+        outline: none;
+        padding: 0px 20px;
+        box-shadow: 0px 0px 10px #2C3641;
+        transition: 0.3s;
+    }
+
+    .ShowFiltersBtn p{
+        color: #55697E;
+        font-family: 'Roboto';
+        font-weight: 500;
+        font-size: 20px;
+        text-align: left;
+        width: min-content;
+        word-wrap: break-word;        
+    }
+
+    .ShowFiltersBtn.active span{
+        opacity: 0;
+    }
+
+    .ShowFiltersBtn span{
+        width: 50px;
+        height: 85%;
+        opacity: 1;
+        border-radius: 20px;
+        background-image: url('../../public/filter_icon.svg');
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: 80%;
+    }
+
+    .ShowFiltersBtn.active p{
+        text-align: left;
+        width: 100%;
+        word-wrap: normal;  
+    }
+
+    .ShowFiltersBtn.active{
+        height: 50px;
+        transition: 0.3s;
+    }
+
+    .filterItemContainer{
+        border-radius: 22px;
+        justify-content: space-between;
+        min-width: 80%;
+        max-width: 80%;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        padding-top: 10px;
+        padding-left: 15px !important;
+        position: relative;
+        min-height: 50px;
+        height: max-content;
+        transition: 0.3s;
+        
+    }
+    .CheckBoxSpace{
+        position: absolute;
+        right: 5px;
+        top: 2px;  
+    }
+
+    .addFilterParam{
+        position: absolute;
+        right: 5px;
+        top: 0px; 
+    }
+
+    .FilterValuesList{
+        min-width: 100%;
+    }
+
+    .selectedFilters p{
+        margin-top: 10px;
+        margin-bottom: 8px;
+        max-width: 80px;
+    }    
+    .selectedFilters a{
+        margin-top: 10px;
+
+    }    
 }

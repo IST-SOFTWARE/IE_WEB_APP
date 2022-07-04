@@ -186,7 +186,7 @@ export default function Catalog({openState, searchFilter, HeaderForLoader}){
                 PrItem = {};
             });
             
-            console.log("LOG");
+
             const timer = setTimeout(() => {
                 if(filteredProducts.length > 0){
                 // Filtering by parameters
@@ -227,10 +227,10 @@ export default function Catalog({openState, searchFilter, HeaderForLoader}){
     useEffect(()=>{
         if(HeaderForLoader){
             if(filteringProcess)
-                HeaderForLoader.classList.add(`${HeaderStyles.active}`);
+                HeaderForLoader.classList.add(`${HeaderStyles.loading}`);
                 
             else
-                HeaderForLoader.classList.remove(`${HeaderStyles.active}`);
+                HeaderForLoader.classList.remove(`${HeaderStyles.loading}`);
         }
     },[HeaderForLoader, filteringProcess])
 

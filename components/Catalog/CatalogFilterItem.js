@@ -4,12 +4,12 @@ import IST_CheckBox from "../IST_CheckBox"
 import { SetAvailability_BP } from "./Reducer/boilerplates";
 import { SetAvailabilityGenerator } from "./Reducer/actions";
 
-import { useState, useEffect, useReducer, useCallback } from "react"
+import { useState, useEffect, useRef, useCallback } from "react"
 
 export default function CatalogFilterItem({isChecBox, list, label, boilerplate, filterUpdater, CatalogReducer}){
 
     const[itemLabel, setLabel] = useState(label);
-    const[itemBP, setItemBP] = useState("");
+    const[FiltersLoaded, setFiltersLoaded] = useState(false);
 
     const[filterValuesList, setValuesList] = useState([]);
     const[filters, setFilters] = useState([]);
@@ -22,7 +22,7 @@ export default function CatalogFilterItem({isChecBox, list, label, boilerplate, 
             state
         }
         return newState;
-    },[itemBP, filters, boolFilter])
+    },[filters, boolFilter])
 
 
     useEffect(()=>{
@@ -96,12 +96,6 @@ export default function CatalogFilterItem({isChecBox, list, label, boilerplate, 
     }
 
 
-    useEffect(() =>{
-        if(list){
-            const itemsList = Object.values(list)[0];
-            setValuesList(itemsList.sort(compareValues('id')));
-        }
-    },[])
 
 
     function FilterViewer(elem){
@@ -181,17 +175,84 @@ export default function CatalogFilterItem({isChecBox, list, label, boilerplate, 
           };
     },[])
 
-    useEffect(()=>{
-        if(CatalogReducer && boilerplate){
-            const loadedFilters = CatalogReducer[boilerplate];
-            // console.log("loadedFilters: ", loadedFilters);
+
+    const filterNewLoadUpdater = (catalogReducer, bp, filterValues) => {
+        if(catalogReducer && bp){
+            const loadedFilters = catalogReducer[bp];
+
+            const filtersList = Array.from(filters);
+            const fullList = Array.from(filterValuesList);
+           
+
             if(loadedFilters.length > 0){
-                loadedFilters.map(elem =>{
-                    addFilterToList(elem);
+                loadedFilters.map(elem => {
+                    filtersList.push(elem);
+                    fullList.map((item,i) => {
+                        if(elem.id === item.id)
+                            fullList.splice(i, 1);
+                    })
                 })
-            }
+         
+            } 
+            
+            fullList.sort(compareValues('id'))
+            setFilters(filtersList);
+            setValuesList(fullList);
+                    
         }
+    }
+
+
+    useEffect(() =>{
+            if(list){
+                const itemsList = Object.values(list)[0];
+                const sortList = itemsList.sort(compareValues('id'));
+                setValuesList(sortList);
+                setFiltersLoaded(true);
+            }
     },[])
+
+    useEffect(()=>{
+        if(FiltersLoaded){
+            filterNewLoadUpdater(CatalogReducer, boilerplate, filterValuesList)
+        }
+    },[FiltersLoaded])
+
+    
+
+    // useEffect(()=>{
+    //     if(CatalogReducer && boilerplate && isInitialMount.current){
+    //         const loadedFilters = CatalogReducer[boilerplate];
+    //         // console.log("loadedFilters", loadedFilters);
+    //         // console.log("filterValuesList", filterValuesList);
+
+    //         // console.log("filters",`[${boilerplate}]`, filters);
+    //         // console.log("filterValuesList", filterValuesList);
+
+    //         if(loadedFilters.length > 0){
+    //             loadedFilters.map(elem => {
+    //                 console.log(elem);
+    //             })
+    //             console.log(filterValuesList);
+
+    //             // const filtersList = Array.from(filters);
+    //             // loadedFilters.map(elem => {
+    //             //     filtersList.push(elem);
+            
+    //             //     filterValuesList.map((item,i) => {
+    //             //         if(elem.id === item.id)
+    //             //         filterValuesList.splice(i, 1);
+    //             //     })
+            
+    //             //     filterValuesList.sort(compareValues('id'))
+    //             //     setFilters(filtersList);
+    //             // });
+                
+    //         } 
+    //         // isInitialMount.current = false;
+    //     }
+
+    // },[])
 
     useEffect(()=>{
         if(isChecBox && CatalogReducer && boilerplate){
@@ -205,7 +266,9 @@ export default function CatalogFilterItem({isChecBox, list, label, boilerplate, 
     const checkTypeItem = () =>{
         return(
             <>
-                <IST_CheckBox feedback={setBoolFilter} state={boolFilter}/>
+                <div className={styles.CheckBoxSpace}>
+                    <IST_CheckBox feedback={setBoolFilter} state={boolFilter}/>
+                </div>
             </>
         )
     }

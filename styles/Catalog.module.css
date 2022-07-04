@@ -296,15 +296,6 @@
     
 }
 
-.CatalogFilterBlock{
-    width: 100%;
-    max-width: 100%;
-    display: flex;
-    position: relative;
-    flex-wrap: wrap;
-    margin-bottom: 25px;
-    margin-top: 15px;
-}
 
 @keyframes placeHolderShimmer{
     0%{
