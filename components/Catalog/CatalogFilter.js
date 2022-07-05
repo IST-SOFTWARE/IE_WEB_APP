@@ -125,7 +125,7 @@ export default function CatalogFilter({CatalogReducer, reducer}){
             <button className={styles.ShowFiltersBtn}
             onClick={()=>setMobFilterShower(!mobFilterShower)}>
                 <p>
-                    {mobFilterShower ? "Скрыть фильтры" : "Открыть фильтр"}
+                    {mobFilterShower ? "Скрыть фильтры" : "Фильтровать товары"}
                 </p>
                 <span>
 
