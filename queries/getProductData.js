@@ -12,7 +12,11 @@ export const getProductData =
                 weight,
                 text_description,
                 available_status,
-                a,b,c,d,e,f,
+                form_factor_image,
+                sizes,
+                analogue_text,
+                replacement_text,
+                included_text,
                 price, 
                 included_in,
                 additional_items{

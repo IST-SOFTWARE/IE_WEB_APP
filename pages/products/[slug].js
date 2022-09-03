@@ -256,18 +256,10 @@ const addToCart = (id, q, p) =>{
                                     <div className={styles.GeometryBlock}>
                                         <GeometryViewer imagePath={
                                             productData ?
-                                            productData.dimensions_product_types[0].dimensions_id.image :
+                                            productData.form_factor_image :
                                             ""}
                                             geoSizes={
-                                                productData ?
-                                                {
-                                                    a :productData.a,
-                                                    b :productData.b,
-                                                    c: productData.c,
-                                                    d: productData.d,
-                                                    e: productData.e,
-                                                    f: productData.f
-                                                }: {}
+                                                productData ? productData.sizes : null
                                             }
                                         />
                                     </div>

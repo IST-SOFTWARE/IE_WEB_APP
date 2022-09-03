@@ -32,11 +32,13 @@ export default function GeometryViewer({imagePath, geoSizes}){
                 </div>
                 <div className={styles.GeometryProps}>
                 <ul>
-                    {Object.keys(gSizes).map(((k, i) => 
-                        gSizes[k] !== null ? 
-                            <li key={i}><a>{k} = {gSizes[k]} мм</a></li> : 
-                        ""
-                    ))}
+                    <li><a>{geoSizes}</a></li>
+
+                    {/*{Object.keys(gSizes).map(((k, i) =>*/}
+                    {/*    gSizes[k] !== null ? */}
+                    {/*        <li key={i}><a>{k} = {gSizes[k]} мм</a></li> : */}
+                    {/*    ""*/}
+                    {/*))}                */}
                 </ul>
                 
                 </div>
