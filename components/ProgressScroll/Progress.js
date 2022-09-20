@@ -13,17 +13,31 @@ export default function Progress(){
     const PageLevelsVis = useContext(PageLevelsVisContext);
     
     const onScroll = () => {
+        const PB_cont = document.querySelector(`.${styles.PB_container}`);
+
         const winScroll = document.documentElement.scrollTop;
-        const height = document.documentElement.scrollHeight -
-        document.documentElement.clientHeight;
+        const contentHeight = document.getElementById("pages_content").offsetHeight;
+
+        const height = contentHeight -
+            document.documentElement.clientHeight;
+
         const scrolled = (winScroll / height) * 100;
-        
-        
-        if(PointsNum.find(point => point.scroll === Math.round(scrolled)) != undefined){
-                setActive(PointsNum.find(point => point.scroll === Math.round(scrolled)).id) ;
-                // console.log(scrolled);
+
+        if(PB_cont !== null)
+            if(scrolled > 110)
+                PB_cont.classList.add(`${styles.footer}`);
+            else
+                PB_cont.classList.remove(`${styles.footer}`);
+
+
+            if(PointsNum.find(point => point.scroll === Math.round(scrolled)) != undefined){
+
+                    setActive(PointsNum.find(point => point.scroll
+                        === Math.round(scrolled)).id
+                    );
+
             }
-            // console.log(PointsNum);
+
         };
 
     const Pointer = (pgVal) =>{
@@ -59,6 +73,7 @@ export default function Progress(){
         id={point.id}
         active={activeId}
         scroll={point.scroll}
+        switchValue={document.getElementById("pages_content").offsetHeight}
         />
     )
 

@@ -10,4 +10,7 @@
             };
         };
     })(Function.prototype);
-    
+
+export default function AsyncDelay(ms){
+    return new Promise(r => setTimeout(()=> r(), ms));
+}

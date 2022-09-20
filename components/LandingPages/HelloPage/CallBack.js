@@ -4,6 +4,10 @@ import { useEffect, useState } from "react";
 import setData from "../../../helpers/setData";
 import { CreateCallBack, updateCallBack } from "../../../queries/CallBack";
 import { Query, useMutation } from "react-query";
+import PhoneInput, {formatPhoneNumber, formatPhoneNumberIntl}
+    from "react-phone-number-input/input";
+import CheckRequired from "../../../helpers/CheckRequired";
+import CallRequestMessageModal from "../../DefaultModals/callRequestMessageModal";
 
 export default function CallBack({cbLangChecker, lContent, lng, puProvider, api_data}) {
     
@@ -12,6 +16,9 @@ export default function CallBack({cbLangChecker, lContent, lng, puProvider, api_
     const[client_name, setName] = useState("");
     const[client_phone, setPhone] = useState("");
     const[isSessionSet, setSession] = useState(typeof window !== 'undefined' && localStorage.getItem('session_id') !== null)
+
+    const[requestSent, setRequestSent] = useState();
+    const[requestResModal, setRequestResModal] = useState(false);
 
     const mutation = useMutation((newSession) => 
     {
@@ -23,21 +30,42 @@ export default function CallBack({cbLangChecker, lContent, lng, puProvider, api_
             setSession(true);
         }
         else{
-            setData(updateCallBack, {data: newSession, id: localStorage.getItem('session_id')})
+            setRequestSent(
+                setData(updateCallBack, {
+                    data: newSession,
+                    id: localStorage.getItem('session_id')
+                }))
         }
     })
     
     const sendPhoneNum = () => {
-        mutation.mutate({
-            status: "draft",
-            cb_order:[
-                {
-                    client_name: client_name,
-                    client_phone: client_phone
-                }
-            ]
-        })
+        const fieldsValid = CheckRequired();
+        if(fieldsValid) {
+            mutation.mutate({
+                status: "draft",
+                cb_order: [
+                    {
+                        client_name: client_name,
+                        client_phone: client_phone
+                    }
+                ]
+            })
+        }
     }
+
+    useEffect(()=>{
+        if(requestSent)
+            setRequestResModal(true);
+    },[requestSent])
+
+    useEffect(()=>{
+        if(!requestResModal) {
+            setName("");
+            setPhone("");
+        }
+    }, [requestResModal])
+
+
     useEffect(()=>{
         setCallBackData(api_data);
     })
@@ -78,24 +106,27 @@ export default function CallBack({cbLangChecker, lContent, lng, puProvider, api_
                             "Имя:"
                             onChange={(e) => setName(e.target.value)}
                             value={client_name}
-                            
+                            required
+
+                           className={"required_field"}
                         />
-                        <input type="text" placeholder=
+                        <PhoneInput type="text" placeholder=
                             // {cbLangChecker(lContent,                  
                             // "Телефон"
                             // ,"SendFormPhone", lng) + ":"}
                             "Телефон:"
 
-                            onChange={(e) => setPhone(e.target.value)}
+                            required
+                            onChange={setPhone}
                             value={client_phone}
+
+                            className={"required_field"}
                         />
                         <button onClick={(e) => sendPhoneNum()}>
                         {/* {cbLangChecker(lContent,                    
                             "Телефон"
                             ,"SendFormSender", lng)} */}
-                        
-
-                        Отправить заявку
+                            Отправить заявку
                         </button>
                     </div>
                 </div>
@@ -106,12 +137,16 @@ export default function CallBack({cbLangChecker, lContent, lng, puProvider, api_
                   {callBackData
                     ? "Наш телефон: " : ""}
                 
-                    <a>
+                    <a
+                        href={`tel: ${callBackData ? 
+                            callBackData.phone_number_ru.phoneNum :
+                        null}`}
+                    >
                     {/* {cbLangChecker(lContent,               
                     "+7(000)000-00-00"
                     ,"CompanyPhone", lng)} */}
                     {callBackData
-                    ? callBackData.Phone_Num_Ru : ""}
+                    ? callBackData.phone_number_ru.phoneNum : ""}
                     </a>
 
                 </p>
@@ -120,6 +155,12 @@ export default function CallBack({cbLangChecker, lContent, lng, puProvider, api_
             <div className={styles.CallBackMobBtn}>
                 <MobileBtn PUsetter={puProvider}/>
             </div>
+
+            <CallRequestMessageModal modalState={requestResModal}
+                                     modalSwitcher={setRequestResModal}
+                                     userName={client_name}
+            />
+
         </>
     )
 }

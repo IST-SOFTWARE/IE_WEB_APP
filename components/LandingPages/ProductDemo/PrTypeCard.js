@@ -1,10 +1,19 @@
 import styles from "../../../styles/ProdDemo.module.css"
 import Image from "next/image";
 
-export default function PrTypeCard({img, crop, text}){
+export default function PrTypeCard({img, crop, text,
+                                       boiler, boilerSetter,
+                                       activator}){
+    
+    const setOption = () => {
+        boilerSetter(boiler);
+        activator(true);
+    }
+
     return(
         <>
-            <div className={styles.PrTypeCard}>
+            <div className={styles.PrTypeCard}
+            onClick={() => setOption()}>
                 <div className={styles.ImgCardBlock}>
                 <Image
                     src={img}
@@ -15,7 +24,7 @@ export default function PrTypeCard({img, crop, text}){
                 </div>
                 <p>
                     {text}
-                    <button >Подробнее...</button>
+                    <button>Подробнее...</button>
                 </p>
             </div>
 

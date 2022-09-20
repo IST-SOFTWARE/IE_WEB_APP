@@ -12,6 +12,9 @@ export const getCallBackModuleContent = async() => {
                 CallBack_subtitle
                 CallBack_subtitle_Ru
                 BackImage
+                phone_number_ru{
+                    phoneNum
+                }
             }
         }
         `,

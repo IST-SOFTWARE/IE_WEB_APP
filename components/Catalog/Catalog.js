@@ -14,7 +14,7 @@ import { useEffect, useState, useReducer, useContext, useRef} from "react";
 import { Suspense,lazy } from "react";
 
 import reducer from "./Reducer/reducer";
-import { ToggleCatalogGenerator, SearchCatalogGenerator} from "./Reducer/actions";
+import {ToggleCatalogGenerator, SearchCatalogGenerator, SetNewFilterGenerator} from "./Reducer/actions";
 
 import "../../helpers/debounce"
 import * as GlobalBP from "./ReducerGlobalBoilerplates";
@@ -22,8 +22,9 @@ import Filter from "./Filters/Filter";
 import BooleanFilter from "./Filters/BooleanFilter";
 import SearchFilter from "./Filters/SearchFilter";
 import Excluder from "./Filters/Excluder";
+import {SetAvailability_BP, SetElevator_BP, SetEscalator_BP} from "./Reducer/boilerplates";
 
-export default function Catalog({openState, searchFilter, HeaderForLoader}){
+export default function Catalog({openState, catalogFilter, HeaderForLoader}){
     const[isBrowser, setIsBrowser] = useState(false);
 
     const[products, setProducts] = useState([]);
@@ -45,8 +46,8 @@ export default function Catalog({openState, searchFilter, HeaderForLoader}){
         setIsBrowser(true);
         setPrLoaded(false);
     },[]);
-    
-    
+
+
     const [CatalogReducer, dispatch] = useReducer(reducer, {
         isOpen: false,          //Open/Close Catalog
         
@@ -58,8 +59,7 @@ export default function Catalog({openState, searchFilter, HeaderForLoader}){
         Manufacturers: [],       //Manufacturer List
         Types: [],               //Type List
         Units: [],               //Unit List
-        
-        Search: "",             //Search Request
+
     })
     
 
@@ -70,7 +70,7 @@ export default function Catalog({openState, searchFilter, HeaderForLoader}){
 
                     if(CatalogReducer && CatalogReducer.isOpen){
                         if(Catalog_cont.CatalogProducts){
-                        await delay(500);
+                        await delay(400);
                         setPrLoaded(true);
 
                         setProducts(Catalog_cont.CatalogProducts);
@@ -261,6 +261,7 @@ export default function Catalog({openState, searchFilter, HeaderForLoader}){
         dispatch(ToggleCatalogGenerator(openState));
       
         try{
+            const CatalogBlock = document.querySelector(`.${styles.CatalogBlock}`);
             const CatalogConteiner = document.querySelector(`.${styles.CatalogConteiner}`);
             if(openState){
                 CatalogConteiner.classList.add(`${styles.open}`);
@@ -272,11 +273,24 @@ export default function Catalog({openState, searchFilter, HeaderForLoader}){
             }
         }
         catch{
-            alert("Что-то пощло не так :(\nПерезагрузите страницу");
+            alert("Что-то пошло не так :(\nПерезагрузите страницу");
         }
     },[openState])
 
+    useEffect(()=>{
 
+        dispatch(SetNewFilterGenerator(SetElevator_BP, false));
+        dispatch(SetNewFilterGenerator(SetEscalator_BP, false));
+        dispatch(SetNewFilterGenerator(SetAvailability_BP, false));
+
+        if(catalogFilter !== null){
+            try{
+                dispatch(SetNewFilterGenerator(catalogFilter, true));
+            }catch {
+                alert("Что-то пошло не так :(\nПерезагрузите страницу");
+            }
+        }
+    },[catalogFilter])
 
 
     const CatalogBlock = CatalogReducer && CatalogReducer.isOpen ? (
@@ -290,23 +304,23 @@ export default function Catalog({openState, searchFilter, HeaderForLoader}){
                                 <CatalogFilter
                                 CatalogReducer={CatalogReducer}
                                 reducer={dispatch}/>
-              
+
                             </div>
                         </div>
 
                             <div className={styles.SearchResults}>
                                 <p>Не найдено :(</p>
                             </div>
-                            
-                            <CatalogItemLoader LoadersNum={15} Loaded={productsLoaded}/>
+
+                            {/*<CatalogItemLoader LoadersNum={5} Loaded={productsLoaded}/>*/}
 
                             <div className="
                                 row
                                 d-flex
                                 justify-content-sm-center
                                 justify-content-md-start">
-                                
-                                
+
+
                                 <Suspense fallback={<CatalogItemLoader Loaded={productsLoaded}/>}>
                                 {filteredProducts.map((product, index) =>{
                                     // Check product filtered status
@@ -323,11 +337,11 @@ export default function Catalog({openState, searchFilter, HeaderForLoader}){
                                                 id={product.id}
                                                 />
                                             </div>
-                                        )    
-                                    }  
+                                        )
+                                    }
                                 })}
                                 </Suspense>
-                            
+
                             </div>
                         </div>
                 </div>

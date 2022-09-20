@@ -4,16 +4,19 @@
     z-index: 10;
     overflow-x: hidden;
     padding-bottom: 30px;
+    min-height: 100vh;
 }
-.CartPageCont::after{
-    content: "";
-    width: 100%;
-    height: 10%;
-    background: linear-gradient(180deg, rgba(44, 54, 65, 0) 0%, rgba(44, 54, 65, 0.49) 41.17%, #2C3641 100%);
-    position: fixed;
-    bottom: 0;
-    left: 0;
-}
+
+/*.CartPageCont::after{*/
+/*    content: "";*/
+/*    width: 100%;*/
+/*    height: 10%;*/
+/*    background: linear-gradient(180deg, rgba(44, 54, 65, 0) 0%, rgba(44, 54, 65, 0.49) 41.17%, #2C3641 100%);*/
+/*    position: fixed;*/
+/*    bottom: 0;*/
+/*    left: 0;*/
+/*}*/
+
 .AddedProductsBlock{
     width: 100%;
     height: 100px;
@@ -370,16 +373,17 @@
         font-size: calc(16px + (20 - 16) *   ((100vw - 300px) / (993 - 320)));
     }
 
-    .CartPageCont::after{
-        content: "";
-        width: 100%;
-        height: 10%;
-        background: linear-gradient(180deg, rgba(44, 54, 65, 0) 0%, rgba(44, 54, 65, 0.49) 41.17%, #2C3641 100%);
-        position: fixed;
-        bottom: 0;
-        padding-bottom: 120px;
-        left: 0;
-    }
+    /*.CartPageCont::after{*/
+    /*    content: "";*/
+    /*    width: 100%;*/
+    /*    height: 10%;*/
+    /*    background: linear-gradient(180deg, rgba(44, 54, 65, 0) 0%, rgba(44, 54, 65, 0.49) 41.17%, #2C3641 100%);*/
+    /*    position: fixed;*/
+    /*    bottom: 0;*/
+    /*    padding-bottom: 120px;*/
+    /*    left: 0;*/
+    /*}*/
+
     .CartData{
         bottom:0px;
         width: calc(100vw - 40px);

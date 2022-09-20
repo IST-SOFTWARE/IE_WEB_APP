@@ -9,7 +9,7 @@
     animation-fill-mode: forwards;
     animation-iteration-count: infinite;
     animation-name: placeHolderShimmer;
-    animation-timing-function:  cubic-bezier(0.1, 0.7, 0.1);
+    animation-timing-function:  cubic-bezier(0.1, 0.7, 0.1, 0);
     background: transparent;
     background: linear-gradient(150deg, rgba(44, 54, 65, 0.3) 0%, rgba(147,195,248,0.3) 100%);
     background-size: 1000px 640px;
@@ -51,6 +51,7 @@
 .CallBack a{
     color: #76ACE7;
     cursor: pointer;
+    text-decoration: none;
 }
 .BaseBlock{
     width: 393px;

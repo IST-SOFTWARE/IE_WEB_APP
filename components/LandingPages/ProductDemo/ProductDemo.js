@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState} from "react";
+import { useCallback, useEffect, useState, useContext} from "react";
 import styles from "../../../styles/ProdDemo.module.css"
 
 import MainLabel from "../../MainLabel";
@@ -11,6 +11,16 @@ import CallBackModal from "../../ModalComponents/CallBackModal";
 
 import LabelLoader from "../../ModalComponents/LabelLoader";
 import ComponentLoader from "../../ComponentLoader";
+import CallRequestSenderModal from "../../DefaultModals/callRequestSenderModal";
+import CallRequestMessageModal from "../../DefaultModals/callRequestMessageModal";
+
+import CatalogContext from "../../Context/CatalogContext";
+
+import {
+    SetAvailability_BP,
+    SetEscalator_BP,
+    SetElevator_BP
+} from "../../Catalog/Reducer/boilerplates";
 
 export default function ProductDemo({PDLangChecker, content, lang, api_cont, callBack_api}){
     
@@ -21,6 +31,11 @@ export default function ProductDemo({PDLangChecker, content, lang, api_cont, cal
 
     const [pdPageData, setPdData] = useState();                 // For MainCont
     const [cardsData, setCardsData] = useState();               // For Cards
+
+    const [callRequestMessage, setCallRequestMessage] = useState();
+    const [callRequestMessageName, setCallRequestMessageName] = useState();
+
+    const Catalog = useContext(CatalogContext);
 
     const parallax = useCallback((e) => {
         document.querySelectorAll('.bg_item').forEach(element => {
@@ -60,6 +75,10 @@ export default function ProductDemo({PDLangChecker, content, lang, api_cont, cal
         
     },[])
 
+    const setNewFilter = () => {
+
+    }
+
     return(
         <>
 
@@ -78,30 +97,49 @@ export default function ProductDemo({PDLangChecker, content, lang, api_cont, cal
 
                         <PrTypeCard img={
                             cardsData ? cardsData[0].Image : null
-                        } crop= "1.3"
+                            } crop= "1.3"
+
                             text={cardsData ? cardsData[0].Title : null}
+
+                            boiler={SetElevator_BP}
+                            boilerSetter={Catalog.setProductDemoPageFilter}
+
+                            activator={Catalog.setCatalog}
                         />
 
                         <PrTypeCard img={
                             cardsData ? cardsData[1].Image : null
-                        } crop= "0.95"
+                            } crop= "0.95"
+
                             text={cardsData ? cardsData[1].Title : null}
+
+                            boiler={SetEscalator_BP}
+                            boilerSetter={Catalog.setProductDemoPageFilter}
+
+                            activator={Catalog.setCatalog}
                         />
 
                         <PrTypeCard img={
                             cardsData ? cardsData[2].Image : null
-                        }crop= "0.9"
+                            }crop= "0.9"
+
                             text={cardsData ? cardsData[2].Title : null}
+
+                            boiler={SetAvailability_BP}
+                            boilerSetter={Catalog.setProductDemoPageFilter}
+
+                            activator={Catalog.setCatalog}
                         />
 
-                        <div className={styles.openCatalogCard}>
+                        <button className={styles.openCatalogCard}
+                        onClick={()=> Catalog.setCatalog(true)}>
                             <img src="/op_catalog.svg" width="95px"/>
                             <p>
                             {PDLangChecker(content,
                                 "Открыть каталог"
                                 ,"OpenCatalog", lang)}
                             </p>
-                        </div>
+                        </button>
 
                     </ComponentLoader>
                 </div>
@@ -155,18 +193,16 @@ export default function ProductDemo({PDLangChecker, content, lang, api_cont, cal
 
             </div>
 
+            <CallRequestSenderModal cbModalState={puState}
+                                    setCbModalState={setPU}
+                                    api_data={callBack_api}
+                                    respStateSet={setCallRequestMessage}
+                                    respNameSet={setCallRequestMessageName}/>
 
-            <PopUpBase puState={puState} closer={setPU}
-                header={compLoaderData ? compLoaderData.CallBack_Title_Ru : ""}
-                paragraph={compLoaderData ? compLoaderData.CallBack_subtitle_Ru : ""}
-                >
-                    <ComponentLoader data={callBack_api} data_setter={setCompLoaderData}>
-                        <CallBackModal
-                        backImg={compLoaderData ? compLoaderData.BackImage : ""}
-                        actPhone={compLoaderData ? compLoaderData.Phone_Num_Ru : ""}/>    
-                    </ComponentLoader>        
-            </PopUpBase>
-        
+            <CallRequestMessageModal userName={callRequestMessageName}
+                                     modalState={callRequestMessage}
+                                     modalSwitcher={setCallRequestMessage}/>
+
         </>
     );
 }

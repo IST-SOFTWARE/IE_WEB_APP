@@ -3,12 +3,24 @@
   padding: 0;
 }
 a{
-  color: auto !important;
+  /*color: auto !important;*/
 }
 body, html{
-  background-color: #2C3641;
+  background: #151A20;
   width: 100%;
 }
+
+.invalid{
+    box-shadow: 0px 0px 7px #FFD064;
+    border: solid 1px #FFD064 !important;
+}
+
+.pages_content{
+  z-index: 9;
+  position: relative;
+  background-color: #2C3641;
+}
+
 .MainLogo{
   cursor: pointer;
   width: max-content;

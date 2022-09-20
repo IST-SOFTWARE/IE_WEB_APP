@@ -1,7 +1,7 @@
 import { useEffect, useState, useCallback } from "react";
 import styles from "../../styles/ModalComponents/ProgressBar.module.css";
 
-export default function PrPoint({size, id, active, scroll}){
+export default function PrPoint({size, id, active, scroll, switchValue}){
     const[scale, setScale] = useState();
     const[isActive, setActive] = useState(false);
 
@@ -28,7 +28,7 @@ export default function PrPoint({size, id, active, scroll}){
     const handlerClick = () =>{
         // console.log("scsdcsdc");
         window.scrollTo({
-            top: (scroll * (document.documentElement.scrollHeight -
+            top: (scroll * (switchValue -
                 document.documentElement.clientHeight))/100,
             behavior: "smooth"
         });

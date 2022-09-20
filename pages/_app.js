@@ -12,6 +12,7 @@ import { QueryClient, QueryClientProvider, useQuery } from 'react-query'
 import {getProducts} from "../queries/getProducts"
 
 import { useRouter } from 'next/router'
+import Footer from "../components/Footer/Footer";
 
 const queryClient = new QueryClient()
 
@@ -28,6 +29,8 @@ export default function MyApp({Component, pageProps}){
     const[ProductSearch, setProductSearch] = useState({
         s: ''
     })
+
+    const[productDemoPageFilter, setProductDemoPageFilter] = useState(null);
 
     const HeaderRef = useRef();
 
@@ -48,13 +51,15 @@ export default function MyApp({Component, pageProps}){
 
     //CatalogContext VALUES
     const CatalogValue = {
-        CatalogToggle,
-        setCatalog,
+            CatalogToggle,
+            setCatalog,
 
-        ProductSearch,
-        setProductSearch,
+            ProductSearch,
+            setProductSearch,
 
-        CatalogProducts
+            CatalogProducts,
+
+            setProductDemoPageFilter
     }
 
 
@@ -87,25 +92,31 @@ export default function MyApp({Component, pageProps}){
 
             <QueryClientProvider client={queryClient}>
             <NextNProgress
-            color="#29D"
-            startPosition={0.3}
-            stopDelayMs={200}
-            height={3}
-            showOnShallow={true}
+                color="#29D"
+                startPosition={0.3}
+                stopDelayMs={200}
+                height={3}
+                showOnShallow={true}
             />
 
             <PageLevelsVisContext.Provider value={{mobilePageLevels, setPageLevelsVis}}>
             <CatalogContext.Provider value={CatalogValue}>
-            <Catalog openState={CatalogToggle} searchFilter={ProductSearch.s} HeaderForLoader={HeaderRef.current}/>
-            <Header
-                ref={HeaderRef}
-                // HeaderLangChecker={LangChecker}
-                // content = {HeaderContent}
-                // lang = {globalLng}
-                loaderShow = {LoaderShow} 
-            />
-                
-            <Component {...pageProps} key={router.asPath}/>
+
+                <Catalog openState={CatalogToggle}
+                         catalogFilter = {productDemoPageFilter}
+                         HeaderForLoader={HeaderRef.current}/>
+                <Header
+                    ref={HeaderRef}
+                    // HeaderLangChecker={LangChecker}
+                    // content = {HeaderContent}
+                    // lang = {globalLng}
+                    loaderShow = {LoaderShow}
+                />
+                <div className={"pages_content"} id={"pages_content"}>
+                    <Component {...pageProps} key={router.asPath}/>
+                </div>
+
+                <Footer/>
 
             </CatalogContext.Provider>
             </PageLevelsVisContext.Provider>
@@ -114,9 +125,3 @@ export default function MyApp({Component, pageProps}){
     )
     
 }
-
-// MyApp.getInitialProps = async (appContext) => {
-//     const PageProps = await App.getInitialProps(appContext);
-//     console.log(PageProps);
-//     return { ...PageProps }
-// }

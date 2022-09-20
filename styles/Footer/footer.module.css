@@ -1,0 +1,80 @@
+.Footer{
+    width: 100vw;
+    position: fixed;
+    z-index: 1;
+    bottom: 0;
+    min-height: 200px;
+    height: max-content;
+}
+.footer_block{
+    font-family: Roboto;
+    font-size: 21px;
+    font-weight: normal;
+    color: #fff;
+    height: 100%;
+    padding: 30px 0px;
+}
+.contactsBlock{
+    display: flex;
+    flex-direction: column;
+}
+.contactsBlock p{
+    margin-bottom: 15px;
+    font-size: 22px !important;
+    font-weight: bold;
+}
+.contactsBlock a{
+    margin-bottom: 5px;
+    font-size: 20px !important;
+    color: #fff;
+    text-decoration: none;
+}
+.contactsBlock a span{
+    margin-left: 5px;
+    text-decoration: underline;
+    color: #93C3F8;
+}
+
+.mapBlock{
+    width: 400px;
+    min-height: 250px;
+}
+.mapBlock iframe{
+    border-radius: 30px;
+    border: none;
+}
+.ourCompanyBlock{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 50px;
+}
+.ourCompanyBlock p{
+    font-size: 24px;
+    font-weight: bold;
+}
+.ourCompanyBlock a{
+    font-size: 18px;
+    color: #6B93BE;
+}
+@media screen and (max-width: 576px) {
+    .mapBlock{
+        margin: 15px 0px;
+    }
+    .ourCompanyBlock{
+        margin-top: 30px;
+    }
+
+    .contactsBlock p{
+        margin-bottom: 15px;
+        font-size: 20px !important;
+        font-weight: bold;
+    }
+    .contactsBlock a{
+        margin-bottom: 3px;
+        font-size: 18px !important;
+        color: #fff;
+        text-decoration: none;
+    }
+}

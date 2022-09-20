@@ -14,7 +14,7 @@ const Header = forwardRef(({HeaderLangChecker, content, lang}, ref) => {
     return(
         <>
          <div className={styles.header} ref={ref}>
-            <div className="nb_container">
+            <div className="container">
                 <div className={styles.HeaderContent}>
                     <div className={styles.HeaderBigLogo}>
                         <Logo
@@ -50,10 +50,6 @@ const Header = forwardRef(({HeaderLangChecker, content, lang}, ref) => {
 
                     <div className={styles.infoLoginCart}>
                         <Contacts contTitle={
-                        //    HeaderLangChecker(content,
-                        //     "Контакты",
-                        //     "ContectsTitle",
-                        //     lang)
                         "Контакты"
                         }/>
                         <Cart cartTitle={
@@ -63,13 +59,17 @@ const Header = forwardRef(({HeaderLangChecker, content, lang}, ref) => {
                         //     lang)
                         "Корзина"
                         }/>
-                        <Login loginTitle={
-                        //    HeaderLangChecker(content,
-                        //     "Войти",
-                        //     "LoginTitle",
-                        //     lang)
-                        "Войти"
-                        }/>
+
+
+                        {/*<Login loginTitle={*/}
+                        {/*//    HeaderLangChecker(content,*/}
+                        {/*//     "Войти",*/}
+                        {/*//     "LoginTitle",*/}
+                        {/*//     lang)*/}
+                        {/*"Войти"*/}
+                        {/*}/>*/}
+
+
                     </div>
                 </div>
             </div>
