@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "cloudinary-build-url": "^0.2.4",
+    "core-js": "^3.25.2",
     "next": "^12.1.6",
     "nextjs-progressbar": "^0.0.13",
     "probe-image-size": "^7.2.3",

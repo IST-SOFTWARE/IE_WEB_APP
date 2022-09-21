@@ -1,5 +1,9 @@
 import { useState, useEffect, useContext, useRef} from "react";
 
+//POLYFILLS FOR OLDER BR
+import {forEach} from "core-js/stable/dom-collections";
+import {replaceAll} from "core-js/stable/string";
+
 import '../styles/global.css'
 import Header from '../components/Header/Header'
 import Catalog from "../components/Catalog/Catalog";
@@ -13,6 +17,7 @@ import {getProducts} from "../queries/getProducts"
 
 import { useRouter } from 'next/router'
 import Footer from "../components/Footer/Footer";
+
 
 const queryClient = new QueryClient()
 
