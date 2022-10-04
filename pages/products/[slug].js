@@ -21,6 +21,7 @@ import { useRouter } from "next/router";
 import { cartCreateAct, inCart } from "../../cartActions/cartActions";
 import getData from "../../queries/getData";
 import { getProductData } from "../../queries/getProductData";
+import ImageViewerModal from "../../components/DefaultModals/imageViewerModal";
 
 
 export default function ProductPage(){
@@ -28,7 +29,13 @@ export default function ProductPage(){
     const router = useRouter();
 
     const[isPuType, setIsPuType] = useState("");
+
+    // Modal windows states:
     const[puState, setPU] = useState(false);
+    const[imageViewerPU, setImageViewerPU] = useState(false)
+    const[cbRequestModal, setCbRequestModal] = useState(false);
+    // ---------------------
+
     const[puHeaders, setPuHeaders] = useState({
         header: "",
         paragraph: ""
@@ -151,7 +158,7 @@ const addToCart = (id, q, p) =>{
                                     <div className={styles.Image_and_replacement}>
                                 <ComponentLoader fill_percent={90} margin={10} data={productData}>
                                     
-                                        <div className={styles.ProductImage}
+                                        <button onClick={()=>setImageViewerPU(true)} className={styles.ProductImage}
                                             style = {{
                                                 backgroundImage: `url(${
                                                     BlureProdImage(productData ? productData.image_url : "")
@@ -171,7 +178,7 @@ const addToCart = (id, q, p) =>{
                                                     />
                                                 </div>
                                             
-                                        </div>
+                                        </button>
         
                                         <div className={styles.ProductReplacement}>
                                             <ReplacementItem text={"Аналог"}
@@ -315,8 +322,6 @@ const addToCart = (id, q, p) =>{
                     
                 <ComponentLoader data={productData}>
                     <ul className={styles.slug_PuBaseList}>
-    
-
                         {productData && isPuType === Analogue ?
                             (productData.analogue).map(el => {
                             return <Link href={`/products/${el.related_Products_id.slug}`}
@@ -339,10 +344,17 @@ const addToCart = (id, q, p) =>{
                             //         </li>
                         }): ""}
                     </ul>
-                </ComponentLoader>  
-                
+                </ComponentLoader>
 
         </PopUpBase>
+
+        {/*Image-viewer modal */}
+            <ImageViewerModal
+
+                image={productData ? productData.image_url : null}
+                modalState={imageViewerPU}
+                setModalState={setImageViewerPU}
+            />
 
         </>
     )

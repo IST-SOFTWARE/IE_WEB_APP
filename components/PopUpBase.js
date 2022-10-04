@@ -3,7 +3,7 @@ import { createPortal } from "react-dom";
 import styles from "../styles/PopUp.module.css"
 
 
-export default function PopUpBase({puState, children, header, paragraph, closer}){
+export default function PopUpBase({puState, children, header, paragraph, closer, nonBorder}){
     const[isBrowser, setIsBrowser] = useState(false);
 
     function backHider(e){
@@ -33,12 +33,17 @@ export default function PopUpBase({puState, children, header, paragraph, closer}
 
     const modalContent = puState ? (
         <>
-            <div className={styles.PopUpLayout} 
+            <div className={styles.PopUpLayout}
             onClick={(e) => backHider(e)}
             >
                 <div className="nb_container">
                     <div className={styles.PopUpBaseCantainer}>
-                        <div className={styles.PopUpBaseContent}>
+
+                            <div className={nonBorder === true ?
+                                styles.PopUpBaseContent + " " + styles.wb_style :
+                                styles.PopUpBaseContent
+                            }>
+
                             <div className={styles.PUB_header}>
                                 <h1>
                                     {header}
