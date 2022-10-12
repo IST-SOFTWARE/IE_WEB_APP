@@ -297,16 +297,40 @@
     white-space: nowrap;
     overflow: hidden;
     padding: 5px 20px;
-    cursor: pointer;
     border-radius: 15px;
     background: #414F5F;
     transition: 0.3s;
     margin-bottom: 5px;
 }
-.slug_PuBaseList li:hover{
-    transition: 0.3s;
-    background-color: #151A20;
+
+.slug_PuBaseList li p{
+    margin: 10px  0px;
 }
+
+.slug_PuBaseList li button{
+    font-size: 18px;
+    margin-bottom: 10px;
+    background: #2C3641;
+    color: #76ACE7;
+    border: solid 2px #76ACE7;
+    border-radius: 10px;
+    font-width: bold;
+    outline: none;
+    padding: 7px 14px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.slug_PuBaseList li button:hover{
+    transition: 0.2s;
+    background: #76ACE7;
+    color: #2C3641;
+}
+
+/*.slug_PuBaseList li:hover{*/
+/*    transition: 0.3s;*/
+/*    background-color: #151A20;*/
+/*}*/
 
 .slug_PuBaseList::-webkit-scrollbar {
     width: 6px;

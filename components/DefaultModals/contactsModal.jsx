@@ -11,16 +11,21 @@ export default function ContactsModal({modalState, modalSwitcher}){
     const[modalContent, setModalContent] = useState();
 
     useEffect(()=>{
+        let isMounted = true;
 
         const contentLoad = async() => {
             const data = await getData(getOurContacts, 'ourContacts', {});
-            setModalContent(data);
+            if(isMounted)
+                setModalContent(data);
         }
-
         if(!modalContent){
             contentLoad();
         }
-    })
+
+        return () => {
+            isMounted = false;
+        };
+    },[])
 
     return modalContent ? (
     <>

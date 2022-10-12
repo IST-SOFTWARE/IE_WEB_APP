@@ -5,18 +5,12 @@ export default function ReplacementItem({text, pu, headersSet, paragraph, data, 
 
 
     const puOpener = () =>{
-        if(paragraph === undefined){
+
             headersSet({
-                header: text + " для:",
+                header: paragraph !== undefined ? text + " " + paragraph + ":" : text,
                 paragraph: data.length > 45 ? data.substr(0, 45) + "..." : data
             })
-        }
-        else{
-            headersSet({
-                header: text,
-                paragraph
-            })
-        }
+
         
         puTyper(isType);
         pu(true);

@@ -30,6 +30,13 @@ export default function Catalog({openState, catalogFilter, HeaderForLoader}){
     const[products, setProducts] = useState([]);
     const[filteredProducts, setFiltered] = useState([]);
 
+    const[outProducts, setOutProducts] = useState([]);
+    const[productsPages, setProductsPages] = useState({
+        pagesNum: 1,
+        actPage: 1,
+        pageSize: 15
+    })
+
     const[filteringProcess, setFilteringProcess] = useState(false);
     const[isFirstRender, setFirstRender] = useState(true);
     // const[AllProducts, setAllProducts] = useState([]);
@@ -293,6 +300,79 @@ export default function Catalog({openState, catalogFilter, HeaderForLoader}){
     },[catalogFilter])
 
 
+    // const[outProducts, setOutProducts] = useState({
+    //     products: [],
+    //     pagesNum: 1,
+    //     actPage: 1,
+    //     pageSize: 15
+    // });
+
+
+
+    useEffect(()=>{
+        setOutProducts([]);
+
+        const bufferSize = productsPages.pageSize;
+        const prodBuffer = filteredProducts.length / bufferSize;
+
+        setProductsPages({
+            ...productsPages,
+            actPage: 1,
+            pagesNum: Math.ceil(prodBuffer)
+        })
+
+    },[filteredProducts])
+
+    useEffect(()=>{
+        const actPage =  productsPages.actPage;
+        const bufferSize = productsPages.pageSize;
+
+        let bufferArr = [...outProducts];
+
+        // alert(actPage);
+
+        let startIndex = actPage * bufferSize - bufferSize;
+        let endIndex = actPage * bufferSize;
+
+        for(let i = startIndex; i < endIndex; i++)
+            if(filteredProducts[i])
+                bufferArr.push(filteredProducts[i])
+
+        setOutProducts(bufferArr);
+
+
+    },[productsPages])
+
+    useEffect(() => {
+        const catalog = document.querySelector(`.${styles.CatalogConteiner}`);
+
+        if(catalog) {
+            catalog.addEventListener("scroll", scrollHandler);
+            return function () {
+                catalog.removeEventListener("scroll", scrollHandler);
+            };
+        }
+    })
+
+    const scrollHandler = (e) => {
+
+
+        if(e.target.scrollHeight - (e.target.scrollTop + window.innerHeight) <= 100) {
+
+            const pagesNum = productsPages.pagesNum;
+            if (productsPages.actPage + 1 <= pagesNum) {
+                setProductsPages({
+                    ...productsPages,
+                    actPage: productsPages.actPage + 1
+                })
+            }
+        }
+    }
+
+
+
+
+
     const CatalogBlock = CatalogReducer && CatalogReducer.isOpen ? (
         <>
             <div className={styles.CatalogConteiner}>
@@ -324,7 +404,8 @@ export default function Catalog({openState, catalogFilter, HeaderForLoader}){
                                 <Suspense fallback={<CatalogItemLoader Loaded={productsLoaded}/>}>
                                 {filteredProducts.map((product, index) =>{
                                     // Check product filtered status
-                                    if(!(product[GlobalBP.excluded_product] !== undefined ? product[GlobalBP.excluded_product] : false)) {
+                                    if(!(product[GlobalBP.excluded_product] ?
+                                        product[GlobalBP.excluded_product] : false)) {
                                         return(
                                             <div className="mb-4 p-0 col-xxl-3 col-xl-3 col-md-5 col-sm-7 col-7"
                                             key={product.id}>

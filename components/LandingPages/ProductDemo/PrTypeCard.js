@@ -6,8 +6,8 @@ export default function PrTypeCard({img, crop, text,
                                        activator}){
     
     const setOption = () => {
-        boilerSetter(boiler);
         activator(true);
+        boilerSetter(boiler);
     }
 
     return(

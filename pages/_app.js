@@ -38,8 +38,8 @@ export default function MyApp({Component, pageProps}){
     const[productDemoPageFilter, setProductDemoPageFilter] = useState(null);
 
     const HeaderRef = useRef();
-
     const router = useRouter()
+
     // GET CATALOG PRODUCTS
     useEffect(()=>{
         async function ProdLoad(){

@@ -1,5 +1,6 @@
 import { buildUrl } from 'cloudinary-build-url';
 import { useEffect, useState} from 'react';
+const cloudinary_acc  = process.env.CLOUDINARY_ACC;
 
 function parse_url(url) {
 
@@ -20,22 +21,34 @@ function parse_url(url) {
     return out;
 }
 
-export default function BlureProdImage(baseLink){
+export default function BlureProdImage(baseLink, blurValue = 1000){
 
     const[imagePath, setImPath] = useState();
     const[clUser, setUser] = useState();
     const[outUrl, setUrl] = useState();
+
+
 
     useEffect(()=>{
       if(baseLink){
         setImPath("ProductsImages/" + parse_url(baseLink).script);
         setUser(parse_url(baseLink).user);
 
+        // console.log(parse_url(baseLink).user)
       }
     })
 
+    // useEffect(()=>{
+    //     console.log(clUser);
+    // },[clUser])
+
     useEffect(()=>{
-      if(clUser,imagePath, baseLink){
+      if(clUser && imagePath && baseLink){
+        // console.log(
+        //     'clUser', clUser, '/n',
+        //     'imagePath', imagePath, '/n',
+        //     'baseLink', baseLink, '/n'
+        // )
         setUser(parse_url(baseLink).user);
         const src = buildUrl(imagePath, {
             cloud: {
@@ -44,11 +57,11 @@ export default function BlureProdImage(baseLink){
             transformations: {
               effect: {
                   name: 'blur',
-                  value: 1000
+                  value: blurValue
                 }
             }
           })
-          
+
           setUrl(src);
       }
     }, [imagePath, clUser, imagePath])

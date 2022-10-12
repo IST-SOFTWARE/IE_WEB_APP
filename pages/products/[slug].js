@@ -22,6 +22,7 @@ import { cartCreateAct, inCart } from "../../cartActions/cartActions";
 import getData from "../../queries/getData";
 import { getProductData } from "../../queries/getProductData";
 import ImageViewerModal from "../../components/DefaultModals/imageViewerModal";
+import ContactsModal from "../../components/DefaultModals/contactsModal";
 
 
 export default function ProductPage(){
@@ -41,9 +42,9 @@ export default function ProductPage(){
         paragraph: ""
     })
 
-    const Analogue = "Analogue";
-    const Replacement = "Replacement";
-    const Included = "Included";
+    const Analogue = "analogue_text";
+    const Replacement = "replacement_text";
+    const Included = "included_text";
 
 
     const[productData, setProductData] = useState();
@@ -172,28 +173,28 @@ const addToCart = (id, q, p) =>{
                                                 <div>
                                                     <NextImageRatioSaver
                                                     Img={productData ? productData.image_url : ""}
-                                                    wPrime={true}
+                                                    primaryFill={"width"}
                                                     q={100}
                                                     unique={"_MainPI"}
                                                     />
                                                 </div>
-                                            
                                         </button>
         
                                         <div className={styles.ProductReplacement}>
                                             <ReplacementItem text={"Аналог"}
+                                            paragraph={"для"}
                                             pu={setPU} headersSet={setPuHeaders}
                                             data={productData ? productData.product_name_ru : ""}
                                             puTyper={setIsPuType} isType={Analogue}/>
 
-                                            <ReplacementItem text={"Замена"}    
+                                            <ReplacementItem text={"Замена"}
+                                            paragraph={"для"}
                                             pu={setPU} headersSet={setPuHeaders}
                                             data={productData ? productData.product_name_ru : ""}
                                             puTyper={setIsPuType} isType={Replacement}/>
 
                                             <ReplacementItem text={"Входит в состав..."}
                                             pu={setPU} headersSet={setPuHeaders}
-                                            paragraph={""}
                                             data={productData ? productData.product_name_ru: ""}
                                             puTyper={setIsPuType} isType={Included}/>
                                         </div>
@@ -319,30 +320,32 @@ const addToCart = (id, q, p) =>{
                 header={ puHeaders ? puHeaders.header : ""}
                 paragraph={ puHeaders ? puHeaders.paragraph : ""}
                 >
-                    
+
                 <ComponentLoader data={productData}>
                     <ul className={styles.slug_PuBaseList}>
-                        {productData && isPuType === Analogue ?
-                            (productData.analogue).map(el => {
-                            return <Link href={`/products/${el.related_Products_id.slug}`}
-                            key={el.related_Products_id.slug}>
+
+                        {productData ?
+                            productData[isPuType] === "" ?
                                 <li>
-                                    {el.related_Products_id.product_name_ru}
-                                </li></Link>
-                                
-                        }): productData && isPuType === Replacement ?
-                            (productData.replacement).map(el => {
-                            return <Link href={`/products/${el.related_Products_id.slug}`}
-                            key={el.related_Products_id.slug}>
-                                    <li>
-                                        {el.related_Products_id.product_name_ru}
-                                    </li></Link>
-                        }): productData && isPuType === Included ?
-                            (productData.products_included).map(el => {
-                            // return <li key={el.related_Products_id.product_name_ru}>
-                            //         {el.related_Products_id.product_name_ru}
-                            //         </li>
-                        }): ""}
+                                    <p>
+                                        Упс!<br/>
+                                        Данные еще не заполнены<br/>
+                                        Свяжитесь с нами, и мы поможем
+                                    </p>
+
+                                    <button onClick={()=>
+                                        {
+                                            setPU(false);
+                                            setCbRequestModal(true);
+                                        }
+                                    }>
+                                        Уточнить по телефону
+                                    </button>
+                                </li> :
+                            <li>{productData[isPuType]}</li> :
+                            <li>Произошла ошибка</li>
+                        }
+
                     </ul>
                 </ComponentLoader>
 
@@ -354,6 +357,12 @@ const addToCart = (id, q, p) =>{
                 image={productData ? productData.image_url : null}
                 modalState={imageViewerPU}
                 setModalState={setImageViewerPU}
+            />
+
+        {/*Contacts modal*/}
+            <ContactsModal
+                modalState={cbRequestModal}
+                modalSwitcher={setCbRequestModal}
             />
 
         </>

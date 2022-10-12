@@ -97,6 +97,7 @@
     height: 100%;
     display: flex;
     position: relative;
+    background: #2B3540;
 }
 .PI_AboutItem{
     max-width: 190px;
