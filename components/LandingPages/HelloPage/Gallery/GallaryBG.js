@@ -67,6 +67,7 @@ export default function GallaryBG({image}){
                             placeholder="blur"
                             alt="Gallary background"
                             blurDataURL={rgbDataURL(44, 54, 65)}
+                            priority={true}
                         />
                     </div>
                 </div>

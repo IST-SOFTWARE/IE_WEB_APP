@@ -10,7 +10,8 @@ import { useState, useEffect} from "react";
 
 export default function NextImageRatioSaver({Img, wPrime, hPrime, q,
                                             unique, primaryFill,
-                                            placeholderBlurURL}){
+                                            placeholderBlurURL,
+                                                primaryLoad}){
       
 
     const[quality, setQuality] = useState(75);
@@ -234,7 +235,7 @@ export default function NextImageRatioSaver({Img, wPrime, hPrime, q,
         }, 150);
     
         //  console.log(uniqueName);
-     },[]);
+     });
 
 
     return(
@@ -263,6 +264,7 @@ export default function NextImageRatioSaver({Img, wPrime, hPrime, q,
                     q={quality}
                     blurDataURL={placeholderBlurURL ? placeholderBlurURL : null}
                     placeholder={placeholderBlurURL ? "blur" : null}
+                    priority={primaryLoad ? true : false}
                 /> 
                 </div>
                

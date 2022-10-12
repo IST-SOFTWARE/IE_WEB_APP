@@ -15,14 +15,14 @@ export default function ImageViewerModal({modalState, setModalState, image}){
                             width: document.body.clientWidth/100 * 80,
                             maxWidth: 100 + "%",
                             height: "max-content",
+                            maxHeight: document.body.clientHeight/100 * 80,
                             borderRadius: 15 + "px",
                             overflow: "hidden",
                             marginBottom: 30 + "px"
                         }}>
                             <NextImageRatioSaver
                                 Img={image ? image : ""}
-                                wPrime={true}
-
+                                primaryFill={"width"}
                                 q={100}
                                 unique={"_MODAL_IMAGE"}
                             />

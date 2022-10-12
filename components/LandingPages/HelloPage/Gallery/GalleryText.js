@@ -54,7 +54,7 @@ export default function GallaryText(props) {
     const SwitchSlide = (itemId) => {
         props.slideBg(
             mainGallery.find(item => item["id"] === itemId.toString())["img"]);
-        setSlide(slide = 
+        setSlide(
             mainGallery.find(item => item["id"] === itemId.toString())[props.lng]);
         setId(itemId);
     }
