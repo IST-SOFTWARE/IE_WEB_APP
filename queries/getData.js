@@ -10,4 +10,5 @@ const getData = async(query, dataName, variables = {}) => {
     return data.data[dataName]
 }
 
-export default getData
+
+export default getData;

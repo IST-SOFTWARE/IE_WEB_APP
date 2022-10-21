@@ -20,7 +20,10 @@
     "react-query": "^3.39.0"
   },
   "devDependencies": {
+    "@types/node": "^18.11.0",
+    "@types/react": "^18.0.21",
     "eslint": "8.7.0",
-    "eslint-config-next": "12.0.8"
+    "eslint-config-next": "12.0.8",
+    "typescript-plugin-css-modules": "^3.4.0"
   }
 }

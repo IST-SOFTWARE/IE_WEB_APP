@@ -12,7 +12,11 @@ import InfoOfDev from "../components/InfoOfDev";
 import { getHomePageContent } from "../queries/getHomePageContent";
 import { getCallBackModuleContent } from "../queries/getCallBackModuleContent";
 import { getProdDemoPageContent } from "../queries/getProdDemoPageContent";
+import {getOurPartners} from "../queries/Pages/getOurPartnersPage";
+
 import { getAttachPageContent } from "../queries/getAttachPageContent";
+import OurPartnersPage from "../components/LandingPages/OurPartners/OurPartnersPage";
+import getData from "../queries/getData";
 
 const HeaderContent = {
     "CatalogTitle":{
@@ -36,7 +40,6 @@ const HeaderContent = {
         "eng": "LogIn"
     }
 };
-
 const HelloContent = {
     "Label": {
         "ru" : "ОБОРУДОВАНИЕ ДЛЯ ЛИФТОВ\ И ЭСКАЛАТОРОВ",
@@ -109,7 +112,6 @@ const PDContent = {
         "eng": "Leave a {request} and we will call you back!"
     }
 };
-
 const Languages = {
     "Title" : {
         "ru" : "Язык",
@@ -122,9 +124,6 @@ const Languages = {
 };
 
 
-
-
-
 export default function Index(){
     const[globalLng, setLang] = useState("eng");
     const[height, setHeight] = useState(0);
@@ -134,6 +133,7 @@ export default function Index(){
     const[callBackReqContent, setcallBackReqContent] = useState();
     const[prodDemoContent, setProdDemoContent]= useState();
     const[attachPageContent, setAttachPageContent] = useState();
+    const[ourPartnersContent, setOurPartnersContent] = useState(null);
     // const {status, data: homePageContent, error, isFetching, isSuccess} = useQuery("HomePage_Main", async() => await getHomePageContent())
     
 
@@ -175,16 +175,39 @@ export default function Index(){
     },[]);
 
     // [3] AttachPage get data
+    // useEffect(()=>{
+    //     async function AttachLoad(){
+    //         const response = await getAttachPageContent();
+    //         setAttachPageContent(response);
+    //     }
+    //
+    //     if(!prodDemoContent){
+    //         AttachLoad();
+    //     }
+    // },[]);
+
+    // [3] Our partners
     useEffect(()=>{
-        async function AttachLoad(){
-            const response = await getAttachPageContent();
-            setAttachPageContent(response);
+        let isMounted = true;
+
+        const contentLoad = async() => {
+            const data = await getData(getOurPartners,
+                'OurPartnersPage', {});
+            if(isMounted)
+                setOurPartnersContent(data);
+        }
+        if(!ourPartnersContent){
+            contentLoad();
         }
 
-        if(!prodDemoContent){
-            AttachLoad();
-        }
-    },[]);
+        return () => {
+            isMounted = false;
+        };
+    },[])
+
+    // useEffect(()=>{
+    //     console.log(ourPartnersContent)
+    // },[ourPartnersContent])
     
     // useEffect(()=>{
     //     console.log("is_index: ", api_cont);
@@ -192,7 +215,6 @@ export default function Index(){
 
     useEffect(()=>{
         setHeight(document.body.offsetHeight);
-        
     },[]);
 
     function ToggleLang(){
@@ -237,7 +259,11 @@ export default function Index(){
                 lang={globalLng}
                 api_cont={prodDemoContent}
                 callBack_api= {callBackReqContent}/>
-                
+
+
+                <OurPartnersPage
+                content={ourPartnersContent}
+                />
                 {/*<AttachPage/>*/}
 
 
