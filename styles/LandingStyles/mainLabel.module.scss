@@ -1,0 +1,22 @@
+@import "./styles/scss_mixins";
+@import "./styles/default_variables";
+
+.MainLabel{
+    h1 {
+        font-style: normal;
+        font-weight: bold;
+        @include font-size(2.7rem);
+        white-space: pre-line;
+        vertical-align: bottom;
+        color: $def_white !important;
+        max-width: 670px;
+    }
+}
+
+.label_under{
+    filter: drop-shadow(4px 3px 4px rgba(0, 0, 0, 0.81));
+    position: relative;
+    text-decoration: underline #FFDF93;
+    text-decoration-thickness: 4px;
+}
+

@@ -1,5 +1,5 @@
 import styles from "../../styles/Header.module.css"
-import { useContext, useState, useEffect} from "react/"
+import { useContext, useState, useEffect} from "react"
 import CatalogContext from "../Context/CatalogContext"
 
 export default function CatalogBtn({text}){

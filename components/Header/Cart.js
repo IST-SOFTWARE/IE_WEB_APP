@@ -18,7 +18,7 @@ export default function Cart({cartTitle, href}){
             <Link href={defLink}>
             <button className={styles.cartAndLoginBlock}>
                 <img src="/Cart_ico.png" alt="Cart" width="42px" height="42px"/>
-                <a>{cartTitle}</a>
+                {cartTitle}
             </button>
             </Link>
         </>

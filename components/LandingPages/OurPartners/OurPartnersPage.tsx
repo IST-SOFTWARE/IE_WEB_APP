@@ -1,118 +1,127 @@
-import styles from '../../../styles/OurPartners/ourPartnersPage.module.css'
-import MainLabel from "../../MainLabel";
-import LabelLoader from "../../ModalComponents/LabelLoader";
-import PartnerItem from "./PartnerItem";
-import PartnersList, {alignVariant} from "./PartnersList";
-import {useEffect, useState} from "react";
+import styles from '../../../styles/OurPartners/ourPartnersPage.module.scss'
+import PartnersList, {sliderPositionVar} from "./PartnersList";
+import {FC, useEffect, useState} from "react";
+import {IPageOfLanding} from "../../../Apollo/Queries/landingPage";
+import getGallery, {IGallery} from "../../GalleryTypes/GalleryTypes";
 
 
+//  LandingPageComp data test
 
-type partnerData = {
-    title: string,
-    image_url: string;
-    partner_url: string;
+interface IOurPartnersPage{
+    page: IPageOfLanding
 }
 
-type partnerPageData = {
-    Title: string,
-    Title_Ru: string,
-}
+const OurPartnersPage:FC<IOurPartnersPage> = (
+                {
+                    page
+                }) => {
 
-class partnersPage{
-    pageData : partnerPageData;
-    partnersList: partnerData[];
+    const[partnersList, setPartnersList] = useState<IGallery>(null);
 
-    constructor({});
-    constructor(data: any) {
-        const _partnersList = Array<partnerData>();
-        const _partnerPageData: partnerPageData = {
-            Title: data.Title,
-            Title_Ru: data.Title_Ru
-        }
+    const[callBackReq, setCallBackReq] = useState<boolean>(false);
+    const[callBackResp, setCallBackResp] = useState<boolean>(false);
+    const[callBackRespName, setCallBackRespName] = useState<string>("");
 
-        if(data?.partners_list
-            && data?.partners_list.length > 0){
+    const[contactsState, setContactsState] = useState<boolean>(false);
 
-            data.partners_list.map(elem=>{
-               const partner =
-                   elem["Partners_id"] ?
-                       elem["Partners_id"]: null;
-                if(partner){
-                    const _partner: partnerData = {
-                        title: partner.title,
-                        partner_url: partner.partner_url,
-                        image_url: partner.image_url
-                    }
-                    _partnersList.push(_partner);
-                }
-            });
-        }
-
-        this.partnersList = _partnersList;
-        this.pageData = _partnerPageData;
-
-    }
-
-}
-
-
-export default function OurPartnersPage({content}){
-
-    const[pageData, setPageData] = useState<partnersPage>(
-        new partnersPage({})
-    );
-
-    const[pageTitle, setPageTitle] = useState();
-    const[partnersList, setPartnersList] = useState();
 
     useEffect(()=>{
-        if(content) {
-            if(content){
-                const pageData = new partnersPage(content);
-                setPageData(pageData);
-            }
-        }
-    },[content])
 
+        if(page?.gallery?.gallery_content?.length > 0){
+            const gallery:IGallery = getGallery(page);
+            setPartnersList(gallery);
+        }
+
+    },[page])
+
+//  LandingPageComp data test
+
+
+
+//--------------------
 
     return(
         <>
-            <div className={styles.ourPartnersPage}>
-                <div className={styles.ourPartnersPage_mainLabel}>
-                    <div className={"row"}>
-                        <div className={"col-md-8"}>
-                            <MainLabel padding="130px" >
-                                Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-                                {/*<LabelLoader LoadSizeInSymbols={30} field={"Title_Ru"} data={pdPageData}/>*/}
-                            </MainLabel>
+            {/*<div className={styles.ourPartnersPage_content}>*/}
+            {/*    <div className={"row"}>*/}
+                    <div className={"col-lg-7 col-md-10 col-sm-12 col-12 d-flex align-items-center mx-auto w-100"}>
+                        <div className={"w-100 flex-grow-1"}>
+                        <PartnersList items={partnersList}
+                                      layout={[
+                                          {
+                                              rows: 3,
+                                              cols: 2,
+                                              windowWidth: 0,
+                                              sliderOption: sliderPositionVar.side,
+                                              maxWidth: "400px"
+                                          },
+
+                                          {
+                                              rows: 2,
+                                              cols: 4,
+                                              windowWidth: 576,
+                                              sliderOption: sliderPositionVar.bottom,
+                                              maxWidth: "700px"
+                                          },
+
+                                          {
+                                              rows: 2,
+                                              cols: 3,
+                                              windowWidth: 968,
+                                              sliderOption: sliderPositionVar.bottom,
+                                              maxWidth: "700px"
+                                          },
+
+                                          {
+                                              rows: 2,
+                                              cols: 4,
+                                              windowWidth: 1200,
+                                              sliderOption: sliderPositionVar.bottom,
+                                              maxWidth: "720px"
+                                          },
+
+                                      ]}
+                        />
                         </div>
+
                     </div>
+                    <div className={"col-lg-5 col-md-10 col-12 d-flex align-items-center mx-auto"}>
+                        <div className={styles.PartnersJoinBlock}>
+                            <p>Присоединяйся и ты!</p>
+                            <a>Отправь заявку на звонок
+                                и мы перезвоним!
+                                Или можешь связаться с
+                                нами самомтоятельно:</a>
+                            <div className={styles.PartnersJoinButtons}>
+                                <button className={styles.primaryButton}>
+                                    Заказать звонок
+                                </button>
 
-                    <div className={"row"}>
-                        <div className={"col-md-9"}>
-                            <PartnersList rowsProperties={[
-                                        {objectsInRow: 4, rowsNum: 2, screenSize: 950},
-                                        {objectsInRow: 2, rowsNum: 3, screenSize: 250}
-                                    ]}
-                                    horizontalAlign={alignVariant.center}
-                                    verticalAlign={alignVariant.center}
-                            >
-                                {pageData.partnersList.map((elem, index) => (
-                                    <PartnerItem image={elem.image_url}
-                                                 item_tile={elem.title}
-                                                 item_url={elem.partner_url}
-                                                 key={index}/>
-                                ))}
-                            </PartnersList>
-                        </div>
-                        <div className={"col-md-6"}>
-                            <div className={styles.PartnersJoinBlock}>
-
+                                <button>
+                                    Свяжусь самостоятельно
+                                </button>
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
-        </>
+                {/*</div>*/}
+            {/*</div>*/}
+
+
+
+    {/*<CallRequestSenderModal cbModalState={callBackReq}*/}
+    {/*                        setCbModalState={setCallBackReq}*/}
+    {/*                        api_data={callBack_data}*/}
+    {/*                        respStateSet={setCallBackResp}*/}
+    {/*                        respNameSet={setCallBackRespName}/>*/}
+
+    {/*<CallRequestMessageModal userName={callBackRespName}*/}
+    {/*                         modalState={callBackResp}*/}
+    {/*                         modalSwitcher={setCallBackResp}/>*/}
+
+    {/*<ContactsModal modalState={contactsState} modalSwitcher={setContactsState}/>*/}
+
+    </>
     )
 }
+
+export default OurPartnersPage;

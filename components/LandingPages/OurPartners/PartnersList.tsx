@@ -1,199 +1,203 @@
-import styles from "../../../styles/OurPartners/ourPartnersParticles.module.css";
+import styles from "../../../styles/OurPartners/ourPartnersParticles.module.scss";
 import {FC, useCallback, useEffect, useRef, useState} from "react";
 import React from 'react';
+import useWindowDimensions from "../../../Hooks/useWindowsDimensions";
+import {string} from "prop-types";
+import {IGallery} from "../../GalleryTypes/GalleryTypes";
+import Image from "next/image";
 
-export enum alignVariant{
-    start = 'start',
-    center = 'center',
-    end = 'end'
+
+
+export enum sliderPositionVar{
+    bottom = 'column',
+    side = 'row',
 }
 
 
-interface RowsProperties{
-    screenSize: number,
-    objectsInRow: number,
-    rowsNum: number
+//
+
+
+type adaptiveSizes = {
+    windowWidth: number,
+    rows: number,
+    cols: number,
+    sliderOption: sliderPositionVar,
+    maxWidth?: string,
 }
 
-interface PartnersList{
-    rowsProperties?: RowsProperties[],
-    children?: React.ReactChild | React.ReactNode,
-    horizontalAlign?: alignVariant,
-    verticalAlign?: alignVariant,
+
+interface IPartnersList {
+    items: IGallery
+    layout: Array<adaptiveSizes>
 }
 
-const PartnersList: FC<PartnersList> =
+const PartnersList: FC<IPartnersList> =
         ({
-            children,
-            rowsProperties,
-            horizontalAlign,
-            verticalAlign,
+            items,
+            layout
         }) => {
 
-    const[objInPage, setObjInPage] = useState(null);
-    const[pages, setPages] = useState(null);
 
-    const[childSize, setChildSize] = useState(100);
+    const[actualSlide, setActualSlide] = useState(0);
+    const[slides, setSlides] = useState<Array<IGallery>>(null);
+    const[slideSize, setSlideSize] = useState<number>(8);
 
-    const[screenSize, setScreenSize] = useState(0);
-    const[styleOption, setStyleOption] = useState<RowsProperties>(null);
+    const[styleOption, setStyleOption] = useState<adaptiveSizes>({
+        rows: 2,
+        cols: 4,
+        windowWidth: 991.98,
+        sliderOption: sliderPositionVar.bottom,
+        maxWidth: "400px"
+    })
 
-    const[ListOfElems, setListOfElems] = useState(null);
-    const[pagedElems, setPagedElems] = useState([]);
-    const[actPage, setActPage] = useState(1);
-    const[outElems, setOutElems] = useState([]);
+    const[itemSize, setItemSize] = useState<number>(10);
 
-
+    const {width} = useWindowDimensions();
 
     const listBlock = useRef(null);
     const pointersBlock = useRef(null);
-
-    const handleUserResize = useCallback(event => {
-        const screenSize = window.innerWidth;
-        setScreenSize(screenSize);
-    }, []);
+    const partnersList_item = useRef(null);
 
     useEffect(()=>{
-        window.addEventListener("resize", handleUserResize);
-        return () => {
-            window.removeEventListener("resize", handleUserResize);
-        };
-    },[handleUserResize]);
-
-
-    useEffect(()=>{
-        handleUserResize(null);
-
-    },[])
-
-    useEffect(()=>{
-        if(children)
-            setListOfElems(children);
-    },[children])
-
-
-    useEffect(()=>{
-        if(styleOption && ListOfElems && listBlock){
-            const objInPage = styleOption.rowsNum * styleOption.objectsInRow;
-            const pagesNum = Math.ceil(ListOfElems.length / objInPage);
-
-            setPages(pagesNum);
-            setObjInPage(objInPage);
-
-            const ListSize = listBlock.current.offsetWidth;
-            const childSize = Math.floor(ListSize / styleOption.objectsInRow) - 10;
-
-            setChildSize(childSize);
+        if(styleOption){
+            setSlideSize(styleOption.rows * styleOption.cols)
         }
-    },[styleOption, ListOfElems, listBlock])
-
+    },[styleOption])
 
     useEffect(()=>{
-        if(pages && objInPage &&
-                Array.isArray(ListOfElems)){
-            const finishList = [];
+        const outSlides: Array<IGallery> = [];
 
-            let spliceIndex = 0;
-            for(let i = 0; i < pages; i++){
-                const elemsList = Array.from(ListOfElems);
-                const buffArr = elemsList.splice(spliceIndex, objInPage);
-                finishList.push(buffArr);
-                spliceIndex += objInPage;
+        if(items && slideSize) {
+            for (let i = 0; i < items.slides.length; i += slideSize) {
+                const chunk = items.slides.slice(i, i + slideSize);
+                const newSlide:IGallery = {
+                    slides: chunk
+                }
+
+                outSlides.push(newSlide);
             }
-
-            setPagedElems(finishList);
-            setActPage(0);
         }
-    },[ListOfElems, pages, objInPage])
+        setSlides(outSlides);
+
+    },[items, slideSize])
 
 
     useEffect(()=>{
-        setOutElems(pagedElems[actPage]);
-    },[actPage, pagedElems])
-
-
-    useEffect(()=>{
-        if(rowsProperties && rowsProperties.length > 0){
-            rowsProperties.sort(
+        if(layout && layout.length > 0){
+            layout.sort(
                 (a, b) =>
-                    (a.screenSize > b.screenSize) ? 1 : -1)
+                    (a.windowWidth > b.windowWidth) ? 1 : -1)
 
-            rowsProperties.map((style)=>{
-                if(style.screenSize <= screenSize){
+            layout.map((style)=>{
+                if(style.windowWidth <= width){
                     setStyleOption(style);
                 }
             })
         }
-    }, [screenSize])
+    }, [width, layout])
+
 
     useEffect(()=>{
-        if(styleOption && childSize > 0  && listBlock){
-            const rowsNum = styleOption.rowsNum;
-            listBlock.current.style.minHeight =
-                (childSize * rowsNum) + 20 + "px";
+        if(listBlock && styleOption){
+            const parentSize = listBlock.current.clientWidth;
+            const colsNum = Math.floor(slideSize/styleOption.rows);
+            const itemSize = Math.floor(parentSize/colsNum) - 5;
+
+            setItemSize(itemSize);
         }
-    },[childSize, styleOption, listBlock]);
+    },[listBlock, width, styleOption, slideSize])
+
+
+
+    const switchActPage = (newPageIndex: number) => {
+        const pageNow = actualSlide;
+
+        if(listBlock.current){
+            const onePageW = listBlock.current.offsetWidth;
+            const actScroll = (Math.abs(newPageIndex - pageNow) * onePageW);
+
+            if(pageNow < newPageIndex)
+                listBlock.current.scrollLeft += actScroll;
+
+
+            else if(pageNow > newPageIndex)
+                listBlock.current.scrollLeft -= actScroll;
+
+        }
+        setActualSlide(newPageIndex);
+    }
 
 
         return (
         <>
-            <div className={styles.partnersList_block}>
-                <div className={styles.partnersList} ref={listBlock}>
-                    {outElems ? outElems.map((elem, index)=> (
-                            <div style={{
-                                overflow: 'hidden',
-                                borderRadius: "15%",
-                                display: 'flex',
-                                alignItems: verticalAlign ? verticalAlign : "start",
-                                justifyContent: horizontalAlign ? horizontalAlign : "start",
+            <div style={{
+                height: styleOption.rows * itemSize + 50,
+                maxWidth: styleOption.maxWidth ? styleOption.maxWidth : null,
+            }}>
+                <div className={styles.partnersList_content}
 
-                                width: childSize,
-                                height: childSize,
+                     style={{
+                         display: "flex",
+                         flexDirection: styleOption ? styleOption.sliderOption : "column",
+                     }}>
 
-                                background: '#2C3641',
-
-                                margin: "5px"
-                            }} key={index}>
-                                {elem}
-                            </div>
-                        )
-                    ) : null}
-                </div>
-
-                <div className={styles.listPointer} ref={pointersBlock}>
-                    {pagedElems && pagedElems.length > 1 ? pagedElems.map((elem, index) =>
-                        {
-                            if(index === actPage) {
-                                return  <div className={styles.pointerBody}
-                                            style={{
-                                              width: pointersBlock.current.offsetWidth/
-                                                  pagedElems.length
-                                            }}>
-
-                                            <div key={index}
-                                                className={styles.pointer + " " + styles.active}
+                    <div className={styles.partnersList} ref={listBlock}>
+                        {slides ? slides.map((elem, index) => (
+                            <div className={styles.partnersPage}
+                                 key={`${index}_partPage`}
+                                 style={{
+                                     justifyContent: elem.slides.length === slideSize ? "center" : "flex-start"
+                                 }}
+                            >
+                                {elem.slides.map((slide, i_slide) => (
+                                    <div className={styles.partnersList_item}
+                                    key={`slide_item_${i_slide}`}
+                                     style={{
+                                         width: itemSize,
+                                         height: itemSize,
+                                     }}
+                                    >
+                                        <div className={styles.item_image_container}>
+                                            <Image
+                                                src={slide.image}
+                                                alt={slide.image}
+                                                fill={true}
+                                                style={{
+                                                    objectFit:"contain",
+                                                    objectPosition:"center"
+                                                }}
+                                                priority={false}
+                                                sizes={"auto"}
                                             />
-
                                         </div>
-                            }
+                                    </div>
+                                ))}
+                            </div>
+                        )): null}
+                    </div>
 
-                            else
-                                return  <div className={styles.pointerBody}
-                                             style={{
-                                                 width: pointersBlock.current.offsetWidth/
-                                                     pagedElems.length
-                                             }}
-                                             onMouseOver={()=>{setActPage(index)}}
-                                             onClick={()=>{setActPage(index)}}
-                                        >
 
-                                            <div key={index} className={styles.pointer}/>
 
-                                        </div>
-                        }
-                    ) : null}
+
+                    <div className={`${styles.listPointer} ${styleOption.sliderOption === sliderPositionVar.side ? styles.column: null}`} ref={pointersBlock}>
+                        {slides && slides.length > 1 ? slides.map((elem, index) =>
+                            (
+                                <div className={styles.pointerBody}
+                                     key={`${index}_pointer`}
+                                     onMouseOver={() =>
+                                         switchActPage(index)
+                                     }>
+                                    <div
+                                        className={`${styles.pointer} 
+                                        ${index === actualSlide ? styles.active : null}` }
+                                    />
+                                </div>
+
+                            )
+                        ) : null}
+                    </div>
+
                 </div>
-
             </div>
         </>
     );

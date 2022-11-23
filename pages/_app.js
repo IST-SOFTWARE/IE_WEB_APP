@@ -4,7 +4,7 @@ import { useState, useEffect, useContext, useRef} from "react";
 import {forEach} from "core-js/stable/dom-collections";
 import {replaceAll} from "core-js/stable/string";
 
-import '../styles/global.css'
+import '../styles/global.scss'
 import Header from '../components/Header/Header'
 import Catalog from "../components/Catalog/Catalog";
 
@@ -12,14 +12,16 @@ import NextNProgress from 'nextjs-progressbar'
 import Head from 'next/head'
 import CatalogContext from "../components/Context/CatalogContext"
 import PageLevelsVisContext from "../components/Context/PageLevelsVisContext";
-import { QueryClient, QueryClientProvider, useQuery } from 'react-query'
 import {getProducts} from "../queries/getProducts"
 
-import { useRouter } from 'next/router'
+import { useRouter, Router} from 'next/router'
 import Footer from "../components/Footer/Footer";
 
+import {ApolloProvider} from "@apollo/client";
+import {apolloClient} from "../Apollo/apolloClient";
+import Loader from "../components/Loader";
 
-const queryClient = new QueryClient()
+
 
 
 export default function MyApp({Component, pageProps}){
@@ -38,7 +40,10 @@ export default function MyApp({Component, pageProps}){
     const[productDemoPageFilter, setProductDemoPageFilter] = useState(null);
 
     const HeaderRef = useRef();
-    const router = useRouter()
+    const router = useRouter();
+
+
+
 
     // GET CATALOG PRODUCTS
     useEffect(()=>{
@@ -83,6 +88,27 @@ export default function MyApp({Component, pageProps}){
     },[Component, pageProps])
 
 
+    const[loadingState, setLoadingState] = useState(true);
+
+    useEffect(() => {
+        const handleStart = () => setLoadingState(true);
+        const handleComplete = () => (false);
+
+        router.events.on('routeChangeStart', handleStart)
+        router.events.on('routeChangeComplete', handleComplete)
+        router.events.on('routeChangeError', handleComplete)
+
+        return () => {
+            router.events.off('routeChangeStart', handleStart)
+            router.events.off('routeChangeComplete', handleComplete)
+            router.events.off('routeChangeError', handleComplete)
+        }
+    })
+
+    useEffect(()=>{
+        setLoadingState(false);
+    }, [])
+
     return(
         <>
         
@@ -95,37 +121,39 @@ export default function MyApp({Component, pageProps}){
 
             </Head>
 
-            <QueryClientProvider client={queryClient}>
-            <NextNProgress
-                color="#29D"
-                startPosition={0.3}
-                stopDelayMs={200}
-                height={3}
-                showOnShallow={true}
-            />
+            {/*<NextNProgress*/}
+            {/*    color="#29D"*/}
+            {/*    startPosition={0.3}*/}
+            {/*    stopDelayMs={200}*/}
+            {/*    height={3}*/}
+            {/*    showOnShallow={true}*/}
+            {/*/>*/}
 
+            <ApolloProvider client={apolloClient}>
             <PageLevelsVisContext.Provider value={{mobilePageLevels, setPageLevelsVis}}>
             <CatalogContext.Provider value={CatalogValue}>
 
                 <Catalog openState={CatalogToggle}
                          catalogFilter = {productDemoPageFilter}
                          HeaderForLoader={HeaderRef.current}/>
-                <Header
-                    ref={HeaderRef}
-                    // HeaderLangChecker={LangChecker}
-                    // content = {HeaderContent}
-                    // lang = {globalLng}
-                    loaderShow = {LoaderShow}
-                />
-                <div className={"pages_content"} id={"pages_content"}>
-                    <Component {...pageProps} key={router.asPath}/>
-                </div>
+                {/*<Header*/}
+                {/*    ref={HeaderRef}*/}
+                {/*    // HeaderLangChecker={LangChecker}*/}
+                {/*    // content = {HeaderContent}*/}
+                {/*    // lang = {globalLng}*/}
+                {/*    loaderShow = {LoaderShow}*/}
+                {/*/>*/}
 
-                <Footer/>
+                <Loader state={loadingState}>
+                    <Component {...pageProps} key={router.asPath}/>
+                </Loader>
+
+            <Footer className={"footer"} route={router.locale}/>
 
             </CatalogContext.Provider>
             </PageLevelsVisContext.Provider>
-            </QueryClientProvider>
+            </ApolloProvider>
+
         </>
     )
     

@@ -11,7 +11,7 @@ export default function LogoMobile({href}){
                 <Image
                 src='/Mob_logo.svg'
                 alt="Logo"
-                layout='fill'
+                fill={true}
                 />
             </div>
         </Link>

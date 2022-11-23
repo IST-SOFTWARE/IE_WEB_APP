@@ -5,6 +5,7 @@ import Link from 'next/link'
 import BlureProdImage from "../ProductPage/BlureProdImage";
 
 import { inCart, cartCreateAct, rmeoveItem } from "../../cartActions/cartActions";
+import Image from "next/image";
 
 export default function CatalogProductItem({imgPath, Title, Price, id, slug, isExcluded}){
     
@@ -52,16 +53,16 @@ export default function CatalogProductItem({imgPath, Title, Price, id, slug, isE
                 <Link href={`/products/${slug}`}>
                 <div className={styles.ProductItem}>
                     <div className={styles.PI_ImageBlock}>
-                        <NextImageRatioSaver Img={imgPath}
-                                             primaryFill={"autofill"}
-                                             unique={slug}
-                                             q={1}
-                                             placeholderBlurURL={
-                                                // BlureProdImage(imgPath,
-                                                //         50)
-                                                 'https://res.cloudinary.com/dv9xitsjg/image/upload/v1660219704/Empty_Prod_image_hgbdyr.svg'
-                                             }
+                        <Image
+                            alt={`${Title}_Catalog_Item`}
+                            src={imgPath}
+                            layout={"fill"}
+                            objectFit={"cover"}
+                            quality={1}
+                            placeholder={"blur"}
+                            blurDataURL={'https://res.cloudinary.com/dv9xitsjg/image/upload/v1660219704/Empty_Prod_image_hgbdyr.svg'}
                         />
+
                     </div>
 
                     <div className={styles.PI_FuncBlock}>

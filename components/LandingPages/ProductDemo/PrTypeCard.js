@@ -1,4 +1,4 @@
-import styles from "../../../styles/ProdDemo.module.css"
+import styles from "../../../styles/LandingStyles/PagesComponents/ProductDemo/ProdDemo.module.scss"
 import Image from "next/image";
 
 export default function PrTypeCard({img, crop, text,
@@ -20,6 +20,8 @@ export default function PrTypeCard({img, crop, text,
                     width={240 * crop}
                     height={240 * crop}
                     q={100}
+                    alt={img}
+
                 />
                 </div>
                 <p>

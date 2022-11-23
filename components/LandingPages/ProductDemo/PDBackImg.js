@@ -1,4 +1,4 @@
-import styles from "../../../styles/ProdDemo.module.css"
+import styles from "../../../styles/LandingStyles/PagesComponents/ProductDemo/ProdDemo.module.scss"
 import Image from "next/image";
 
 export default function PDBackImg({url, speed}){
@@ -9,8 +9,9 @@ export default function PDBackImg({url, speed}){
                 <div className={styles.PDBackImg}>
                     <div className={styles.PDBIContent}>
                     <Image
+                        alt={"BACK_IMG"}
                         src={url}
-                        layout="fill"
+                        fill={true}
                     />
                     </div>
                 </div>
