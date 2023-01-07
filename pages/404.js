@@ -23,34 +23,36 @@ export default function ErrorPage(){
     
     return(
         <>
-        <Image src="/404_bg.png"
-        className = {styles.backImg}
-        layout='fill'
-        objectFit='cover'
-        quality={100}
-        alt='Background'
-        placeholder="blur"
-        blurDataURL={rgbDataURL(44, 54, 65)}
-        />
+        {/*<Image src="/404_bg.png"*/}
+        {/*className = {styles.backImg}*/}
+        {/*layout='fill'*/}
+        {/*objectFit='cover'*/}
+        {/*quality={100}*/}
+        {/*alt='Background'*/}
+        {/*placeholder="blur"*/}
+        {/*blurDataURL={rgbDataURL(44, 54, 65)}*/}
+        {/*/>*/}
 
-        <div className={styles.container}>
-            
-            <div className={styles.logoBlock}>
-  
-              <Logo w="223" h="66" href="./"/>
+        {/*<div className={styles.container}>*/}
+        {/*    */}
+        {/*    <div className={styles.logoBlock}>*/}
 
-            </div>
+        {/*      <Logo w="223" h="66" href="./"/>*/}
 
-            <div className={styles.errorBlock}>
-                <div className={styles.errorMsg}>
-                    <h1>404</h1>
-                    <div className={styles.vl}></div>
-                    <h2>Страница не<br/>найдена</h2>
-                </div>
-                <p>Такой страницы у нас на сайте нет :(<br/>
-                <Link href="/"><a>Вернуться на главную</a></Link></p>
-            </div>
-        </div>
+        {/*    </div>*/}
+
+        {/*    <div className={styles.errorBlock}>*/}
+        {/*        <div className={styles.errorMsg}>*/}
+        {/*            <h1>404</h1>*/}
+        {/*            <div className={styles.vl}></div>*/}
+        {/*            <h2>Страница не<br/>найдена</h2>*/}
+        {/*        </div>*/}
+        {/*        <p>*/}
+        {/*            Такой страницы у нас на сайте нет :(<br/>*/}
+        {/*            /!*<Link href="/"><a>Вернуться на главную</a></Link>*!/*/}
+        {/*        </p>*/}
+        {/*    </div>*/}
+        {/*</div>*/}
         </>
     )
 }

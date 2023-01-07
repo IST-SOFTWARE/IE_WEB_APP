@@ -4,10 +4,14 @@ import {apolloClient} from "../../Apollo/apolloClient";
 import DefaultLandingPage, {inputData, pageBackground} from "../../components/LandingPages/DefaultLandingPage";
 import {GET_LANDING_PAGE_CONTENT, ILandingPage, IPageOfLanding} from "../../Apollo/Queries/landingPage";
 import HelloPage from "../../components/LandingPages/HelloPage/HelloPage";
-import Gallery from "../../components/LandingPages/HelloPage/Gallery/Gallery";
 import ProductDemo from "../../components/LandingPages/ProductDemo/ProductDemo";
 import OurPartnersPage from "../../components/LandingPages/OurPartners/OurPartnersPage";
-
+import PageTracker from "../../components/pageTracker/UI/pageTracker";
+import {getActualPosition, scrollPosition} from "../../components/pageTracker/data/scrollSpy";
+import {useAppDispatch, useAppSelector} from "../../Hooks/hooks";
+import {setActualPosition} from "../../store/slices/pageTrackerSlice";
+import TrackerBody from "../../components/pageTracker/trackerBody";
+import {useRouter} from "next/router";
 
 
 interface ILandingPageCont{
@@ -66,13 +70,33 @@ const Index:FC<ILandingPageCont> =
         return newPageBg;
     }
 
+    const[scrollPos, setScrollPos] = useState<scrollPosition>(null);
+    const dispatch = useAppDispatch();
+    const scrollSpy =
+        useAppSelector(state => state.scrollSpy.scrollSpy)
+
+    const router = useRouter();
+
     useEffect(()=>{
-        const data = getPageData('hello_page');
+        if(scrollPos && scrollPos.percentInterval)
+            dispatch(setActualPosition(scrollPos));
+    },[scrollPos])
 
+    useEffect(()=>{
+        const onScroll = () => {
+            if(scrollSpy)
+                setScrollPos(getActualPosition(window.scrollY + 300, document.body.offsetHeight, scrollSpy))
+        }
 
-        console.log(data);
-    },[landingPage])
+        window.removeEventListener('scroll', onScroll);
+        window.addEventListener('scroll', onScroll, { passive: true });
+        return () => window.removeEventListener('scroll', onScroll);
+    },[scrollSpy])
 
+    useEffect(()=>{
+        console.log(router);
+        dispatch(setActualPosition(0));
+    },[])
 
 
     return (
@@ -82,8 +106,9 @@ const Index:FC<ILandingPageCont> =
                     landingDescription={{
                         title: elem.landing_label[0]?.main_label,
                         subTitle: elem.landing_label[0]?.subtitle,
-                        titleOffset: 80}}
+                        titleOffset: 120}}
                         pageId={elem.page_identifier}
+                        scrollSpyTag={elem.landing_label[0]?.page_type}
                 >
                     <HelloPage page={elem}/>
                 </DefaultLandingPage>
@@ -120,6 +145,7 @@ const Index:FC<ILandingPageCont> =
                                         ])
                                     }
                                     pageId={elem.page_identifier}
+                                    scrollSpyTag={elem.landing_label[0]?.page_type}
                 >
                     <ProductDemo page={elem}/>
                 </DefaultLandingPage>
@@ -156,11 +182,17 @@ const Index:FC<ILandingPageCont> =
                                         ])
                                     }
                                     pageId={elem.page_identifier}
+                                    scrollSpyTag={elem.landing_label[0]?.page_type}
                 >
                     <OurPartnersPage page={elem}/>
                 </DefaultLandingPage>
             ))}
 
+            <TrackerBody>
+                    <PageTracker
+                        state={scrollSpy}
+                    />
+            </TrackerBody>
 
         </>
     )

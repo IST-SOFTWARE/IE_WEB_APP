@@ -28,8 +28,9 @@ const Gallery:FC<IGallery> = (
                 }) => {
 
     const galleryImage = useRef(null);
-    const [actualSlide, setActualSlide] = useState<number>(0);
+    const galleryText = useRef<HTMLParagraphElement>(null)
 
+    const [actualSlide, setActualSlide] = useState<number>(0);
     const[imageUpdated, setImageUpdated] = useState<boolean>(false);
 
 
@@ -62,6 +63,14 @@ const Gallery:FC<IGallery> = (
             delayMS: 250
         })
     },[imageUpdated])
+
+    useEffect(()=>{
+    //       {slides[actualSlide]?.title}
+
+    galleryText.current.innerHTML =
+        slides[actualSlide]?.title;
+
+    },[actualSlide])
 
 
     // useEffect(()=>{
@@ -104,11 +113,11 @@ const Gallery:FC<IGallery> = (
                          ) => {
 
         function hideSide() {
-            obj.current.classList.add(styles.hide);
+            obj.current?.classList.add(styles.hide);
         }
 
         function showSlide() {
-            obj.current.classList.remove(styles.hide);
+            obj.current?.classList.remove(styles.hide);
         }
 
         async function asyncDelay(ms:number){
@@ -139,9 +148,8 @@ const Gallery:FC<IGallery> = (
             <div className={styles.galleryBlock}>
                 <div className={styles.gtBlock}>
                     <div className={styles.textBlock}>
-                        <p>
-                            {slides[actualSlide]?.title}
-                        </p>
+                        {/*GALLERY TEXT*/}
+                        <p ref={galleryText}/>
                     </div>
                     <div className={styles.pointsBlock}>
                         <div className={styles.actionBtn}>

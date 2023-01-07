@@ -9,16 +9,17 @@ import getOurContactsData, {contactsData, GET_OUR_CONTACTS_QUERY, IOurContacts} 
 import {router} from "next/client";
 
 interface FooterData{
-    route: string
+    route: string,
+    height?: number,
 }
 
 const Footer:FC<FooterData> = (
                 {
-                    route
+                    route,
+                    height
                 }) => {
 
     const[footerContent, setFooterContent] = useState<contactsData>(null);
-
     const {loading, data, error} = useQuery<IOurContacts>(GET_OUR_CONTACTS_QUERY, {
             variables: {
                 lang: route
@@ -27,16 +28,16 @@ const Footer:FC<FooterData> = (
     )
 
     useEffect(()=>{
+        document.body.style.paddingBottom =
+            `${height ? height : 440}px`
+    },[])
+
+    useEffect(()=>{
         if(data)
            setFooterContent(
                getOurContactsData(data)
            )
     },[data])
-
-    useEffect(()=>{
-        console.log(footerContent);
-    },[footerContent])
-
 
     return data && footerContent? (
         <>
@@ -96,12 +97,12 @@ const Footer:FC<FooterData> = (
                                     width: "70%"
                                 }}>
                                     <div className={styles.mapBlock}>
-                                        <iframe
-                                            src={footerContent?.addresses[0]?.address_map}
-                                            width="100%"
-                                            height="100%"
-                                            allowFullScreen={false}
-                                        />
+                                        {/*<iframe*/}
+                                        {/*    src={footerContent?.addresses[0]?.address_map}*/}
+                                        {/*    width="100%"*/}
+                                        {/*    height="100%"*/}
+                                        {/*    allowFullScreen={false}*/}
+                                        {/*/>*/}
                                     </div>
                                 </div>
                             </div>

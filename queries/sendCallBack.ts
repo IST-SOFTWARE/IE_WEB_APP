@@ -1,8 +1,36 @@
-import {gql} from "@apollo/client";
+import {gql, OperationVariables} from "@apollo/client";
 
-export interface newCallBack{
-    create_CB_Requests_item:{
-        id: string
+
+const callBack_varsBuilder = (name: string, phone: string, id?: string):OperationVariables => {
+    if(!id){
+        return {
+            "data" : {
+                "status": "draft",
+                "cb_order": [
+                    {
+                        "client_name": `${name}`,
+                        "client_phone": `${phone}`
+                    }
+                ]
+            }
+        }
+    }
+
+    else{
+        return {
+            "id": `${id}`,
+            "data" : {
+                "status": "draft",
+                "cb_order": [
+                    {
+                        "client_name": `${name}`,
+                        "client_phone": `${phone}`
+                    }
+                ]
+            }
+        }
+
+
     }
 }
 
@@ -21,3 +49,5 @@ mutation sendCallBackRequest($data: update_CB_Requests_input!, $id: ID!){
     }
 }
 `
+
+export default callBack_varsBuilder;

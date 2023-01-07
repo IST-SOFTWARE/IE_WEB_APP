@@ -4,6 +4,10 @@ import Image from "next/image";
 import styles from "../../styles/LandingStyles/defaultLanding.module.scss"
 import {ChildNode} from "postcss";
 import useWindowDimensions from "../../Hooks/useWindowsDimensions";
+import {setActualPosition, updatePosition} from "../../store/slices/pageTrackerSlice";
+import {useAppDispatch, useAppSelector} from "../../Hooks/hooks";
+import {createScrollSpyConfig} from "../pageTracker/data/scrollSpy";
+// import {useAppDispatch, useAppSelector} from "../../Hooks/hooks";
 
 
 type LandingDescription = {
@@ -18,6 +22,7 @@ interface LandingInterface{
     pageBackground?: pageBackground,
     backgroundColor?: string,
     pageId: string,
+    scrollSpyTag?: string;
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -65,8 +70,14 @@ const DefaultLandingPage: FC<LandingInterface> =
             children,
             landingDescription,
             pageBackground,
-            pageId
+            pageId,
+            scrollSpyTag
         }) => {
+
+
+
+    const dispatch = useAppDispatch();
+    const scrollSpy = useAppSelector(state => state.scrollSpy.scrollSpy)
 
 // Background item - - - - - - - - - - - - - - - -
     const[windowSize, setWindowSize] = useState<windowSizes>(null);
@@ -85,18 +96,27 @@ const DefaultLandingPage: FC<LandingInterface> =
     const {width, height} = useWindowDimensions();
 
     useEffect(()=>{
-
         setWindowSize({
             height,
             width
         })
     },[width, height])
 
+
+    useEffect(()=>{
+        const newSSConfig =
+            createScrollSpyConfig(
+                defPage.current,
+                window.scrollY,
+                document.body.offsetHeight,
+                scrollSpyTag);
+        dispatch(updatePosition(newSSConfig));
+    },[])
+
     useEffect(()=>{
         if(pageBackground){
             setElemsContent(pageBackground.backgroundItems);
             setBgCrossFilling(pageBackground.backgroundCrossFilling);
-
         }
     },[pageBackground])
 
@@ -193,7 +213,7 @@ const DefaultLandingPage: FC<LandingInterface> =
 
     return (
         <>
-            <div className={styles.defaultLandingPage} id={pageId}>
+            <div className={styles.defaultLandingPage} id={pageId} ref={defPage}>
                 <div style={{
                     position: "absolute",
                     top: "0",

@@ -1,11 +1,11 @@
 import React, {FC, useEffect, useState} from 'react';
 import {IPageOfLanding} from "../../../Apollo/Queries/landingPage";
-import IstButton from "../../UI/ISTButton/IstButton";
 import styles from "../../../styles/LandingStyles/PagesComponents/ProductDemo/ProdDemo.module.scss"
 import getGallery, {IGallery} from "../../GalleryTypes/GalleryTypes";
 import Image from "next/image";
 import Link from "next/link";
-import useWindowDimensions from "../../../Hooks/useWindowsDimensions";
+import CallBackRequest_modal from "../../DefaultModals/callBackRequest_modal";
+import useBaseModal from "../../../Hooks/baseModal/useBaseModal";
 
 interface IPage{
     page: IPageOfLanding;
@@ -17,15 +17,29 @@ const ProductDemo:FC<IPage>= (
     }
 ) => {
 
-    const[galleryContent, setGalleryContent] = useState<IGallery>(null);
-    const {width, height} = useWindowDimensions();
 
+    const[galleryContent, setGalleryContent] = useState<IGallery>(null);
+    const {modalComponent, ModalView} = useBaseModal();
 
     useEffect(()=>{
         if(page){
             setGalleryContent(getGallery(page));
         }
     },[page])
+
+    useEffect(()=>{
+        if(modalComponent){
+            modalComponent.editModal(
+                "Заказать звонок",
+                "Есть вопросы? Оставь " +
+                "заявку, а мы перезвоним!"
+            )
+        }
+    },[modalComponent])
+
+    const handleCB_Request = () =>{
+        modalComponent.switch(true);
+    }
 
     return(
         <>
@@ -80,13 +94,24 @@ const ProductDemo:FC<IPage>= (
                 <div className={styles.helpBlock}>
                     <p>
                         Возникли вопросы?
-
                     </p>
                     <a>
-                        Оставь <span onClick={()=>{}}>заявку</span> и мы перезвоним!
+                        Оставь <span onClick={()=>{handleCB_Request()}}>заявку</span> и мы перезвоним!
                     </a>
                 </div>
             </div>
+
+
+            <ModalView border={false} data={modalComponent}>
+                <CallBackRequest_modal
+                    phone_label={"Телефон"}
+                    name_label={"Имя"}
+                    name_example={"Андрей"}
+                    phone_example={"+7(000)000-00-00"}
+                    modal={modalComponent}
+                />
+            </ModalView>
+
 
         </>
 

@@ -44,24 +44,24 @@ export default function PopUpBase({puState, children, header, paragraph, closer,
                                 styles.PopUpBaseContent
                             }>
 
-                            <div className={styles.PUB_header}>
-                                <h1>
-                                    {header}
-                                </h1>
+                                <div className={styles.PUB_header}>
+                                    <h1>
+                                        {header}
+                                    </h1>
 
-                                <p>{paragraph}</p>
+                                    <p>{paragraph}</p>
 
-                                <button
-                                onClick={(e) => backHider(e)}
-                                >
-                                    <img src="/PU_closer.svg" alt="Close" id="btn_closer"/>
-                                </button>
+                                    <button
+                                    onClick={(e) => backHider(e)}
+                                    >
+                                        <img src="/PU_closer.svg" alt="Close" id="btn_closer"/>
+                                    </button>
 
-                            </div>
+                                </div>
 
-                            <div className={styles.PUB_content}>
-                               {children}
-                            </div>
+                                <div className={styles.PUB_content}>
+                                   {children}
+                                </div>
                         </div>
                     </div>
                 </div>

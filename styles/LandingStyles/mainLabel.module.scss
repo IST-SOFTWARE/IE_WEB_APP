@@ -11,12 +11,12 @@
         color: $def_white !important;
         max-width: 670px;
     }
-}
 
-.label_under{
-    filter: drop-shadow(4px 3px 4px rgba(0, 0, 0, 0.81));
-    position: relative;
-    text-decoration: underline #FFDF93;
-    text-decoration-thickness: 4px;
+    u{
+        filter: drop-shadow(4px 3px 4px rgba(0, 0, 0, 0.81));
+        position: relative;
+        text-decoration: underline #FFDF93;
+        text-decoration-thickness: 4px;
+    }
 }
 

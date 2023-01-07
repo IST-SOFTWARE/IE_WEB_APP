@@ -1,11 +1,11 @@
 import { useState, useEffect, useContext, useRef} from "react";
 
+
 //POLYFILLS FOR OLDER BR
 import {forEach} from "core-js/stable/dom-collections";
 import {replaceAll} from "core-js/stable/string";
 
 import '../styles/global.scss'
-import Header from '../components/Header/Header'
 import Catalog from "../components/Catalog/Catalog";
 
 import NextNProgress from 'nextjs-progressbar'
@@ -20,9 +20,9 @@ import Footer from "../components/Footer/Footer";
 import {ApolloProvider} from "@apollo/client";
 import {apolloClient} from "../Apollo/apolloClient";
 import Loader from "../components/Loader";
-
-
-
+import {Provider} from "react-redux";
+import store from "../store/store";
+import Header from "../components/Header/Header";
 
 export default function MyApp({Component, pageProps}){
 
@@ -41,8 +41,6 @@ export default function MyApp({Component, pageProps}){
 
     const HeaderRef = useRef();
     const router = useRouter();
-
-
 
 
     // GET CATALOG PRODUCTS
@@ -130,28 +128,34 @@ export default function MyApp({Component, pageProps}){
             {/*/>*/}
 
             <ApolloProvider client={apolloClient}>
-            <PageLevelsVisContext.Provider value={{mobilePageLevels, setPageLevelsVis}}>
-            <CatalogContext.Provider value={CatalogValue}>
+            <Provider store={store}>
 
-                <Catalog openState={CatalogToggle}
-                         catalogFilter = {productDemoPageFilter}
-                         HeaderForLoader={HeaderRef.current}/>
-                {/*<Header*/}
-                {/*    ref={HeaderRef}*/}
-                {/*    // HeaderLangChecker={LangChecker}*/}
-                {/*    // content = {HeaderContent}*/}
-                {/*    // lang = {globalLng}*/}
-                {/*    loaderShow = {LoaderShow}*/}
-                {/*/>*/}
+                <Header/>
 
-                <Loader state={loadingState}>
+                {/*<Catalog openState={CatalogToggle}*/}
+                {/*         catalogFilter = {productDemoPageFilter}*/}
+                {/*         HeaderForLoader={HeaderRef.current}/>*/}
+
+                {/*<div style={{*/}
+                {/*    width: "100%",*/}
+                {/*    height: "80px",*/}
+                {/*    position: "absolute",*/}
+                {/*    top:0,*/}
+                {/*    left:0,*/}
+                {/*    background: "#fff",*/}
+                {/*    zIndex: 2,*/}
+                {/*}}>*/}
+                {/*</div>*/}
+
+                {/*<Loader state={loadingState}>*/}
                     <Component {...pageProps} key={router.asPath}/>
-                </Loader>
+                {/*</Loader>*/}
 
-            <Footer className={"footer"} route={router.locale}/>
+                <Footer className={"footer"}
+                        route={router.locale}
+                />
 
-            </CatalogContext.Provider>
-            </PageLevelsVisContext.Provider>
+            </Provider>
             </ApolloProvider>
 
         </>

@@ -1,0 +1,125 @@
+@import "./styles/default_variables";
+@import "./styles/scroll_mixin";
+@import "./styles/scss_mixins";
+
+.baseModalContainer {
+  min-height: 100%;
+  min-width: 100vw;
+  position: fixed;
+  z-index: 20;
+  background: rgba(21, 26, 32, 0.72);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+
+  &:has(.wb_style) {
+    .modalBase:before {
+      display: none;
+    }
+  }
+}
+
+  .modalBase {
+    max-width: 90%;
+    width: fit-content;
+    position: relative;
+    padding: 30px 40px 15px;
+    background-color: $def_page_bg;
+    box-shadow: 0px 0px 7px rgba(0, 0, 0, 0.25);
+    border-radius: 40px;
+
+    @media (max-width: 539.98px){
+      width: 100%;
+      position: relative;
+      padding: 30px 20px;
+      padding-bottom: 15px !important;
+      background: $def_page_bg;
+      box-shadow: 0px 0px 7px rgba(0, 0, 0, 0.25);
+      border-radius: 17px;
+
+      &:before{
+        border-radius: 17px !important;
+        top: -2px;
+        bottom: -2px;
+        left: -2px;
+        right: -2px;
+      }
+
+    }
+
+    .wb_style{
+      padding: 0px !important;
+      padding-top: 30px !important;
+      background: transparent;
+      box-shadow: none;
+    }
+
+
+    &:before {
+      content: "";
+      position: absolute;
+      top: -3px;
+      bottom: -3px;
+      left: -3px;
+      right: -3px;
+      background: $def_light_blue;
+      background: linear-gradient(142deg, rgba(118, 172, 231, 1) 8%, rgba(204, 228, 255, 1) 87%, rgba(253, 240, 210, 0.8) 100%);
+      border-radius: 40px;
+      z-index: -2;
+    }
+
+    .modalHeader {
+      width: 100%;
+      display: flex;
+      margin-bottom: 15px;
+      flex-direction: column;
+      padding-right: 30px;
+
+      h1 {
+        text-align: start;
+        width: 90%;
+        justify-self: center;
+        font-style: normal;
+        font-weight: 500;
+        @include font-size(1.875rem);
+        color: $pure_white;
+
+        margin: 0px;
+
+      }
+
+      p {
+        white-space: normal;
+        color: $def_light_blue;
+        max-width: 70%;
+        font-style: normal;
+        font-weight: 400;
+        @include font-size(1.125rem);
+        margin: 5px 0px;
+        line-height: 1.3rem;
+
+        @media (max-width: 539.98px){
+          max-width: 80%;
+        }
+      }
+
+      button{
+          position: absolute;
+
+          top: 18px;
+          right: 25px;
+
+          background: none;
+          border: none;
+          cursor: pointer;
+
+          width: 17px;
+          height: 17px;
+
+          &:focus{
+            border: none;
+            outline: none;
+          }
+        }
+
+    }
+  }

@@ -4,6 +4,7 @@ import CallBack from "./CallBack";
 import getGallery, {IGallery} from "../../GalleryTypes/GalleryTypes";
 import {IPageOfLanding} from "../../../Apollo/Queries/landingPage";
 import IstButton from "../../UI/ISTButton/IstButton";
+import {useRouter} from "next/router";
 
 interface HelloPage{
     page: IPageOfLanding;
@@ -15,11 +16,13 @@ const HelloPage:FC<HelloPage>= (
     }
 ) => {
 
+    const Router = useRouter();
+
     return(
         <>
             <div className={"col-md-12 col-lg-7 order-lg-0 order-1 d-flex "}>
                 {/*<div className={"d-lg-block w-100 d-none"}>*/}
-                    <CallBack/>
+                    <CallBack locale={Router.locale}/>
                 {/*</div>*/}
                 {/*<div className={"d-lg-none d-flex w-100 h-100 justify-content-start"}>*/}
                 {/*    <IstButton*/}

@@ -1,0 +1,63 @@
+@import "styles/default_variables";
+@import "styles/scss_mixins";
+
+.modal_CB{
+  width: 100%;
+  min-height: 100px;
+  //border: solid 1px red;
+
+  display: flex;
+  flex-direction: column;
+
+  p{
+    color: $pure_white;
+    @include font-size(1.15rem);
+    margin: 0px;
+    font-weight: 500;
+  }
+
+  input[type="text"]{
+    border-radius: 0px 90px 90px 90px;
+    max-height: 47px;
+    @include font-size(1rem);
+    margin-bottom: 10px;
+  }
+
+  button{
+    margin-top: 5px;
+  }
+
+  .contactsBlock{
+    display: flex;
+    margin-top: 15px;
+    padding: 0px 5px;
+
+
+    align-items: flex-end;
+
+    a{
+      color: $def_light_blue !important;
+      text-decoration: underline !important;
+      @include font-size(1.1rem);
+      font-weight: 400;
+    }
+
+    .points{
+      text-decoration: none !important;
+      @include font-size(1rem);
+
+      cursor: pointer;
+      color: $def_light_blue !important;
+      box-shadow: 0px 0px 3px $def_blue_gray;
+
+      padding: 2px 15px;
+      border-radius: 10px;
+      background: $def_dark;
+      //border: solid 1.5px $def_light_blue;
+
+      margin-left: 15px;
+
+    }
+  }
+
+}

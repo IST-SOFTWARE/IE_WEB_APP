@@ -9,7 +9,7 @@ import styles from "../../styles/Header.module.css"
 import { useEffect, useState, forwardRef} from "react"
 
 
-const Header = forwardRef(({HeaderLangChecker, content, lang}, ref) => {
+const OldHeader = forwardRef(({HeaderLangChecker, content, lang}, ref) => {
 
     return(
         <>

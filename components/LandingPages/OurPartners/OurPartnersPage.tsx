@@ -92,7 +92,7 @@ const OurPartnersPage:FC<IOurPartnersPage> = (
                                 и мы перезвоним!
                                 Или можешь связаться с
                                 нами самомтоятельно:</a>
-                            <div className={styles.PartnersJoinButtons}>
+                            <div>
                                 <button className={styles.primaryButton}>
                                     Заказать звонок
                                 </button>
