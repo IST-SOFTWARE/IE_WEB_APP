@@ -1,6 +1,6 @@
 @import "./styles/scss_mixins";
 @import "./styles/default_variables";
-@import "./styles/scroll_mixin";
+@import "../../components/UI/scroll_mixin";
 
 .Footer{
   width: 100%;
@@ -72,11 +72,11 @@
   max-width: 400px;
   min-height: 250px;
   height: 100%;
-  margin-top: 30px;
-  iframe{
-    border-radius: 30px;
-    border: none;
-  }
+  max-height: 300px;
+  margin-top: 15px;
+  border-radius: 30px;
+  overflow: hidden;
+
 }
 
 .ourCompanyBlock{

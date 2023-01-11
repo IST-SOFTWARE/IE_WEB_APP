@@ -12,6 +12,7 @@ import {useAppDispatch, useAppSelector} from "../../Hooks/hooks";
 import {setActualPosition} from "../../store/slices/pageTrackerSlice";
 import TrackerBody from "../../components/pageTracker/trackerBody";
 import {useRouter} from "next/router";
+import FeedBackPage from "../../components/LandingPages/FeedBackPage/FeedBackPage";
 
 
 interface ILandingPageCont{
@@ -185,6 +186,20 @@ const Index:FC<ILandingPageCont> =
                                     scrollSpyTag={elem.landing_label[0]?.page_type}
                 >
                     <OurPartnersPage page={elem}/>
+                </DefaultLandingPage>
+            ))}
+
+            {getPageData("feedback_page")?.map((elem, index) => (
+                <DefaultLandingPage
+                    pageId={elem.page_identifier}
+                    key={`${index}_${elem.page_identifier}`}
+                    scrollSpyTag={elem.landing_label[0]?.page_type}
+                    landingDescription={{
+                        title: elem.landing_label[0]?.main_label,
+                        titleOffset: 80
+                    }}
+                >
+                    <FeedBackPage page={elem}/>
                 </DefaultLandingPage>
             ))}
 

@@ -7,6 +7,8 @@ import {FC, useEffect, useState} from "react";
 import {ApolloError, useQuery} from "@apollo/client";
 import getOurContactsData, {contactsData, GET_OUR_CONTACTS_QUERY, IOurContacts} from "../../Apollo/Queries/landingPages/ourContactsQuery";
 import {router} from "next/client";
+import YandexMap from "./Map/YandexMap";
+// import GisFooterMap from "./Map/GisFooterMap";
 
 interface FooterData{
     route: string,
@@ -103,6 +105,16 @@ const Footer:FC<FooterData> = (
                                         {/*    height="100%"*/}
                                         {/*    allowFullScreen={false}*/}
                                         {/*/>*/}
+
+                                        {/*<GisFooterMap*/}
+                                        {/*    location={footerContent?.addresses[0]?.address_map}*/}
+                                        {/*    zoom={5}*/}
+                                        {/*/>*/}
+
+                                        <YandexMap
+                                            location={footerContent?.addresses[0]?.address_map}
+                                            zoom={10}
+                                        />
                                     </div>
                                 </div>
                             </div>

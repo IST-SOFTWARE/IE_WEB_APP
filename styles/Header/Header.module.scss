@@ -1,5 +1,5 @@
 @import "./styles/default_variables";
-@import "./styles/scroll_mixin";
+@import "../../components/UI/scroll_mixin";
 @import "./styles/scss_mixins";
 @import "./styles/ist_gradient_mixin";
 
@@ -113,7 +113,7 @@
 
     color: $def_dark_gray;
     font-weight: 500;
-    @include font-size(1.2rem);
+    @include font-size(1.1rem);
 
     border: none;
     &:focus{

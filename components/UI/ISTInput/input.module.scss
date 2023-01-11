@@ -1,0 +1,25 @@
+@import "../variables";
+@import "../rfs_mixins";
+
+.inputForm {
+
+  width: 100%;
+  height: max-content;
+
+  input[type="text"] {
+    width: 100%;
+    background: $def_white;
+    border: none;
+
+    font-style: normal;
+    font-weight: normal;
+    font-size: 18px;
+    line-height: 21px;
+    color: $def_dark_gray;
+    padding-left: 22px;
+    margin: 5px auto;
+    transition: 0.3s;
+  }
+
+
+}
