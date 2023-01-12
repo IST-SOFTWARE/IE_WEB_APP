@@ -1,0 +1,21 @@
+@import "./variables";
+
+@mixin gradient_bg(
+  $background: gradient,
+  $border_s: 2px,
+  $border_color: $def_blue_gray,
+  $radius: 15px,
+
+){
+  & {
+    border-radius: $radius;
+    border: solid $border_s $border_color;
+
+    @if $background == gradient{
+      background: linear-gradient(92.51deg, #2C3641 0%, $def_dark 100%);
+    }
+    @else {
+      background: $background
+    }
+  }
+}

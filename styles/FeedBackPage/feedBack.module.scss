@@ -24,3 +24,13 @@
 .field_container{
   margin-top: 12px;
 }
+
+.feedback_btn_container{
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+
+  .feedback_btn{
+    width: 135px;
+  }
+}

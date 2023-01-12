@@ -2,18 +2,19 @@ import React, {CSSProperties, FC, Ref} from 'react';
 import PhoneInput from "react-phone-number-input/input";
 import styles from "./input.module.scss"
 import common_styles from "../common.module.scss"
+import {commonStyles} from "../common";
 
 export enum inputTypesVars {
     any_string = "any_string",
     phone = "phone_num",
 }
 
-export type inputStyles = Pick<CSSProperties, "borderRadius" | "height">
+
 
 const defaultStyles = {
     borderRadius: "89px",
     height: "55px"
-} as inputStyles
+} as commonStyles
 
 interface IIstInput{
     title?: string,
@@ -24,7 +25,7 @@ interface IIstInput{
     outDataSetter: React.Dispatch<string>,
     actualData: string,
 
-    style: inputStyles
+    style: commonStyles
 }
 
 

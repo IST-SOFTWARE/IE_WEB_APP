@@ -3,11 +3,11 @@ import React, {CSSProperties, FC, useState} from 'react';
 import styles from "./textArea.module.scss";
 import common_styles from "../common.module.scss";
 
-import {inputStyles} from "../ISTInput/ISTInput";
+import {commonStyles} from "../common";
 
 
 type textAreaStyles = Pick<CSSProperties, "maxHeight" | "minHeight">
-interface ITextAreaStyles extends inputStyles, textAreaStyles {}
+interface ITextAreaStyles extends commonStyles, textAreaStyles {}
 
 const defaultStyles = {
     borderRadius: "89px",
@@ -21,6 +21,9 @@ interface ITextArea{
     caption?: string,
     placeholder: string,
 
+    outDataSetter: React.Dispatch<string>,
+    actualData: string,
+
     style?: ITextAreaStyles
 }
 
@@ -29,12 +32,13 @@ const IstTextArea:FC<ITextArea> = (
         title,
         caption,
         placeholder,
+        outDataSetter,
+        actualData,
+
 
         style
     }
 ) => {
-
-    const[text, setText] = useState<string>(null);
 
     return(
         <>
@@ -50,7 +54,8 @@ const IstTextArea:FC<ITextArea> = (
 
                 <textarea
                     placeholder={placeholder}
-                    onChange={(e)=> setText(e.target.value)}
+                    onChange={(e)=> outDataSetter(e.target.value)}
+                    value={actualData}
 
                     className={`${common_styles.hover_action} ${common_styles.focus_action}`}
 
@@ -64,9 +69,8 @@ const IstTextArea:FC<ITextArea> = (
                         borderRadius: style?.borderRadius ?? defaultStyles.borderRadius
                     }}
 
-                >
-                    {text}
-                </textarea>
+                />
+
             </div>
         </>
     )

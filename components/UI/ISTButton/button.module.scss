@@ -1,0 +1,79 @@
+@import "../variables";
+@import "../rfs_mixins";
+@import "../background_mixin";
+
+$trans_speed: 0.3s;
+
+.btn{
+  cursor: pointer;
+  outline: none;
+  height: fit-content !important;
+  position: relative;
+
+  display: flex;
+  align-items: center;
+  padding: 5px 10px;
+
+  box-sizing: border-box;
+  width: 100%;
+
+
+  .btn_img{
+    border: solid 1px red;
+    width: 50px;
+  }
+
+  .btn_title{
+    border: solid 1px blue;
+    max-width: 100%;
+    word-wrap: break-word;
+    padding: 0px 5px;
+
+    height: inherit;
+  }
+
+}
+
+.light_th{
+
+  border: solid 3px $def_light_blue;
+  background: transparent;
+
+  color: $pure_white;
+
+  &:focus{
+    border: solid 3px $def_light_blue !important;
+  }
+}
+
+.fill{
+  background: $def_blue;
+  border: none !important;
+
+  &:focus{
+    border: none !important;
+  }
+}
+
+.lf_actions{
+  &{
+    transition: $trans_speed;
+  }
+
+  &:hover, &:focus{
+    box-shadow: 0px 0px 10px $def_dark;
+    transition: $trans_speed;
+  }
+}
+
+.dark_th{
+  @include gradient_bg(gradient);
+  color: $pure_white;
+  font-weight: 700;
+  @include font-size(1rem);
+  line-height: 19px;
+}
+
+
+
+

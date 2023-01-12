@@ -6,6 +6,7 @@ import StyledContentWrapper from "../../UI/styledContentWrapper/StyledContentWra
 import ISTInput, {inputTypesVars} from "../../UI/ISTInput/ISTInput";
 import ISTSelect from "../../UI/ISTSelect/ISTSelect";
 import ISTTextArea from "../../UI/ISTTextArea/ISTTextArea";
+import ISTButtonN from "../../UI/ISTButton/ISTButtonN";
 
 interface IFeedBackPage{
     page: IPageOfLanding
@@ -16,8 +17,10 @@ const FeedBackPage:FC<IFeedBackPage> = (
 
         }) => {
 
-    const[name, setName] = useState<string>(null);
-    const[email, setEmail] = useState<string>(null);
+    const[name, setName] = useState<string>("");
+    const[email, setEmail] = useState<string>("");
+    const[message, setMessage] = useState<string>("");
+
 
     return(
         <>
@@ -124,6 +127,9 @@ const FeedBackPage:FC<IFeedBackPage> = (
                                     placeholder={"Message"}
                                     title={"Your feedback"}
 
+                                    outDataSetter={setMessage}
+                                    actualData={message}
+
                                     style={{
                                         borderRadius: "10px 25px 25px 25px",
                                         height: "130px",
@@ -132,7 +138,17 @@ const FeedBackPage:FC<IFeedBackPage> = (
                                     }}
                                 />
                             </div>
-
+                            <div className={styles.feedback_btn_container}>
+                                <div className={styles.feedback_btn}>
+                                    <ISTButtonN dark={{
+                                        solid: false,
+                                        style: {
+                                            borderRadius: "15px",
+                                            height: "45px"
+                                        }
+                                    }}/>
+                                </div>
+                            </div>
                         </div>
 
                     </StyledContentWrapper>
