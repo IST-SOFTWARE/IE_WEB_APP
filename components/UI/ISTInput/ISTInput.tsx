@@ -1,7 +1,7 @@
 import React, {CSSProperties, FC, Ref} from 'react';
 import PhoneInput from "react-phone-number-input/input";
 import styles from "./input.module.scss"
-import common_styles from "../common.module.scss"
+import common_styles from "../scss/common.module.scss"
 import {commonStyles} from "../common";
 
 export enum inputTypesVars {

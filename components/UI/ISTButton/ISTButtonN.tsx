@@ -1,8 +1,8 @@
-import React, {CSSProperties, FC, useEffect, useRef, useState} from 'react';
+import React, {CSSProperties, FC, HTMLAttributes, useEffect, useRef, useState} from 'react';
 import {commonStyles} from "../common";
 
 import styles from "./button.module.scss"
-import common_styles from "../common.module.scss"
+import common_styles from "../scss/common.module.scss"
 import Image from "next/image";
 
 export enum direction {
@@ -10,14 +10,27 @@ export enum direction {
     rtl = "rtl"
 }
 
-export interface lightTheme{
+type btnWidth = {fillContainer?: boolean}
+interface btnStyles extends commonStyles, btnWidth {}
+
+interface lightTheme{
     fill: boolean,
-    style: commonStyles
+    style: btnStyles,
 }
 
-export interface darkTheme{
-    style: commonStyles,
+interface darkTheme{
     solid: boolean,
+    style: btnStyles,
+}
+
+interface ITitle{
+    id?: string,
+    caption: string,
+}
+
+interface IImage{
+    id?: string,
+    src: string,
 }
 
 const defaultStyles = {
@@ -29,8 +42,8 @@ const defaultStyles = {
 } as lightTheme;
 
 interface btnSelfTheme{
-    title?: string,
-    image?: string,
+    title?: ITitle,
+    image?: IImage,
     direction?: direction,
 
     light?: lightTheme | undefined,
@@ -49,32 +62,71 @@ const IstButtonN:FC<btnSelfTheme> = (
     }
 ) => {
 
-    const[darkTh, setDarkTh] = useState<darkTheme>(null);
-    const[lightTh, setLightTh] = useState<lightTheme>(null);
+
+    const[theme, setTheme] = useState<lightTheme | darkTheme>(null);
+    const[bHeight, setBHeight] = useState<number | string>(10);
 
     const btnRef = useRef<HTMLButtonElement>(null);
+    const titleRef = useRef<HTMLDivElement>(null);
+
 
     const setStyles = (theme: darkTheme | lightTheme) => {
-        btnRef.current.style.minHeight = theme.style.height.toString();
-        btnRef.current.style.borderRadius = theme.style.borderRadius.toString();
+        if(theme?.style) {
+            if(theme.style.height){
+                btnRef.current.style.maxHeight = theme.style.height.toString();
+                setBHeight(theme.style.height);
+            }
+            else {
+                btnRef.current.style.maxHeight = "100%";
+                setBHeight(btnRef.current.offsetHeight * 0.8);
+            }
+
+            if(theme.style.fillContainer) {
+                btnRef.current.style.width = "100%";
+                btnRef.current.style.height = "100%";
+            }
+
+            else
+                btnRef.current.style.width = "fit-content";
+
+
+
+            btnRef.current.style.borderRadius =
+                theme.style.borderRadius ?
+                    theme.style.borderRadius.toString() : "0px";
+        }
+
     }
+
+    function isLightTheme(object: any): object is lightTheme {
+        return 'fill' in object;
+    }
+
+    function isDarkTheme(object: any): object is darkTheme {
+        return 'solid' in object;
+    }
+
 
     useEffect(()=>{
         if(light)
-            setLightTh(light);
+            setTheme(light)
+            // setLightTh(light);
         else if(dark)
-            setDarkTh(dark);
+            setTheme(dark);
+            // setDarkTh(dark);
         else{
             console.warn(`Standard types have been set for the \"${title ?? "No name"}\" button`);
-            setLightTh(defaultStyles);
+            setTheme(defaultStyles);
+            // setLightTh(defaultStyles);
         }
     },[light, dark])
 
+
     useEffect(()=>{
-        if(lightTh){
+        if(theme && isLightTheme(theme)){
             btnRef.current.classList.add(styles.light_th);
 
-            lightTh.fill ?
+            theme.fill ?
                 btnRef.current.classList.add(
                     styles.fill,
                     styles.lf_actions
@@ -83,28 +135,24 @@ const IstButtonN:FC<btnSelfTheme> = (
                     common_styles.hover_action,
                     common_styles.focus_action
                 )
-            setStyles(lightTh);
+            setStyles(theme);
         }
-    },[lightTh])
+    },[theme])
 
     useEffect(()=>{
-        if(darkTh){
-            btnRef.current.classList.add(`${styles.dark_th}`);
-            setStyles(darkTh);
+        if(theme && isDarkTheme(theme)){
+            btnRef.current.classList.add(styles.dark_th)
+            theme.solid ?
+                btnRef.current.classList.add(
+                    styles.dt_solid,
+                    styles.ds_actions
+                )
+                : null
+                btnRef.current.classList.add(`${styles.dark_th}`)
+
+            setStyles(theme);
         }
-    },[darkTh])
-
-    useEffect(()=>{
-
-        const btnHeight = btnRef.current?.offsetHeight;
-        const themeStyle: CSSProperties =
-            darkTh ? darkTh.style : lightTh ? lightTh.style : null;
-
-
-
-        console.log(themeStyle.height);
-
-    },[title, btnRef, darkTh, lightTh])
+    },[theme])
 
     return(
         <>
@@ -112,15 +160,39 @@ const IstButtonN:FC<btnSelfTheme> = (
                 className={styles.btn}
                 ref={btnRef}
             >
-                <div className={styles.btn_img}>
-                    {/*<Image*/}
-                    {/*    src={}*/}
-                    {/*    alt={}*/}
-                    {/*/>*/}
+
+                {image ?
+                    <div className={styles.img_btn}
+                         id={image?.id}
+                         style={{
+                             maxHeight: "100%",
+                             minWidth: !theme?.style?.fillContainer ? bHeight : "unset",
+                         }}
+                    >
+                        <Image
+                            src={image?.src}
+                            alt={`button_${title?.caption}`}
+                            fill={true}
+                            style={{
+                                objectFit: "contain",
+                                objectPosition: "center",
+                                padding: '10px'
+                            }}
+                        />
+                    </div>: null
+                }
+
+
+                <div className={styles.btn_title}
+                     id={title?.id}
+                     ref={titleRef}
+                     style={{
+                         flexGrow: !title ? 0 : 1
+                     }}
+                >
+                    {title?.caption}
                 </div>
-                <div className={styles.btn_title}>
-                    titletitlet itletitl etitletitle
-                </div>
+
             </button>
         </>
     )

@@ -8,6 +8,8 @@ import ISTSelect from "../../UI/ISTSelect/ISTSelect";
 import ISTTextArea from "../../UI/ISTTextArea/ISTTextArea";
 import ISTButtonN from "../../UI/ISTButton/ISTButtonN";
 
+import image from "../../../public/Header/catalog_btn.svg"
+
 interface IFeedBackPage{
     page: IPageOfLanding
 }
@@ -144,9 +146,15 @@ const FeedBackPage:FC<IFeedBackPage> = (
                                         solid: false,
                                         style: {
                                             borderRadius: "15px",
+                                            fillContainer: true,
                                             height: "45px"
                                         }
-                                    }}/>
+                                    }}
+                                    title={{
+                                        caption: "Send feedback",
+                                        id: styles.tstBtn
+                                    }}
+                                    />
                                 </div>
                             </div>
                         </div>

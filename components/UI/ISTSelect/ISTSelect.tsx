@@ -1,6 +1,6 @@
 import React, {CSSProperties, FC, useRef, useState} from 'react';
 import styles from "./select.module.scss"
-import common_styles from "../common.module.scss"
+import common_styles from "../scss/common.module.scss"
 
 import Image from "next/image";
 import selector_img from "../Sources/selector.svg"

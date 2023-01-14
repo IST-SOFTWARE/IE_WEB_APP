@@ -1,4 +1,5 @@
-@import "../../components/UI/scroll_mixin";
+@import "../../components/UI/scss/mixins/scroll_mixin";
+@import "../../components/UI/scss/mixins/rfs_mixins";
 
 .feedBack_container{
   width: 100%;
@@ -32,5 +33,13 @@
 
   .feedback_btn{
     width: 135px;
+    height: 70px;
   }
 }
+
+#tstBtn{
+  @include font-size(1rem);
+  justify-content: center;
+  padding: 0px !important;
+}
+

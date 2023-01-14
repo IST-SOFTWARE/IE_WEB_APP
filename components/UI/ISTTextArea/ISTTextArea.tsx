@@ -1,7 +1,7 @@
 import React, {CSSProperties, FC, useState} from 'react';
 
 import styles from "./textArea.module.scss";
-import common_styles from "../common.module.scss";
+import common_styles from "../scss/common.module.scss";
 
 import {commonStyles} from "../common";
 
