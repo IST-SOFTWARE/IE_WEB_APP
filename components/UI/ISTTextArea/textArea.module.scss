@@ -1,8 +1,10 @@
 @import "../scss/variables";
 @import "../scss/mixins/rfs_mixins";
+@import "../scss/mixins/scroll_mixin";
 
 .area_container{
   width: 100%;
+  position: relative;
 
   textarea{
     padding: 10px 15px;
@@ -13,5 +15,18 @@
     border: none;
 
     color: $def_dark_gray;
+    @include scroll();
+  }
+
+  .length_limiter{
+    position: absolute;
+    background: $pure_white;
+    padding: 5px;
+    border-radius: 10px;
+    bottom: 15px;
+    right: 15px;
+
+    color: $def_blue_gray;
+    @include font-size(0.9rem);
   }
 }

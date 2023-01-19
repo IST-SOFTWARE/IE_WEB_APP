@@ -40,6 +40,16 @@ const IstTextArea:FC<ITextArea> = (
     }
 ) => {
 
+    const[strtingLgth, setStringLgth] = useState<number>(0);
+
+    const handleWrite = (e: HTMLTextAreaElement) => {
+        const lng = e.value.length;
+        if(lng <= 250) {
+            setStringLgth(e.value.length);
+            outDataSetter(e.value);
+        }
+    }
+
     return(
         <>
             <div className={styles.area_container}>
@@ -54,7 +64,7 @@ const IstTextArea:FC<ITextArea> = (
 
                 <textarea
                     placeholder={placeholder}
-                    onChange={(e)=> outDataSetter(e.target.value)}
+                    onChange={(e)=> handleWrite(e.target)}
                     value={actualData}
 
                     className={`${common_styles.hover_action} ${common_styles.focus_action}`}
@@ -70,6 +80,10 @@ const IstTextArea:FC<ITextArea> = (
                     }}
 
                 />
+
+                <div className={styles.length_limiter}>
+                    {strtingLgth}/250
+                </div>
 
             </div>
         </>

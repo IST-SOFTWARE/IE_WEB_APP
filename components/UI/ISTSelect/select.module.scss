@@ -59,6 +59,7 @@ $trans_speed: 0.3s;
 
     position: absolute;
     top: calc(100% + 5px);
+    z-index: 1;
 
     border-radius: 10px;
     background: $def_dark;

@@ -152,6 +152,20 @@ const Index:FC<ILandingPageCont> =
                 </DefaultLandingPage>
             ))}
 
+            {getPageData("feedback_page")?.map((elem, index) => (
+                <DefaultLandingPage
+                    pageId={elem.page_identifier}
+                    key={`${index}_${elem.page_identifier}`}
+                    scrollSpyTag={elem.landing_label[0]?.page_type}
+                    landingDescription={{
+                        title: elem.landing_label[0]?.main_label,
+                        titleOffset: 80
+                    }}
+                >
+                    <FeedBackPage page={elem}/>
+                </DefaultLandingPage>
+            ))}
+
             {getPageData('our_partners')?.map((elem, index) => (
                 <DefaultLandingPage key={`${index}_${elem.page_identifier}`}
                                     landingDescription={{
@@ -186,20 +200,6 @@ const Index:FC<ILandingPageCont> =
                                     scrollSpyTag={elem.landing_label[0]?.page_type}
                 >
                     <OurPartnersPage page={elem}/>
-                </DefaultLandingPage>
-            ))}
-
-            {getPageData("feedback_page")?.map((elem, index) => (
-                <DefaultLandingPage
-                    pageId={elem.page_identifier}
-                    key={`${index}_${elem.page_identifier}`}
-                    scrollSpyTag={elem.landing_label[0]?.page_type}
-                    landingDescription={{
-                        title: elem.landing_label[0]?.main_label,
-                        titleOffset: 80
-                    }}
-                >
-                    <FeedBackPage page={elem}/>
                 </DefaultLandingPage>
             ))}
 

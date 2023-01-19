@@ -1,4 +1,4 @@
-import React, {CSSProperties, FC, Ref} from 'react';
+import React, {CSSProperties, FC, Ref, useEffect, useRef} from 'react';
 import PhoneInput from "react-phone-number-input/input";
 import styles from "./input.module.scss"
 import common_styles from "../scss/common.module.scss"
@@ -33,15 +33,22 @@ const IstInput = React.forwardRef<HTMLInputElement, IIstInput>((
                     props: IIstInput,
                     ref: Ref<HTMLInputElement>
                     ) => {
+
+        const caption_ref = useRef<HTMLDivElement>(null);
+
+        useEffect(()=>{
+            if(caption_ref.current)
+                caption_ref.current.innerHTML = props.inputCaption ?? "";
+        },[props.inputCaption, caption_ref])
+
         return (
             <div className={`${styles.inputForm} afterBlock_ISTInput`}>
                 <div className={common_styles.title}>
                     {props.title}
                 </div>
 
-                <div className={common_styles.caption}>
-                    {props.inputCaption}
-                </div>
+                <div className={common_styles.caption} ref={caption_ref}/>
+
 
                 {props.inputType === inputTypesVars.any_string ? (
                     <input type="text" placeholder={props.placeholder}

@@ -19,6 +19,10 @@ $reaction_size: 60px;
   padding: 20px;
   padding-bottom: 10px !important;
 
+  @media screen and (max-width: 767.98px){
+    min-height: 120px;
+    padding-bottom: 25px !important;
+  }
 
 }
 
@@ -39,7 +43,26 @@ $reaction_size: 60px;
       height: $reaction_size;
       transform: translate(15%, -15%,) rotate(5deg);
       filter: drop-shadow(4px -4px 10px rgba(255, 223, 147, 0.8));
+
+      @media screen and (max-width: 991.98px){
+        filter: drop-shadow(0px 0px 6px rgba(255, 223, 147, 0.8));
+      }
+
+      @media screen and (max-width: 767.98px){
+        width: $reaction_size - 5px;
+        height: $reaction_size - 5px;
+      }
+
     }
+  }
+
+  @media screen and (max-width: 991.98px){
+    flex-direction: column;
+  }
+
+  @media screen and (max-width: 767.98px){
+    flex-direction: row;
+    width: calc(100% - $reaction_size + 20px);
   }
 
 
@@ -53,6 +76,20 @@ $reaction_size: 60px;
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
+
+    @media screen and (max-width: 991.98px){
+      min-height: 30px;
+    }
+
+    @media screen and (max-width: 767.98px){
+      min-height: unset;
+      width: 350px;
+    }
+
+    @media screen and (max-width: 575.98px){
+      @include font-size(1.3rem);
+    }
+
   }
 
   & .category{
@@ -66,6 +103,29 @@ $reaction_size: 60px;
     text-overflow: ellipsis;
 
     white-space: nowrap;
+    margin-top: 4px;
+    margin-left: 10px;
+
+    @media screen and (max-width: 991.98px){
+      min-height: 30px;
+      margin-left: 0px;
+    }
+
+    @media screen and (max-width: 767.98px){
+      min-height: unset;
+      margin-left: 10px;
+    }
+
+    @media screen and (max-width: 575.98px){
+      @include font-size(1.15rem);
+      margin-left: 10px;
+      margin-top: 2.5px !important;
+    }
+
+  }
+
+  @media screen and (max-width: 767.98px){
+    height: 40px;
   }
 
 }
@@ -83,6 +143,18 @@ $reaction_size: 60px;
   color: $pure_white !important;
   @include font-size(1.15rem);
   font-weight: 700;
+
+  @media screen and (max-width: 767.98px){
+    margin-top: 0px !important;
+    line-height: 1.5rem;
+    height: 45px;
+    min-height: 45px;
+  }
+
+  @media screen and (max-width: 991.98px){
+    margin-top: 20px;
+  }
+
 }
 
 .rFull_link{
@@ -96,6 +168,17 @@ $reaction_size: 60px;
     @include font-size(1rem);
     text-decoration: underline !important;
     cursor: pointer;
+  }
+
+  @media screen and (max-width: 767.98px){
+    position: absolute;
+    opacity: 0;
+
+    height: 100%;
+    padding: 0px;
+
+    top: 0px;
+    left: 0px;
   }
 }
 
