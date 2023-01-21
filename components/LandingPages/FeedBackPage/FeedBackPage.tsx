@@ -19,6 +19,7 @@ import RatingSelector, {rating, ratingList} from "./ratingSelector/RatingSelecto
 import {useQuery} from "@apollo/client";
 import {GET_RATING_ITEMS} from "../../../Apollo/Queries/rating";
 import Image from "next/image";
+import useFeedBackModal from "../../../Hooks/baseModal/useFeedbackModal";
 
 interface IFeedBackPage{
     page: IPageOfLanding
@@ -35,7 +36,16 @@ const FeedBackPage:FC<IFeedBackPage> = (
     const[rating, setRating] = useState<rating>(null);
 
     const {data, loading, error} = useQuery<ratingList>(GET_RATING_ITEMS,{});
+    const {modalComponent, ModalView} = useFeedBackModal();
 
+    useEffect(()=>{
+        if(modalComponent){
+            modalComponent.editModal(
+                "All reviews",
+                ""
+            )
+        }
+    },[modalComponent])
 
     return(
         <>
@@ -138,6 +148,8 @@ const FeedBackPage:FC<IFeedBackPage> = (
                             caption: "Show all reviews",
                             id: styles.allReviews_btn
                         }}
+
+                        onClick={(ev)=>{modalComponent.switch(true)}}
 
                     />
                 </div>
@@ -257,6 +269,10 @@ const FeedBackPage:FC<IFeedBackPage> = (
                     </StyledContentWrapper>
                 </div>
             </div>
+
+            <ModalView border={false} data={modalComponent}>
+                ddssdsd
+            </ModalView>
         </>
     )
 }

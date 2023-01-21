@@ -4,7 +4,7 @@ import Image from "next/image";
 import styles from "../../styles/DefaultModals/baseModal.module.scss";
 import {createPortal} from "react-dom";
 
-interface modalView{
+export interface modalView{
     children?: ReactNode,
     border: boolean,
     data: modalStater,

@@ -10,6 +10,7 @@ export default function Document() {
           <body>
                 <div id="PopUpBase"/>
                 <div id="CatalogSpace"/>
+                <div id="FeedBackList"/>
                 <Main />
                 <NextScript />
           </body>

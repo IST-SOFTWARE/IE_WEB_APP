@@ -41,24 +41,32 @@ const defaultStyles = {
     }
 } as lightTheme;
 
-interface btnSelfTheme{
+type btnEvents = Pick<HTMLButtonElement, "onclick">
+
+interface btnSelfTheme {
     title?: ITitle,
     image?: IImage,
     direction?: direction,
 
     light?: lightTheme | undefined,
-    dark?: darkTheme | undefined
+    dark?: darkTheme | undefined,
+
+    onClick?(ev?: React.MouseEvent): any,
 }
 
 
-const IstButtonN:FC<btnSelfTheme> = (
+interface btnComponent extends btnSelfTheme {};
+
+const IstButtonN:FC<btnComponent> = (
     {
         title,
         image,
         direction,
 
         light,
-        dark
+        dark,
+
+        onClick
     }
 ) => {
 
@@ -159,6 +167,8 @@ const IstButtonN:FC<btnSelfTheme> = (
             <button
                 className={styles.btn}
                 ref={btnRef}
+
+                onClick={(event)=>onClick ? onClick(event) : {}}
             >
 
                 {image ?
