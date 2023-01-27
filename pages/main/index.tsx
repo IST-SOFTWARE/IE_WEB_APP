@@ -14,7 +14,6 @@ import TrackerBody from "../../components/pageTracker/trackerBody";
 import {useRouter} from "next/router";
 import FeedBackPage from "../../components/LandingPages/FeedBackPage/FeedBackPage";
 
-
 interface ILandingPageCont{
     landingPage: ILandingPage | null
 }
@@ -72,12 +71,17 @@ const Index:FC<ILandingPageCont> =
     }
 
     const[scrollPos, setScrollPos] = useState<scrollPosition>(null);
+
     const dispatch = useAppDispatch();
+
     const scrollSpy =
         useAppSelector(state => state.scrollSpy.scrollSpy)
+    const modals =
+        useAppSelector(state => state.modals);
 
     const router = useRouter();
 
+    // REDUX. SCROLL SPY
     useEffect(()=>{
         if(scrollPos && scrollPos.percentInterval)
             dispatch(setActualPosition(scrollPos));
@@ -98,6 +102,12 @@ const Index:FC<ILandingPageCont> =
         console.log(router);
         dispatch(setActualPosition(0));
     },[])
+
+
+    //REDUX. MODALS
+    useEffect(()=>{
+        document.body.style.overflow = modals.state ? "hidden" : "unset";
+    },[modals])
 
 
     return (

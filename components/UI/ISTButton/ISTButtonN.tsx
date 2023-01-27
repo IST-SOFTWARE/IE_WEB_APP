@@ -41,7 +41,6 @@ const defaultStyles = {
     }
 } as lightTheme;
 
-type btnEvents = Pick<HTMLButtonElement, "onclick">
 
 interface btnSelfTheme {
     title?: ITitle,

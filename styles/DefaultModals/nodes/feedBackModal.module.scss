@@ -1,5 +1,9 @@
 @import "../../../styles/variables";
 @import "../../../styles/mixins/rfs_mixins";
+@import "../../../styles/mixins/scroll_mixin";
+@import "../../../styles/mixins/ratioBox/ratio-box";
+
+$transition_speed: 0.3s;
 
 .feedback_container{
   min-height: 100%;
@@ -35,12 +39,47 @@
 
   z-index: 22;
   padding: 20px;
+
+  position: relative;
+  transition: $transition_speed;
+
+  @media screen and (max-width: 767.98px) {
+    min-width: calc(100% + 20px);
+    height: 40%;
+    padding: 10px;
+  }
+
+  .feedback_closer{
+    position: absolute;
+    width: 32px;
+    height: 32px;
+
+    border-radius: 100%;
+    background: $def_dark;
+
+    right: -5px;
+    top: -5px;
+
+    cursor: pointer;
+    transition: $transition_speed;
+
+    & > *{
+      opacity: 0.7;
+    }
+
+    &:hover{
+      transition: $transition_speed;
+      box-shadow: -1px -1px 5px $def_dark;
+    }
+
+  }
+
+
 }
 
 .feedback_data_header{
   width: 100%;
   height: 80px;
-  border: solid 1px yellow;
 
   .feedback_title{
     color: $def_white;
@@ -51,31 +90,88 @@
     background: $def_dark;
     border-radius: 15px;
     width: fit-content;
+
+    @media screen and (max-width: 767.98px) {
+      @include font-size(1.2rem);
+      font-weight: 500;
+      padding: 10px 20px;
+    }
+  }
+
+}
+
+.deployed_wrapper{
+  height: 90%;
+  transition: $transition_speed;
+
+  @media screen and (max-width: 767.98px) {
+    height: 85%;
+  }
+
+  .feedback_data {
+    border-radius: 15px;
+
+    .feedback_data_header{
+      height: fit-content;
+      padding-bottom: 15px;
+    }
+
+    .feedback_comments {
+      overflow-y: auto;
+      @include scroll($size: 1px);
+      border-radius: 0px;
+
+    }
+
+  }
+
+  .feedback_more_comments{
+    display: none;
   }
 }
 
 .feedback_data{
   width: 100%;
   height: 100%;
-  border: solid 1px red;
-  border-radius: 0px 0px 20% 20%;
+  border-radius: 0px 0px 30px 30px;
   position: relative;
+  overflow: hidden;
 
 
   .feedback_comments{
-    border: solid 1px cadetblue;
     height: calc(100% - 80px);
     width: 100%;
+    max-width: 100%;
+
+    overflow: hidden;
+
+    .fb_comments_wrapper{
+      columns: 3;
+      width: 100%;
+      padding: 10px;
+      
+      @media screen and (max-width: 991.98px) {
+        columns: 2;
+      }
+
+      @media screen and (max-width: 767.98px) {
+        columns: 1;
+      }
+    }
+
+    .fb_comment_container{
+      height: fit-content;
+      display: inline-block;
+      margin: 10px 5px;
+
+    }
+
   }
-
 }
-
-
 
 .feedback_more_comments{
   width: 100%;
-  height: 80px;
-  border: solid 1px blue;
+  height: 50px;
 
   position: absolute;
   bottom: 0px;
@@ -85,4 +181,11 @@
 
   display: flex;
   justify-content: center;
+  align-items: flex-end;
+
+  .feedback_more_comments_img{
+    cursor: pointer;
+  }
+
 }
+

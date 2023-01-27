@@ -1,9 +1,9 @@
-import React, {FC, useEffect, useState} from 'react';
+import React, {FC, useCallback, useEffect, useState} from 'react';
 import {IPageOfLanding} from "../../../Apollo/Queries/landingPage";
-import ISTComment from "../../UI/ISTComment/ISTComment";
+import ISTComment, {printComments} from "../../UI/ISTComment/ISTComment";
 
 import styles from "../../../styles/FeedBackPage/feedBack.module.scss"
-import selector_styles from "../../../styles/FeedBackPage/RatingSelector/ratingSelector.module.scss"
+import cstm_adaptive_comments from "../../UI/ISTComment/adaptiveForShortened.module.scss"
 
 import StyledContentWrapper from "../../UI/styledContentWrapper/StyledContentWrapper";
 import ISTInput, {inputTypesVars} from "../../UI/ISTInput/ISTInput";
@@ -13,13 +13,28 @@ import ISTButtonN from "../../UI/ISTButton/ISTButtonN";
 
 import megaphone_img from "../../../public/LandingPages/FeedBack/IstComment/megaphone_w_cl.png"
 
-import image from "../../../public/Header/catalog_btn.svg"
 import ISTComponentWrapper from "../../UI/ComponentWrapper/ISTComponentWrapper";
 import RatingSelector, {rating, ratingList} from "./ratingSelector/RatingSelector";
 import {useQuery} from "@apollo/client";
-import {GET_RATING_ITEMS} from "../../../Apollo/Queries/rating";
+import {GET_RATING_ITEMS} from "../../../Apollo/Queries/landingPages/feedbackPage/rating";
 import Image from "next/image";
 import useFeedBackModal from "../../../Hooks/baseModal/useFeedbackModal";
+import {useDispatch, useSelector} from "react-redux";
+import {useAppSelector} from "../../../Hooks/hooks";
+import {toggleModal} from "../../../store/slices/modalStateSlice";
+
+import {
+    GET_FEEDBACK_CATEGORIES, getFB_CategoriesArr,
+    IFeedBackCategories,
+    IFeedBackCategoriesVars
+} from "../../../Apollo/Queries/landingPages/feedbackPage/getFeedbackCategories";
+
+import {
+    GET_FEEDBACK_REVIEWS,
+    getFB_Reviews,
+    IFeedBackReviews, reviewItem
+} from "../../../Apollo/Queries/landingPages/feedbackPage/getFB_Reviews";
+
 
 interface IFeedBackPage{
     page: IPageOfLanding
@@ -29,14 +44,49 @@ const FeedBackPage:FC<IFeedBackPage> = (
         {
 
         }) => {
+    // Local state
+        const[name, setName] = useState<string>("");
+        const[email, setEmail] = useState<string>("");
+        const[message, setMessage] = useState<string>("");
+        const[rating, setRating] = useState<rating>(null);
 
-    const[name, setName] = useState<string>("");
-    const[email, setEmail] = useState<string>("");
-    const[message, setMessage] = useState<string>("");
-    const[rating, setRating] = useState<rating>(null);
+        const[allReviews, setAllReviews] = useState<boolean>(false);
+        const[reviewsDataList, setReviewsDataList] = useState<Array<reviewItem>>(null);
 
-    const {data, loading, error} = useQuery<ratingList>(GET_RATING_ITEMS,{});
-    const {modalComponent, ModalView} = useFeedBackModal();
+        const {modalComponent, ModalView} = useFeedBackModal(reviewsDataList);
+    //
+
+    const modal = useAppSelector(state => state.modals);
+    const dispatch = useDispatch();
+
+    const code:IFeedBackCategoriesVars = {lng_code: "ru-RU"}
+
+    const authToken = process.env.NEXT_PUBLIC_REVIEWS_ACCESS;
+
+    // Queries
+        const FBRatingItems = useQuery<ratingList>(GET_RATING_ITEMS,{});
+
+        const FBCategoryItems =
+            useQuery<IFeedBackCategories>(GET_FEEDBACK_CATEGORIES, {
+                variables: code
+            });
+
+        const FBReviews = useQuery<IFeedBackReviews>(GET_FEEDBACK_REVIEWS, {
+                variables: code,
+                context:{
+                    headers: {authorization: authToken ? `Bearer ${authToken}` : "",}
+                }
+        });
+    //
+
+    useEffect(()=>{
+        if(FBReviews?.data){
+            const commentList = getFB_Reviews(FBReviews.data);
+            setReviewsDataList(commentList);
+        }
+    },[FBReviews])
+
+
 
     useEffect(()=>{
         if(modalComponent){
@@ -47,59 +97,41 @@ const FeedBackPage:FC<IFeedBackPage> = (
         }
     },[modalComponent])
 
+    // Open full comments list
+        const handleAllReviews = () =>{
+            setAllReviews(true);
+            modalComponent.switch(true);
+        }
+
+        useEffect(()=>{
+            dispatch(toggleModal(allReviews));
+        },[allReviews])
+    //
+
+
     return(
         <>
             <div className={"col-12 col-md-5 col-xl-7"}>
                 <div className={styles.feedBack_container}>
 
-                    <ISTComment
-                        name={"John Doe John Doe John Doe"}
-                        rate={"https://res.cloudinary.com/dv9xitsjg/image/upload/v1673194410/Emoji/emoji_stars_eyes_happy_icon_512_qhyoah.png"}
-                        comment={"Lorem ipsum dolor sit amet, consectetur adipiscing elit. In non eros placerat, ornare eros ut, elementum odio Lorem ipsum dolor sit amet, consectetur adipiscing elitIn non eros placerat, ornare eros ut, elementum odio"}
-                        category={"Category name Category name Category name"}
-                        style={{
+                    {/*REVIEWS LIST*/}
+                    {printComments(
+                        reviewsDataList,
+                        "onPage_review",
+                        cstm_adaptive_comments,
+                        styles.fb_review_items_wrapper,
+                        null,
+                        {
                             margin: "10px",
-                            marginBottom: "17px",
-                        }}
-                    />
-
-                    <ISTComment
-                        name={"John Doe John Doe John Doe"}
-                        rate={"https://res.cloudinary.com/dv9xitsjg/image/upload/v1673194410/Emoji/emoji_stars_eyes_happy_icon_512_qhyoah.png"}
-                        comment={"Lorem ipsum dolor sit amet, consectetur adipiscing elit. In non eros placerat, ornare eros ut, elementum odio Lorem ipsum dolor sit amet, consectetur adipiscing elitIn non eros placerat, ornare eros ut, elementum odio"}
-                        category={"Category name Category name Category name"}
-
-                        style={{
-                            margin: "10px",
-                            marginBottom: "17px"
-                        }}
-                    />
-
-                    <ISTComment
-                        name={"John Doe John Doe John Doe"}
-                        rate={"https://res.cloudinary.com/dv9xitsjg/image/upload/v1673194410/Emoji/emoji_stars_eyes_happy_icon_512_qhyoah.png"}
-                        comment={"Lorem ipsum dolor sit amet, consectetur adipiscing elit. In non eros placerat, ornare eros ut, elementum odio Lorem ipsum dolor sit amet, consectetur adipiscing elitIn non eros placerat, ornare eros ut, elementum odio"}
-                        category={"Category name Category name Category name"}
-
-                        style={{
-                            margin: "10px",
-                            marginBottom: "17px"
-                        }}
-                    />
-
-                    <ISTComment
-                        name={"John Doe John Doe John Doe"}
-                        rate={"https://res.cloudinary.com/dv9xitsjg/image/upload/v1673194410/Emoji/emoji_stars_eyes_happy_icon_512_qhyoah.png"}
-                        comment={"Lorem ipsum dolor sit amet, consectetur adipiscing elit. In non eros placerat, ornare eros ut, elementum odio Lorem ipsum dolor sit amet, consectetur adipiscing elitIn non eros placerat, ornare eros ut, elementum odio"}
-                        category={"Category name Category name Category name"}
-
-                        style={{
-                            margin: "10px",
-                            marginBottom: "17px"
-                        }}
-                    />
-
-                    <div className={styles.mob_show_all}>
+                            marginBottom:"17px"
+                        }
+                    )}
+                    {/*---*/}
+                    <div className={styles.mob_show_all}
+                         onClick={()=>{
+                             handleAllReviews();
+                         }}
+                    >
                             <ISTButtonN
                                 dark={{
                                     solid: false,
@@ -113,7 +145,6 @@ const FeedBackPage:FC<IFeedBackPage> = (
                             <div className={styles.mob_show_all_data}>
                                 <div className={styles.sar_caption}>
                                     Show all reviews
-
                                 </div>
 
                                 <div>
@@ -149,7 +180,9 @@ const FeedBackPage:FC<IFeedBackPage> = (
                             id: styles.allReviews_btn
                         }}
 
-                        onClick={(ev)=>{modalComponent.switch(true)}}
+                        onClick={(ev)=>{
+                            handleAllReviews();
+                        }}
 
                     />
                 </div>
@@ -169,6 +202,8 @@ const FeedBackPage:FC<IFeedBackPage> = (
                     >
 
                         <div className={styles.feedback_inputs}>
+
+                            {/*NAME FIELD*/}
                             <div className={styles.field_container}>
                                 <ISTInput
                                     inputType={inputTypesVars.any_string}
@@ -185,6 +220,7 @@ const FeedBackPage:FC<IFeedBackPage> = (
                                 />
                             </div>
 
+                            {/*PHONE FIELD*/}
                             <div className={styles.field_container}>
                                 <ISTInput
                                     inputType={inputTypesVars.phone}
@@ -202,19 +238,14 @@ const FeedBackPage:FC<IFeedBackPage> = (
                                 />
                             </div>
 
+                            {/*CATEGORY SELECTOR*/}
                             <div className={styles.field_container}>
                                 <ISTSelect
                                     title={"Recall category"}
-                                    options={[
-                                    "Here you can leave Here you can leave Here you can leave",
-                                    "2",
-                                    "Here you can leave Here you can leave Here you can leave",
-                                    "2",
-                                    "Here you can leave Here you can leave Here you can leave",
-                                    "2"
-                                ]}/>
+                                    options={getFB_CategoriesArr(FBCategoryItems?.data)}/>
                             </div>
 
+                            {/*MESSAGE FIELD*/}
                             <div className={styles.field_container}>
                                 <ISTTextArea
                                     placeholder={"Message"}
@@ -232,6 +263,7 @@ const FeedBackPage:FC<IFeedBackPage> = (
                                 />
                             </div>
 
+                            {/*SEND FEEDBACK BTN*/}
                             <div className={styles.feedback_bottom_comp}>
                                 <div className={styles.selector_wrapper}>
                                     <ISTComponentWrapper
@@ -239,7 +271,7 @@ const FeedBackPage:FC<IFeedBackPage> = (
                                         wrapperClass={styles.feedback_selector}
                                     >
                                         <RatingSelector
-                                            inputList={data}
+                                            inputList={FBRatingItems?.data}
                                             getCurrent={setRating}
                                         />
                                     </ISTComponentWrapper>
@@ -265,14 +297,15 @@ const FeedBackPage:FC<IFeedBackPage> = (
                             </div>
 
                         </div>
-
                     </StyledContentWrapper>
                 </div>
             </div>
 
-            <ModalView border={false} data={modalComponent}>
-                ddssdsd
-            </ModalView>
+            <ModalView border={false}
+                       data={modalComponent}
+                       currentStateSetter = {setAllReviews}
+            />
+
         </>
     )
 }

@@ -23,6 +23,7 @@ import Loader from "../components/Loader";
 import {Provider} from "react-redux";
 import store from "../store/store";
 import Header from "../components/Header/Header";
+import {useAppSelector} from "../Hooks/hooks";
 
 export default function MyApp({Component, pageProps}){
 
@@ -41,7 +42,6 @@ export default function MyApp({Component, pageProps}){
 
     const HeaderRef = useRef();
     const router = useRouter();
-
 
     // GET CATALOG PRODUCTS
     useEffect(()=>{

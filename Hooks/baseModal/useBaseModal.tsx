@@ -1,23 +1,29 @@
-import React, {FC, ReactNode, useEffect, useState} from 'react';
+import React, {Dispatch, FC, ReactNode, SetStateAction, useEffect, useState} from 'react';
 import {modalStater} from "./modalSetter";
 import Image from "next/image";
 import styles from "../../styles/DefaultModals/baseModal.module.scss";
 import {createPortal} from "react-dom";
 
-export interface modalView{
+interface modalView{
     children?: ReactNode,
     border: boolean,
     data: modalStater,
 }
 
+interface modalBuiltInAction{
+    currentStateSetter?: Dispatch<boolean>
+}
+
+export interface IBaseModalFC extends modalView, modalBuiltInAction {};
+
 const useBaseModal = () => {
 
     const modalComponent = new modalStater();
-
-    const ModalView:FC<modalView> = ({
+    const ModalView:FC<IBaseModalFC> = ({
          children,
          border,
-         data
+         data,
+        currentStateSetter
      }) =>{
 
         const[isBrowser, setIsBrowser] = useState(false);
@@ -42,8 +48,9 @@ const useBaseModal = () => {
                             <h1>{nData?.header}</h1>
                             <p>{nData?.paragraph}</p>
 
-                            <button onClick={() =>
+                            <button onClick={() => {
                                 data.switch(false)
+                                }
                             }>
                                 <Image
                                     src={"/PU_closer.svg"}

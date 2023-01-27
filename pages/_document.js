@@ -7,7 +7,7 @@ export default function Document() {
       <Head>
       <link rel="stylesheet" href="/Bootstrap/bootstrap.min.css"/>
       </Head>
-          <body>
+          <body id={"APP_BODY_WRAPPER"}>
                 <div id="PopUpBase"/>
                 <div id="CatalogSpace"/>
                 <div id="FeedBackList"/>

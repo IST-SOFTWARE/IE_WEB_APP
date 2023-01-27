@@ -15,7 +15,6 @@ export class modalStater{
         this.dataUpdater = dataUpdater;
     }
 
-
     public editModal = (header: string, paragraph: string, chState?: boolean) =>{
         this.header = header;
         this.paragraph = paragraph;

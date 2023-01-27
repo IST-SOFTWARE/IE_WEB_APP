@@ -23,9 +23,10 @@ $transition_speed: 0.3s;
 
 
   .mob_show_all{
+    display: none;
     @media screen and (max-width: 767.98px) {
       min-width: 250px;
-      height: 130px;
+      height: 140px;
       margin-top: 10px;
 
       border-radius: 15px;
@@ -83,7 +84,7 @@ $transition_speed: 0.3s;
    overflow-y: hidden;
    @include scroll($size: 0px);
 
-   & > *{
+   & .fb_review_items_wrapper > * {
      margin-left: 0!important;
      margin-right: 20px !important;
      margin-bottom: 5px !important;

@@ -1,9 +1,11 @@
 import {configureStore} from "@reduxjs/toolkit";
 import scrollSpyReducer from "./slices/pageTrackerSlice";
+import modalReducer from "./slices/modalStateSlice"
 
 const store = configureStore({
     reducer: {
         scrollSpy: scrollSpyReducer,
+        modals: modalReducer,
     },
     middleware:
         getDefaultMiddleware => getDefaultMiddleware(

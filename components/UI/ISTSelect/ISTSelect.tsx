@@ -8,7 +8,7 @@ import selector_img from "../Sources/selector.svg"
 interface ISelect{
     title?: string,
     caption?: string,
-    options: Array<string>
+    options?: Array<string>
 
     style?: customStyles
 }
@@ -24,7 +24,7 @@ const defaultStyles = {
 
 const IstSelect:FC<ISelect> = (
     {
-        options,
+        options = Array<string>(),
         title,
         caption,
 
