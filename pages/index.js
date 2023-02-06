@@ -1,6 +1,6 @@
+import {useISTReviews} from "../components/UI/ISTComment/ISTComment";
 
 export default function Index(){
-
 
     return(
         <>

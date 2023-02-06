@@ -1,33 +1,43 @@
-import React, {Dispatch, FC, ReactNode, SetStateAction, useEffect, useState} from 'react';
+import React, {Dispatch, FC, ReactNode, SetStateAction, useEffect, useMemo, useState} from 'react';
 import {modalStater} from "./modalSetter";
 import Image from "next/image";
-import styles from "../../styles/DefaultModals/baseModal.module.scss";
+import styles from "../../styles/Modals/popUp/puWrapper.module.scss";
 import {createPortal} from "react-dom";
 
 interface modalView{
     children?: ReactNode,
-    border: boolean,
     data: modalStater,
 }
 
-interface modalBuiltInAction{
-    currentStateSetter?: Dispatch<boolean>
+type alignStyle = {
+    vertical?: "end" | "start" | "center",
+    horizontal?: "end" | "start" | "center",
 }
 
-export interface IBaseModalFC extends modalView, modalBuiltInAction {};
+interface IAlignStyle{
+    alignStyle?: alignStyle;
+}
 
-const useBaseModal = () => {
+export interface IBaseModalFC extends modalView, IAlignStyle{};
 
-    const modalComponent = new modalStater();
+const useBaseModal = (
+    bgContainerClass: string,
+    ContainerIdForScrollBlocking?: string,
+) => {
+
+    const modalComponent = useMemo(()=>{
+        return new modalStater();
+    },[]);
+
+
     const ModalView:FC<IBaseModalFC> = ({
-         children,
-         border,
-         data,
-        currentStateSetter
+        children,
+        data,
+        alignStyle
      }) =>{
 
         const[isBrowser, setIsBrowser] = useState(false);
-        const[nData, dataUpdate] = useState<modalStater>(null);
+        const[currentData, dataUpdate] = useState<modalStater>(null);
 
 
         useEffect(()=>{
@@ -38,37 +48,27 @@ const useBaseModal = () => {
             }
         },[])
 
-        const modal = modalComponent.state ? (
+        useEffect(()=>{
+            if(currentData){
+                const pageBody = document.getElementById(ContainerIdForScrollBlocking);
+                if(pageBody && ContainerIdForScrollBlocking)
+                    if(currentData.state)
+                        pageBody.style.overflow = "hidden"
+                    else
+                        pageBody.style.overflow = "auto"
+                else if(ContainerIdForScrollBlocking && pageBody === undefined)
+                    console.warn("Base modal component:\n" +
+                        "The container with the ID you provided was not found")
+            }
+        },[currentData])
+
+
+        const modal = currentData?.state ? (
             <>
-                <div className={`container-fluid ${styles.baseModalContainer}
-                d-flex justify-content-center align-items-center
-            `}>
-                    <div className={`${styles.modalBase} ${border ? styles.wb_style : ""}`}>
-                        <div className={styles.modalHeader}>
-                            <h1>{nData?.header}</h1>
-                            <p>{nData?.paragraph}</p>
-
-                            <button onClick={() => {
-                                data.switch(false)
-                                }
-                            }>
-                                <Image
-                                    src={"/PU_closer.svg"}
-                                    alt={"Closer"}
-                                    fill={true}
-                                    style={{
-                                        objectFit:"contain",
-                                        objectPosition: "center",
-                                    }}
-                                />
-                            </button>
-                        </div>
-
-                        <div>
-                            {nData?.childrenState === false ?
-                                null : children}
-                        </div>
-                    </div>
+                <div className={`container-fluid ${bgContainerClass}
+                    d-flex justify-content-${alignStyle?.horizontal ?? "center"} align-items-${alignStyle?.vertical ?? "center"}
+                `}>
+                    {children}
                 </div>
             </>
         ) : null
@@ -77,7 +77,6 @@ const useBaseModal = () => {
             document.getElementById("PopUpBase"))
             : null;
     }
-
 
     return{
         modalComponent,

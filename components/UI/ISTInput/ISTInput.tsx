@@ -25,7 +25,7 @@ interface IIstInput{
     outDataSetter: React.Dispatch<string>,
     actualData: string,
 
-    style: commonStyles
+    style?: commonStyles
 }
 
 

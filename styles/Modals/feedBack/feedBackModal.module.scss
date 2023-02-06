@@ -1,32 +1,9 @@
-@import "../../../styles/variables";
-@import "../../../styles/mixins/rfs_mixins";
-@import "../../../styles/mixins/scroll_mixin";
-@import "../../../styles/mixins/ratioBox/ratio-box";
+@import "../../variables";
+@import "../../mixins/rfs_mixins";
+@import "../../mixins/scroll_mixin";
+@import "../../mixins/ratioBox/ratio-box";
 
 $transition_speed: 0.3s;
-
-.feedback_container{
-  min-height: 100%;
-  height: 100%;
-  min-width: 100vw;
-  position: fixed;
-  z-index: 20;
-  //background: rgba(21, 26, 32, 0.72);
-  //backdrop-filter: blur(3px);
-  //-webkit-backdrop-filter: blur(3px);
-
-  &:after{
-    content: "";
-
-    position: absolute;
-    width: 100%;
-    height: 75%;
-
-    background: linear-gradient(180deg, rgba(21, 26, 32, 0) 0%, rgba(21, 26, 32, 0.5) 10%, #151A20 100%);
-    bottom: 0;
-    z-index: 21;
-  }
-}
 
 .feedback_data_wrapper{
   width: 90%;
@@ -42,6 +19,7 @@ $transition_speed: 0.3s;
 
   position: relative;
   transition: $transition_speed;
+
 
   @media screen and (max-width: 767.98px) {
     min-width: calc(100% + 20px);
@@ -120,9 +98,59 @@ $transition_speed: 0.3s;
       overflow-y: auto;
       @include scroll($size: 1px);
       border-radius: 0px;
+      padding: 0px 3px;
 
+
+      &.loading_state{
+
+        &:after{
+          content: "";
+          position: absolute;
+          bottom: 0;
+          left:0;
+          width: 40%;
+          height: 10px;
+          background: radial-gradient(53.33% 53.33% at 50% 0, $def_light_blue 0,rgba(0,0,0,0) 100%);
+
+          animation: 0.8s indeterminate_first infinite ease-out;
+        }
+
+        &:before{
+          content: "";
+          position: absolute;
+          bottom: 0;
+          left:0;
+          width: 60%;
+          height: 10px;
+          background: radial-gradient(53.33% 53.33% at 50% 0, $def_blue 0,rgba(0,0,0,0) 100%);
+
+          animation: 0.8s indeterminate_second infinite ease-out;
+        }
+
+        @keyframes indeterminate_first {
+          0% {
+            left: -100%;
+            width: 100%;
+          }
+          100% {
+            left: 100%;
+            width: 10%;
+          }
+        }
+
+        @keyframes indeterminate_second {
+          0% {
+            left: -110%;
+            width: 100%;
+          }
+          100% {
+            left: 100%;
+            width: 10%;
+          }
+        }
+
+      }
     }
-
   }
 
   .feedback_more_comments{
@@ -149,7 +177,7 @@ $transition_speed: 0.3s;
       columns: 3;
       width: 100%;
       padding: 10px;
-      
+      padding-left: 0px !important;
       @media screen and (max-width: 991.98px) {
         columns: 2;
       }
@@ -162,8 +190,8 @@ $transition_speed: 0.3s;
     .fb_comment_container{
       height: fit-content;
       display: inline-block;
-      margin: 10px 5px;
-
+      margin: 10px 0px;
+      width: 100%;
     }
 
   }

@@ -1,6 +1,5 @@
 import React, {FC, useCallback, useEffect, useState} from 'react';
 import {IPageOfLanding} from "../../../Apollo/Queries/landingPage";
-import ISTComment, {printComments} from "../../UI/ISTComment/ISTComment";
 
 import styles from "../../../styles/FeedBackPage/feedBack.module.scss"
 import cstm_adaptive_comments from "../../UI/ISTComment/adaptiveForShortened.module.scss"
@@ -14,31 +13,36 @@ import ISTButtonN from "../../UI/ISTButton/ISTButtonN";
 import megaphone_img from "../../../public/LandingPages/FeedBack/IstComment/megaphone_w_cl.png"
 
 import ISTComponentWrapper from "../../UI/ComponentWrapper/ISTComponentWrapper";
-import RatingSelector, {rating, ratingList} from "./ratingSelector/RatingSelector";
+import RatingSelector, {rating, IRatingList} from "./ratingSelector/RatingSelector";
 import {useQuery} from "@apollo/client";
 import {GET_RATING_ITEMS} from "../../../Apollo/Queries/landingPages/feedbackPage/rating";
 import Image from "next/image";
-import useFeedBackModal from "../../../Hooks/baseModal/useFeedbackModal";
-import {useDispatch, useSelector} from "react-redux";
+import {useDispatch} from "react-redux";
 import {useAppSelector} from "../../../Hooks/hooks";
 import {toggleModal} from "../../../store/slices/modalStateSlice";
 
 import {
     GET_FEEDBACK_CATEGORIES, getFB_CategoriesArr,
-    IFeedBackCategories,
-    IFeedBackCategoriesVars
+    IFeedBackCategories, IFeedBackCategoriesVars,
 } from "../../../Apollo/Queries/landingPages/feedbackPage/getFeedbackCategories";
 
 import {
     GET_FEEDBACK_REVIEWS,
     getFB_Reviews,
-    IFeedBackReviews, reviewItem
+    IFeedBackReviews, IFeedBackReviewsVars, reviewItem
 } from "../../../Apollo/Queries/landingPages/feedbackPage/getFB_Reviews";
+import useBaseModal from "../../../Hooks/baseModal/useBaseModal";
+import FeedBack_modal from "../../DefaultModals/LandingFeedBack/FeedBack_modal";
+import {IQueryPagination} from "../../../Apollo/Queries/common";
+import useISTReviews from "../../UI/ISTComment/hook/useISTReviews";
+import ISTComment from "../../UI/ISTComment/ISTComment";
+
 
 
 interface IFeedBackPage{
     page: IPageOfLanding
 }
+
 
 const FeedBackPage:FC<IFeedBackPage> = (
         {
@@ -50,29 +54,43 @@ const FeedBackPage:FC<IFeedBackPage> = (
         const[message, setMessage] = useState<string>("");
         const[rating, setRating] = useState<rating>(null);
 
-        const[allReviews, setAllReviews] = useState<boolean>(false);
-        const[reviewsDataList, setReviewsDataList] = useState<Array<reviewItem>>(null);
+        const[reviewsDataList, setReviewsDataList] = useState<Array<reviewItem>>([]);
+        const[lilReviewsDataList, setLilReviewsDataList] = useState<Array<reviewItem>>([]);
 
-        const {modalComponent, ModalView} = useFeedBackModal(reviewsDataList);
+        const[findingId, setFindingId] = useState<number | string>(null);
+
+        const[reviewsPagination] = useState<IQueryPagination>({
+            limit: 8,
+            offset: 0
+        });
+
+
+        const {modalComponent, ModalView} = useBaseModal(
+            styles.modal_feedBack_container,
+            "APP_BODY_WRAPPER",
+        );
+
+        const {printComments, desiredReview, desiredEvent} = useISTReviews();
     //
 
-    const modal = useAppSelector(state => state.modals);
-    const dispatch = useDispatch();
-
-    const code:IFeedBackCategoriesVars = {lng_code: "ru-RU"}
-
-    const authToken = process.env.NEXT_PUBLIC_REVIEWS_ACCESS;
 
     // Queries
-        const FBRatingItems = useQuery<ratingList>(GET_RATING_ITEMS,{});
+        const FBRatingItems = useQuery<IRatingList>(GET_RATING_ITEMS,{});
 
         const FBCategoryItems =
-            useQuery<IFeedBackCategories>(GET_FEEDBACK_CATEGORIES, {
-                variables: code
+            useQuery<IFeedBackCategories, IFeedBackCategoriesVars>(GET_FEEDBACK_CATEGORIES, {
+                variables:{
+                    lng_code: "ru-RU",
+                }
             });
 
-        const FBReviews = useQuery<IFeedBackReviews>(GET_FEEDBACK_REVIEWS, {
-                variables: code,
+        const authToken = process.env.NEXT_PUBLIC_REVIEWS_ACCESS;
+        const FBReviews = useQuery<IFeedBackReviews, IFeedBackReviewsVars>(GET_FEEDBACK_REVIEWS, {
+                variables: {
+                    lng_code: "ru-RU",
+                    limit: reviewsPagination.limit,
+                    offset: reviewsPagination.offset,
+                },
                 context:{
                     headers: {authorization: authToken ? `Bearer ${authToken}` : "",}
                 }
@@ -82,10 +100,20 @@ const FeedBackPage:FC<IFeedBackPage> = (
     useEffect(()=>{
         if(FBReviews?.data){
             const commentList = getFB_Reviews(FBReviews.data);
-            setReviewsDataList(commentList);
+            if(reviewsDataList.length < reviewsPagination.limit)
+                setReviewsDataList(
+                    current => [...reviewsDataList, ...commentList]
+                );
         }
-    },[FBReviews])
+    },[FBReviews, reviewsPagination])
 
+
+    // useEffect(()=>{
+    //     if(reviewsDataList){
+    //         const nList = reviewsDataList.pop();
+    //         setLilReviewsDataList(current => [...lilReviewsDataList, nList]);
+    //     }
+    // },[reviewsDataList])
 
 
     useEffect(()=>{
@@ -99,14 +127,16 @@ const FeedBackPage:FC<IFeedBackPage> = (
 
     // Open full comments list
         const handleAllReviews = () =>{
-            setAllReviews(true);
+            setFindingId(null);
             modalComponent.switch(true);
         }
-
-        useEffect(()=>{
-            dispatch(toggleModal(allReviews));
-        },[allReviews])
     //
+
+    desiredEvent.event = function(){
+        modalComponent.switch(true);
+        setFindingId(desiredReview.getId());
+    }
+
 
 
     return(
@@ -115,17 +145,18 @@ const FeedBackPage:FC<IFeedBackPage> = (
                 <div className={styles.feedBack_container}>
 
                     {/*REVIEWS LIST*/}
-                    {printComments(
-                        reviewsDataList,
-                        "onPage_review",
-                        cstm_adaptive_comments,
-                        styles.fb_review_items_wrapper,
-                        null,
-                        {
+
+                    {printComments({
+                        data: reviewsDataList,
+                        uniqueKeyDesignation: "onPage_review",
+                        customAdaptiveStyles: cstm_adaptive_comments,
+                        listWrapperClassName: styles.fb_review_items_wrapper,
+                        componentInnerStyles: {
                             margin: "10px",
                             marginBottom:"17px"
                         }
-                    )}
+                    })}
+
                     {/*---*/}
                     <div className={styles.mob_show_all}
                          onClick={()=>{
@@ -301,10 +332,24 @@ const FeedBackPage:FC<IFeedBackPage> = (
                 </div>
             </div>
 
-            <ModalView border={false}
-                       data={modalComponent}
-                       currentStateSetter = {setAllReviews}
-            />
+            <ModalView data={modalComponent}
+                alignStyle={{
+                    vertical: "end"
+                }}
+            >
+                <FeedBack_modal
+                    puCloser={()=>
+                        {
+                            modalComponent.switch(false)
+                        }
+                    }
+                    initialList={reviewsDataList}
+                    pagination={reviewsPagination}
+                    query={FBReviews}
+                    header={modalComponent.header}
+                    findingId={findingId}
+                />
+            </ModalView>
 
         </>
     )

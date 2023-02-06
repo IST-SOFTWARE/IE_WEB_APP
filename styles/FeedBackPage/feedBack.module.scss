@@ -3,6 +3,26 @@
 
 $transition_speed: 0.3s;
 
+.modal_feedBack_container{
+  min-height: 100%;
+  height: 100%;
+  min-width: 100vw;
+  position: fixed;
+  z-index: 20;
+
+  &:after{
+    content: "";
+
+    position: absolute;
+    width: 100%;
+    height: 75%;
+
+    background: linear-gradient(180deg, rgba(21, 26, 32, 0) 0%, rgba(21, 26, 32, 0.5) 10%, #151A20 100%);
+    bottom: 0;
+    z-index: 21;
+  }
+}
+
 .feedBack_container{
   width: calc(100% - (100vw / 10));
   //width: 100%;
@@ -84,6 +104,10 @@ $transition_speed: 0.3s;
    overflow-y: hidden;
    @include scroll($size: 0px);
 
+   & .fb_review_items_wrapper{
+     display: flex;
+     flex-direction: row;
+   }
    & .fb_review_items_wrapper > * {
      margin-left: 0!important;
      margin-right: 20px !important;

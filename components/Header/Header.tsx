@@ -4,10 +4,12 @@ import Image from "next/image";
 
 
 interface Header{
-
+    children: React.ReactNode
 }
 
-const Header:FC<Header> = ({}) => {
+const Header:FC<Header> = ({
+    children
+                           }) => {
     return(
         <div className={styles.headerCont}>
             <div className={'container-fluid header-adaptive'}>
@@ -107,8 +109,19 @@ const Header:FC<Header> = ({}) => {
                                 </div>
                                 <span>Контакты</span>
                             </button>
+
+                            <div
+                                // className={styles.children_block}
+                                style={{
+                                    position: "absolute",
+                                    display: "none"
+                                }}
+                            >
+                                {children}
+                            </div>
                         </div>
                     </div>
+
                 </div>
             </div>
         </div>

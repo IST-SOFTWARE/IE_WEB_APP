@@ -1,5 +1,6 @@
 import {gql} from "@apollo/client";
 import {category} from "./common";
+import {ILangCodeQuery} from "../../common";
 
 export interface IFeedBackCategories{
     categories: Array<category>,

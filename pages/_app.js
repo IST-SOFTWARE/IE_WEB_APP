@@ -6,13 +6,9 @@ import {forEach} from "core-js/stable/dom-collections";
 import {replaceAll} from "core-js/stable/string";
 
 import '../styles/global.scss'
-import Catalog from "../components/Catalog/Catalog";
-
 import NextNProgress from 'nextjs-progressbar'
 import Head from 'next/head'
-import CatalogContext from "../components/Context/CatalogContext"
-import PageLevelsVisContext from "../components/Context/PageLevelsVisContext";
-import {getProducts} from "../queries/getProducts"
+
 
 import { useRouter, Router} from 'next/router'
 import Footer from "../components/Footer/Footer";
@@ -20,72 +16,15 @@ import Footer from "../components/Footer/Footer";
 import {ApolloProvider} from "@apollo/client";
 import {apolloClient} from "../Apollo/apolloClient";
 import Loader from "../components/Loader";
-import {Provider} from "react-redux";
+import {Provider, useDispatch} from "react-redux";
 import store from "../store/store";
 import Header from "../components/Header/Header";
-import {useAppSelector} from "../Hooks/hooks";
+import RegionHandler from "../components/Header/Additional/regionHandler";
 
 export default function MyApp({Component, pageProps}){
 
-    // FOR SHOW/HIDE PAGE LEVELS IN MOBILE
-    const[mobilePageLevels, setPageLevelsVis] = useState(true);
 
-    const[CatalogProducts, setCatalogProducts] = useState();
-    const[CatalogToggle, setCatalog] = useState(false);
-
-    const[LoaderShow, setLoaderShow] = useState(false);
-    const[ProductSearch, setProductSearch] = useState({
-        s: ''
-    })
-
-    const[productDemoPageFilter, setProductDemoPageFilter] = useState(null);
-
-    const HeaderRef = useRef();
     const router = useRouter();
-
-    // GET CATALOG PRODUCTS
-    useEffect(()=>{
-        async function ProdLoad(){
-            const response = await getProducts();
-            setCatalogProducts(response);
-            // console.log(response);
-        }
-
-        if(!CatalogProducts){
-            ProdLoad();
-        }
-    },[]);
-    
-
-    //CatalogContext VALUES
-    const CatalogValue = {
-            CatalogToggle,
-            setCatalog,
-
-            ProductSearch,
-            setProductSearch,
-
-            CatalogProducts,
-
-            setProductDemoPageFilter
-    }
-
-
-    useEffect(()=>{
-        setPageLevelsVis(CatalogToggle);
-    },[CatalogToggle]);
-
-
-    useEffect(()=>{
-        const ScrollSpaceToggle = document.body;
-        CatalogToggle ? ScrollSpaceToggle.style.overflowY = "hidden" :  ScrollSpaceToggle.style.overflowY = "auto"
-    },[CatalogToggle])
-
-    useEffect(()=>{
-        setCatalog(false);
-    },[Component, pageProps])
-
-
     const[loadingState, setLoadingState] = useState(true);
 
     useEffect(() => {
@@ -116,7 +55,6 @@ export default function MyApp({Component, pageProps}){
                 <link rel="preconnect" href="https://fonts.googleapis.com"/>
                 <link rel="preconnect" href="https://fonts.gstatic.com"/>
                 <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet"/>
-
             </Head>
 
             {/*<NextNProgress*/}
@@ -129,32 +67,13 @@ export default function MyApp({Component, pageProps}){
 
             <ApolloProvider client={apolloClient}>
             <Provider store={store}>
-
-                <Header/>
-
-                {/*<Catalog openState={CatalogToggle}*/}
-                {/*         catalogFilter = {productDemoPageFilter}*/}
-                {/*         HeaderForLoader={HeaderRef.current}/>*/}
-
-                {/*<div style={{*/}
-                {/*    width: "100%",*/}
-                {/*    height: "80px",*/}
-                {/*    position: "absolute",*/}
-                {/*    top:0,*/}
-                {/*    left:0,*/}
-                {/*    background: "#fff",*/}
-                {/*    zIndex: 2,*/}
-                {/*}}>*/}
-                {/*</div>*/}
-
-                {/*<Loader state={loadingState}>*/}
+                <Header>
+                    <RegionHandler baseRegion={router.locale}/>
+                </Header>
                     <Component {...pageProps} key={router.asPath}/>
-                {/*</Loader>*/}
-
                 <Footer className={"footer"}
                         route={router.locale}
                 />
-
             </Provider>
             </ApolloProvider>
 

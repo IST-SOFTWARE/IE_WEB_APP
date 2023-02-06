@@ -1,27 +1,25 @@
-import React, {CSSProperties, FC} from 'react';
+import React, {CSSProperties, FC, ForwardedRef, useEffect, useState} from 'react';
 import styles from "./ISTComment.module.scss"
 import Image from "next/image";
 import {cstmStyles} from "../common";
-import {reviewItem} from "../../../Apollo/Queries/landingPages/feedbackPage/getFB_Reviews";
 
-
-type styleProps = Pick<CSSProperties,
+export type styleProps = Pick<CSSProperties,
     "margin" | "marginRight" | "marginLeft" | "marginTop" | "marginBottom">
 
 
-
-
-interface ISTComment{
+interface ISTComment {
     name: string,
     rate: string,
     comment: string,
     category: string,
 
     customAdaptiveStyles?: cstmStyles,
-
     style?: styleProps;
-}
 
+    desiredRef?: ForwardedRef<HTMLDivElement>
+    isDesired?: boolean;
+    event?: (...props) => any;
+}
 
 
 const ISTComment:FC<ISTComment> = (
@@ -32,12 +30,17 @@ const ISTComment:FC<ISTComment> = (
         category,
         style,
         customAdaptiveStyles,
+        desiredRef,
+        isDesired,
+        event
     }) => {
+
 
     return(
         <>
-            <div className={`${styles.comment_container} ${customAdaptiveStyles?.comment_container}`}
+            <div className={`${styles.comment_container} ${customAdaptiveStyles?.comment_container} ${isDesired ? styles.desired : ""}`}
                 style={style}
+                 ref={isDesired ? desiredRef : null}
             >
                 <div className={`${styles.comment_header} ${customAdaptiveStyles?.comment_header}`}>
                     <div className={`${styles.name} ${customAdaptiveStyles?.name}`}>{name}</div>
@@ -58,58 +61,40 @@ const ISTComment:FC<ISTComment> = (
                 </div>
 
                 <div className={`${styles.rFull_link} ${customAdaptiveStyles?.rFull_link}`}>
-                    <a>Read full</a>
+                    <a onClick={() => event ? event() : {}}>Read full</a>
                 </div>
             </div>
         </>
+
+        // <>
+        //     <div className={newItemStyles.comment_container}
+        //          style={style}
+        //     >
+        //         <div className={newItemStyles.comment_header}>
+        //             <div className={newItemStyles.name}>{name}</div>
+        //             <div className={newItemStyles.category}>{category}</div>
+        //             <div className={newItemStyles.rate_container}>
+        //                 <div className={newItemStyles.comment_rate}>
+        //                     <Image
+        //                         src={rate}
+        //                         alt={"FeedBack_Reaction_image"}
+        //                         fill={true}
+        //                     />
+        //                 </div>
+        //             </div>
+        //         </div>
+        //
+        //         <div className={newItemStyles.comment}>
+        //             {comment}
+        //         </div>
+        //
+        //         <div className={newItemStyles.rFull_link}>
+        //             <a onClick={() => event ? event() : {}}>Read full</a>
+        //         </div>
+        //     </div>
+        // </>
     )
 }
 
-// Print all comments
-
-export function printComments(
-        data: Array<reviewItem>,
-        uniqueKeyDesignation: string,
-        customAdaptiveStyles?: cstmStyles,
-        listWrapperClassName?: string,
-        everyItemWrapperClassName?: string,
-        componentInnerStyles?: styleProps
-){
-    function getOutComment(el:reviewItem, i:number){
-        return(
-            <ISTComment
-                key={`fb_page_review_item_${i}_${uniqueKeyDesignation}`}
-                name={el?.name ?? "John Doe"}
-                rate={el?.rating_src ?? ""}
-
-                comment={el?.message ?? "Lorem ipsum dolor sit amet, " +
-                    "consectetur adipiscing elit. Nullam elementum ac " +
-                    "nunc ultricies luctus. Aenean nec tempor justo. "
-                }
-
-                category={el?.category ?? "Category get err"}
-                style={componentInnerStyles ?? {}}
-                customAdaptiveStyles={customAdaptiveStyles ?? null}
-            />
-        )
-    }
-
-    return(
-        <div className={`${listWrapperClassName ?? ""}`}>
-            {data?.map((el, i)=>{
-               if(!everyItemWrapperClassName)
-                   return(getOutComment(el, i))
-               else
-                   return(
-                       <div className={everyItemWrapperClassName}>
-                           {getOutComment(el,i)}
-                       </div>
-                   )
-            })}
-        </div>
-    )
-}
-
-//
 
 export default ISTComment;

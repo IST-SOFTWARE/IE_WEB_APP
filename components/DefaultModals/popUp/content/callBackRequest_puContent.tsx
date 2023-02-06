@@ -1,13 +1,13 @@
 import React, {FC, useEffect, useRef, useState} from 'react';
-import styles from "../../styles/DefaultModals/nodes/CB_Request.module.scss";
+import styles from "../../../../styles/Modals/nodes/CB_Request.module.scss";
 import {ApolloClient, NormalizedCacheObject, useQuery} from "@apollo/client";
-import ISTInput, {inputTypesVars} from "../UI/ISTInput/ISTInput";
-import IstButton from "../UI/ISTButton/IstButton";
+import ISTInput, {inputTypesVars} from "../../../UI/ISTInput/ISTInput";
+import IstButton from "../../../UI/ISTButton/IstButton";
 import { useRouter } from 'next/router'
-import {GET_OUR_CONTACTS_QUERY, IOurContacts} from "../../Apollo/Queries/landingPages/ourContactsQuery";
-import useCallRequest from "../../Hooks/useCallRequest";
-import {apolloClient} from "../../Apollo/apolloClient";
-import {modalStater} from "../../Hooks/baseModal/modalSetter";
+import {GET_OUR_CONTACTS_QUERY, IOurContacts} from "../../../../Apollo/Queries/landingPages/ourContactsQuery";
+import useCallRequest from "../../../../Hooks/useCallRequest";
+import {apolloClient} from "../../../../Apollo/apolloClient";
+import {modalStater} from "../../../../Hooks/baseModal/modalSetter";
 
 interface ICB_modal{
     name_label: string,
@@ -19,7 +19,7 @@ interface ICB_modal{
     modal: modalStater;
 }
 
-const CallBackRequest_modal:FC<ICB_modal> = ({
+const CallBackRequest_puContent:FC<ICB_modal> = ({
     name_label,
     phone_label,
     phone_example,
@@ -130,4 +130,4 @@ const CallBackRequest_modal:FC<ICB_modal> = ({
     )
 }
 
-export default CallBackRequest_modal;
+export default CallBackRequest_puContent;

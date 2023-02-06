@@ -1,6 +1,6 @@
-@import "../variables";
-@import "../../components/UI/scss/mixins/scroll_mixin";
-@import "./styles/scss_mixins";
+@import "../../variables";
+@import "../../../components/UI/scss/mixins/scroll_mixin";
+@import "../../scss_mixins";
 
 .baseModalContainer {
   min-height: 100%;

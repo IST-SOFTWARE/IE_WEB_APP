@@ -1,4 +1,4 @@
-import styles from "../../../styles/UI/IstButton.module.scss"
+import styles from "../../../styles/UI_addons/IstButton.module.scss"
 import React, {FC, useEffect, useRef, useState} from "react";
 import {CSSProperties} from "react";
 import {SetStateAction} from "react";

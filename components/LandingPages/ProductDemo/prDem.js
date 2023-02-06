@@ -11,8 +11,8 @@
 //
 // import LabelLoader from "../../ModalComponents/LabelLoader";
 // import ComponentLoader from "../../ComponentLoader";
-// import CallRequestSenderModal from "../../DefaultModals/callRequestSenderModal";
-// import CallRequestMessageModal from "../../DefaultModals/callRequestMessageModal";
+// import CallRequestSenderModal from "../../Modals/callRequestSenderModal";
+// import CallRequestMessageModal from "../../Modals/callRequestMessageModal";
 //
 // import CatalogContext from "../../Context/CatalogContext";
 //
@@ -21,7 +21,7 @@
 //     SetEscalator_BP,
 //     SetElevator_BP
 // } from "../../Catalog/Reducer/boilerplates";
-// import ContactsModal from "../../DefaultModals/contactsModal";
+// import ContactsModal from "../../Modals/contactsModal";
 //
 // export default function PrDem({PDLangChecker, content, lang, api_cont, callBack_api}){
 //

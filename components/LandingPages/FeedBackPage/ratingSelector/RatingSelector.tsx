@@ -5,7 +5,7 @@ import moreEmoji from "../../../../public/Components/RatingSeector/more.svg"
 import closerImg from "../../../../public/Components/RatingSeector/closer.svg"
 import {element} from "prop-types";
 
-export interface ratingList{
+export interface IRatingList {
     rating?: Array<rating>;
 }
 
@@ -20,7 +20,7 @@ type selectedStatus = {
 }
 
 interface selector{
-    inputList: ratingList,
+    inputList: IRatingList,
     getCurrent?: React.Dispatch<rating>
 }
 
