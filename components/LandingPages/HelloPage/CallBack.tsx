@@ -1,5 +1,5 @@
-import * as styles from "../../../styles/LandingStyles/PagesComponents/HelloPage/callBack.module.scss"
-import {FC, forwardRef, useEffect, useRef, useState} from "react";
+import styles from "../../../styles/LandingStyles/PagesComponents/HelloPage/callBack.module.scss"
+import {FC, useEffect, useRef, useState} from "react";
 import ISTInput, {inputTypesVars} from "../../UI/ISTInput/ISTInput";
 import IstButton from "../../UI/ISTButton/IstButton";
 import getOurContactsData, {
@@ -33,7 +33,7 @@ const CallBack:FC<CallBack> = ({
     const nameRef = useRef(null);
     const phoneRef = useRef(null);
 
-    const {modalComponent, ModalView} = useBaseModal();
+    // const {modalComponent, ModalView} = useBaseModal();
 
     const{errors, newData, send} = useCallRequest(
 
@@ -58,24 +58,24 @@ const CallBack:FC<CallBack> = ({
         }
     },[data])
 
-    useEffect(()=> {
-        console.log(newData, errors);
-        if(newData){
-            modalComponent.editModal(
-                `Спасибо, ${client_name}!`,
-                "Мы скоро свяжемся с вами :D"
-                )
-            modalComponent.switch(true);
-        }
-        if(errors){
-            modalComponent.editModal(
-                "Что-то пошло не так :(",
-                "Перезагрузите страницу " +
-                "и попробуйте еще раз"
-            )
-            modalComponent.switch(true);
-        }
-    },[newData, errors]);
+    // useEffect(()=> {
+    //     console.log(newData, errors);
+    //     if(newData){
+    //         modalComponent.editModal(
+    //             `Спасибо, ${client_name}!`,
+    //             "Мы скоро свяжемся с вами :D"
+    //             )
+    //         modalComponent.switch(true);
+    //     }
+    //     if(errors){
+    //         modalComponent.editModal(
+    //             "Что-то пошло не так :(",
+    //             "Перезагрузите страницу " +
+    //             "и попробуйте еще раз"
+    //         )
+    //         modalComponent.switch(true);
+    //     }
+    // },[newData, errors]);
 
     const sendCallBack = () => {
         send();
@@ -139,10 +139,10 @@ const CallBack:FC<CallBack> = ({
                 </p>
             </div>
 
-            <ModalView
-                data={modalComponent}
-                border={false}
-            />
+            {/*<ModalView*/}
+            {/*    data={modalComponent}*/}
+            {/*    border={false}*/}
+            {/*/>*/}
 
         </>
         )
