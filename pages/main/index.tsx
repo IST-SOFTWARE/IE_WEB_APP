@@ -2,7 +2,7 @@ import React, {FC, useEffect, useState} from 'react';
 
 import {apolloClient} from "../../Apollo/apolloClient";
 import DefaultLandingPage, {inputData, pageBackground} from "../../components/LandingPages/DefaultLandingPage";
-import {GET_LANDING_PAGE_CONTENT, ILandingPage, IPageOfLanding} from "../../Apollo/Queries/landingPage";
+import {GET_LANDING_PAGE_CONTENT, ILandingPage, IPageOfLanding} from "../../queries/landingPage";
 import HelloPage from "../../components/LandingPages/HelloPage/HelloPage";
 import ProductDemo from "../../components/LandingPages/ProductDemo/ProductDemo";
 import OurPartnersPage from "../../components/LandingPages/OurPartners/OurPartnersPage";
@@ -73,11 +73,9 @@ const Index:FC<ILandingPageCont> =
     const[scrollPos, setScrollPos] = useState<scrollPosition>(null);
 
     const dispatch = useAppDispatch();
-
     const scrollSpy =
         useAppSelector(state => state.scrollSpy.scrollSpy)
-    const modals =
-        useAppSelector(state => state.modals);
+
 
     const router = useRouter();
 
@@ -102,13 +100,6 @@ const Index:FC<ILandingPageCont> =
         console.log(router);
         dispatch(setActualPosition(0));
     },[])
-
-
-    //REDUX. MODALS
-    useEffect(()=>{
-        document.body.style.overflow = modals.state ? "hidden" : "unset";
-    },[modals])
-
 
     return (
         <>

@@ -2,69 +2,37 @@
 @import "../../../components/UI/scss/mixins/scroll_mixin";
 @import "../../scss_mixins";
 
-.baseModalContainer {
-  min-height: 100%;
-  min-width: 100vw;
-  position: fixed;
-  z-index: 20;
-  background: rgba(21, 26, 32, 0.72);
-  backdrop-filter: blur(3px);
-  -webkit-backdrop-filter: blur(3px);
+.default_pu_bg{
+  position: absolute;
+  width: 100%;
+  height: 100%;
 
-  &:has(.wb_style) {
-    .modalBase:before {
-      display: none;
-    }
-  }
+  background-color: rgba(21, 26, 32, 0.72);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  top: 0;
+  left: 0;
+
+  z-index: inherit;
 }
 
-  .modalBase {
-    max-width: 90%;
+.modalBase {
+    max-width: 100%;
     width: fit-content;
     position: relative;
-    padding: 30px 40px 15px;
+    padding: 35px 45px 20px;
     background-color: $def_page_bg;
-    box-shadow: 0px 0px 7px rgba(0, 0, 0, 0.25);
+    box-shadow: 0px 0px 7px $def_blue;
     border-radius: 40px;
+    z-index: inherit;
+
 
     @media (max-width: 539.98px){
-      width: 100%;
+      width: 95%;
       position: relative;
       padding: 30px 20px;
       padding-bottom: 15px !important;
-      background: $def_page_bg;
-      box-shadow: 0px 0px 7px rgba(0, 0, 0, 0.25);
       border-radius: 17px;
-
-      &:before{
-        border-radius: 17px !important;
-        top: -2px;
-        bottom: -2px;
-        left: -2px;
-        right: -2px;
-      }
-
-    }
-
-    .wb_style{
-      padding: 0px !important;
-      padding-top: 30px !important;
-      background: transparent;
-      box-shadow: none;
-    }
-
-
-    &:before {
-      content: "";
-      position: absolute;
-      top: -3px;
-      bottom: -3px;
-      left: -3px;
-      right: -3px;
-      background: $def_light_blue;
-      background: linear-gradient(142deg, rgba(118, 172, 231, 1) 8%, rgba(204, 228, 255, 1) 87%, rgba(253, 240, 210, 0.8) 100%);
-      border-radius: 40px;
-      z-index: -2;
     }
 
     .modalHeader {
@@ -76,7 +44,7 @@
 
       h1 {
         text-align: start;
-        width: 90%;
+        width: 80%;
         justify-self: center;
         font-style: normal;
         font-weight: 500;
@@ -119,6 +87,17 @@
             border: none;
             outline: none;
           }
+
+          @media screen and (max-width: 539.98px){
+            top: 15px;
+            right: 15px;
+
+
+            width: 15px;
+            height: 15px;
+
+          }
+
         }
 
     }

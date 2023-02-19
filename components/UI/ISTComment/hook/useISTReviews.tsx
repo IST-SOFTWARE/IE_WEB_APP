@@ -1,5 +1,5 @@
 import React, {ForwardedRef, useCallback, useEffect, useMemo, useState} from 'react';
-import {reviewItem} from "../../../../Apollo/Queries/landingPages/feedbackPage/getFB_Reviews";
+import {reviewItem} from "../../../../queries/landingFeatures/feedbackPage/getFB_Reviews";
 import {cstmStyles} from "../../common";
 import ISTComment, {styleProps} from "../ISTComment";
 

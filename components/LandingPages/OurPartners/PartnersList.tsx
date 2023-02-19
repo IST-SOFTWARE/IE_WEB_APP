@@ -3,7 +3,7 @@ import {FC, useCallback, useEffect, useRef, useState} from "react";
 import React from 'react';
 import useWindowDimensions from "../../../Hooks/useWindowsDimensions";
 import {string} from "prop-types";
-import {IGallery} from "../../GalleryTypes/GalleryTypes";
+import {IGallery} from "../GalleryTypes";
 import Image from "next/image";
 
 

@@ -1,8 +1,8 @@
-import React, {Dispatch, FC, ReactNode, SetStateAction, useEffect, useMemo, useState} from 'react';
+import React, {CSSProperties, Dispatch, FC, ReactNode, SetStateAction, useEffect, useMemo, useState} from 'react';
 import {modalStater} from "./modalSetter";
-import Image from "next/image";
-import styles from "../../styles/Modals/popUp/puWrapper.module.scss";
 import {createPortal} from "react-dom";
+import {Property} from "csstype";
+import ZIndex = Property.ZIndex;
 
 interface modalView{
     children?: ReactNode,
@@ -14,14 +14,17 @@ type alignStyle = {
     horizontal?: "end" | "start" | "center",
 }
 
+type styles = Pick<CSSProperties, "zIndex">
+
 interface IAlignStyle{
-    alignStyle?: alignStyle;
+    alignStyle?: alignStyle,
+    style?: styles,
+
 }
 
 export interface IBaseModalFC extends modalView, IAlignStyle{};
 
 const useBaseModal = (
-    bgContainerClass: string,
     ContainerIdForScrollBlocking?: string,
 ) => {
 
@@ -33,7 +36,8 @@ const useBaseModal = (
     const ModalView:FC<IBaseModalFC> = ({
         children,
         data,
-        alignStyle
+        alignStyle,
+        style
      }) =>{
 
         const[isBrowser, setIsBrowser] = useState(false);
@@ -52,7 +56,7 @@ const useBaseModal = (
             if(currentData){
                 const pageBody = document.getElementById(ContainerIdForScrollBlocking);
                 if(pageBody && ContainerIdForScrollBlocking)
-                    if(currentData.state)
+                    if(currentData.getState)
                         pageBody.style.overflow = "hidden"
                     else
                         pageBody.style.overflow = "auto"
@@ -63,11 +67,19 @@ const useBaseModal = (
         },[currentData])
 
 
-        const modal = currentData?.state ? (
+        const modal = currentData?.getState ? (
             <>
-                <div className={`container-fluid ${bgContainerClass}
+                <div className={`container-fluid
                     d-flex justify-content-${alignStyle?.horizontal ?? "center"} align-items-${alignStyle?.vertical ?? "center"}
-                `}>
+                `}
+                     style={{
+                         minHeight: "100%",
+                         height: "100%",
+                         minWidth: "100vw",
+                         position: "fixed",
+                         zIndex: style?.zIndex ? style.zIndex : 10
+                     }}
+                >
                     {children}
                 </div>
             </>

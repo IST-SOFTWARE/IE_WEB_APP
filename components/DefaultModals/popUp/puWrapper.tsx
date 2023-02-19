@@ -5,24 +5,22 @@ import {modalStater} from "../../../Hooks/baseModal/modalSetter";
 
 interface puWrapper{
     data: modalStater,
-    border: boolean,
     children: React.ReactNode
 }
 
 const PuWrapper:FC<puWrapper> = (
     {
         data,
-        border,
         children
     }
 ) =>{
     return(
         <>
-            <div className={`${styles.modalBase} ${border ? styles.wb_style : ""}`}>
+            <div className={styles.default_pu_bg}/>
+            <div className={`${styles.modalBase}`}>
                 <div className={styles.modalHeader}>
-                    <h1>{data?.header}</h1>
-                    <p>{data?.paragraph}</p>
-
+                    <h1>{data?.getHeader}</h1>
+                    <p>{data?.getParagraph}</p>
                     <button onClick={() => {
                         data.switch(false)
                     }
@@ -40,7 +38,7 @@ const PuWrapper:FC<puWrapper> = (
                 </div>
 
                 <div>
-                    {data.childrenState === false ?
+                    {data.getState === false ?
                         null : children}
                 </div>
             </div>

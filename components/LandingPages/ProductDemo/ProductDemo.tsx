@@ -1,15 +1,20 @@
 import React, {FC, useEffect, useState} from 'react';
-import {IPageOfLanding} from "../../../Apollo/Queries/landingPage";
+import {IPageOfLanding} from "../../../queries/landingPage";
 import styles from "../../../styles/LandingStyles/PagesComponents/ProductDemo/ProdDemo.module.scss"
-import getGallery, {IGallery} from "../../GalleryTypes/GalleryTypes";
+import getGallery, {IGallery} from "../GalleryTypes";
 import Image from "next/image";
 import Link from "next/link";
-import CallBackRequest_puContent from "../../DefaultModals/popUp/content/callBackRequest_puContent";
 import useBaseModal from "../../../Hooks/baseModal/useBaseModal";
+import PuWrapper from "../../DefaultModals/popUp/puWrapper";
+import CallBackRequest_modal, {ICB_RequestModalData} from "../../DefaultModals/CallBack/CallBackRequest_modal";
+import {GET_OUR_CONTACTS_QUERY} from "../../../queries/landingFeatures/ourContactsQuery";
+import {toc_cb_req} from "../../DefaultModals/table_of_contents/toc_cb_request";
+import {toc_cb_response} from "../../DefaultModals/table_of_contents/toc_cb_response";
 
 interface IPage{
     page: IPageOfLanding;
 }
+
 
 const ProductDemo:FC<IPage>= (
     {
@@ -19,7 +24,25 @@ const ProductDemo:FC<IPage>= (
 
 
     const[galleryContent, setGalleryContent] = useState<IGallery>(null);
-    // const {modalComponent, ModalView} = useBaseModal();
+
+
+    // Modal windows
+        const {modalComponent, ModalView} = useBaseModal(
+            "APP_BODY_WRAPPER"
+        );
+
+        //local modals names
+        const localModals = {
+            sendCB: "send_cb",
+            respCB: "resp_cb",
+            accVer: "acc_ver",
+        }
+
+        //user contacts for CB request
+        const[newCB_data, setNewCB_data] =
+            useState<ICB_RequestModalData>(null);
+
+    //
 
     useEffect(()=>{
         if(page){
@@ -27,19 +50,25 @@ const ProductDemo:FC<IPage>= (
         }
     },[page])
 
-    // useEffect(()=>{
-    //     if(modalComponent){
-    //         modalComponent.editModal(
-    //             "Заказать звонок",
-    //             "Есть вопросы? Оставь " +
-    //             "заявку, а мы перезвоним!"
-    //         )
-    //     }
-    // },[modalComponent])
-    //
-    // const handleCB_Request = () =>{
-    //     modalComponent.switch(true);
-    // }
+
+    useEffect(()=>{
+        if(modalComponent){
+            modalComponent.editModals([
+                toc_cb_req,
+                toc_cb_response,
+            ], 0)
+        }
+    },[modalComponent])
+
+    useEffect(()=>{
+        if(newCB_data && modalComponent){
+            modalComponent.applyModalByName("cb_response");
+        }
+    },[newCB_data, modalComponent])
+
+    const handleCB_Request = () =>{
+        modalComponent.switch(true);
+    }
 
     return(
         <>
@@ -97,24 +126,24 @@ const ProductDemo:FC<IPage>= (
                     </p>
                     <a>
                         Оставь <span onClick={()=>{
-                            // handleCB_Request()
+                            handleCB_Request()
                         }}>заявку</span> и мы перезвоним!
                     </a>
                 </div>
             </div>
 
 
-            {/*<ModalView border={false} data={modalComponent}>*/}
-            {/*    <CallBackRequest_puContent*/}
-            {/*        phone_label={"Телефон"}*/}
-            {/*        name_label={"Имя"}*/}
-            {/*        name_example={"Андрей"}*/}
-            {/*        phone_example={"+7(000)000-00-00"}*/}
-            {/*        modal={modalComponent}*/}
-            {/*    />*/}
-            {/*</ModalView>*/}
-
-
+            <ModalView data={modalComponent}
+                style={{zIndex: 10}}
+            >
+                <PuWrapper data={modalComponent}>
+                    <CallBackRequest_modal
+                        getContactsQuery={GET_OUR_CONTACTS_QUERY}
+                        getContactVars={{code: "en-US"}}
+                        reqStatusSetter={setNewCB_data}
+                    />
+                </PuWrapper>
+            </ModalView>
         </>
 
     )

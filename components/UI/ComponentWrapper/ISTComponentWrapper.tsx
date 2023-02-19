@@ -4,7 +4,7 @@ import common_styles from "../scss/common.module.scss"
 interface componentWrapper{
     title: string,
     children: React.ReactNode,
-    wrapperClass: string,
+    wrapperClass?: string,
 }
 
 const IstComponentWrapper:FC<componentWrapper> = (
@@ -24,7 +24,7 @@ const IstComponentWrapper:FC<componentWrapper> = (
             <div className={common_styles.title}>
               {title}
             </div>
-            <div className={wrapperClass}>
+            <div className={wrapperClass ? wrapperClass : ""}>
                 {children}
             </div>
         </div>

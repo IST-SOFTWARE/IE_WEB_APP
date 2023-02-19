@@ -7,7 +7,6 @@ $trans_speed: 0.3s;
 
 .btn{
   cursor: pointer;
-  outline: none;
   position: relative;
 
   display: flex;
@@ -17,6 +16,10 @@ $trans_speed: 0.3s;
   box-sizing: border-box;
   height: fit-content;
 
+  background: transparent;
+  border: none;
+  outline: none;
+  color: transparent;
 
   .btn_title{
     display: flex;

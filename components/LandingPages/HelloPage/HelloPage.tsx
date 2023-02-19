@@ -1,8 +1,8 @@
 import React, {FC} from 'react';
 import Gallery from "./Gallery/Gallery";
 import CallBack from "./CallBack";
-import getGallery, {IGallery} from "../../GalleryTypes/GalleryTypes";
-import {IPageOfLanding} from "../../../Apollo/Queries/landingPage";
+import getGallery, {IGallery} from "../GalleryTypes";
+import {IPageOfLanding} from "../../../queries/landingPage";
 import IstButton from "../../UI/ISTButton/IstButton";
 import {useRouter} from "next/router";
 

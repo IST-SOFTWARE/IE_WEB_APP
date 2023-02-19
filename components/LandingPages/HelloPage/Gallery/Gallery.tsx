@@ -1,8 +1,8 @@
 import styles
     from "../../../../styles/LandingStyles/GalleryComponent/gallery.module.scss"
 import Image from "next/image"
-import React, {FC, useCallback, useEffect, useMemo, useRef, useState} from "react"
-import {IGallery} from "../../../GalleryTypes/GalleryTypes";
+import React, {FC, useEffect, useRef, useState} from "react"
+import {IGallery} from "../../GalleryTypes";
 import Link from "next/link";
 import IstButton from "../../../UI/ISTButton/IstButton";
 

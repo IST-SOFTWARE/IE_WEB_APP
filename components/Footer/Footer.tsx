@@ -1,14 +1,13 @@
 import styles from "../../styles/Footer/footer.module.scss"
-import Image from "next/image";
-import NextImageRatioSaver from "../NextImageRatioSaver";
-import getData from "../../queries/getData";
-import {getOurContacts} from "../../queries/getOurContacts";
 import {FC, useEffect, useState} from "react";
-import {ApolloError, useQuery} from "@apollo/client";
-import getOurContactsData, {contactsData, GET_OUR_CONTACTS_QUERY, IOurContacts} from "../../Apollo/Queries/landingPages/ourContactsQuery";
-import {router} from "next/client";
+import {useQuery} from "@apollo/client";
+import getOurContactsData, {
+    contactsData,
+    GET_OUR_CONTACTS_QUERY,
+    IOurContacts,
+    IOurContactsVars
+} from "../../queries/landingFeatures/ourContactsQuery";
 import YandexMap from "./Map/YandexMap";
-// import GisFooterMap from "./Map/GisFooterMap";
 
 interface FooterData{
     route: string,
@@ -22,9 +21,9 @@ const Footer:FC<FooterData> = (
                 }) => {
 
     const[footerContent, setFooterContent] = useState<contactsData>(null);
-    const {loading, data, error} = useQuery<IOurContacts>(GET_OUR_CONTACTS_QUERY, {
+    const {loading, data, error} = useQuery<IOurContacts, IOurContactsVars>(GET_OUR_CONTACTS_QUERY, {
             variables: {
-                lang: route
+                code: route
             }
         }
     )
@@ -99,18 +98,6 @@ const Footer:FC<FooterData> = (
                                     width: "70%"
                                 }}>
                                     <div className={styles.mapBlock}>
-                                        {/*<iframe*/}
-                                        {/*    src={footerContent?.addresses[0]?.address_map}*/}
-                                        {/*    width="100%"*/}
-                                        {/*    height="100%"*/}
-                                        {/*    allowFullScreen={false}*/}
-                                        {/*/>*/}
-
-                                        {/*<GisFooterMap*/}
-                                        {/*    location={footerContent?.addresses[0]?.address_map}*/}
-                                        {/*    zoom={5}*/}
-                                        {/*/>*/}
-
                                         <YandexMap
                                             location={footerContent?.addresses[0]?.address_map}
                                             zoom={10}

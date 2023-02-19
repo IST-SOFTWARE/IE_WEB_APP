@@ -6,15 +6,14 @@ import fb_closer_img from "../../../public/LandingPages/FeedBack/FullList/PU_clo
 import fullList_comments_adaptive
     from "../../../styles/FeedBackPage/feedbackFullList/fullListCommentsAdaptive.module.scss";
 import show_all_img from "../../../public/LandingPages/FeedBack/FullList/show_all.svg";
-import {getFB_Reviews, reviewItem} from "../../../Apollo/Queries/landingPages/feedbackPage/getFB_Reviews";
-import {IQueryPagination} from "../../../Apollo/Queries/common";
+import {getFB_Reviews, reviewItem} from "../../../queries/landingFeatures/feedbackPage/getFB_Reviews";
+import {IQueryPaginationVariable} from "../../../queries/common";
 import {QueryResult} from "@apollo/client";
 import useISTReviews from "../../UI/ISTComment/hook/useISTReviews";
-import ISTComment from "../../UI/ISTComment/ISTComment";
 
 interface FB_Modal{
     initialList: Array<reviewItem>,
-    pagination: IQueryPagination,
+    pagination: IQueryPaginationVariable,
     query: QueryResult,
 
     puCloser: () => any,
@@ -39,7 +38,7 @@ const FeedBackModal:FC<FB_Modal> = (
     const[listIsDeployed, setListDeployed] = useState<boolean>(false);
 
     const[reviewsList, setReviewsList] = useState<Array<reviewItem>>(initialList);
-    const[reviewsPagination, setReviewsPagination] = useState<IQueryPagination>(pagination)
+    const[reviewsPagination, setReviewsPagination] = useState<IQueryPaginationVariable>(pagination)
     const[isLoading, setLoading] = useState<boolean>(false)
 
     const {printComments} = useISTReviews()
@@ -86,7 +85,7 @@ const FeedBackModal:FC<FB_Modal> = (
     const onLoadMore = () => {
         query.fetchMore({
             variables:{
-                lng_code:"ru-RU",
+                code:"ru-RU",
                 limit: pagination.limit,
                 offset: pagination.offset + pagination.limit
             }
@@ -144,6 +143,10 @@ const FeedBackModal:FC<FB_Modal> = (
 // - - - - - - -- - - - - -
 
     return(
+        <>
+        {/*MODAL BACKGROUND*/}
+        <div className={styles.fb_modal_bg}/>
+
         <div className={styles.feedback_data_wrapper}
              ref={fb_wrapper}
              onWheel={()=>openFullList()}
@@ -185,18 +188,6 @@ const FeedBackModal:FC<FB_Modal> = (
                         desiredRef: desiredRef,
                     })}
 
-                    {/*<ISTComment*/}
-                    {/*    name={"Name"}*/}
-                    {/*    rate={""}*/}
-                    {/*    comment={"NameaNAmeldnondoaisnoaisnoaindoajsoisaodnos" +*/}
-                    {/*        "asdnoasndoisanodnasondasnmdlamsdla" +*/}
-                    {/*        "sasdasdasdasdasd" +*/}
-                    {/*        "asdasdasdasddasdsasasdasdasDAsds" +*/}
-                    {/*        "asasdasdaas"}*/}
-                    {/*    category={"wecwcwed"}*/}
-                    {/*    customAdaptiveStyles={fullList_comments_adaptive}*/}
-                    {/*/>*/}
-
                 </div>
 
                 <div className={styles.feedback_more_comments}
@@ -212,6 +203,7 @@ const FeedBackModal:FC<FB_Modal> = (
                 </div>
             </div>
         </div>
+    </>
     )
 }
 

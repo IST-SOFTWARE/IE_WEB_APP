@@ -35,6 +35,9 @@ const ISTComment:FC<ISTComment> = (
         event
     }) => {
 
+    // useEffect(()=>{
+    //     console.log("CSTM CSS: ", customAdaptiveStyles);
+    // },[])
 
     return(
         <>

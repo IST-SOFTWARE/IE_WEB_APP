@@ -1,4 +1,4 @@
-import React, {CSSProperties, FC, Ref, useEffect, useRef} from 'react';
+import React, {CSSProperties, FC, Ref, useCallback, useEffect, useRef} from 'react';
 import PhoneInput from "react-phone-number-input/input";
 import styles from "./input.module.scss"
 import common_styles from "../scss/common.module.scss"
@@ -8,8 +8,6 @@ export enum inputTypesVars {
     any_string = "any_string",
     phone = "phone_num",
 }
-
-
 
 const defaultStyles = {
     borderRadius: "89px",
@@ -28,7 +26,6 @@ interface IIstInput{
     style?: commonStyles
 }
 
-
 const IstInput = React.forwardRef<HTMLInputElement, IIstInput>((
                     props: IIstInput,
                     ref: Ref<HTMLInputElement>
@@ -42,7 +39,7 @@ const IstInput = React.forwardRef<HTMLInputElement, IIstInput>((
         },[props.inputCaption, caption_ref])
 
         return (
-            <div className={`${styles.inputForm} afterBlock_ISTInput`}>
+            <div className={`${styles.inputForm} ${styles.afterBlock_ISTInput}`}>
                 <div className={common_styles.title}>
                     {props.title}
                 </div>
@@ -72,13 +69,11 @@ const IstInput = React.forwardRef<HTMLInputElement, IIstInput>((
                                 className={`${common_styles.hover_action} ${common_styles.focus_action}`}
                     />
                 )}
-
-
-
             </div>
         )
 });
 
-
 IstInput.displayName = "IstInput";
 export default IstInput;
+
+

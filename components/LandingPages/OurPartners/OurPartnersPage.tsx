@@ -1,8 +1,8 @@
 import styles from '../../../styles/OurPartners/ourPartnersPage.module.scss'
 import PartnersList, {sliderPositionVar} from "./PartnersList";
 import {FC, useEffect, useState} from "react";
-import {IPageOfLanding} from "../../../Apollo/Queries/landingPage";
-import getGallery, {IGallery} from "../../GalleryTypes/GalleryTypes";
+import {IPageOfLanding} from "../../../queries/landingPage";
+import getGallery, {IGallery} from "../GalleryTypes";
 
 
 //  LandingPageComp data test

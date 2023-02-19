@@ -1,8 +1,6 @@
 import Image from 'next/image'
 import styles from '../styles/nf_error.module.css'
 import Link from 'next/link'
-import Logo from '../components/Logo'
-
 
 // Pixel GIF code adapted from https://stackoverflow.com/a/33919020/266535
 const keyStr =

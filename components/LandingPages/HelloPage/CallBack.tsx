@@ -1,4 +1,5 @@
-import styles from "../../../styles/LandingStyles/PagesComponents/HelloPage/callBack.module.scss"
+import styles from "../../../styles/LandingStyles/PagesComponents/HelloPage/callBack.module.scss";
+
 import {FC, useEffect, useRef, useState} from "react";
 import ISTInput, {inputTypesVars} from "../../UI/ISTInput/ISTInput";
 import IstButton from "../../UI/ISTButton/IstButton";
@@ -6,11 +7,12 @@ import getOurContactsData, {
     contactsData,
     GET_OUR_CONTACTS_QUERY,
     IOurContacts
-} from "../../../Apollo/Queries/landingPages/ourContactsQuery";
+} from "../../../queries/landingFeatures/ourContactsQuery";
 import {useQuery} from "@apollo/client";
 import {apolloClient} from "../../../Apollo/apolloClient";
-import useCallRequest from "../../../Hooks/useCallRequest";
+import useCallRequest from "../../../Hooks/useCallRequest/useCallRequest";
 import useBaseModal from "../../../Hooks/baseModal/useBaseModal";
+import {useISTInputFelt} from "../../UI/ISTInput/useISTInputFelt";
 
 interface CallBack{
     locale: string
@@ -26,29 +28,23 @@ const CallBack:FC<CallBack> = ({
     const[contactsData, setContactsData] = useState<contactsData>(null);
     const {data, loading, error} = useQuery<IOurContacts>(GET_OUR_CONTACTS_QUERY, {
         variables:{
-            lang: locale ?? "ne-us"
+            lang: locale ?? "en-US"
         }
     })
 
     const nameRef = useRef(null);
     const phoneRef = useRef(null);
 
-    // const {modalComponent, ModalView} = useBaseModal();
+    const {modalComponent} = useBaseModal(
+        "APP_BODY_WRAPPER"
+    );
 
-    const{errors, newData, send} = useCallRequest(
-
-        [{
-            refObj: phoneRef,
-            required: true
-        },{
-            refObj: nameRef,
-            required: true
-        }],
-        apolloClient,
-        client_name,
-        client_phone,
-    )
-
+    const {checkFields} = useISTInputFelt();
+    // const{errors, newData, send} = useCallRequest(
+    //     apolloClient,
+    //     client_name,
+    //     client_phone,
+    // )
 
     useEffect(()=>{
         if(data){
@@ -59,7 +55,7 @@ const CallBack:FC<CallBack> = ({
     },[data])
 
     // useEffect(()=> {
-    //     console.log(newData, errors);
+    //     // console.log(newData, errors);
     //     if(newData){
     //         modalComponent.editModal(
     //             `Спасибо, ${client_name}!`,
@@ -78,7 +74,16 @@ const CallBack:FC<CallBack> = ({
     // },[newData, errors]);
 
     const sendCallBack = () => {
-        send();
+        // send();
+        console.log(checkFields(
+            [{
+                refObj: phoneRef,
+                required: true
+            },{
+                refObj: nameRef,
+                required: true
+            }],
+        ))
     }
 
     return(
