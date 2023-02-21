@@ -1,4 +1,5 @@
 import React from "react";
+import {rejects} from "assert";
 
 export type modalsBasics = {
     typeName: string,
@@ -6,11 +7,17 @@ export type modalsBasics = {
     _paragraph: string
 }
 
+type indexedModal = {
+    index: number,
+    modal: modalsBasics
+}
+
 const defaultModalName = {
     defModalName: "default",
     defModalHeader: "Hello, modal",
     defModalParagraph: "This is paragraph"
 }
+
 
 export class modalStater{
 
@@ -20,6 +27,8 @@ export class modalStater{
     private state:boolean
     private dataUpdater: React.Dispatch<modalStater>
     private modalsTypes: Array<modalsBasics>
+
+    private onClose: Function
 
     constructor(header = "",
                 paragraph = "",
@@ -45,8 +54,8 @@ export class modalStater{
                 }
             )
             this.modalName = defaultModalName.defModalName,
-            this.header = this.getModalByName(defaultModalName.defModalName)._header;
-            this.header = this.getModalByName(defaultModalName.defModalName)._paragraph;
+            this.header = this.getModalByName(defaultModalName.defModalName)?.modal?._header;
+            this.header = this.getModalByName(defaultModalName.defModalName)?.modal?._paragraph;
         }
 
         else
@@ -75,7 +84,6 @@ export class modalStater{
             this.setModalTypes(modals, startModalIndex)
         }
 
-        this.update();
     }
 
     get getHeader():string{
@@ -104,36 +112,67 @@ export class modalStater{
     }
 
     public isCurrentModal(name: string):boolean{
-        return name.toString().toLowerCase() ===
-            this.modalName.toString().toLowerCase()
+        if(name)
+            return name.toString().toLowerCase()
+                === this.modalName.toString().toLowerCase()
+        else
+            return false
     }
 
-    public getModalByName = (name: string):modalsBasics => {
-        return this.modalsTypes.find(e =>
-            e.typeName.toString().toLowerCase() ===
-            name.toString().toLowerCase()
-        )
+
+    public getModalByName = (name: string):indexedModal => {
+        if(name) {
+            let currentIndex: number = -1;
+            const modal = this.modalsTypes.find((e, i) => {
+                    currentIndex = i
+                    return e.typeName.toString().toLowerCase() ===
+                        name.toString().toLowerCase()
+            });
+
+            return({
+                modal: modal,
+                index: currentIndex
+            })
+        }
+
+        else
+            return null
     }
 
-    public applyModalByName = (name: string):void => {
-        const newModal = this.modalsTypes.find(e =>
-            e.typeName.toString().toLowerCase() ===
-            name.toString().toLowerCase()
-        )
+    public applyModalByName = (name: string):Promise<indexedModal> => {
+        return new Promise((resolve, reject) => {
+            if(!name)
+                reject(null)
 
-        this.header = newModal?._header;
-        this.paragraph = newModal?._paragraph;
-        this.modalName = newModal?.typeName;
+            else {
 
-        this.update();
+                const newModal = this.getModalByName(name);
+
+                this.header = newModal?.modal?._header;
+                this.paragraph = newModal?.modal?._paragraph;
+                this.modalName = newModal?.modal?.typeName;
+
+                resolve(newModal)
+            }
+
+        })
     }
-
 
 
     public switch = (newState: boolean) =>{
         this.state = newState;
+
+        if(!newState && newState !== undefined && this.onClose)
+            this.onClose();
+
         this.update();
     }
+
+
+    set setOnClose(data: Function){
+        this.onClose = data
+    }
+
 
     public setDataUpdater = (updater: React.Dispatch<modalStater>) =>
         this.dataUpdater = updater;

@@ -97,7 +97,7 @@ const Index:FC<ILandingPageCont> =
     },[scrollSpy])
 
     useEffect(()=>{
-        console.log(router);
+        // console.log(router);
         dispatch(setActualPosition(0));
     },[])
 

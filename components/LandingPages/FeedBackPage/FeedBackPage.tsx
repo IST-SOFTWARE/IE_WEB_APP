@@ -326,7 +326,7 @@ const FeedBackPage:FC<IFeedBackPage> = (
                 </div>
             </div>
 
-            <ModalView data={modalComponent}
+            <ModalView
                 alignStyle={{
                     vertical: "end"
                 }}
@@ -340,7 +340,7 @@ const FeedBackPage:FC<IFeedBackPage> = (
                     initialList={reviewsDataList}
                     pagination={reviewsPagination}
                     query={FBReviews}
-                    header={modalComponent.header}
+                    header={modalComponent.getHeader}
                     findingId={findingId}
                 />
             </ModalView>

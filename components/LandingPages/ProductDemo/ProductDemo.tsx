@@ -1,4 +1,4 @@
-import React, {FC, useEffect, useState} from 'react';
+import React, {FC, useCallback, useEffect, useMemo, useState} from 'react';
 import {IPageOfLanding} from "../../../queries/landingPage";
 import styles from "../../../styles/LandingStyles/PagesComponents/ProductDemo/ProdDemo.module.scss"
 import getGallery, {IGallery} from "../GalleryTypes";
@@ -10,6 +10,8 @@ import CallBackRequest_modal, {ICB_RequestModalData} from "../../DefaultModals/C
 import {GET_OUR_CONTACTS_QUERY} from "../../../queries/landingFeatures/ourContactsQuery";
 import {toc_cb_req} from "../../DefaultModals/table_of_contents/toc_cb_request";
 import {toc_cb_response} from "../../DefaultModals/table_of_contents/toc_cb_response";
+import CallBackResponse_modal from "../../DefaultModals/CallBack/CallBackResponse_modal";
+
 
 interface IPage{
     page: IPageOfLanding;
@@ -22,26 +24,20 @@ const ProductDemo:FC<IPage>= (
     }
 ) => {
 
-
-    const[galleryContent, setGalleryContent] = useState<IGallery>(null);
-
+    const[galleryContent, setGalleryContent]
+        = useState<IGallery>(null);
 
     // Modal windows
         const {modalComponent, ModalView} = useBaseModal(
             "APP_BODY_WRAPPER"
         );
 
-        //local modals names
-        const localModals = {
-            sendCB: "send_cb",
-            respCB: "resp_cb",
-            accVer: "acc_ver",
-        }
-
         //user contacts for CB request
         const[newCB_data, setNewCB_data] =
             useState<ICB_RequestModalData>(null);
 
+        const [currentModal, setCurrentModal] =
+            useState<number>(0);
     //
 
     useEffect(()=>{
@@ -50,9 +46,18 @@ const ProductDemo:FC<IPage>= (
         }
     },[page])
 
+    const onCloser = useCallback((name: string) => {
+        modalComponent.applyModalByName(name).then(e=>
+            setCurrentModal(e.index)
+        );
+    },[modalComponent]);
 
     useEffect(()=>{
         if(modalComponent){
+
+            modalComponent.setOnClose =
+                () => onCloser(toc_cb_req.typeName);
+
             modalComponent.editModals([
                 toc_cb_req,
                 toc_cb_response,
@@ -61,14 +66,16 @@ const ProductDemo:FC<IPage>= (
     },[modalComponent])
 
     useEffect(()=>{
-        if(newCB_data && modalComponent){
-            modalComponent.applyModalByName("cb_response");
-        }
+        if(newCB_data && modalComponent)
+            modalComponent.applyModalByName(toc_cb_response.typeName)
+                .then(el => setCurrentModal(el.index));
     },[newCB_data, modalComponent])
+
 
     const handleCB_Request = () =>{
         modalComponent.switch(true);
     }
+
 
     return(
         <>
@@ -133,15 +140,20 @@ const ProductDemo:FC<IPage>= (
             </div>
 
 
-            <ModalView data={modalComponent}
+            <ModalView
                 style={{zIndex: 10}}
             >
                 <PuWrapper data={modalComponent}>
-                    <CallBackRequest_modal
-                        getContactsQuery={GET_OUR_CONTACTS_QUERY}
-                        getContactVars={{code: "en-US"}}
-                        reqStatusSetter={setNewCB_data}
-                    />
+                    {modalComponent.isCurrentModal(toc_cb_req.typeName) ?
+                        <CallBackRequest_modal
+                            getContactsQuery={GET_OUR_CONTACTS_QUERY}
+                            getContactVars={{code: "en-US"}}
+                            reqStatusSetter={setNewCB_data}
+                        />
+                        : modalComponent.isCurrentModal(toc_cb_response.typeName) ?
+                            <CallBackResponse_modal/>
+                        : null
+                    }
                 </PuWrapper>
             </ModalView>
         </>
