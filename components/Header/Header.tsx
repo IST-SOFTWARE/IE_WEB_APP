@@ -4,11 +4,14 @@ import Image from "next/image";
 
 
 interface Header{
-    children: React.ReactNode
+    children: React.ReactNode,
+    catalogOpener: (...props: any)=>any
 }
 
 const Header:FC<Header> = ({
-    children
+    children,
+    catalogOpener
+
                            }) => {
     return(
         <div className={styles.headerCont}>
@@ -55,7 +58,11 @@ const Header:FC<Header> = ({
 
                     >
                         <div className={styles.headerCatalog}>
-                            <button className={styles.catalogBtn}>
+                            <button className={styles.catalogBtn}
+                                onClick={()=>{
+                                    catalogOpener();
+                                }}
+                            >
                                 <div className={styles.catalogBtn_img}>
                                     <Image
                                         src={'/Header/catalog_btn.svg'}

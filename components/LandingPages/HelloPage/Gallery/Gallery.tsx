@@ -73,35 +73,6 @@ const Gallery:FC<IGallery> = (
     },[actualSlide])
 
 
-    // useEffect(()=>{
-    //     let timeOut;
-    //
-    //
-    //     let newSlideIndex = 0;
-    //
-    //     if(actualSlide === slides.length - 1)
-    //         newSlideIndex = 0;
-    //     else
-    //         newSlideIndex = actualSlide + 1;
-    //
-    //     if(slides.length > 0)
-    //         timeOut = setTimeout(() => {
-    //             switchSlide(newSlideIndex, setActualSlide, galleryImage)
-    //         }, 5000);
-    //
-    //     return ()=> clearTimeout(timeOut);
-    // },[actualSlide])
-
-    // useEffect(()=>{
-    //     if(imageUpdated){
-    //         setImageUpdated(false);
-    //     }
-    // }, [imageUpdated])
-
-    // useEffect(()=>{
-    //     switchSlide(galleryImage, false);
-    // // },[actualSlide])
-
     const switchSlide = async(
                             obj: React.MutableRefObject<HTMLDivElement>,
                             actor: {
