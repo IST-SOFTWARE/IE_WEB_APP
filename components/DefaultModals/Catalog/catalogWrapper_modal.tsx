@@ -40,7 +40,8 @@ const CatalogWrapperModal:FC<catalogWrapper> = ({
                             border: "solid 1px yellow",
                             minHeight: "50px",
                             marginTop: "10px",
-                            maxWidth: "370px"
+                            maxWidth: "370px",
+
                         }}
                         >
                         {/*    Тут фильтры*/}
