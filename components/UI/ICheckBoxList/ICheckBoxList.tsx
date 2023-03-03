@@ -21,6 +21,14 @@ const ICheckBoxList: FC<ICheckBoxList> = ({ title, isOpened, fields }) => {
   const [opened, setOpened] = useState(isOpened); //откртие/закрытие списко фильтров
   const [hasFilters, setHasFilters] = useState([]); // когда hasFilters.length больше 0 рисуется "точка"
 
+  const dotAddAction = () => {
+    setHasFilters([...hasFilters, 1]);
+  };
+
+  const deleteDotAction = () => {
+    setHasFilters([...hasFilters.slice(1)]);
+  };
+
   useEffect(() => {
     setHasFields(fields);
   }, [fields]);
@@ -41,7 +49,14 @@ const ICheckBoxList: FC<ICheckBoxList> = ({ title, isOpened, fields }) => {
       {opened ? (
         <div className={styles.filters}>
           {hasFields.map((filter, index) => {
-            return <Filter field={filter} key={`filterItem_${index}_key`} />;
+            return (
+              <Filter
+                field={filter}
+                dotAction={dotAddAction}
+                deleteDotAction={deleteDotAction}
+                key={`filterItem_${index}_key`}
+              />
+            );
           })}
         </div>
       ) : null}

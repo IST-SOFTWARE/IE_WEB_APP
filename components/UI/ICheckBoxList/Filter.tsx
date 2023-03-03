@@ -2,19 +2,21 @@ import React, { useState } from "react";
 import styles from "./checkBoxList.module.scss";
 import { maxLengthText } from "../common";
 
-const Filter = ({ field }) => {
+const Filter = ({ field, dotAction, deleteDotAction }) => {
   const [hasCheked, setHasCheked] = useState(field.isActive);
   const [openDiscrabing, setOpenDiscrabing] = useState(false);
 
   const activeFilterCheck = () => {
     hasCheked ? setHasCheked(false) : setHasCheked(true);
+    hasCheked ? deleteDotAction() : dotAction();
   };
 
   const activeDiscrabing = (e) => {
     if (field.fieldName?.length >= 23) {
-      setTimeout(() => {
-        openDiscrabing ? setOpenDiscrabing(false) : setOpenDiscrabing(true);
-      }, 500);
+      // setTimeout(() => {
+      //   openDiscrabing ? setOpenDiscrabing(false) : setOpenDiscrabing(true);
+      // }, 500);
+      openDiscrabing ? setOpenDiscrabing(false) : setOpenDiscrabing(true);
     }
   };
 
