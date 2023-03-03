@@ -6,3 +6,7 @@ export type commonStyles =
 export type cstmStyles = {
     [key: string] : string,
 }
+
+export const maxLengthText = (text: string, lenght: number): string => {
+   return text.length >= lenght ? `${text.slice(0, lenght)}...` : text;
+}
