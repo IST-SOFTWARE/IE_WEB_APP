@@ -1,5 +1,172 @@
 @import "../scss/variables.scss";
 @import "../scss/mixins/background_mixin.scss";
 
+.container {
+  width: 100%;
+  @include gradient_bg($background: gradient);
+  box-sizing: border-box;
+  -webkit-box-shadow: 0px 0px 8px 0px rgba(147, 195, 248, 0.2);
+  -moz-box-shadow: 0px 0px 8px 0px rgba(147, 195, 248, 0.2);
+  box-shadow: 0px 0px 8px 0px $def_light_blue;
+  padding: 21px 25px;
+  margin-bottom: 13px;
+  transition: all 0.5s linear;
 
+  > .dot {
+    position: absolute;
+    border-radius: 50%;
+    left: 10px;
+    top: 30px;
+    width: 8px;
+    height: 8px;
+    background: $def_blue_gray;
+    box-shadow: 0px 0px 4px #151a20;
+  }
 
+  > .title {
+    font-weight: 700;
+    font-size: 20px;
+    line-height: 23px;
+    color: $pure_white;
+    display: flex;
+    justify-content: space-between;
+    text-transform: capitalize;
+    cursor: pointer;
+    transition: all 0.5s linear;
+
+    > .vector {
+      position: relative;
+      top: 10px;
+      right: 11px;
+      background-color: $def_blue_gray;
+      > &::after {
+        position: absolute;
+        content: "";
+        width: 12px;
+        height: 3px;
+        background: inherit;
+        border-radius: 3px;
+        transform: rotate(45deg);
+      }
+      > &::before {
+        position: absolute;
+        right: -5px;
+        content: "";
+        width: 12px;
+        height: 3px;
+        background: inherit;
+        border-radius: 3px;
+        transform: rotate(-45deg);
+      }
+    }
+    .active {
+      > &::after {
+        transform: rotate(-45deg);
+      }
+      > &::before {
+        transform: rotate(45deg);
+      }
+    }
+  }
+  > .filters {
+    > .filter {
+      &:first-child {
+        margin-top: 10px;
+      }
+      width: 100%;
+      box-sizing: border-box;
+      padding: 7px 8px;
+      color: $def_white;
+      font-weight: 500;
+      font-size: 20px;
+      line-height: 23px;
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 4px;
+      cursor: pointer;
+      &:hover {
+        background: #2c3641;
+        box-shadow: 0px 0px 4px #151a20;
+        border-radius: 5px;
+        width: 100%;
+        padding: 7px 8px;
+      }
+
+      .columnField {
+        display: flex;
+        flex-direction: column;
+
+        > .discrabingFilter {
+          position: absolute;
+          z-index: 99999999;
+          margin-top: 35px;
+          left: 26px;
+          box-sizing: border-box;
+          width: 70%;
+          background: #2c3641;
+          box-shadow: 0px 0px 5px #151a20;
+          border-radius: 10px;
+          padding: 5px 8px;
+          font-weight: 500;
+          font-size: 15px;
+          line-height: 18px;
+          color: $def_white;
+        }
+      }
+
+      > .fieldName {
+        width: 100%;
+        box-sizing: border-box;
+      }
+
+      .activeText {
+        color: $def_light_blue;
+      }
+
+      > .checkPoint {
+        position: relative;
+        width: 21px;
+        height: 21px;
+        border: 3px solid $def_light_blue;
+        border-radius: 5px;
+        padding: 7px;
+        cursor: pointer;
+
+        &::after {
+          position: absolute;
+          content: "";
+          width: 8px;
+          height: 2px;
+          border-radius: 1px;
+          background-color: $def_light_blue;
+          top: 7px;
+          left: 4px;
+        }
+      }
+      > .active {
+        border: 3px solid $def_blue_gray;
+        &::after {
+          position: absolute;
+          content: "";
+          width: 8px;
+          height: 2px;
+          border-radius: 1px;
+          background-color: $def_blue_gray;
+          top: 7px;
+          left: 4px;
+        }
+        &::before {
+          position: absolute;
+          content: "";
+          width: 8px;
+          height: 2px;
+          border-radius: 1px;
+          background-color: $def_blue_gray;
+          top: 7px;
+          left: 4px;
+          transform: rotate(90deg);
+        }
+      }
+    }
+  }
+}
