@@ -11,25 +11,32 @@ const Filter = ({ field, dotAction, deleteDotAction }) => {
     hasCheked ? deleteDotAction() : dotAction();
   };
 
-  const activeDiscrabing = (e) => {
-    if (field.fieldName?.length >= 23) {
-      // setTimeout(() => {
-      //   openDiscrabing ? setOpenDiscrabing(false) : setOpenDiscrabing(true);
-      // }, 500);
-      openDiscrabing ? setOpenDiscrabing(false) : setOpenDiscrabing(true);
+  const activeDiscrabing = () => {
+
+    //будет ли грамотрее определять 'device' перед функцией??
+    const device = navigator.userAgent.match(
+      /iPhone|iPad|iPod|Android|BlackBerry|Opera Min|IEMobile/i
+    );
+
+    if (device === null) {
+      if (field.fieldName?.length >= 23) {
+        setOpenDiscrabing(true);
+      }
+    } else {
+      return;
     }
+  };
+
+  const disactiveDiscrabing = () => {
+    setOpenDiscrabing(false);
   };
 
   return (
     <div
       className={`${styles.filter}`}
-      onClick={(e) => {
-        activeFilterCheck;
-      }}
+      onClick={activeFilterCheck}
       onMouseEnter={activeDiscrabing}
-      onMouseLeave={(e) => {
-        activeDiscrabing;
-      }}
+      onMouseLeave={disactiveDiscrabing}
     >
       <div className={styles.columnField}>
         <div

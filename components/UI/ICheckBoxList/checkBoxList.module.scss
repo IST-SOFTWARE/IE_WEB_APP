@@ -8,14 +8,14 @@
   -webkit-box-shadow: 0px 0px 8px 0px rgba(147, 195, 248, 0.2);
   -moz-box-shadow: 0px 0px 8px 0px rgba(147, 195, 248, 0.2);
   box-shadow: 0px 0px 8px 0px $def_light_blue;
-  padding: 21px 25px;
+  padding: 21px 20px;
   margin-bottom: 13px;
   transition: all 0.5s linear;
 
   > .dot {
     position: absolute;
     border-radius: 50%;
-    left: 10px;
+    left: 8px;
     top: 30px;
     width: 8px;
     height: 8px;
@@ -33,6 +33,7 @@
     text-transform: capitalize;
     cursor: pointer;
     transition: all 0.5s linear;
+    padding: 0px 10px 0px 0px;
 
     > .vector {
       position: relative;
@@ -44,38 +45,40 @@
         content: "";
         width: 12px;
         height: 3px;
+        right: -13px;
         background: inherit;
         border-radius: 3px;
-        transform: rotate(45deg);
+        transform: rotate(-45deg);
       }
       > &::before {
         position: absolute;
-        right: -5px;
+        right: -6px;
         content: "";
         width: 12px;
         height: 3px;
         background: inherit;
         border-radius: 3px;
-        transform: rotate(-45deg);
+        transform: rotate(45deg);
       }
     }
     .active {
       > &::after {
-        transform: rotate(-45deg);
+        transform: rotate(45deg);
       }
       > &::before {
-        transform: rotate(45deg);
+        transform: rotate(-45deg);
       }
     }
   }
   > .filters {
     > .filter {
       &:first-child {
-        margin-top: 10px;
+        margin-top: 16px;
       }
       width: 100%;
       box-sizing: border-box;
-      padding: 7px 8px;
+      // padding: 7px 0px 7px 8px;
+      padding: 7px 9px;
       color: $def_white;
       font-weight: 500;
       font-size: 20px;
@@ -89,7 +92,7 @@
         box-shadow: 0px 0px 4px #151a20;
         border-radius: 5px;
         width: 100%;
-        padding: 7px 8px;
+        padding: 7px 9px;
       }
 
       .columnField {
@@ -99,8 +102,8 @@
         > .discrabingFilter {
           position: absolute;
           z-index: 99999999;
-          margin-top: 35px;
-          left: 26px;
+          margin-top: 38px;
+          left: 22px;
           box-sizing: border-box;
           width: 70%;
           background: #2c3641;
@@ -125,45 +128,43 @@
 
       > .checkPoint {
         position: relative;
-        width: 21px;
-        height: 21px;
-        border: 3px solid $def_light_blue;
+        top: 3px;
+        width: 17px;
+        height: 17px;
+        border: 2px solid $def_light_blue;
         border-radius: 5px;
-        padding: 7px;
+
         cursor: pointer;
 
         &::after {
           position: absolute;
           content: "";
-          width: 8px;
+          width: 6px;
           height: 2px;
-          border-radius: 1px;
           background-color: $def_light_blue;
-          top: 7px;
+          top: 6px;
           left: 4px;
         }
       }
       > .active {
-        border: 3px solid $def_blue_gray;
+        border: 2px solid $def_blue_gray;
         &::after {
           position: absolute;
           content: "";
           width: 8px;
           height: 2px;
-          border-radius: 1px;
           background-color: $def_blue_gray;
-          top: 7px;
-          left: 4px;
+          top: 6px;
+          left: 2.5px;
         }
         &::before {
           position: absolute;
           content: "";
           width: 8px;
           height: 2px;
-          border-radius: 1px;
           background-color: $def_blue_gray;
-          top: 7px;
-          left: 4px;
+          top: 6px;
+          left: 2.5px;
           transform: rotate(90deg);
         }
       }
