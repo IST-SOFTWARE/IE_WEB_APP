@@ -23,6 +23,13 @@ import RegionHandler from "../components/Header/Additional/regionHandler";
 import useBaseModal from "../Hooks/baseModal/useBaseModal";
 import CatalogWrapper_modal from "../components/DefaultModals/Catalog/catalogWrapper_modal";
 import {useCatalog} from "../components/Catalog/useCatalog";
+import CatalogFullProductsList_modal from "../components/DefaultModals/Catalog/Pages/catalogFullProductsList_modal";
+import CatalogFullProductsListModal from "../components/DefaultModals/Catalog/Pages/catalogFullProductsList_modal";
+import {
+    toc_catalog_full_prod_list
+} from "../components/DefaultModals/table_of_contents/Catalog/toc_catalog_full_prod_list";
+import {toc_catalog_search} from "../components/DefaultModals/table_of_contents/Catalog/toc_catalog_search";
+import CatalogSearchModal from "../components/DefaultModals/Catalog/Pages/catalogSearch_modal";
 
 export default function MyApp({Component, pageProps}){
 
@@ -39,8 +46,12 @@ export default function MyApp({Component, pageProps}){
 
 
     useEffect(()=>{
-        if(modalComponent)
-            modalComponent.switch(true);
+        if(modalComponent) {
+            modalComponent.editModals([
+                toc_catalog_full_prod_list,
+                toc_catalog_search,
+            ], 1 )
+        }
     },[modalComponent])
 
 
@@ -102,7 +113,15 @@ export default function MyApp({Component, pageProps}){
                 />
 
                 <ModalView>
-                    <CatalogWrapper_modal data={modalComponent}/>
+                    <CatalogWrapper_modal>
+                        {modalComponent.isCurrentModal(toc_catalog_search.typeName) ?
+                            <>
+                            <CatalogSearchModal/>
+                            </> :
+                            <CatalogFullProductsListModal/>
+                        }
+
+                    </CatalogWrapper_modal>
                 </ModalView>
 
             </Provider>

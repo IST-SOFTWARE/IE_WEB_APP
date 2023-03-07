@@ -8,8 +8,8 @@ import useBaseModal from "../../../Hooks/baseModal/useBaseModal";
 import PuWrapper from "../../DefaultModals/popUp/puWrapper";
 import CallBackRequest_modal, {ICB_RequestModalData} from "../../DefaultModals/CallBack/CallBackRequest_modal";
 import {GET_OUR_CONTACTS_QUERY} from "../../../queries/landingFeatures/ourContactsQuery";
-import {toc_cb_req} from "../../DefaultModals/table_of_contents/toc_cb_request";
-import {toc_cb_response} from "../../DefaultModals/table_of_contents/toc_cb_response";
+import {toc_cb_req} from "../../DefaultModals/table_of_contents/CallBack/toc_cb_request";
+import {toc_cb_response} from "../../DefaultModals/table_of_contents/CallBack/toc_cb_response";
 import CallBackResponse_modal from "../../DefaultModals/CallBack/CallBackResponse_modal";
 
 
