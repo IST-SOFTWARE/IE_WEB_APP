@@ -19,7 +19,11 @@ const CatalogWrapperModal: FC<catalogWrapper> = ({
   return (
     <>
       <div className={styles.catalog_wrapper}>
-        <div className={"container h-100"}>
+        <div className={"container-fluid h-100"}
+            style={{
+                maxWidth: "1430px",
+            }}
+        >
           <div
             className={"row"}
             style={{
