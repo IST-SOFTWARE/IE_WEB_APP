@@ -18,7 +18,7 @@ interface ICheckBoxList {
 
 const ICheckBoxList: FC<ICheckBoxList> = ({ title, isOpened, fields }) => {
   const [hasFields, setHasFields] = useState(fields); // лист фильтров
-  const [opened, setOpened] = useState(isOpened); //откртие/закрытие списко фильтров
+  const [opened, setOpened] = useState(true); //откртие/закрытие списко фильтров
   const [hasFilters, setHasFilters] = useState([]); // когда hasFilters.length больше 0 рисуется "точка"
 
   const dotAddAction = () => {
