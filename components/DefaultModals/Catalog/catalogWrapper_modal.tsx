@@ -66,7 +66,7 @@ const CatalogWrapperModal: FC<catalogWrapper> = ({ data }) => {
                 "col-md-7 col-xl-8 d-flex flex-wrap align-self-start justify-content-lg-around justify-content-xl-between h-100"
               }
             >
-              {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((i) => {
+              {/* {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((i) => {
                 return (
                   <ISTProductItem
                     key={`productItem_${i}_key`}
@@ -81,7 +81,7 @@ const CatalogWrapperModal: FC<catalogWrapper> = ({ data }) => {
                     currency={"RU"}
                   />
                 );
-              })}
+              })} */}
             </div>
           </div>
         </div>
