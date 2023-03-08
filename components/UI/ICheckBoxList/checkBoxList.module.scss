@@ -1,0 +1,190 @@
+@import "../scss/variables.scss";
+@import "../scss/mixins/background_mixin.scss";
+
+.container {
+  width: 100%;
+  @include gradient_bg($background: gradient);
+  box-sizing: border-box;
+  -webkit-box-shadow: 0px 0px 8px 0px rgba(147, 195, 248, 0.2);
+  -moz-box-shadow: 0px 0px 8px 0px rgba(147, 195, 248, 0.2);
+  box-shadow: 0px 0px 8px 0px $def_light_blue;
+  padding: 21px 20px;
+  margin-bottom: 13px;
+
+  > .dot {
+    position: absolute;
+    border-radius: 50%;
+    left: 21px;
+    top: 30px;
+    width: 8px;
+    height: 8px;
+    background: $def_blue_gray;
+    box-shadow: 0px 0px 4px #151a20;
+    animation: dotActive 0.15s ease-in-out;
+  }
+
+  .titleTransition {
+    margin-left: 19px;
+    transition: margin 0.15s ease-in-out;
+  }
+
+  > .title {
+    font-weight: 700;
+    font-size: 20px;
+    line-height: 23px;
+    color: $pure_white;
+    display: flex;
+    justify-content: space-between;
+    text-transform: capitalize;
+    cursor: pointer;
+    padding: 0px 10px 0px 0px;
+    transition: margin 0.15s ease-in-out;
+
+    > .vector {
+      position: relative;
+      top: 10px;
+      right: 11px;
+      background-color: $def_blue_gray;
+
+      > &::after {
+        position: absolute;
+        content: "";
+        width: 12px;
+        height: 3px;
+        right: -13px;
+        background: inherit;
+        border-radius: 3px;
+        transform: rotate(-45deg);
+        transition: all 0.1s ease-in-out;
+      }
+
+      > &::before {
+        position: absolute;
+        right: -6px;
+        content: "";
+        width: 12px;
+        height: 3px;
+        background: inherit;
+        border-radius: 3px;
+        transform: rotate(45deg);
+        transition: all 0.1s ease-in-out;
+      }
+    }
+    .active {
+      > &::after {
+        transition: all 0.1s ease-in-out;
+        transform: rotate(45deg);
+      }
+      > &::before {
+        transition: all 0.1s ease-in-out;
+        transform: rotate(-45deg);
+      }
+    }
+  }
+  > .filters {
+    > .filter {
+      &:first-child {
+        margin-top: 16px;
+      }
+      width: 100%;
+      box-sizing: border-box;
+      padding: 7px 9px;
+      color: $def_white;
+      font-weight: 500;
+      font-size: 20px;
+      line-height: 23px;
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 4px;
+      cursor: pointer;
+      transition: all 0.1s ease-in-out;
+      &:hover {
+        background: #2c3641;
+        box-shadow: 0px 0px 4px #151a20;
+        border-radius: 5px;
+        width: 100%;
+        padding: 7px 9px;
+        transition: all 0.1s ease-in-out;
+      }
+
+      .columnField {
+        display: flex;
+        flex-direction: column;
+        > .discrabingFilter {
+          animation: discrabingFilterActive 0.2s ease-in-out;
+          position: absolute;
+          z-index: 99999999;
+          margin-top: 38px;
+          left: 22px;
+          box-sizing: border-box;
+          width: 70%;
+          background: #2c3641;
+          box-shadow: 0px 0px 5px #151a20;
+          border-radius: 10px;
+          padding: 5px 8px;
+          font-weight: 500;
+          font-size: 15px;
+          line-height: 18px;
+          color: $def_white;
+        }
+      }
+
+      > .fieldName {
+        width: 100%;
+        box-sizing: border-box;
+        transition: color 0.1s ease-in-out;
+      }
+
+      .activeText {
+        color: $def_light_blue;
+        transition: color 0.1s ease-in-out;
+      }
+
+      > .checkPoint {
+        position: relative;
+        top: 3px;
+        width: 17px;
+        height: 17px;
+        border: 2px solid $def_light_blue;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: all 0.1s ease-in-out;
+
+        &::after {
+          position: absolute;
+          content: "-";
+          top: -5px;
+          color: $def_light_blue;
+          left: 3.5px;
+        }
+      }
+      > .active {
+        border: 2px solid $def_blue_gray;
+        &::after {
+          position: absolute;
+          content: "+";
+          top: -4px;
+          left: 3px;
+          font-size: 14px;
+        }
+      }
+    }
+  }
+}
+
+@keyframes dotActive {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+@keyframes discrabingFilterActive {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}

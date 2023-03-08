@@ -4,7 +4,7 @@ import Image from "next/image"
 import InputContext from "../../Context/InputStateContextAP"
 import { useState, useEffect, useReducer, useCallback, useContext} from "react"
 
-import MainLabel from "../../MainLabel"
+import MainLabel from "../../LandingLabels/MainLabel"
 import ATContentBlock from "./APContentBlock"
 import APAttachBlock from "./APAttachBlock"
 import InputItem from "./InputItem"
