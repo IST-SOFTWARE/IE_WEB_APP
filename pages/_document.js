@@ -1,19 +1,17 @@
 import { Html, Head, Main, NextScript } from 'next/document'
-import useWindowDimensions from "../Hooks/useWindowsDimensions";
 
 export default function Document() {
   return (
     <Html>
       <Head>
-      <link rel="stylesheet" href="/Bootstrap/bootstrap.min.css"/>
+      <link rel="stylesheet" href="/Bootstrap/bootstrap-grid-custom-15col.css"/>
       </Head>
-          <body id={"APP_BODY_WRAPPER"}>
-                <div id="PopUpBase"/>
-                <div id="CatalogSpace"/>
-                <div id="FeedBackList"/>
-                <Main />
-                <NextScript />
-          </body>
+      <body>
+        <div id="PopUpBase"/>
+        <div id="CatalogSpace"/>
+        <Main />
+        <NextScript />
+      </body>
     </Html>
   )
 }

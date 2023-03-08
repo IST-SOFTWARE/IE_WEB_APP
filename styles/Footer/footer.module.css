@@ -1,13 +1,19 @@
 .Footer{
-    width: 100%;
-    z-index: 0;
-    margin-top: auto;
-    max-height: 400px;
-    height: min-content;
+    width: 100vw;
     position: fixed;
+    z-index: 1;
     bottom: 0;
+    min-height: 200px;
+    height: max-content;
 }
-
+.footer_block{
+    font-family: Roboto;
+    font-size: 21px;
+    font-weight: normal;
+    color: #fff;
+    height: 100%;
+    padding: 30px 0px;
+}
 .contactsBlock{
     display: flex;
     flex-direction: column;
@@ -16,12 +22,11 @@
     margin-bottom: 15px;
     font-size: 22px !important;
     font-weight: bold;
-    color: #fff;
 }
 .contactsBlock a{
     margin-bottom: 5px;
     font-size: 20px !important;
-    color: #fff !important;
+    color: #fff;
     text-decoration: none;
 }
 .contactsBlock a span{
@@ -31,8 +36,7 @@
 }
 
 .mapBlock{
-    width: 100%;
-    max-width: 400px;
+    width: 400px;
     min-height: 250px;
 }
 .mapBlock iframe{
