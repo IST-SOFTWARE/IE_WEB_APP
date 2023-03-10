@@ -38,9 +38,13 @@ const ICheckBoxList: FC<ICheckBoxList> = ({ title, isOpened, fields }) => {
   };
 
   return (
-    <div className={styles.container}>
+    <div className={`${styles.container}`}>
       {hasFilters.length > 0 && <span className={styles.dot}></span>}
-      <div className={styles.title} onClick={openFiltersField}>
+      <div
+        className={`${styles.title} 
+      ${hasFilters.length > 0 ? styles.titleTransition : null}`}
+        onClick={openFiltersField}
+      >
         {title}
         <div
           className={`${styles.vector} ${opened ? styles.active : null}`}
