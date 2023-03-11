@@ -1,4 +1,5 @@
 @import "../scss/variables.scss";
+@import "../scss/mixins/rfs_mixins";
 
 .container {
   > .title {
@@ -25,7 +26,7 @@
         min-width: 130px;
         box-sizing: border-box;
         font-weight: 500;
-        font-size: 18px;
+        @include font-size(1.125rem);
         line-height: 21px;
         color: $pure_white;
         margin: 0px 38px 0px 40px;
