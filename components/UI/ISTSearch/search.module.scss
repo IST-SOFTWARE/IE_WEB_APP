@@ -1,8 +1,47 @@
-.container {
-    > .title {
+@import "../scss/variables.scss";
 
+.container {
+  > .title {
+    font-weight: 500;
+    font-size: 32px;
+    line-height: 38px;
+    color: $def_white;
+    margin-left: -4px;
+    margin-bottom: 17px;
+  }
+
+  > .search_results {
+    display: flex;
+    flex-direction: column;
+    margin-top: 27px;
+
+
+    > .result_container {
+      display: flex;
+      flex-wrap: nowrap;
+      margin-bottom: 15px;
+
+      > .result_title_name {
+        min-width: 130px;
+        box-sizing: border-box;
+        font-weight: 500;
+        font-size: 18px;
+        line-height: 21px;
+        color: $pure_white;
+        margin: 0px 38px 0px 40px;
+      }
+      > .possible_results {
+        display: flex;
+        flex-direction: column;
+
+        > .result {
+          font-weight: 400;
+          font-size: 18px;
+          line-height: 21px;
+          color: $pure_white;
+          margin-bottom: 15px;
+        }
+      }
     }
-    > .search_results {
-        
-    }
+  }
 }

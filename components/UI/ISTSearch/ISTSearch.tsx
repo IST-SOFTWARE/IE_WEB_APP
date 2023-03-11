@@ -18,19 +18,54 @@ const ISTSearch = () => {
         style={{
           height: "55px",
           borderRadius: "15px",
+          marginLeft: "4px", //вынести в родителя
         }}
       />
       <div className={styles.search_results}>
         {/* map результатов (максиально 3 дива с результатом) */}
-        {[1, 2, 3].map((result) => {
+
+        {[
+          {
+            resultTitle: "Производители",
+            possibleResults: ["Kone", "OTIS", "ЩЛЗ"],
+          },
+          {
+            resultTitle: "Узлы",
+            possibleResults: [
+              "Приямок шахты лифта",
+              "Привод ДК, балки ДК и ДШ, двери кабины и шахты, порталы, БУАД, двери боствиг",
+              "Кабина (каркас) и интерьер кабины лифта, крыша кабины, противовес",
+            ],
+          },
+          {
+            resultTitle: "Типы",
+            possibleResults: [
+              "Резиновая/пластиковая прокладка, буфер, демпфер, вставка, отбойник",
+              "Башмак, вкладыш ДК/ДШ",
+              "Башмак, вкладыш башмака направляющих кабины и противовеса",
+            ],
+          },
+        ].map((result) => {
           return (
-            <div key={`result_${result}`} className={styles.result_container}>
-              <span className={styles.result_title_name}>Производители</span>
-              <div className={styles.possible_results}>
-                <span className={styles.result}>Kone</span>
-                <span className={styles.result}>OTIS</span>
-                <span className={styles.result}>ЩЛЗ</span>
+            <div key={`results_${result}`} className={styles.result_container}>
+              
+              <div className={styles.result_title_name}>
+                {result.resultTitle}
               </div>
+
+              <div className={styles.possible_results}>
+                {result.possibleResults.map((possibleresult) => {
+                  return (
+                    <span
+                      key={`possibleResults_${possibleresult}`}
+                      className={styles.result}
+                    >
+                      {possibleresult}
+                    </span>
+                  );
+                })}
+              </div>
+              
             </div>
           );
         })}
@@ -40,3 +75,5 @@ const ISTSearch = () => {
 };
 
 export default ISTSearch;
+
+//
