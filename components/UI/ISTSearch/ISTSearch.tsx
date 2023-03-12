@@ -18,7 +18,7 @@ const ISTSearch = () => {
         style={{
           height: "55px",
           borderRadius: "15px",
-          marginLeft: "4px", //вынести в родителя
+          // marginLeft: "4px", //вынести в родителя
         }}
       />
       <div className={styles.search_results}>
