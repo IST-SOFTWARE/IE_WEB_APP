@@ -17,7 +17,7 @@ const pageTrackerSlice = createSlice({
                 state.scrollSpy.setActualPosition(action.payload, state.scrollSpy)
             }
         }
-    });
+});
 
 export const {
     updatePosition,

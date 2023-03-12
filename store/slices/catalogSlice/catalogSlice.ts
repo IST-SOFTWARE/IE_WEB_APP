@@ -1,16 +1,14 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {createGenericSlice} from "../GenericSlice";
-import {CatalogFilter, ICatalogQueries} from "../../../../../Desktop/IST_ELEVATOR_NEXTJS/components/Catalog/ICatalogQueries";
+import {CatalogMappingUtility, newCatalog} from "../../../components/Catalog/ICatalogQueries";
+import {ICatalogFiltersType} from "./catalogFiltersType";
 
-
-const initialState: ICatalogQueries = {
-    catalog: false,
-}
+const initialState = newCatalog<ICatalogFiltersType>()
 
 
 const CatalogQuerySlice = createGenericSlice(
     "catalogQuerySlice",
-    initialState,
+    newCatalog<ICatalogFiltersType>(),
     {
         switchCatalog(state){
             state.catalog = !state.catalog
@@ -24,8 +22,18 @@ const CatalogQuerySlice = createGenericSlice(
             state.search = action.payload
         },
 
-        // addFilter(state, action: PayloadAction<CatalogFilter>){
-        //
-        // }
+        updateFilters(state, action: PayloadAction<ICatalogFiltersType>){
+            state.filters = action.payload
+        }
+
     }
 )
+
+export const {
+    switchCatalog,
+    setCatalogState,
+    setSearch,
+    updateFilters
+} = CatalogQuerySlice.actions
+
+export default CatalogQuerySlice.reducer

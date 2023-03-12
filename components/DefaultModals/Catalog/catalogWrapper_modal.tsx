@@ -1,10 +1,12 @@
 import React, {FC, ReactNode, useCallback, useEffect, useMemo, useState} from "react";
 import { modalStater } from "../../../Hooks/baseModal/modalSetter";
 import styles from "../../../styles/Modals/catalog/catalogWrapper.module.scss";
-import { useRouter } from "next/router";
 import { useCatalog } from "../../Catalog/useCatalog";
-import ISTProductItem from "../../UI/ISTProductItem/ISTProductItem";
-import ICheckBoxList from "../../UI/ICheckBoxList/ICheckBoxList";
+import {useAppDispatch, useAppSelector} from "../../../Hooks/hooks";
+import {updateFilters} from "../../../store/slices/catalogSlice/catalogSlice";
+import {newCatalog} from "../../Catalog/ICatalogQueries";
+import {ICatalogFiltersType} from "../../../store/slices/catalogSlice/catalogFiltersType";
+
 
 interface catalogWrapper {
   data?: modalStater;
@@ -15,6 +17,18 @@ const CatalogWrapperModal: FC<catalogWrapper> = ({
     children
                                                  }) => {
   const { closeCatalog } = useCatalog({});
+  const dispatch = useAppDispatch();
+  const state = useAppSelector(state => state.catalog);
+
+  useEffect(()=>{
+      console.log("STATE", state)
+  },[state])
+
+    const handleFilter = () => {
+      const data = newCatalog<ICatalogFiltersType>();
+      data.addFilter<"mfg">(["1", "2", "3"]);
+      console.log("DATA: ", data);
+    }
 
   return (
     <>
@@ -31,6 +45,9 @@ const CatalogWrapperModal: FC<catalogWrapper> = ({
             }}
           >
             <button onClick={() => closeCatalog()}>Close</button>
+            <button onClick={()=>{
+                handleFilter()
+            }}>SHOW</button>
           </div>
           <div
             className={"row h-100"}
