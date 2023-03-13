@@ -30,6 +30,8 @@ import {
 } from "../components/DefaultModals/table_of_contents/Catalog/toc_catalog_full_prod_list";
 import {toc_catalog_search} from "../components/DefaultModals/table_of_contents/Catalog/toc_catalog_search";
 import CatalogSearchModal from "../components/DefaultModals/Catalog/Pages/catalogSearch_modal";
+import CatalogReducerTestModal from "../components/DefaultModals/Catalog/Pages/catalogReducerTest_modal";
+import {toc_catalog_test} from "../components/DefaultModals/table_of_contents/Catalog/toc_catalog_test";
 
 export default function MyApp({Component, pageProps}){
 
@@ -49,8 +51,8 @@ export default function MyApp({Component, pageProps}){
         if(modalComponent) {
             modalComponent.editModals([
                 toc_catalog_full_prod_list,
-                toc_catalog_search,
-            ], 0 )
+                toc_catalog_test,
+            ], 1 )
         }
     },[modalComponent])
 
@@ -118,7 +120,7 @@ export default function MyApp({Component, pageProps}){
                             <>
                             <CatalogSearchModal/>
                             </> :
-                            <CatalogFullProductsListModal/>
+                            <CatalogReducerTestModal/>
                         }
 
                     </CatalogWrapper_modal>

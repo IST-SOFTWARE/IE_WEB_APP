@@ -31,6 +31,12 @@ export const newCatalog = <FILTERS_TYPE>(filters?: FILTERS_TYPE): ICatalogQuerie
     if(filters)
         defObj.filters = filters as CatalogMappingUtility<FILTERS_TYPE>
 
+    const addFilter = <T, K extends keyof T>(filter: T[K]) => {
+        console.log(filter);
+    }
+
+    defObj.addFilter = addFilter;
+
     return defObj
 }
 

@@ -22,8 +22,8 @@ const CatalogQuerySlice = createGenericSlice(
             state.search = action.payload
         },
 
-        updateFilters(state, action: PayloadAction<ICatalogFiltersType>){
-            state.filters = action.payload
+        updateFilters(state, action: PayloadAction<keyof ICatalogFiltersType>){
+
         }
 
     }

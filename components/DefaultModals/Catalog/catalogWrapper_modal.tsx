@@ -17,18 +17,8 @@ const CatalogWrapperModal: FC<catalogWrapper> = ({
     children
                                                  }) => {
   const { closeCatalog } = useCatalog({});
-  const dispatch = useAppDispatch();
-  const state = useAppSelector(state => state.catalog);
 
-  useEffect(()=>{
-      console.log("STATE", state)
-  },[state])
 
-    const handleFilter = () => {
-      const data = newCatalog<ICatalogFiltersType>();
-      data.addFilter<"mfg">(["1", "2", "3"]);
-      console.log("DATA: ", data);
-    }
 
   return (
     <>
@@ -45,9 +35,7 @@ const CatalogWrapperModal: FC<catalogWrapper> = ({
             }}
           >
             <button onClick={() => closeCatalog()}>Close</button>
-            <button onClick={()=>{
-                handleFilter()
-            }}>SHOW</button>
+          
           </div>
           <div
             className={"row h-100"}
