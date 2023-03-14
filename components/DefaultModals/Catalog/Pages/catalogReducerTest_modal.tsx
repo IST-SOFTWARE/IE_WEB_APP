@@ -17,7 +17,7 @@ const CatalogReducerTestModal = ({}) => {
 
     const handleClick = (filter: string) => {
         const obj = newCatalog<ICatalogFiltersType>();
-        obj.addFilter<"mfg">([filter]);
+        obj.addFilter("mfg", [filter]);
     }
 
     return(
