@@ -40,8 +40,8 @@ const CatalogReducerTestModal = ({}) => {
                 <button
                     onClick={()=>{
                         dispatch(addNewFilter({
-                            key: "mfg",
-                            filter: ["1","2","3"]
+                            key: "type",
+                            filter: ["lol","kek","cheburek"]
                         }))
                     }}
                 >Clear</button>

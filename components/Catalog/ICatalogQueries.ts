@@ -1,3 +1,5 @@
+import {any} from "prop-types";
+
 export type ISTCatalogStrArrFilter = string[]
 export type ISTCatalogStrFilter = string
 export type ISTCatalogNumArrFilter = number[]
@@ -9,18 +11,18 @@ export interface ISTCatalogFilter<FILTER_TYPE>{
     filter: FILTER_TYPE[keyof FILTER_TYPE]
 }
 
-type CatalogFilterMappingUtility<T> =
-        T extends ISTCatalogStrArrFilter |
-        ISTCatalogNumArrFilter |
-        ISTCatalogStrFilter    |
-        ISTCatalogNumFilter    ?
-        T                      :
-        ISTCatalogBoolFilter
+// type CatalogFilterMappingUtility<T> =
+//         T extends ISTCatalogStrArrFilter |
+//         ISTCatalogNumArrFilter |
+//         ISTCatalogStrFilter    |
+//         ISTCatalogNumFilter    ?
+//         T                      :
+//         ISTCatalogBoolFilter
 
-type CatalogMappingUtility<T> = {
-    [Property in keyof T]:
-    CatalogFilterMappingUtility<T[Property]>
-}
+// type CatalogMappingUtility<T> = {
+//     [Property in keyof T]:
+//     CatalogFilterMappingUtility<T[Property]>
+// }
 
 // STATE
 type ICatalogQueries<T> = {
@@ -39,6 +41,14 @@ type INewFilterBuilder<FT> = {
 type IAddNewFilter<FT> = {
     <K extends keyof FT>(key: K, filter: FT[K]): void
 }
+
+type ICatalogFilterHandling<FIT> =
+      FIT extends ISTCatalogStrArrFilter ?
+        (key: string) => void
+    : FIT extends ISTCatalogBoolFilter ?
+        (key: number) => void
+    : null
+
 
 export const useISTCatalog = <FT>() => {
 
@@ -70,6 +80,8 @@ export const useISTCatalog = <FT>() => {
 }
 
 
+
+
 export const ISTCatalogCreate = <FT>(catalog?: ICatalogQueries<FT>): ICatalogQueries<FT> => {
     return catalog ? catalog : {
         catalog: false,
@@ -83,9 +95,12 @@ export const ISTCatalogAddFilter = <FT>
         filter: ISTCatalogFilter<FT>,
         object: ICatalogQueries<FT>
     ) => {
-    object.filters[filter.key] = filter.filter
-    // console.log("Adding filter: ", filter, " to object: ", object)
+
+    object.filters[filter.key] = filter.filter;
+
+
 }
+
 
 export const ISTNewCatalogFilterItem = <FT,
     K extends keyof FT>(
