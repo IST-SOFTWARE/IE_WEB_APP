@@ -1,16 +1,16 @@
 import React, {useEffect, useState} from 'react';
 import {useAppDispatch, useAppSelector} from "../../../../Hooks/hooks";
-import {addFilter} from "../../../../store/slices/catalogSlice/catalogSlice";
+import {addNewFilter} from "../../../../store/slices/catalogSlice/catalogSlice";
 import {ICatalogFiltersType} from "../../../../store/slices/catalogSlice/catalogFiltersType";
-import {useISTCatalogFilters} from "../../../Catalog/ICatalogQueries";
-import {add} from "unload";
+import {useISTCatalog} from "../../../Catalog/ICatalogQueries";
+
 
 const CatalogReducerTestModal = ({}) => {
 
     const dispatch = useAppDispatch();
     const state = useAppSelector(state => state.catalog);
     const [filters, setFilters] = useState<ICatalogFiltersType>(null);
-    const {createCatalog, buildFilterItem} = useISTCatalogFilters<ICatalogFiltersType>()
+    const {createCatalog, buildFilterItem, addFilter} = useISTCatalog<ICatalogFiltersType>()
 
 
     useEffect(()=>{
@@ -19,9 +19,9 @@ const CatalogReducerTestModal = ({}) => {
     },[])
 
     const handleClick = (filter: string) => {
-        const obj = createCatalog();
-        const newFilter = buildFilterItem("mfg", []);
-        obj.addFilter(newFilter.key, newFilter.filter);
+        createCatalog();
+        addFilter("mfg", [filter]);
+
     }
 
     return(
@@ -39,9 +39,9 @@ const CatalogReducerTestModal = ({}) => {
             }}>
                 <button
                     onClick={()=>{
-                        dispatch(addFilter({
+                        dispatch(addNewFilter({
                             key: "mfg",
-                            filter: true
+                            filter: ["1","2","3"]
                         }))
                     }}
                 >Clear</button>

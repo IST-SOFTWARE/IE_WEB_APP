@@ -1,14 +1,15 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {createGenericSlice} from "../GenericSlice";
-import {CatalogMappingUtility, newCatalog} from "../../../components/Catalog/ICatalogQueries";
 import {ICatalogFiltersType} from "./catalogFiltersType";
+import {ISTCatalogAddFilter, ISTCatalogCreate, ISTCatalogFilter} from "../../../components/Catalog/ICatalogQueries";
 
-const initialState = newCatalog<ICatalogFiltersType>()
+const initialState =
+    ISTCatalogCreate<ICatalogFiltersType>()
 
 
 const CatalogQuerySlice = createGenericSlice(
     "catalogQuerySlice",
-    newCatalog<ICatalogFiltersType>(),
+    initialState,
     {
         switchCatalog(state){
             state.catalog = !state.catalog
@@ -22,8 +23,9 @@ const CatalogQuerySlice = createGenericSlice(
             state.search = action.payload
         },
 
-        updateFilters(state, action: PayloadAction<keyof ICatalogFiltersType>){
-
+        addNewFilter(state, action:
+            PayloadAction<ISTCatalogFilter<ICatalogFiltersType>>){
+            ISTCatalogAddFilter<ICatalogFiltersType>(action.payload, state);
         }
 
     }
@@ -33,7 +35,7 @@ export const {
     switchCatalog,
     setCatalogState,
     setSearch,
-    updateFilters
+    addNewFilter
 } = CatalogQuerySlice.actions
 
 export default CatalogQuerySlice.reducer
