@@ -6,6 +6,7 @@ import ISTCategoryHints from "../../../UI/ISTCategoryHints/ISTCategoryHints";
 import Image from "next/image";
 import cloudSearch from "../../../../public/Modals/Catalog/cloudSearch.svg";
 import ISTButtonN from "../../../UI/ISTButton/ISTButtonN";
+import styles from "../../../../styles/Modals/catalog/catalogSearch/catalogSearch.module.scss";
 
 type ICategoryItem = {
   id: number;
@@ -30,24 +31,13 @@ const CatalogSearchModal = ({}) => {
     <>
       {/*Filters bock*/}
       <div
-        className={"col-6 h-100"}
+        className={`d-none d-lg-block col-0 col-lg-6`}
         style={{
           border: "solid 1px red",
         }}
       >
-        <header
-          style={{
-            fontWeight: "500",
-            fontSize: "2rem",
-            lineHeight: "38px",
-            color: "#E6E6E4",
-            marginLeft: "-4px",
-            marginBottom: "17px",
-          }}
-        >
-          Поиск
-        </header>
-        <div style={{ marginLeft: "19px" }} className="rearch_box">
+        <header className={styles.header}>Поиск</header>
+        <div style={{ marginLeft: "19px" }} className={styles.rearch_box}>
           <IstInput
             inputType={inputTypesVars.any_string}
             placeholder={"Enter your request"}
@@ -113,24 +103,13 @@ const CatalogSearchModal = ({}) => {
 
       {/*Products bock*/}
       <div
-        className={"col-6 h-100"}
+        className={"col-12 col-lg-6 h-100"}
         style={{
           border: "solid 1px blue",
         }}
       >
         <div style={{ display: "flex", justifyContent: "space-between" }}>
-          <header
-            style={{
-              fontWeight: "500",
-              fontSize: "2rem",
-              lineHeight: "38px",
-              color: "#E6E6E4",
-              marginLeft: "-4px",
-              marginBottom: "17px",
-            }}
-          >
-            Товары
-          </header>
+          <header className={styles.header}>Товары</header>
           {searchResults && (
             <div style={{ width: "180px", alignSelf: "center" }}>
               <ISTButtonN
@@ -147,37 +126,30 @@ const CatalogSearchModal = ({}) => {
           )}
         </div>
         {searchResults ? (
-          <div
-            className={
-              "col-12 p-0 d-flex flex-wrap lign-self-start justify-content-lg-around justify-content-xl-around "
-            }
-          >
+          <div className={"col-12 p-0 d-flex flex-wrap justify-content-center"}>
             {new Array(10).fill("").map((i) => {
               return (
-                <ISTProductItem
+                <div
+                  className={styles.productCardVariant_Block}
                   key={`productItem_${i}_key`}
-                  id={i}
-                  title={"Product Item"}
-                  price={"200"}
-                  style={{
-                    margin: "10px 5px",
-                    inline: false,
-                  }}
-                  vendCode={"IST 000001"}
-                  currency={"RU"}
-                />
+                >
+                  <ISTProductItem
+                    id={i}
+                    title={"Product Item"}
+                    price={"200"}
+                    style={{
+                      margin: "10px",
+                      inline: false,
+                    }}
+                    vendCode={"IST 000001"}
+                    currency={"RU"}
+                  />
+                </div>
               );
             })}
           </div>
         ) : (
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              margin: "auto",
-            }}
-          >
+          <div className={styles.noResultsBlock}>
             <Image
               src={cloudSearch}
               alt={"not result"}
@@ -188,16 +160,7 @@ const CatalogSearchModal = ({}) => {
                 objectFit: "contain",
               }}
             />
-            <div
-              style={{
-                fontWeight: "500",
-                fontSize: "1.125rem",
-                lineHeight: "21px",
-                alignItems: "center",
-                color: "#99A8BA",
-                maxWidth: "186px",
-              }}
-            >
+            <div className={styles.noResultsText}>
               Start typing a query to search for a product
             </div>
           </div>

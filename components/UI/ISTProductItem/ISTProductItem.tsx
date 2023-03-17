@@ -37,32 +37,25 @@ const IstProductItem: FC<IProductItem> = ({
   return (
     <>
       {style?.inline === false || style?.inline === undefined || !style ? (
-        <div
-          className={styles.productCardVariant_Block}
-          style={{
-            margin: style.margin,
-          }}
-        >
-          <div className={styles.card}>
-            {image ? (
-              <Image fill alt="Product Item Image" src={image} />
-            ) : (
-              <Image fill alt="Product item empty image" src={noImg} />
-            )}
+        <div className={styles.card} style={{ margin: style?.margin }}>
+          {image ? (
+            <Image fill alt="Product Item Image" src={image} />
+          ) : (
+            <Image fill alt="Product item empty image" src={noImg} />
+          )}
 
-            <div className={styles.productInformation}>
-              <div className={styles.productTitle}>
-                {maxLengthText(title, 24)}
-              </div>
-              <div className={styles.price}>Price: {price}$</div>
+          <div className={styles.productInformation}>
+            <div className={styles.productTitle}>
+              {maxLengthText(title, 24)}
             </div>
-            <div className={styles.addToBasket} onClick={cartAdder}>
-              <Image
-                className={styles.basketIcon}
-                alt="imageBasket"
-                src={addBasketIcon}
-              />
-            </div>
+            <div className={styles.price}>Price: {price}$</div>
+          </div>
+          <div className={styles.addToBasket} onClick={cartAdder}>
+            <Image
+              className={styles.basketIcon}
+              alt="imageBasket"
+              src={addBasketIcon}
+            />
           </div>
         </div>
       ) : (
