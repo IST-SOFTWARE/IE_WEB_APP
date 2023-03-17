@@ -6,7 +6,6 @@ import ISTCategoryHints from "../../../UI/ISTCategoryHints/ISTCategoryHints";
 import Image from "next/image";
 import cloudSearch from "../../../../public/Modals/Catalog/cloudSearch.svg";
 import ISTButtonN from "../../../UI/ISTButton/ISTButtonN";
-import IstProductItem from "../../../UI/ISTProductItem/ISTProductItem";
 
 type ICategoryItem = {
   id: number;
@@ -25,7 +24,7 @@ const CatalogSearchModal = ({}) => {
   //searchResults - массив товаров при поиске
   const [searchResults, setSearchResults] = useState<
     ICategoryCollection[] | null
-  >(null);
+  >([null]);
 
   return (
     <>
@@ -117,8 +116,6 @@ const CatalogSearchModal = ({}) => {
         className={"col-6 h-100"}
         style={{
           border: "solid 1px blue",
-          display: "flex",
-          flexDirection: "column",
         }}
       >
         <div style={{ display: "flex", justifyContent: "space-between" }}>
@@ -150,7 +147,28 @@ const CatalogSearchModal = ({}) => {
           )}
         </div>
         {searchResults ? (
-          "PRODUCTS CATALOG" //развернуть каталог (сетка бутстрап + map IstProductItem)
+          <div
+            className={
+              "col-12 p-0 d-flex flex-wrap lign-self-start justify-content-lg-around justify-content-xl-around "
+            }
+          >
+            {new Array(10).fill("").map((i) => {
+              return (
+                <ISTProductItem
+                  key={`productItem_${i}_key`}
+                  id={i}
+                  title={"Product Item"}
+                  price={"200"}
+                  style={{
+                    margin: "10px 5px",
+                    inline: false,
+                  }}
+                  vendCode={"IST 000001"}
+                  currency={"RU"}
+                />
+              );
+            })}
+          </div>
         ) : (
           <div
             style={{
