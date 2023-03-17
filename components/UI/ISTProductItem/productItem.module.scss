@@ -1,24 +1,18 @@
 @import "../scss/variables";
+@import "../scss/variables.scss";
+@import "../scss/mixins/rfs_mixins";
 
-.productCardVariant_Block {
-  width: 30%;
+.card {
+  -webkit-box-shadow: 0px 0px 6px 0px rgba(147, 195, 248, 0.2);
+  -moz-box-shadow: 0px 0px 6px 0px rgba(147, 195, 248, 0.2);
+  box-shadow: 0px 0px 6px 0px $def_light_blue;
+  width: 100%;
+  max-width: 229px;
   height: 297px;
-  display: flex;
-  justify-content: center;
-
-  .card {
-    -webkit-box-shadow: 0px 0px 6px 0px rgba(147, 195, 248, 0.2);
-    -moz-box-shadow: 0px 0px 6px 0px rgba(147, 195, 248, 0.2);
-    box-shadow: 0px 0px 6px 0px $def_light_blue;
-    width: 100%;
-    max-width: 229px;
-    max-height: 297px;
-    height: 100%;
-    box-sizing: border-box;
-    filter: drop-shadow(4px 4px 4px rgba(0, 0, 0, 0.25));
-    border-radius: 20px;
-    overflow: hidden;
-  }
+  box-sizing: border-box;
+  filter: drop-shadow(4px 4px 4px rgba(0, 0, 0, 0.25));
+  border-radius: 20px;
+  overflow: hidden;
 
   .productInformation {
     position: absolute;
@@ -37,14 +31,14 @@
     > .productTitle {
       max-width: 172px;
       font-weight: 600;
-      font-size: 18px;
+      @include font-size(1.125rem);
       line-height: 21px;
       color: $def_white;
     }
 
     > .price {
       font-weight: 600;
-      font-size: 17px;
+      @include font-size(1.063rem);
       line-height: 20px;
       color: $def_light_blue;
     }
@@ -106,28 +100,22 @@
     > .productTitle {
       max-width: 172px;
       font-weight: 600;
-      font-size: 22px;
+      @include font-size(1.375);
+
       line-height: 26px;
       color: $def_white;
     }
     > .price {
       font-weight: 600;
-      font-size: 17px;
+      @include font-size(1.063rem);
       line-height: 20px;
       color: $def_white;
     }
     > .vendCode {
       font-weight: 600;
-      font-size: 14px;
+      @include font-size(0.875em);
       line-height: 20px;
       color: $def_light_blue;
     }
-  }
-}
-
-@media screen and (max-width: 1350px) {
-  .productCardVariant_Block {
-    width: 45%;
-    // height: 200px;
   }
 }

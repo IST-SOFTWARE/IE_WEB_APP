@@ -50,7 +50,7 @@ export default function MyApp({Component, pageProps}){
             modalComponent.editModals([
                 toc_catalog_full_prod_list,
                 toc_catalog_search,
-            ], 1 )
+            ], 0 )
         }
     },[modalComponent])
 

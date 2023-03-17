@@ -1,0 +1,74 @@
+@import "../../../variables.scss";
+@import "../../../mixins/rfs_mixins.scss";
+
+.header {
+  font-weight: 500;
+  @include font-size(2rem);
+  line-height: 38px;
+  color: $def_white;
+  margin-left: -4px;
+  margin-bottom: 17px;
+}
+.rearch_box {
+}
+
+.productCardVariant_Block {
+  width: 33%;
+  height: fit-content;
+  display: flex;
+  justify-content: center;
+}
+
+.noResultsBlock {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: auto;
+}
+
+.noResultsText {
+  font-weight: 500;
+  @include font-size(1.125rem);
+  line-height: 21px;
+  align-items: center;
+  color: #99a8ba;
+  max-width: 186px;
+}
+
+@media screen and (max-width: 1350px) {
+  .productCardVariant_Block {
+    width: 45%;
+  }
+}
+
+@media screen and (max-width: 992px) {
+  .productCardVariant_Block {
+    width: 25%;
+  }
+}
+
+@media screen and (max-width: 880px) {
+  .productCardVariant_Block {
+    width: 30%;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .productCardVariant_Block {
+    width: 40%;
+  }
+}
+
+@media screen and (max-width: 626px) {
+  .productCardVariant_Block {
+    width: 45%;
+  }
+}
+
+
+@media screen and (max-width: 576px) {
+  .productCardVariant_Block {
+    width: 50%;
+  }
+
+}
