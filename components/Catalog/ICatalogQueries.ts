@@ -1,6 +1,14 @@
-import {any} from "prop-types";
+export type baseType = {
+    type: any,
+    handler: (...props)=>any;
+}
 
-export type ISTCatalogStrArrFilter = string[]
+
+export interface ISTCatalogStrArrFilter extends baseType{
+    type: string[]
+    handler: (obj: string) => void
+}
+
 export type ISTCatalogStrFilter = string
 export type ISTCatalogNumArrFilter = number[]
 export type ISTCatalogNumFilter = number
@@ -11,6 +19,8 @@ export interface ISTCatalogFilter<FILTER_TYPE>{
     filter: FILTER_TYPE[keyof FILTER_TYPE]
 }
 
+
+
 // type CatalogFilterMappingUtility<T> =
 //         T extends ISTCatalogStrArrFilter |
 //         ISTCatalogNumArrFilter |
@@ -18,68 +28,44 @@ export interface ISTCatalogFilter<FILTER_TYPE>{
 //         ISTCatalogNumFilter    ?
 //         T                      :
 //         ISTCatalogBoolFilter
-
+//
 // type CatalogMappingUtility<T> = {
 //     [Property in keyof T]:
 //     CatalogFilterMappingUtility<T[Property]>
 // }
 
 // STATE
-type ICatalogQueries<T> = {
+export type ICatalogQueries<T> = {
     catalog: boolean,
     search?: string,
     filters?: T
 }
 
-type ISCatalogHookInitialState<T> = ICatalogQueries<T> | null
-
-// ACTIONS
-type INewFilterBuilder<FT> = {
-    <K extends keyof FT>(key: K, filter: FT[K]): ISTCatalogFilter<FT>
-}
-
-type IAddNewFilter<FT> = {
-    <K extends keyof FT>(key: K, filter: FT[K]): void
-}
-
-type ICatalogFilterHandling<FIT> =
-      FIT extends ISTCatalogStrArrFilter ?
-        (key: string) => void
-    : FIT extends ISTCatalogBoolFilter ?
-        (key: number) => void
-    : null
-
-
-export const useISTCatalog = <FT>() => {
-
-    let ISTCatalog:
-        ISCatalogHookInitialState<FT> = null
-
-    const createCatalog = (catalog?: ICatalogQueries<FT>) => {
-       ISTCatalog = ISTCatalogCreate<FT>(catalog);
-    }
-
-    const buildFilterItem: INewFilterBuilder<FT> = (
-        key,
-        filter
-    ) => {
-        return ISTNewCatalogFilterItem<FT, typeof key>(key, filter)
-    }
-
-    const addFilter: IAddNewFilter<FT> = (key, filter) => {
-        ISTCatalogAddFilter<FT>({key, filter}, ISTCatalog)
-    }
-
-    return{
-        ISTCatalog,
-        createCatalog,
-        buildFilterItem,
-        addFilter
-    }
-
+type baseFilterHandler<FT> = {
+    (
+        obj: ICatalogQueries<FT>,
+        filter: ISTCatalogFilter<FT>
+    ): void
 }
 
 
+
+interface ISTCatalogStrArrFilter_handler<FT> extends baseFilterHandler<FT> {}
+interface ISTCatalogBoolFilter_handler<FT> extends baseFilterHandler<FT> {}
+
+
+// type filterHandler<T> = {
+//     handler: T extends
+//         ISTCatalogStrArrFilter ?
+//         ISTCatalogStrArrFilter_handler<T> :
+//         ISTCatalogBoolFilter_handler<T>
+// }
+
+type filterHandler<T> = {
+    handler:
+        ISTCatalogStrArrFilter_handler<T> |
+        ISTCatalogBoolFilter_handler<T>
+}
 
 
 export const ISTCatalogCreate = <FT>(catalog?: ICatalogQueries<FT>): ICatalogQueries<FT> => {
@@ -96,13 +82,15 @@ export const ISTCatalogAddFilter = <FT>
         object: ICatalogQueries<FT>
     ) => {
 
+    // const newFilter = filter.filter as
+    //     CatalogFilterMappingUtility<ISTCatalogFilter<FT>>
+    //
+    // console.log(filter.key, ": ", newFilter);
     object.filters[filter.key] = filter.filter;
-
-
 }
 
 
-export const ISTNewCatalogFilterItem = <FT,
+export const ISTCatalogNewFilterItem = <FT,
     K extends keyof FT>(
     key: K,
     filter: FT[K]
@@ -112,6 +100,28 @@ export const ISTNewCatalogFilterItem = <FT,
         filter
     }
 }
+
+const newFilterHandlers = <FT>() => {
+    const ISTCatalogStrArrFilter_handler: ISTCatalogStrArrFilter_handler<FT> = (
+        obj, filter) => {
+        console.log("TYPE: STRING[]")
+        // obj.filters[filter.key] = filter.filter
+    }
+
+    const ISTCatalogBoolFilter_handler: ISTCatalogBoolFilter_handler<FT> = (
+        obj, filter) => {
+        console.log("TYPE: BOOL")
+    }
+
+    const newHandler = {} as filterHandler<FT>
+
+}
+
+
+
+
+
+
 
 
 

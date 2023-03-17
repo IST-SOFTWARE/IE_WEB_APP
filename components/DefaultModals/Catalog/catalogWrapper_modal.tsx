@@ -2,10 +2,6 @@ import React, {FC, ReactNode, useCallback, useEffect, useMemo, useState} from "r
 import { modalStater } from "../../../Hooks/baseModal/modalSetter";
 import styles from "../../../styles/Modals/catalog/catalogWrapper.module.scss";
 import { useCatalog } from "../../Catalog/useCatalog";
-import {useAppDispatch, useAppSelector} from "../../../Hooks/hooks";
-import {updateFilters} from "../../../store/slices/catalogSlice/catalogSlice";
-import {newCatalog} from "../../Catalog/ICatalogQueries";
-import {ICatalogFiltersType} from "../../../store/slices/catalogSlice/catalogFiltersType";
 
 
 interface catalogWrapper {
@@ -35,7 +31,7 @@ const CatalogWrapperModal: FC<catalogWrapper> = ({
             }}
           >
             <button onClick={() => closeCatalog()}>Close</button>
-          
+
           </div>
           <div
             className={"row h-100"}
