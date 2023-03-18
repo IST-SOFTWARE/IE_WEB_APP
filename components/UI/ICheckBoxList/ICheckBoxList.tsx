@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from "react";
+import React, { FC, useEffect, useRef, useState } from "react";
 import Filter from "./Filter";
 import styles from "./checkBoxList.module.scss";
 
@@ -18,7 +18,8 @@ interface ICheckBoxList {
 
 const ICheckBoxList: FC<ICheckBoxList> = ({ title, isOpened, fields }) => {
   const [hasFields, setHasFields] = useState(fields); // лист фильтров
-  const [opened, setOpened] = useState(true); //откртие/закрытие списко фильтров
+  const [opened, setOpened] = useState(isOpened); //откртие/закрытие списков фильтров
+  const [openedFilterForMobile, setOpenedFilterForMobile] = useState(false);
   const [hasFilters, setHasFilters] = useState([]); // когда hasFilters.length больше 0 рисуется "точка"
 
   const dotAddAction = () => {
@@ -35,11 +36,21 @@ const ICheckBoxList: FC<ICheckBoxList> = ({ title, isOpened, fields }) => {
 
   const openFiltersField = () => {
     opened ? setOpened(false) : setOpened(true);
+    openedFilterForMobile
+      ? setOpenedFilterForMobile(false)
+      : setOpenedFilterForMobile(true);
+  };
+
+  const closeFiltersField = () => {
+    setOpenedFilterForMobile(false);
+    setTimeout(() => {
+      setOpened(false);
+    }, 200);
   };
 
   return (
     <div className={`${styles.container}`}>
-      {hasFilters.length > 0 && <span className={styles.dot}></span>}
+      {hasFilters.length > 0 && <div className={styles.dot}></div>}
       <div
         className={`${styles.title} 
       ${hasFilters.length > 0 ? styles.titleTransition : null}`}
@@ -51,7 +62,22 @@ const ICheckBoxList: FC<ICheckBoxList> = ({ title, isOpened, fields }) => {
         ></div>
       </div>
       {opened ? (
-        <div className={styles.filters}>
+        <div
+          className={`${styles.filters}
+          ${
+            openedFilterForMobile
+              ? styles.activeFiltersMobiles
+              : styles.inActiveFiltersMobiles
+          }`}
+        >
+          {window.screen.width <= 576 && (
+            <div
+              onClick={closeFiltersField}
+              className={`${styles.titleMobileFilter} ${styles.vectorTitle}`}
+            >
+              {title}
+            </div>
+          )}
           {hasFields.map((filter, index) => {
             return (
               <Filter

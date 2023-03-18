@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import styles from "./checkBoxList.module.scss";
 import { maxLengthText } from "../common";
 
-const Filter = ({ field, dotAction, deleteDotAction }) => {
+const Filter = ({field, dotAction, deleteDotAction }) => {
   const [hasCheked, setHasCheked] = useState(field.isActive);
   const [openDiscrabing, setOpenDiscrabing] = useState(false);
 
@@ -12,8 +12,6 @@ const Filter = ({ field, dotAction, deleteDotAction }) => {
   };
 
   const activeDiscrabing = () => {
-
-    //будет ли грамотрее определять 'device' перед функцией??
     const device = navigator.userAgent.match(
       /iPhone|iPad|iPod|Android|BlackBerry|Opera Min|IEMobile/i
     );
