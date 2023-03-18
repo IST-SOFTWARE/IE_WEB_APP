@@ -41,20 +41,11 @@ const CatalogReducerTestModal = ({}) => {
                     onClick={()=>{
                         dispatch(addNewFilter({
                             key: "type",
-                            filter: ["lol","kek","cheburek"]
+                            filter: true
                         }))
 
-                        dispatch(addNewFilter({
-                            key: "mfg",
-                            filter: ["1","2","3"]
-                        }))
-
-                        dispatch(addNewFilter({
-                            key: "available",
-                            filter: false
-                        }))
                     }}
-                >Clear</button>
+                >set</button>
                 <button
                     onClick={()=>handleClick("1")}
                 >1</button>
@@ -66,7 +57,13 @@ const CatalogReducerTestModal = ({}) => {
                 <button
                     onClick={()=>handleClick("3")}
                 >3</button>
-                <button>Switch av</button>
+                <button onClick={()=>{
+                    dispatch(addNewFilter({
+                        key: "type",
+                        filter: []
+                    }))
+
+                }}>clear</button>
             </div>
         </>
     )

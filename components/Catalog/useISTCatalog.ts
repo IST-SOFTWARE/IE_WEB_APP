@@ -1,6 +1,6 @@
 import {
     ICatalogQueries,
-    ISTCatalogAddFilter,
+    ISTCatalogUpdateFilter,
     ISTCatalogCreate,
     ISTCatalogFilter,
     ISTCatalogNewFilterItem
@@ -34,7 +34,7 @@ export const useISTCatalog = <FT>() => {
     }
 
     const addFilter: IAddNewFilter<FT> = (key, filter) => {
-        ISTCatalogAddFilter<FT>({key, filter}, ISTCatalog)
+        ISTCatalogUpdateFilter<FT>({key, filter}, ISTCatalog)
     }
 
     return{
