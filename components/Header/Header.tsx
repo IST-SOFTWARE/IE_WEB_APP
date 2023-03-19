@@ -1,18 +1,32 @@
-import React, {FC} from 'react';
+import React, {FC, useEffect} from 'react';
 import styles from "../../styles/Header/Header.module.scss"
 import Image from "next/image";
-
+import {useAppDispatch, useAppSelector} from "../../Hooks/hooks";
+import {useDispatch} from "react-redux";
+import {setCatalogState, switchCatalog} from "../../store/slices/catalogSlice/catalogSlice";
+import {useISTCatalog} from "../../Hooks/catalog/useISTCatalog"
+import {ICatalogQueries} from "../Catalog/ICatalogQueries";
+import {ICatalogFiltersType} from "../../store/slices/catalogSlice/catalogFiltersType";
 
 interface Header{
     children: React.ReactNode,
-    catalogOpener: (...props: any)=>any
 }
 
 const Header:FC<Header> = ({
-    children,
-    catalogOpener
+    children
+    }) => {
 
-                           }) => {
+    const reduxCatalogState = useAppSelector(state => state.catalog)
+    const catalogDispatch = useAppDispatch();
+
+    const {pushQuery} = useISTCatalog<ICatalogQueries<ICatalogFiltersType>>()
+
+    useEffect(()=>{
+        if(reduxCatalogState) {
+            pushQuery(reduxCatalogState);
+        }
+    },[reduxCatalogState])
+
     return(
         <div className={styles.headerCont}>
             <div className={'container-fluid header-adaptive'}>
@@ -59,9 +73,9 @@ const Header:FC<Header> = ({
                     >
                         <div className={styles.headerCatalog}>
                             <button className={styles.catalogBtn}
-                                onClick={()=>{
-                                    catalogOpener();
-                                }}
+                                onClick={()=>
+                                    catalogDispatch(switchCatalog())
+                                }
                             >
                                 <div className={styles.catalogBtn_img}>
                                     <Image

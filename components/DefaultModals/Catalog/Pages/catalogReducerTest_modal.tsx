@@ -26,11 +26,7 @@ const CatalogReducerTestModal = ({}) => {
 
     return(
         <>
-            <div style={{
-                color: "#fff"
-            }}>
-                {JSON.stringify(state)}
-            </div>
+
 
             <div style={{
                 maxHeight: "30px",
@@ -41,22 +37,11 @@ const CatalogReducerTestModal = ({}) => {
                     onClick={()=>{
                         dispatch(addNewFilter({
                             key: "type",
-                            filter: true
+                            filter: ["t1", "t2", "t3"]
                         }))
 
                     }}
                 >set</button>
-                <button
-                    onClick={()=>handleClick("1")}
-                >1</button>
-
-                <button
-                    onClick={()=>handleClick("2")}
-                >2</button>
-
-                <button
-                    onClick={()=>handleClick("3")}
-                >3</button>
                 <button onClick={()=>{
                     dispatch(addNewFilter({
                         key: "type",

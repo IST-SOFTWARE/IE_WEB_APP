@@ -1,8 +1,10 @@
 import React, {FC, ReactNode, useCallback, useEffect, useMemo, useState} from "react";
 import { modalStater } from "../../../Hooks/baseModal/modalSetter";
 import styles from "../../../styles/Modals/catalog/catalogWrapper.module.scss";
-import { useCatalog } from "../../Catalog/useCatalog";
-
+import {useAppSelector} from "../../../Hooks/hooks";
+import {switchCatalog} from "../../../store/slices/catalogSlice/catalogSlice";
+import {useDispatch} from "react-redux";
+import queryString from "query-string";
 
 interface catalogWrapper {
   data?: modalStater;
@@ -11,10 +13,10 @@ interface catalogWrapper {
 
 const CatalogWrapperModal: FC<catalogWrapper> = ({
     children
-                                                 }) => {
-  const { closeCatalog } = useCatalog({});
+}) => {
 
-
+  const dispatch = useDispatch();
+  const reduxCatalogState = useAppSelector(state => state.catalog);
 
   return (
     <>
@@ -30,7 +32,25 @@ const CatalogWrapperModal: FC<catalogWrapper> = ({
               border: "solid 1px red",
             }}
           >
-            <button onClick={() => closeCatalog()}>Close</button>
+              {/*Closer*/}
+                <button onClick={() =>
+                    dispatch(switchCatalog())
+                }
+                >Close</button>
+
+
+              {/*Current state*/}
+                  <div style={{
+                      color: "#fff"
+                  }}>
+                      {JSON.stringify(reduxCatalogState)}
+                      {JSON.stringify(queryString.parse(location.search,
+                          {
+                              arrayFormat: 'bracket-separator',
+                              arrayFormatSeparator: '|'
+                          }
+                      ))}
+                  </div>
 
           </div>
           <div
