@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {useAppDispatch, useAppSelector} from "../../../../Hooks/hooks";
 import {addNewFilter} from "../../../../store/slices/catalogSlice/catalogSlice";
 import {ICatalogFiltersType} from "../../../../store/slices/catalogSlice/catalogFiltersType";
-import {useISTCatalog} from "../../../Catalog/useISTCatalog";
+import {useISTCatalog} from "../../../ISTCatalog/useISTCatalog";
 
 
 const CatalogReducerTestModal = ({}) => {
@@ -45,7 +45,7 @@ const CatalogReducerTestModal = ({}) => {
                 <button onClick={()=>{
                     dispatch(addNewFilter({
                         key: "type",
-                        filter: []
+                        filter: null
                     }))
 
                 }}>clear</button>

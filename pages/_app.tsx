@@ -14,7 +14,7 @@ import {Provider} from "react-redux";
 import store from "../store/store";
 import Header from "../components/Header/Header";
 import RegionHandler from "../components/Header/Additional/regionHandler";
-import useBaseModal from "../Hooks/baseModal/useBaseModal";
+import useBaseModal from "../components/ISTModals/useBaseModal";
 import CatalogWrapper_modal from "../components/DefaultModals/Catalog/catalogWrapper_modal";
 
 import {
@@ -25,8 +25,8 @@ import {toc_catalog_search} from "../components/DefaultModals/table_of_contents/
 import CatalogSearchModal from "../components/DefaultModals/Catalog/Pages/catalogSearch_modal";
 import CatalogReducerTestModal from "../components/DefaultModals/Catalog/Pages/catalogReducerTest_modal";
 import {toc_catalog_test} from "../components/DefaultModals/table_of_contents/Catalog/toc_catalog_test";
-import {useISTCatalog} from "../Hooks/catalog/useISTCatalog";
-import {ICatalogQueries} from "../components/Catalog/ICatalogQueries";
+import {useCatalog} from "../Hooks/useCatalog/useCatalog";
+import {ICatalogQueries} from "../components/ISTCatalog/ICatalogQueries";
 import {ICatalogFiltersType} from "../store/slices/catalogSlice/catalogFiltersType";
 
 
@@ -35,7 +35,7 @@ export default function MyApp({Component, pageProps}){
     const router = useRouter();
 
     const {modalComponent, ModalView} = useBaseModal("APP_BODY_WRAPPER");
-    const {currentState} = useISTCatalog<ICatalogQueries<ICatalogFiltersType>>()
+    const {currentState} = useCatalog<ICatalogQueries<ICatalogFiltersType>>()
 
 
     useEffect(()=>{
@@ -47,11 +47,11 @@ export default function MyApp({Component, pageProps}){
         }
     },[modalComponent])
 
+
     useEffect(()=>{
         if(modalComponent && currentState)
             modalComponent.switch(currentState.catalog);
     },[currentState, modalComponent])
-
 
     return(
         <>

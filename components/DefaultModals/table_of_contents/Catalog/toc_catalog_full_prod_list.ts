@@ -1,4 +1,4 @@
-import {modalsBasics} from "../../../../Hooks/baseModal/modalSetter";
+import {modalsBasics} from "../../../ISTModals/modalSetter";
 
 export const toc_catalog_full_prod_list = {
     typeName: "catalogFullProdsList",

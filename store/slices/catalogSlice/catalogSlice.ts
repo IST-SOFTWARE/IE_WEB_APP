@@ -6,10 +6,14 @@ import {
     ISTCatalogCreate,
     ISTCatalogFilter,
     ICatalogQueries
-} from "../../../components/Catalog/ICatalogQueries";
+} from "../../../components/ISTCatalog/ICatalogQueries";
 
 const initialState =
-    ISTCatalogCreate<ICatalogFiltersType>()
+    ISTCatalogCreate<ICatalogFiltersType>({
+        catalog: undefined,
+        filters: <ICatalogFiltersType>{},
+        search: ""
+    })
 
 
 const CatalogQuerySlice = createGenericSlice(
@@ -32,6 +36,10 @@ const CatalogQuerySlice = createGenericSlice(
         addNewFilter(state, action:
             PayloadAction<ISTCatalogFilter<ICatalogFiltersType>>){
             ISTCatalogUpdateFilter<ICatalogFiltersType>(action.payload, state);
+        },
+
+        updateCatalog(state, action: PayloadAction<typeof initialState>){
+            state = action.payload
         }
 
     }
@@ -41,7 +49,8 @@ export const {
     switchCatalog,
     setCatalogState,
     setSearch,
-    addNewFilter
+    addNewFilter,
+    updateCatalog
 } = CatalogQuerySlice.actions
 
 export default CatalogQuerySlice.reducer

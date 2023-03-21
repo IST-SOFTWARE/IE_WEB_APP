@@ -2,10 +2,12 @@ import {useRouter} from "next/router";
 import {useCallback, useEffect, useState} from "react";
 import queryString from "query-string";
 import {useAppSelector} from "../hooks";
-import {ICatalogQueries} from "../../components/Catalog/ICatalogQueries";
+import {ICatalogQueries} from "../../components/ISTCatalog/ICatalogQueries";
 import {ICatalogFiltersType} from "../../store/slices/catalogSlice/catalogFiltersType";
 
-export const useISTCatalog = <T extends ICatalogQueries<any>>() => {
+export const useCatalog = <T extends ICatalogQueries<any>>(
+    parseOptions?: queryString.StringifyOptions
+) => {
 
     const router = useRouter();
     const[currentState, setCurrentState] = useState<T>(null);
@@ -15,6 +17,7 @@ export const useISTCatalog = <T extends ICatalogQueries<any>>() => {
         const outObj = queryString.parse(query, {
                 parseBooleans: true,
                 parseNumbers: true,
+                ...parseOptions
             }
         )
         setCurrentState(outObj as T);
@@ -35,12 +38,7 @@ export const useISTCatalog = <T extends ICatalogQueries<any>>() => {
                 outQuery[key] = value;
             }
 
-            const query = queryString.stringify(outQuery, {
-                arrayFormat: 'bracket-separator',
-                arrayFormatSeparator: '|'
-            })
-
-            console.log(query);
+            const query = queryString.stringify(outQuery, {...parseOptions})
 
             router.push(`?${query}`,
                 undefined,

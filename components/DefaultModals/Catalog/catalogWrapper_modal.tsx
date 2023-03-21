@@ -1,10 +1,13 @@
 import React, {FC, ReactNode, useCallback, useEffect, useMemo, useState} from "react";
-import { modalStater } from "../../../Hooks/baseModal/modalSetter";
+import { modalStater } from "../../ISTModals/modalSetter";
 import styles from "../../../styles/Modals/catalog/catalogWrapper.module.scss";
 import {useAppSelector} from "../../../Hooks/hooks";
-import {switchCatalog} from "../../../store/slices/catalogSlice/catalogSlice";
+import {setCatalogState, switchCatalog} from "../../../store/slices/catalogSlice/catalogSlice";
 import {useDispatch} from "react-redux";
 import queryString from "query-string";
+import {useCatalog} from "../../../Hooks/useCatalog/useCatalog";
+import {ICatalogQueries} from "../../ISTCatalog/ICatalogQueries";
+import {ICatalogFiltersType} from "../../../store/slices/catalogSlice/catalogFiltersType";
 
 interface catalogWrapper {
   data?: modalStater;
@@ -17,6 +20,11 @@ const CatalogWrapperModal: FC<catalogWrapper> = ({
 
   const dispatch = useDispatch();
   const reduxCatalogState = useAppSelector(state => state.catalog);
+  const {currentState, pushQuery} = useCatalog<ICatalogQueries<ICatalogFiltersType>>({
+      arrayFormat: "bracket-separator",
+      arrayFormatSeparator: "|"
+  })
+
 
   return (
     <>
@@ -33,9 +41,9 @@ const CatalogWrapperModal: FC<catalogWrapper> = ({
             }}
           >
               {/*Closer*/}
-                <button onClick={() =>
-                    dispatch(switchCatalog())
-                }
+                <button onClick={() => {
+                    dispatch(setCatalogState(false));
+                }}
                 >Close</button>
 
 
@@ -43,13 +51,10 @@ const CatalogWrapperModal: FC<catalogWrapper> = ({
                   <div style={{
                       color: "#fff"
                   }}>
-                      {JSON.stringify(reduxCatalogState)}
-                      {JSON.stringify(queryString.parse(location.search,
-                          {
-                              arrayFormat: 'bracket-separator',
-                              arrayFormatSeparator: '|'
-                          }
-                      ))}
+                      REDUX:
+                      {JSON.stringify(reduxCatalogState)}<br/>
+                      OUT FROM LINK:
+                      {JSON.stringify(currentState)}
                   </div>
 
           </div>
