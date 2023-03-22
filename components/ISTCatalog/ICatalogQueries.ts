@@ -26,8 +26,8 @@ export const ISTCatalogUpdateFilter = <FT>
         object: ICatalogQueries<FT>
     ) => {
 
-    object.filters[filter.key] =
-        filter.filter;
+        object.filters[filter.key] =
+            filter.filter;
 }
 
 

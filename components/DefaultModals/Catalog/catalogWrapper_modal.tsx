@@ -20,10 +20,7 @@ const CatalogWrapperModal: FC<catalogWrapper> = ({
 
   const dispatch = useDispatch();
   const reduxCatalogState = useAppSelector(state => state.catalog);
-  const {currentState, pushQuery} = useCatalog<ICatalogQueries<ICatalogFiltersType>>({
-      arrayFormat: "bracket-separator",
-      arrayFormatSeparator: "|"
-  })
+  const {currentState} = useCatalog<ICatalogQueries<ICatalogFiltersType>>()
 
 
   return (

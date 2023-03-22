@@ -20,7 +20,8 @@ type IAddNewFilter<FT> = {
 export const useISTCatalog = <FT>() => {
 
     let ISTCatalog:
-        ISCatalogHookInitialState<FT> = null
+        ISCatalogHookInitialState<FT> =
+        <ISCatalogHookInitialState<FT>>{}
 
     const createCatalog = (catalog?: ICatalogQueries<FT>) => {
         ISTCatalog = ISTCatalogCreate<FT>(catalog);

@@ -12,7 +12,7 @@ const initialState =
     ISTCatalogCreate<ICatalogFiltersType>({
         catalog: undefined,
         filters: <ICatalogFiltersType>{},
-        search: ""
+        search: undefined
     })
 
 
@@ -39,7 +39,9 @@ const CatalogQuerySlice = createGenericSlice(
         },
 
         updateCatalog(state, action: PayloadAction<typeof initialState>){
-            state = action.payload
+            for (const [key, value] of Object.entries(action.payload)) {
+                state[key] = action.payload[key];
+            }
         }
 
     }

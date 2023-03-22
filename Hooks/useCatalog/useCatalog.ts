@@ -5,50 +5,96 @@ import {useAppSelector} from "../hooks";
 import {ICatalogQueries} from "../../components/ISTCatalog/ICatalogQueries";
 import {ICatalogFiltersType} from "../../store/slices/catalogSlice/catalogFiltersType";
 
-export const useCatalog = <T extends ICatalogQueries<any>>(
-    parseOptions?: queryString.StringifyOptions
+export const useCatalog = <T extends ICatalogQueries<FT>, FT = any>(
+    parseOptions?: queryString.StringifyOptions,
+    deepOptions?: {
+        option: keyof T,
+        params: Array<keyof FT>
+    }
 ) => {
 
     const router = useRouter();
     const[currentState, setCurrentState] = useState<T>(null);
 
+    const [_parseOptions] = useState<queryString.StringifyOptions>(
+        parseOptions ? parseOptions : {
+            arrayFormat: "bracket-separator",
+            arrayFormatSeparator: "|"
+        }
+    )
+
+    // const getCurrentState = <FILTER_TYPE = any>(deepOption: {
+    //     option: keyof T,
+    //     params: Array<keyof FILTER_TYPE>
+    // }):T => {
+    //
+    //     const query = location.search;
+    //     const parsed = queryString.parse(query, {
+    //             parseBooleans: true,
+    //             parseNumbers: true,
+    //             ..._parseOptions
+    //         }
+    //     )
+    //
+    // }
+
     useEffect(()=>{
         const query = location.search;
-        const outObj = queryString.parse(query, {
+        const parsed = queryString.parse(query, {
                 parseBooleans: true,
                 parseNumbers: true,
                 ...parseOptions
             }
         )
-        setCurrentState(outObj as T);
+
+        let outObj = {} as T
+        for (const [key, value] of Object.entries(parsed)){
+
+            let fountKey;
+            if(deepOptions)
+                fountKey = deepOptions.params.find(el => el.toString() === key)
+
+            if(fountKey){
+                outObj[deepOptions.option] = {
+                    ...outObj[deepOptions.option],
+                    [key]: value
+                }
+            }
+            else
+                outObj[key] = value
+        }
+
+        setCurrentState(outObj);
 
     },[router.query])
 
 
-
     const pushQuery = useCallback((q: T) => {
         if(router){
-
             const outQuery = {
                 catalog: q.catalog,
                 search: q.search,
             }
 
-            for (const [key, value] of Object.entries(q.filters)) {
-                outQuery[key] = value;
-            }
+            if(q && q?.filters)
+                for (const [key, value] of Object.entries(q.filters))
+                    outQuery[key] = value;
 
-            const query = queryString.stringify(outQuery, {...parseOptions})
+
+            const query = queryString.stringify(outQuery, {..._parseOptions})
 
             router.push(`?${query}`,
                 undefined,
-                {shallow: true})
+                {shallow: true}).catch(
+                    ex => console.warn("Routing error: ", ex)
+            )
         }
     },[router])
 
 
     return{
         pushQuery,
-        currentState
+        currentState,
+        // getCurrentState
     }
 }
