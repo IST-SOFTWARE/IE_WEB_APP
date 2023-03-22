@@ -65,9 +65,10 @@ const ICheckBoxList: FC<ICheckBoxList> = ({ title, isOpened, fields }) => {
         <div
           className={`${styles.filters}
           ${
-            openedFilterForMobile
+            window.screen.width <= 576 &&
+            (openedFilterForMobile
               ? styles.activeFiltersMobiles
-              : styles.inActiveFiltersMobiles
+              : styles.inActiveFiltersMobiles)
           }`}
         >
           {window.screen.width <= 576 && (
