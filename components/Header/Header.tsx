@@ -4,10 +4,8 @@ import Image from "next/image";
 import {useAppDispatch, useAppSelector} from "../../Hooks/hooks";
 import {useDispatch} from "react-redux";
 import {
-    addNewFilter,
+
     setCatalogState,
-    setSearch,
-    switchCatalog,
     updateCatalog
 } from "../../store/slices/catalogSlice/catalogSlice";
 import {useCatalog} from "../../Hooks/useCatalog/useCatalog"
@@ -23,25 +21,33 @@ const Header:FC<Header> = ({
     }) => {
 
     const reduxCatalogState = useAppSelector(state => state.catalog)
-    const catalogDispatch = useAppDispatch();
+    const catalogDispatch = useDispatch();
 
-    const {pushQuery, currentState} = useCatalog<ICatalogQueries<ICatalogFiltersType>>(
+    const {pushQuery, currentState} = useCatalog<ICatalogQueries<ICatalogFiltersType>,
+        ICatalogFiltersType>(
         {
             arrayFormat: "bracket-separator",
             arrayFormatSeparator: "|"
+        },
+        {
+            option: "filters",
+            params: ["mfg", "unit", "available", "type"]
         }
     )
 
     useEffect(()=>{
-        if(reduxCatalogState && reduxCatalogState.catalog !== undefined)
-            pushQuery(reduxCatalogState);
-    },[reduxCatalogState])
-
-    useEffect(()=>{
         if(currentState && reduxCatalogState && reduxCatalogState.catalog === undefined){
+            console.log("FIRST LOAD: ", reduxCatalogState, currentState)
             catalogDispatch(updateCatalog(currentState));
         }
     },[currentState, reduxCatalogState])
+
+    useEffect(()=>{
+        if(reduxCatalogState && reduxCatalogState.catalog !== undefined)
+            console.log("QUERY PUSHER: ", reduxCatalogState)
+            pushQuery(reduxCatalogState);
+    },[reduxCatalogState])
+
 
 
     return(

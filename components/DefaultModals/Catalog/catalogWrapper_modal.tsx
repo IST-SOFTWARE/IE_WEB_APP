@@ -20,10 +20,7 @@ const CatalogWrapperModal: FC<catalogWrapper> = ({
 
   const dispatch = useDispatch();
   const reduxCatalogState = useAppSelector(state => state.catalog);
-  const {currentState, pushQuery} = useCatalog<ICatalogQueries<ICatalogFiltersType>>({
-      arrayFormat: "bracket-separator",
-      arrayFormatSeparator: "|"
-  })
+  const {currentState, getCurrentState} = useCatalog<ICatalogQueries<ICatalogFiltersType>>()
 
 
   return (
@@ -46,6 +43,11 @@ const CatalogWrapperModal: FC<catalogWrapper> = ({
                 }}
                 >Close</button>
 
+              <button onClick={()=>{console.log("GET FROM FNC:",getCurrentState<ICatalogFiltersType>(
+                  {
+                      option: "filters",
+                      params: ["type", "unit", "mfg", "available"]
+                  }))}}>GET STATE</button>
 
               {/*Current state*/}
                   <div style={{

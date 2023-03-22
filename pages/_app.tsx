@@ -37,7 +37,6 @@ export default function MyApp({Component, pageProps}){
     const {modalComponent, ModalView} = useBaseModal("APP_BODY_WRAPPER");
     const {currentState} = useCatalog<ICatalogQueries<ICatalogFiltersType>>()
 
-
     useEffect(()=>{
         if(modalComponent) {
             modalComponent.editModals([
