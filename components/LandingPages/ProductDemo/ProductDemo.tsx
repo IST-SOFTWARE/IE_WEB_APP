@@ -4,7 +4,7 @@ import styles from "../../../styles/LandingStyles/PagesComponents/ProductDemo/Pr
 import getGallery, {IGallery} from "../GalleryTypes";
 import Image from "next/image";
 import Link from "next/link";
-import useBaseModal from "../../../Hooks/baseModal/useBaseModal";
+import useBaseModal from "../../ISTModals/useBaseModal";
 import PuWrapper from "../../DefaultModals/popUp/puWrapper";
 import CallBackRequest_modal, {ICB_RequestModalData} from "../../DefaultModals/CallBack/CallBackRequest_modal";
 import {GET_OUR_CONTACTS_QUERY} from "../../../queries/landingFeatures/ourContactsQuery";
@@ -106,7 +106,7 @@ const ProductDemo:FC<IPage>= (
                     </div>
                 ))}
                     <div className={`${styles.prTypeCard} ${styles.opener}`}>
-                        <Link href={"/catalog"}>
+                        <Link href={"/useCatalog"}>
                             <button/>
                         </Link>
                         <div className={styles.imageBlock}>

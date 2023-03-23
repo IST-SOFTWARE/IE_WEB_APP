@@ -1,28 +1,60 @@
-import React, {FC} from 'react';
+import React, {FC, useEffect} from 'react';
 import styles from "../../styles/Header/Header.module.scss"
 import Image from "next/image";
+import {useAppDispatch, useAppSelector} from "../../Hooks/hooks";
+import {useDispatch} from "react-redux";
+import {
 
+    setCatalogState,
+    updateCatalog
+} from "../../store/slices/catalogSlice/catalogSlice";
+import {useCatalog} from "../../Hooks/useCatalog/useCatalog"
+import {ICatalogQueries} from "../ISTCatalog/ICatalogQueries";
+import {ICatalogFiltersType} from "../../store/slices/catalogSlice/catalogFiltersType";
 
 interface Header{
     children: React.ReactNode,
-    catalogOpener: (...props: any)=>any
 }
 
 const Header:FC<Header> = ({
-    children,
-    catalogOpener
+    children
+    }) => {
 
-                           }) => {
+    const reduxCatalogState = useAppSelector(state => state.catalog)
+    const catalogDispatch = useDispatch();
+
+    const {pushQuery, currentState} = useCatalog<ICatalogQueries<ICatalogFiltersType>,
+        ICatalogFiltersType>(
+        {
+            arrayFormat: "bracket-separator",
+            arrayFormatSeparator: "|"
+        },
+        {
+            option: "filters",
+            params: ["mfg", "unit", "available", "type"]
+        }
+    )
+
+    useEffect(()=>{
+        if(currentState && reduxCatalogState && reduxCatalogState.catalog === undefined)
+            catalogDispatch(updateCatalog(currentState));
+
+    },[currentState, reduxCatalogState])
+
+    useEffect(()=>{
+        if(reduxCatalogState && reduxCatalogState.catalog !== undefined)
+            pushQuery(reduxCatalogState);
+    },[reduxCatalogState])
+
+
+
     return(
         <div className={styles.headerCont}>
             <div className={'container-fluid header-adaptive'}>
                 <div className={'h-100 row d-flex align-items-center'}>
 
                     {/*LOGO*/}
-
-                    <div className={'col-2 col-lg-2 h-100 d-none d-lg-flex align-items-center'}
-
-                    >
+                    <div className={'col-2 col-lg-2 h-100 d-none d-lg-flex align-items-center'}>
                         <div className={styles.headerLogo}>
                             <Image
                                 src={'/Logo/w_logo_svg.svg'}
@@ -54,19 +86,17 @@ const Header:FC<Header> = ({
 
                     {/*CATALOG & SEARCH*/}
 
-                    <div className={'px-0 px-sm-3 col-7 col-sm-7 col-lg-7 d-flex align-items-center h-75'}
-
-                    >
+                    <div className={'px-0 px-sm-3 col-7 col-sm-7 col-lg-7 d-flex align-items-center h-75'}>
                         <div className={styles.headerCatalog}>
                             <button className={styles.catalogBtn}
-                                onClick={()=>{
-                                    catalogOpener();
-                                }}
+                                onClick={()=>
+                                    catalogDispatch(setCatalogState(true))
+                                }
                             >
                                 <div className={styles.catalogBtn_img}>
                                     <Image
                                         src={'/Header/catalog_btn.svg'}
-                                        alt={'Catalog button'}
+                                        alt={'ISTCatalog button'}
                                         fill={true}
                                         style={{
                                             objectFit: "contain"
@@ -86,9 +116,7 @@ const Header:FC<Header> = ({
 
                     {/*NAVIGATION*/}
 
-                    <div className={'px-2 px-sm-3 col-3 col-sm-3 d-flex h-75 align-items-center justify-content-end'}
-
-                    >
+                    <div className={'px-2 px-sm-3 col-3 col-sm-3 d-flex h-75 align-items-center justify-content-end'}>
                         <div className={styles.headerNav}>
                             <button className={styles.cartBtn}>
                                 <div className={styles.cartBtn_img}>

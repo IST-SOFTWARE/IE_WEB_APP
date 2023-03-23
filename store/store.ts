@@ -1,11 +1,13 @@
 import {configureStore} from "@reduxjs/toolkit";
 import scrollSpyReducer from "./slices/pageTrackerSlice";
 import regionReducer from "./slices/regionSlice"
+import catalogReducer from "./slices/catalogSlice/catalogSlice"
 
 const store = configureStore({
     reducer: {
         scrollSpy: scrollSpyReducer,
         region: regionReducer,
+        catalog: catalogReducer
     },
     middleware:
         getDefaultMiddleware => getDefaultMiddleware(

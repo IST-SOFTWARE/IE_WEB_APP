@@ -11,7 +11,7 @@ import getOurContactsData, {
 import {useQuery} from "@apollo/client";
 import {apolloClient} from "../../../Apollo/apolloClient";
 import useCallRequest from "../../../Hooks/useCallRequest/useCallRequest";
-import useBaseModal from "../../../Hooks/baseModal/useBaseModal";
+import useBaseModal from "../../ISTModals/useBaseModal";
 import {useISTInputFelt} from "../../UI/ISTInput/useISTInputFelt";
 
 interface CallBack{

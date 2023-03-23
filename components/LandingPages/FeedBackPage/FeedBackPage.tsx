@@ -28,7 +28,7 @@ import {
     getFB_Reviews,
     IFeedBackReviews, IFeedBackReviewsVars, reviewItem
 } from "../../../queries/landingFeatures/feedbackPage/getFB_Reviews";
-import useBaseModal from "../../../Hooks/baseModal/useBaseModal";
+import useBaseModal from "../../ISTModals/useBaseModal";
 import FeedBack_modal from "../../DefaultModals/LandingFeedBack/FeedBack_modal";
 import {IQueryPaginationVariable} from "../../../queries/common";
 import useISTReviews from "../../UI/ISTComment/hook/useISTReviews";
