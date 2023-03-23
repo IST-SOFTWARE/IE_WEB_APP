@@ -1,5 +1,5 @@
+import {modalsBasics} from "../../../ISTModals/modalSetter";
 
-import {modalsBasics} from "../../../../Hooks/baseModal/modalSetter";
 
 export const toc_mobile_cart_page = {
     typeName: "mobileCartPage",

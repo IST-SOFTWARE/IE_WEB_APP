@@ -134,7 +134,7 @@ export default function MyApp({ Component, pageProps }) {
                             {modalComponent.isCurrentModal(
                                 toc_mobile_filter_page.typeName
                             ) ? (
-                                <CatalogMobileFilterPageModal closeMobileFilter={openCatalog}/>
+                                <CatalogMobileFilterPageModal closeMobileFilter={()=>console.log("close")}/>
                             ) : null}
 
                             {modalComponent.isCurrentModal(toc_mobile_cart_page.typeName) ? (
