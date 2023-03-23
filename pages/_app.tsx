@@ -1,49 +1,40 @@
-import { useState, useEffect, useContext, useRef} from "react";
-
-
-//POLYFILLS FOR OLDER BR
+import {useEffect} from "react";
 import {forEach} from "core-js/stable/dom-collections";
 import {replaceAll} from "core-js/stable/string";
 
 import '../styles/global.scss'
-import NextNProgress from 'nextjs-progressbar'
 import Head from 'next/head'
 
-
-import { useRouter, Router} from 'next/router'
+import {useRouter} from 'next/router'
 import Footer from "../components/Footer/Footer";
 
 import {ApolloProvider} from "@apollo/client";
 import {apolloClient} from "../Apollo/apolloClient";
-import Loader from "../components/Loader";
-import {Provider, useDispatch} from "react-redux";
+import {Provider} from "react-redux";
 import store from "../store/store";
 import Header from "../components/Header/Header";
 import RegionHandler from "../components/Header/Additional/regionHandler";
-import useBaseModal from "../Hooks/baseModal/useBaseModal";
+import useBaseModal from "../components/ISTModals/useBaseModal";
 import CatalogWrapper_modal from "../components/DefaultModals/Catalog/catalogWrapper_modal";
-import {useCatalog} from "../components/Catalog/useCatalog";
-import CatalogFullProductsList_modal from "../components/DefaultModals/Catalog/Pages/catalogFullProductsList_modal";
-import CatalogFullProductsListModal from "../components/DefaultModals/Catalog/Pages/catalogFullProductsList_modal";
+
 import {
     toc_catalog_full_prod_list
 } from "../components/DefaultModals/table_of_contents/Catalog/toc_catalog_full_prod_list";
+
 import {toc_catalog_search} from "../components/DefaultModals/table_of_contents/Catalog/toc_catalog_search";
 import CatalogSearchModal from "../components/DefaultModals/Catalog/Pages/catalogSearch_modal";
+import {useCatalog} from "../Hooks/useCatalog/useCatalog";
+import {ICatalogQueries} from "../components/ISTCatalog/ICatalogQueries";
+import {ICatalogFiltersType} from "../store/slices/catalogSlice/catalogFiltersType";
+import CatalogFullProductsListModal from "../components/DefaultModals/Catalog/Pages/catalogFullProductsList_modal";
+
 
 export default function MyApp({Component, pageProps}){
 
-
     const router = useRouter();
-    const[loadingState, setLoadingState] = useState(true);
 
     const {modalComponent, ModalView} = useBaseModal("APP_BODY_WRAPPER");
-    const [catalogState, setCatalogState] = useState(false);
-
-    const {openCatalog, closeCatalog} = useCatalog({
-        catalogStateSetter: setCatalogState
-    })
-
+    const {currentState} = useCatalog<ICatalogQueries<ICatalogFiltersType>>()
 
     useEffect(()=>{
         if(modalComponent) {
@@ -55,34 +46,13 @@ export default function MyApp({Component, pageProps}){
     },[modalComponent])
 
 
-
     useEffect(()=>{
-        modalComponent.switch(catalogState);
-    },[catalogState, modalComponent])
-
-    // useEffect(() => {
-    //     const handleStart = () => setLoadingState(true);
-    //     const handleComplete = () => (false);
-    //
-    //     router.events.on('routeChangeStart', handleStart)
-    //     router.events.on('routeChangeComplete', handleComplete)
-    //     router.events.on('routeChangeError', handleComplete)
-    //
-    //     return () => {
-    //         router.events.off('routeChangeStart', handleStart)
-    //         router.events.off('routeChangeComplete', handleComplete)
-    //         router.events.off('routeChangeError', handleComplete)
-    //     }
-    // })
-
-    // useEffect(()=>{
-    //     setLoadingState(false);
-    // }, [])
-
+        if(modalComponent && currentState)
+            modalComponent.switch(currentState.catalog);
+    },[currentState, modalComponent])
 
     return(
         <>
-        
             <Head>
                 <title>IST ELEVATOR</title>
                 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
@@ -91,24 +61,13 @@ export default function MyApp({Component, pageProps}){
                 <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet"/>
             </Head>
 
-            {/*<NextNProgress*/}
-            {/*    color="#29D"*/}
-            {/*    startPosition={0.3}*/}
-            {/*    stopDelayMs={200}*/}
-            {/*    height={3}*/}
-            {/*    showOnShallow={true}*/}
-            {/*/>*/}
-
             <ApolloProvider client={apolloClient}>
             <Provider store={store}>
-                <Header
-                    catalogOpener={()=>{
-                        openCatalog()
-                    }}>
+                <Header>
                     <RegionHandler baseRegion={router.locale}/>
                 </Header>
                     <Component {...pageProps} key={router.asPath}/>
-                <Footer className={"footer"}
+                <Footer
                         route={router.locale}
                 />
 
