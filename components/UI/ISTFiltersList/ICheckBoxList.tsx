@@ -2,21 +2,37 @@ import React, { FC, useEffect, useRef, useState } from "react";
 import Filter from "./Filter";
 import styles from "./checkBoxList.module.scss";
 
+type mobileOpenType_dropdown = "dropdown"
+type mobileOpenType_transfer = "transfer"
+
 type ICheckBoxItem = {
   isActive: boolean;
-  fieldName: string;
   checkBox: boolean;
+  fieldName: string;
   onCheck?: (...props: any) => any;
   onRevoke?: (...props: any) => any;
 };
 
-interface ICheckBoxList {
+
+
+type mobileSettings = {
+  type: mobileOpenType_dropdown | mobileOpenType_transfer,
+  mobileListTransfer: typeof this.type extends
+      mobileOpenType_dropdown ? null
+      : React.Dispatch<ICheckBoxItem[]>
+
+}
+
+interface ICheckBoxList
+{
   title: string;
   isOpened: boolean;
   fields: Array<ICheckBoxItem>;
+  mobileSettings?: mobileSettings
 }
 
-const ICheckBoxList: FC<ICheckBoxList> = ({ title, isOpened, fields }) => {
+
+const ICheckBoxList:FC<ICheckBoxList> = ({ title, isOpened, fields, mobileSettings }) => {
   const [hasFields, setHasFields] = useState(fields); // лист фильтров
   const [opened, setOpened] = useState(isOpened); //откртие/закрытие списков фильтров
   const [openedFilterForMobile, setOpenedFilterForMobile] = useState(false);

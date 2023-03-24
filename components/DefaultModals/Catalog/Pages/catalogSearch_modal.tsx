@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import ISTProductItem from "../../../UI/ISTProductItem/ISTProductItem";
-import ICheckBoxList from "../../../UI/ICheckBoxList/ICheckBoxList";
+import ICheckBoxList from "../../../UI/ISTFiltersList/ICheckBoxList";
 import IstInput, { inputTypesVars } from "../../../UI/ISTInput/ISTInput";
 import ISTCategoryHints from "../../../UI/ISTCategoryHints/ISTCategoryHints";
 import Image from "next/image";

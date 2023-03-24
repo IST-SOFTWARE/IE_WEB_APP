@@ -33,6 +33,7 @@ import { toc_mobile_cart_page } from "../components/DefaultModals/table_of_conte
 
 import {ICatalogQueries} from "../components/ISTCatalog/ICatalogQueries";
 import {ICatalogFiltersType} from "../store/slices/catalogSlice/catalogFiltersType";
+import CatalogTestFiltersModal from "../components/DefaultModals/Catalog/Pages/catalogTestFilters_modal";
 
 export default function MyApp({ Component, pageProps }) {
     const router = useRouter();
@@ -56,11 +57,12 @@ export default function MyApp({ Component, pageProps }) {
             modalComponent.editModals(
                 [
                     toc_catalog_search,
+                    {typeName: "TEST_FILTERS_PAGE", _header: "", _paragraph: ""},
                     toc_catalog_full_prod_list,
                     toc_mobile_filter_page,
                     toc_mobile_cart_page,
                 ],
-                0
+                1
             );
         }
     }, [modalComponent]);
@@ -121,6 +123,10 @@ export default function MyApp({ Component, pageProps }) {
                             stateSetterCartPage={openCartPage}
 
                         >
+                            {modalComponent.isCurrentModal("TEST_FILTERS_PAGE") ? (
+                                <CatalogTestFiltersModal/>
+                            ) : null}
+
                             {modalComponent.isCurrentModal(toc_catalog_search.typeName) ? (
                                 <CatalogSearchModal/>
                             ) : null}

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import ISTProductItem from "../../../UI/ISTProductItem/ISTProductItem";
-import ICheckBoxList from "../../../UI/ICheckBoxList/ICheckBoxList";
+import ICheckBoxList from "../../../UI/ISTFiltersList/ICheckBoxList";
 import styles from "../../../../styles/Modals/catalog/catalogProducts/catalogFullProductsList.module.scss";
 import ICatalogHelper from "../../../UI/ICatalogHelper/ICatalogHelper";
 
@@ -34,7 +34,7 @@ const CatalogFullProductsListModal = ({}) => {
                 opened ? styles.active : null
               } `}
             >
-              <ICheckBoxList
+              <ISTFiltersList
                 title={"производители"}
                 isOpened={false}
                 fields={[
@@ -49,7 +49,7 @@ const CatalogFullProductsListModal = ({}) => {
                   { isActive: false, fieldName: "фильтр 4", checkBox: true },
                 ]}
               />
-               <ICheckBoxList
+               <ISTFiltersList
                 title={"производители 123"}
                 isOpened={false}
                 fields={[
@@ -93,6 +93,10 @@ const CatalogFullProductsListModal = ({}) => {
               { isActive: false, fieldName: "фильтр 3", checkBox: true },
               { isActive: false, fieldName: "фильтр 4", checkBox: true },
             ]}
+            mobileSettings={{
+                type: "transfer",
+                mobileListTransfer: undefined
+            }}
           />
         </div>
       </div>

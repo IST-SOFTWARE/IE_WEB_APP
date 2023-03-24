@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import styles from "../../../../../styles/Modals/catalog/mobile/catalogMobileFilterPage_modal.module.scss";
-import ICheckBoxList from "../../../../UI/ICheckBoxList/ICheckBoxList";
+import ICheckBoxList from "../../../../UI/ISTFiltersList/ICheckBoxList";
 
 const CatalogMobileFilterPageModal = ({ closeMobileFilter }) => {
   const [opened, setOpened] = useState(false); //откртие/закрытие списко фильтров

@@ -14,7 +14,7 @@ import {ICatalogQueries} from "../../ISTCatalog/ICatalogQueries";
 import {ICatalogFiltersType} from "../../../store/slices/catalogSlice/catalogFiltersType";
 
 import ISTProductItem from "../../UI/ISTProductItem/ISTProductItem";
-import ICheckBoxList from "../../UI/ICheckBoxList/ICheckBoxList";
+import ICheckBoxList from "../../UI/ISTFiltersList/ICheckBoxList";
 
 import ICatalogHelper from "../../UI/ICatalogHelper/ICatalogHelper";
 import searchIcon from "../../../public/MobileHelperIcons/search_icon.svg";
