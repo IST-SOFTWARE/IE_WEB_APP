@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useRef, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import Filter from "./Filter";
 import styles from "./checkBoxList.module.scss";
 
@@ -14,12 +14,9 @@ type ICheckBoxItem = {
 };
 
 
-
 type mobileSettings = {
   type: mobileOpenType_dropdown | mobileOpenType_transfer,
-  mobileListTransfer: typeof this.type extends
-      mobileOpenType_dropdown ? null
-      : React.Dispatch<ICheckBoxItem[]>
+  mobileListTransfer?: React.Dispatch<ICheckBoxItem[]>
 
 }
 
@@ -32,9 +29,14 @@ interface ICheckBoxList
 }
 
 
-const ICheckBoxList:FC<ICheckBoxList> = ({ title, isOpened, fields, mobileSettings }) => {
-  const [hasFields, setHasFields] = useState(fields); // лист фильтров
-  const [opened, setOpened] = useState(isOpened); //откртие/закрытие списков фильтров
+const ICheckBoxList:FC<ICheckBoxList> = ({
+  title,
+  isOpened,
+  fields,
+  mobileSettings
+}) => {
+  const [hasFields, setHasFields] = useState<ICheckBoxItem[]>(fields); // лист фильтров
+  const [opened, setOpened] = useState<boolean>(isOpened); //откртие/закрытие списков фильтров
   const [openedFilterForMobile, setOpenedFilterForMobile] = useState(false);
   const [hasFilters, setHasFilters] = useState([]); // когда hasFilters.length больше 0 рисуется "точка"
 
@@ -66,45 +68,33 @@ const ICheckBoxList:FC<ICheckBoxList> = ({ title, isOpened, fields, mobileSettin
 
   return (
     <div className={`${styles.container}`}>
-      {hasFilters.length > 0 && <div className={styles.dot}></div>}
+      {hasFilters.length > 0 &&
+          <div className={styles.dot}/>
+      }
       <div
         className={`${styles.title} 
-      ${hasFilters.length > 0 ? styles.titleTransition : null}`}
+        ${hasFilters.length > 0 ? 
+            styles.titleTransition 
+            : null}`}
         onClick={openFiltersField}
       >
         {title}
-        <div
-          className={`${styles.vector} ${opened ? styles.active : null}`}
-        ></div>
+      <div
+        className={`${styles.vector} 
+        ${opened ? styles.active : null}`}
+      />
+
       </div>
       {opened ? (
-        <div
-          className={`${styles.filters}
-          ${
-            window.screen.width <= 576 &&
-            (openedFilterForMobile
-              ? styles.activeFiltersMobiles
-              : styles.inActiveFiltersMobiles)
-          }`}
-        >
-          {window.screen.width <= 576 && (
-            <div
-              onClick={closeFiltersField}
-              className={`${styles.titleMobileFilter} ${styles.vectorTitle}`}
-            >
-              {title}
-            </div>
-          )}
-          {hasFields.map((filter, index) => {
-            return (
-              <Filter
-                field={filter}
-                dotAction={dotAddAction}
-                deleteDotAction={deleteDotAction}
-                key={`filterItem_${index}_key`}
-              />
-            );
-          })}
+        <div className={styles.filters}>
+          {hasFields.map((filter, index) => (
+            <Filter
+              field={filter}
+              dotAction={dotAddAction}
+              deleteDotAction={deleteDotAction}
+              key={`filterItem_${index}_key`}
+            />
+          ))}
         </div>
       ) : null}
     </div>

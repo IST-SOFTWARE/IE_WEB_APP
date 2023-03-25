@@ -3,58 +3,59 @@ import styles from "./checkBoxList.module.scss";
 import { maxLengthText } from "../common";
 
 const Filter = ({field, dotAction, deleteDotAction }) => {
-  const [hasCheked, setHasCheked] = useState(field.isActive);
-  const [openDiscrabing, setOpenDiscrabing] = useState(false);
+  const [hasChecked, setHasChecked] = useState(field.isActive);
+  const [openDescribing, setOpenDescribing] = useState(false);
 
   const activeFilterCheck = () => {
-    hasCheked ? setHasCheked(false) : setHasCheked(true);
-    hasCheked ? deleteDotAction() : dotAction();
+    hasChecked ? setHasChecked(false) : setHasChecked(true);
+    hasChecked ? deleteDotAction() : dotAction();
   };
 
-  const activeDiscrabing = () => {
+  const activeDescribing = () => {
     const device = navigator.userAgent.match(
       /iPhone|iPad|iPod|Android|BlackBerry|Opera Min|IEMobile/i
     );
 
     if (device === null) {
       if (field.fieldName?.length >= 23) {
-        setOpenDiscrabing(true);
+        setOpenDescribing(true);
       }
     } else {
       return;
     }
   };
 
-  const disactiveDiscrabing = () => {
-    setOpenDiscrabing(false);
+  const hideDescribing = () => {
+    setOpenDescribing(false);
   };
 
   return (
     <div
       className={`${styles.filter}`}
       onClick={activeFilterCheck}
-      onMouseEnter={activeDiscrabing}
-      onMouseLeave={disactiveDiscrabing}
+      onMouseEnter={activeDescribing}
+      onMouseLeave={hideDescribing}
     >
       <div className={styles.columnField}>
         <div
           className={`${styles.fieldName} ${
-            hasCheked ? styles.activeText : ""
+            hasChecked ? styles.activeText : ""
           }`}
         >
           {maxLengthText(field.fieldName, 23)}
         </div>
-        {openDiscrabing ? (
-          <span className={styles.discrabingFilter}>{field.fieldName}</span>
+        {openDescribing ? (
+          <span className={styles.describingFilter}>{field.fieldName}</span>
         ) : null}
       </div>
 
       {field.checkBox ? (
         <div
           onClick={activeFilterCheck}
-          className={`${styles.checkPoint} ${hasCheked ? "" : styles.active}`}
+          className={`${styles.checkPoint} ${hasChecked ? "" : styles.active}`}
         ></div>
       ) : null}
+
     </div>
   );
 };

@@ -4,23 +4,25 @@
 
 .container {
   width: 100%;
+  position: relative;
+  min-width: 250px;
   @include gradient_bg($background: gradient);
   box-sizing: border-box;
-  -webkit-box-shadow: 0px 0px 8px 0px rgba(147, 195, 248, 0.2);
-  -moz-box-shadow: 0px 0px 8px 0px rgba(147, 195, 248, 0.2);
-  box-shadow: 0px 0px 8px 0px $def_light_blue;
-  padding: 21px 20px;
+  -webkit-box-shadow: 0px 0px 6px $def_light_blue;
+  -moz-box-shadow: 0px 0px 6px $def_light_blue;
+  box-shadow: 0px 0px 6px $def_light_blue;
+  padding: 18px 20px;
   margin-bottom: 13px;
 
   > .dot {
     position: absolute;
     border-radius: 50%;
     left: 21px;
-    margin-top: 8px;
+    margin-top: 7px;
     width: 8px;
     height: 8px;
     background: $def_light_blue;
-    box-shadow: 0px 0px 4px #151a20;
+    box-shadow: 0px 0px 4px $def_dark;
     animation: dotActive 0.15s ease-in-out;
   }
 
@@ -30,8 +32,8 @@
   }
 
   > .title {
-    font-weight: 700;
-    @include font-size(1.25rem);
+    font-weight: 600;
+    @include font-size(1.20rem);
     line-height: 23px;
     color: $pure_white;
     display: flex;
@@ -89,44 +91,48 @@
       }
       width: 100%;
       box-sizing: border-box;
-      padding: 7px 9px;
+      padding: 8px;
+
       color: $def_white;
       font-weight: 500;
-      @include font-size(1.25rem);
+      @include font-size(1.15rem);
       line-height: 23px;
+
       display: flex;
       justify-content: space-between;
-      margin-bottom: 4px;
+      align-items: center;
+
+      margin: 4px 0px;
       cursor: pointer;
       transition: all 0.1s ease-in-out;
+
       &:hover {
-        background: #2c3641;
-        box-shadow: 0px 0px 4px #151a20;
-        border-radius: 5px;
-        width: 100%;
-        padding: 7px 9px;
+        background: $def_page_bg;
+        box-shadow: 0px 0px 4px $def_dark;
+        border-radius: 10px;
         transition: all 0.1s ease-in-out;
       }
 
       .columnField {
-        display: flex;
-        flex-direction: column;
-        > .discrabingFilter {
-          animation: discrabingFilterActive 0.2s ease-in-out;
-          position: absolute;
-          z-index: 99999999;
-          margin-top: 38px;
-          left: 22px;
+        > .describingFilter {
+          background: $def_page_bg;
           box-sizing: border-box;
-          width: 70%;
-          background: #2c3641;
-          box-shadow: 0px 0px 5px #151a20;
+          position: absolute;
+          width: 75%;
+
+          left: 18px;
+          transform: translateY(15px);
+
+          box-shadow: 0px 0px 5px $def_dark;
           border-radius: 10px;
-          padding: 5px 8px;
+          padding:8px;
+
           font-weight: 500;
-          @include font-size(0.938rem);
+          @include font-size(1rem);
           line-height: 18px;
           color: $def_white;
+
+          animation: describingFilterActive 0.2s ease-in-out;
         }
       }
 
@@ -143,9 +149,8 @@
 
       > .checkPoint {
         position: relative;
-        top: 4px;
-        width: 17px;
-        height: 17px;
+        width: 20px;
+        height: 20px;
         border: 2px solid $def_light_blue;
         border-radius: 5px;
         cursor: pointer;
@@ -154,21 +159,24 @@
         &::after {
           position: absolute;
           content: "-";
-          top: -6px;
+          @include font-size(1.5rem);
           color: $def_light_blue;
-          left: 3.5px;
+          font-weight: 400;
+
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
         }
       }
+
       > .active {
         border: 2px solid $def_blue_gray;
         &::after {
-          position: absolute;
           content: "+";
-          top: -5px;
-          left: 3px;
-          @include font-size(0.875rem);
+          @include font-size(1rem);
         }
       }
+
     }
   }
 }
@@ -182,7 +190,7 @@
   }
 }
 
-@keyframes discrabingFilterActive {
+@keyframes describingFilterActive {
   0% {
     opacity: 0;
   }
@@ -191,106 +199,106 @@
   }
 }
 
-@media screen and (max-width: 576px) {
-  .container {
-    box-shadow: none !important;
-    background: linear-gradient(111.69deg, #2c3641 0%, #151a20 100%);
-    border-radius: 20px !important;
-    border: none !important;
-    overflow: hidden !important;
-
-    .title {
-      > .vector {
-        position: relative;
-        top: 13px;
-        right: 11px;
-        background-color: $def_blue_gray;
-
-        > &::after {
-          position: absolute;
-          content: "";
-          width: 12px;
-          height: 3px;
-          right: -6px;
-          top: -7px;
-          background: inherit;
-          border-radius: 3px;
-          transform: rotate(45deg);
-          transition: all 0.1s ease-in-out;
-        }
-
-        > &::before {
-          position: absolute;
-          right: -6px;
-          content: "";
-          width: 12px;
-          height: 3px;
-          background: inherit;
-          border-radius: 3px;
-          transform: rotate(-45deg);
-          transition: all 0.1s ease-in-out;
-        }
-      }
-    }
-
-    .filters {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      background-color: $def_page_bg;
-      top: 0px;
-      left: 0px;
-      z-index: 9999;
-
-      .titleMobileFilter {
-        padding-left: 20px;
-        color: $def_white;
-        font-weight: 700;
-        @include font-size(1.375rem);
-        line-height: 23px;
-        text-transform: capitalize;
-        cursor: pointer;
-        margin-bottom: 30px;
-
-        > &::after {
-          position: absolute;
-          content: "";
-          width: 12px;
-          height: 3px;
-          left: -6px;
-          top: 7px;
-          background-color: $def_blue_gray;
-          border-radius: 3px;
-          transform: rotate(-45deg);
-          transition: all 0.1s ease-in-out;
-        }
-
-        > &::before {
-          position: absolute;
-          left: -6px;
-          content: "";
-          width: 12px;
-          height: 3px;
-          top: 14px;
-          background-color: $def_blue_gray;
-          border-radius: 3px;
-          transform: rotate(45deg);
-          transition: all 0.1s ease-in-out;
-        }
-      }
-
-      .filter {
-        .columnField {
-          > .discrabingFilter {
-            left: 2px;
-            width: 90%;
-            @include font-size(1rem);
-          }
-        }
-      }
-    }
-  }
-}
+//@media screen and (max-width: 576px) {
+//  .container {
+//    box-shadow: none !important;
+//    background: linear-gradient(111.69deg, #2c3641 0%, #151a20 100%);
+//    border-radius: 20px !important;
+//    border: none !important;
+//    overflow: hidden !important;
+//
+//    .title {
+//      > .vector {
+//        position: relative;
+//        top: 13px;
+//        right: 11px;
+//        background-color: $def_blue_gray;
+//
+//        > &::after {
+//          position: absolute;
+//          content: "";
+//          width: 12px;
+//          height: 3px;
+//          right: -6px;
+//          top: -7px;
+//          background: inherit;
+//          border-radius: 3px;
+//          transform: rotate(45deg);
+//          transition: all 0.1s ease-in-out;
+//        }
+//
+//        > &::before {
+//          position: absolute;
+//          right: -6px;
+//          content: "";
+//          width: 12px;
+//          height: 3px;
+//          background: inherit;
+//          border-radius: 3px;
+//          transform: rotate(-45deg);
+//          transition: all 0.1s ease-in-out;
+//        }
+//      }
+//    }
+//
+//    .filters {
+//      position: absolute;
+//      width: 100%;
+//      height: 100%;
+//      background-color: $def_page_bg;
+//      top: 0px;
+//      left: 0px;
+//      z-index: 9999;
+//
+//      .titleMobileFilter {
+//        padding-left: 20px;
+//        color: $def_white;
+//        font-weight: 700;
+//        @include font-size(1.375rem);
+//        line-height: 23px;
+//        text-transform: capitalize;
+//        cursor: pointer;
+//        margin-bottom: 30px;
+//
+//        > &::after {
+//          position: absolute;
+//          content: "";
+//          width: 12px;
+//          height: 3px;
+//          left: -6px;
+//          top: 7px;
+//          background-color: $def_blue_gray;
+//          border-radius: 3px;
+//          transform: rotate(-45deg);
+//          transition: all 0.1s ease-in-out;
+//        }
+//
+//        > &::before {
+//          position: absolute;
+//          left: -6px;
+//          content: "";
+//          width: 12px;
+//          height: 3px;
+//          top: 14px;
+//          background-color: $def_blue_gray;
+//          border-radius: 3px;
+//          transform: rotate(45deg);
+//          transition: all 0.1s ease-in-out;
+//        }
+//      }
+//
+//      .filter {
+//        .columnField {
+//          > .discrabingFilter {
+//            left: 2px;
+//            width: 90%;
+//            @include font-size(1rem);
+//          }
+//        }
+//      }
+//    }
+//  }
+//}
 
 .inActiveFiltersMobiles {
   animation: closeFilterModileVersion 0.2s ease-in-out;
