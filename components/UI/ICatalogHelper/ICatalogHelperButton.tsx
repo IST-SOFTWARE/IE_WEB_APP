@@ -11,14 +11,7 @@ interface ICatalogHelperButton {
   foo: (...props: any) => any;
 }
 
-const CatalogHelper: FC<ICatalogHelperButton> = ({
-  idx,
-  title,
-  icon,
-  isCurrent,
-  action,
-  foo,
-}) => {
+const CatalogHelperButton = ({ idx, title, icon, isCurrent, action, foo }) => {
   return (
     <div>
       <div
@@ -38,4 +31,4 @@ const CatalogHelper: FC<ICatalogHelperButton> = ({
   );
 };
 
-export default CatalogHelper;
+export default CatalogHelperButton;

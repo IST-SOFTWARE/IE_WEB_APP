@@ -4,10 +4,12 @@ import regionReducer from "./slices/regionSlice"
 import catalogReducer from "./slices/catalogSlice/catalogSlice"
 
 const store = configureStore({
+    devTools:true,
     reducer: {
         scrollSpy: scrollSpyReducer,
         region: regionReducer,
         catalog: catalogReducer
+
     },
     middleware:
         getDefaultMiddleware => getDefaultMiddleware(

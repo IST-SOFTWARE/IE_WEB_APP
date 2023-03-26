@@ -6,20 +6,17 @@ const CatalogMobileFilterPageModal = ({ closeMobileFilter }) => {
   const [opened, setOpened] = useState(false); //откртие/закрытие списко фильтров
   return (
     <div className={styles.container}>
+      <div onClick={closeMobileFilter} className={`${styles.header}`}>
+        <div className={styles.title}>Моя корзина</div>
+        <div className={`${styles.vector}`}></div>
+      </div>
+
       <div
         className={`${styles.mobileVersionFilters} ${
           opened ? styles.active : null
         }`}
       >
-        <div className={`${styles.header}`}>
-          <div className={styles.title}>Фильтры</div>
-          <div
-            className={`${styles.vector} ${opened ? styles.active : null}`}
-          ></div>
-        </div>
-        <div
-          className={`${styles.filtersItems} ${opened ? styles.active : null} `}
-        >
+        <div>
           <ICheckBoxList
             title={"производители"}
             isOpened={false}
@@ -49,10 +46,36 @@ const CatalogMobileFilterPageModal = ({ closeMobileFilter }) => {
               { isActive: false, fieldName: "фильтр 4", checkBox: true },
             ]}
           />
+          <ICheckBoxList
+            title={"производители 123"}
+            isOpened={false}
+            fields={[
+              {
+                isActive: false,
+                fieldName: "фильтр 1 с большим описанием. Этот ",
+                checkBox: true,
+              },
+              { isActive: false, fieldName: "фильтр 2", checkBox: true },
+              { isActive: false, fieldName: "фильтр 3", checkBox: true },
+              { isActive: false, fieldName: "фильтр 4", checkBox: true },
+            ]}
+          />
+          <ICheckBoxList
+            title={"производители 123"}
+            isOpened={false}
+            fields={[
+              {
+                isActive: false,
+                fieldName: "фильтр 1 с большим описанием. Этот ",
+                checkBox: true,
+              },
+              { isActive: false, fieldName: "фильтр 2", checkBox: true },
+              { isActive: false, fieldName: "фильтр 3", checkBox: true },
+              { isActive: false, fieldName: "фильтр 4", checkBox: true },
+            ]}
+          />
         </div>
       </div>
-
-      <button onClick={closeMobileFilter}>CLOSE FILTER CATALOG MOBILE</button>
     </div>
   );
 };

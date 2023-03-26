@@ -1,9 +1,84 @@
+@import "../../../variables";
+@import "../../../mixins/scroll_mixin";
+@import "../../../scss_mixins.scss";
+@import "../../../mixins/rfs_mixins.scss";
 
+.container {
+  height: 75%;
+  padding: 0 12px;
 
+  width: 100%;
+  max-width: 470px;
+  min-width: 357px;
 
+  position: fixed;
+  bottom: 112px;
+  left: 50%;
+  transform: translateX(-50%);
 
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: start;
 
+  .mobileVersionFilters {
+    width: 100%;
+    height: 100%;
+    border-radius: 0 0 10px 10px;
+    background: $def_page_bg;
+    padding: 10px 17px;
 
+    @include scroll($size: 2px, $direction: ltr, $track_bg: $def_dark);
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
 
+  .header {
+    position: sticky;
+    top: 0px;
+    border-radius: 10px 10px 0 0;
+    z-index: 9999;
+    width: 100%;
+    background: $def_page_bg;
+    padding: 10px 12px;
 
+    > .title {
+      color: #fff;
+      @include font-size(1.375rem);
+      font-family: "Roboto";
+      font-style: normal;
+      font-weight: 600;
+    }
 
+    > .vector {
+      position: absolute;
+      top: 25px;
+      right: 30px;
+      background-color: $def_blue_gray;
+
+      > &::after {
+        position: absolute;
+        content: "";
+        width: 14px;
+        height: 3px;
+        right: 9px;
+        background: inherit;
+        border-radius: 3px;
+        transform: rotate(45deg);
+        transition: all 0.1s ease-in-out;
+      }
+
+      > &::before {
+        position: absolute;
+        right: 1px;
+        content: "";
+        width: 14px;
+        height: 3px;
+        background: inherit;
+        border-radius: 3px;
+        transform: rotate(-45deg);
+        transition: all 0.1s ease-in-out;
+      }
+    }
+  }
+}

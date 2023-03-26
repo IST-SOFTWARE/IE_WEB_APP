@@ -65,13 +65,12 @@ const useBaseModal = (
                 document.getElementById("PopUpBase"))
     },[currentData])
 
-
     const ModalView:FC<IBaseModalFC> = ({
         children,
         data,
         alignStyle,
         style
-     }) =>{
+     }) => {
 
         const modal = useMemo(()=>{
              return(
