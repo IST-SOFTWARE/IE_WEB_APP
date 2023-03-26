@@ -5,8 +5,8 @@ import ISTProductItem from "../../../../UI/ISTProductItem/ISTProductItem";
 
 const CartMobilePageModal = ({ closeMobileFilter }) => {
   const [cartProductItems, setCartProductItems] = useState(
-    new Array(1).fill("")
-  );
+    new Array(10).fill("")
+  );  // добавленные в корзину продукты
 
   return (
     <div className={styles.container}>
@@ -15,26 +15,28 @@ const CartMobilePageModal = ({ closeMobileFilter }) => {
         <div className={`${styles.vector}`}></div>
       </div>
       <div className={`${styles.mobileVersionCart}`}>
-        <div className={styles.productsContainer}>
-          {cartProductItems.map((item, index) => {
-            return (
-              <ISTProductItem
-                id={index}
-                key={`productItem_${index}`}
-                title={"Product Item"}
-                price={"200"}
-                style={{
-                  margin: "10px 5px",
-                  inline: true,
-                }}
-                vendCode={"IST 000001"}
-                currency={"RU"}
-              />
-            );
-          })}
-        </div>
+        {cartProductItems.map((item, index) => {
+          return (
+            <ISTProductItem
+              key={`productItem_${index}`}
+              id={index}
+              title={"Product Item"}
+              price={"200"}
+              style={{
+                margin: "10px 5px",
+                inline: true,
+              }}
+              addedToCart={3} //при добавлении колличества штук в корзину
+              vendCode={"IST 000001"}
+              currency={"RU"}
+            />
+          );
+        })}
       </div>
       <div className={styles.buttonsContainer}>
+
+        {/* для расстояния между кнопками каждую кнопку требуется обернуть в див? */}
+
         <ISTButtonN
           title={{
             caption: "Моя корзина",

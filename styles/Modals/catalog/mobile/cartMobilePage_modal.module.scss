@@ -24,14 +24,12 @@
   .mobileVersionCart {
     width: 100%;
     height: 100%;
-
     background: $def_page_bg;
-    padding: 10px 17px;
+    padding: 0 21px 0 12px;
     @include scroll($size: 2px, $direction: ltr, $track_bg: $def_dark);
     overflow-x: hidden;
     overflow-y: auto;
     border-radius: 0 0 10px 10px;
-    padding:0;
   }
 
   .header {
@@ -85,9 +83,7 @@
 
   .productsContainer {
     height: 100%;
-    display: flex;
-    flex-direction: column;
-
+    width: 100%;
   }
 
   .buttonsContainer {

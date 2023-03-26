@@ -19,6 +19,7 @@ interface IProductItem {
   title: string;
   price: string;
   style?: ISTProductItemStyles;
+  addedToCart?: number;
   vendCode: string;
   currency: "RU" | "EN";
   cartAdder?: (...props: any) => any;
@@ -32,6 +33,7 @@ const IstProductItem: FC<IProductItem> = ({
   style,
   vendCode,
   currency,
+  addedToCart,
   cartAdder,
 }) => {
   return (
@@ -65,22 +67,30 @@ const IstProductItem: FC<IProductItem> = ({
             margin: style.margin,
           }}
         >
-          <div className={styles.card}>
+          <div className={styles.cardInline}>
             <div className={styles.imageBox}>
               {image ? (
-                <Image fill alt="Product Item Image" src={image} />
+                <Image alt="Product Item Image" src={image} />
               ) : (
-                <Image fill alt="Product item empty image" src={noImg} />
+                <Image width={120} alt="Product item empty image" src={noImg} />
               )}
             </div>
 
-            <div className={styles.productInformation}>
-              <div className={styles.productTitle}>
-                {maxLengthText(title, 24)}
+            <div className={styles.productInformationInline}>
+              <div className={styles.title}>
+                <div className={styles.productTitle}>
+                  {maxLengthText(title, 24)}
+                </div>
+                <div className={styles.vendCode}>Артикул: {vendCode}</div>
               </div>
-              <div className={styles.vendCode}>Артикул: {vendCode}</div>
-              <div></div>
-              <div className={styles.price}>Цена: {price}$</div>
+              <div className={styles.priceContainer}>
+                {addedToCart ||
+                addedToCart != undefined ||
+                addedToCart != null ? (
+                  <div className={styles.quantityBasket}>{addedToCart} шт</div>
+                ) : null}
+                <div className={styles.price}>Цена: {price}$</div>
+              </div>
             </div>
           </div>
         </div>

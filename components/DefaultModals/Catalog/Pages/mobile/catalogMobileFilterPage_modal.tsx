@@ -7,7 +7,7 @@ const CatalogMobileFilterPageModal = ({ closeMobileFilter }) => {
   return (
     <div className={styles.container}>
       <div onClick={closeMobileFilter} className={`${styles.header}`}>
-        <div className={styles.title}>Моя корзина</div>
+        <div className={styles.title}>Фильтры</div>
         <div className={`${styles.vector}`}></div>
       </div>
 
