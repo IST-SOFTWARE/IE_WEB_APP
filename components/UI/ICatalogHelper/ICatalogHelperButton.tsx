@@ -11,24 +11,31 @@ interface ICatalogHelperButton {
   foo: (...props: any) => any;
 }
 
-const CatalogHelperButton = ({ idx, title, icon, isCurrent, action, foo }) => {
+const CatalogHelper: FC<ICatalogHelperButton> = ({
+  idx,
+  title,
+  icon,
+  isCurrent,
+  action,
+  foo,
+}) => {
   return (
-    <div>
-      <div
-        className={`${styles.mobile_helper_button} ${
-          isCurrent ? styles.active : ""
-        }`}
-        onClick={() => {
-          action(idx);
-          foo();
-        }}
-      >
-        <Image src={icon} alt={title} />
-        <div className={styles.title}>{title}</div>
-        <br />
+      <div>
+        <div
+            className={`${styles.mobile_helper_button} ${
+                isCurrent ? styles.active : ""
+            }`}
+            onClick={() => {
+              action(idx);
+              foo();
+            }}
+        >
+          <Image src={icon} alt={title} />
+          <div className={styles.title}>{title}</div>
+          <br />
+        </div>
       </div>
-    </div>
   );
 };
 
-export default CatalogHelperButton;
+export default CatalogHelper;

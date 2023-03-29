@@ -35,15 +35,16 @@ import { ICatalogFiltersType } from "../store/slices/catalogSlice/catalogFilters
 import CatalogTestFiltersModal from "../components/DefaultModals/Catalog/Pages/catalogTestFilters_modal";
 import ICatalogHelper from "../components/UI/ICatalogHelper/ICatalogHelper";
 
+import searchIcon from "../public/MobileHelperIcons/search_icon.svg";
+import filterIcon from "../public/MobileHelperIcons/filter_icon.svg";
+import cartIcon from "../public/MobileHelperIcons/cart_icon.svg";
+import currencyIcon from "../public/MobileHelperIcons/currency_icon.svg";
+
 export default function MyApp({ Component, pageProps }) {
   const router = useRouter();
 
   const { modalComponent, ModalView } = useBaseModal("APP_BODY_WRAPPER");
   const { currentState } = useCatalog<ICatalogQueries<ICatalogFiltersType>>();
-
-  //CSS Transition states
-  const [showCatalogMobileFilter, setShowCatalogMobileFilter] = useState(false);
-  const [showCatalog, setShowCatalog] = useState(true);
 
   const [mobileState, setMobileState] = useState(0);
 
@@ -57,18 +58,14 @@ export default function MyApp({ Component, pageProps }) {
       modalComponent.editModals(
         [
           toc_catalog_search,
-          { typeName: "TEST_FILTERS_PAGE", _header: "", _paragraph: "" },
           toc_catalog_full_prod_list,
-          toc_mobile_filter_page,
-          toc_mobile_cart_page,
         ],
-        1
+        0
       );
     }
   }, [modalComponent]);
 
   const openFiltersPage = useCallback(() => {
-    setShowCatalogMobileFilter(true);
     if (modalComponent) {
       modalComponent
         .applyModalByName(toc_mobile_filter_page.typeName)
@@ -112,19 +109,36 @@ export default function MyApp({ Component, pageProps }) {
             <RegionHandler baseRegion={router.locale} />
           </Header>
 
-          {/* <Component {...pageProps} key={router.asPath} /> */}
+           <Component {...pageProps} key={router.asPath} />
 
           <Footer route={router.locale} />
 
+          {
+            modalComponent.getState ? (
+                <ICatalogHelper
+                    items={[
+                      { icon: searchIcon, title: "Search" },
+                      {
+                        icon: filterIcon,
+                        title: "Filters",
+                        actionFoo: openFiltersPage,
+                      },
+                      {
+                        icon: cartIcon,
+                        title: "Cart",
+                        actionFoo: openCartPage,
+                      },
+                      { icon: currencyIcon, title: "USD" },
+                    ]}
+                    style={{
+                      zIndex: 100
+                    }}
+                />
+            ) : null
+          }
+
           <ModalView>
             <CatalogWrapper_modal>
-              <ICatalogHelper
-                stateSetterFilterPage={openFiltersPage}
-                stateSetterCartPage={openCartPage}
-              />
-              {modalComponent.isCurrentModal("TEST_FILTERS_PAGE") ? (
-                <CatalogTestFiltersModal />
-              ) : null}
 
               {modalComponent.isCurrentModal(toc_catalog_search.typeName) ? (
                 <CatalogSearchModal />
@@ -136,17 +150,6 @@ export default function MyApp({ Component, pageProps }) {
                 <CatalogFullProductsListModal />
               ) : null}
 
-              {modalComponent.isCurrentModal(
-                toc_mobile_filter_page.typeName
-              ) ? (
-                <CatalogMobileFilterPageModal
-                  closeMobileFilter={openCatalog}
-                />
-              ) : null}
-
-              {modalComponent.isCurrentModal(toc_mobile_cart_page.typeName) ? (
-                <CartMobilePageModal closeMobileFilter={openCatalog} />
-              ) : null}
             </CatalogWrapper_modal>
           </ModalView>
         </Provider>

@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import ISTProductItem from "../../../UI/ISTProductItem/ISTProductItem";
-import ICheckBoxList from "../../../UI/ISTFiltersList/ICheckBoxList";
 import IstInput, { inputTypesVars } from "../../../UI/ISTInput/ISTInput";
 import ISTCategoryHints from "../../../UI/ISTCategoryHints/ISTCategoryHints";
 import Image from "next/image";
@@ -20,9 +19,8 @@ type ICategoryCollection = {
 };
 
 const CatalogSearchModal = ({}) => {
-  const [item, setItem] = useState<string>("");
+  const [searchState, setSearchState] = useState<string>("");
 
-  //searchResults - массив товаров при поиске
   const [searchResults, setSearchResults] = useState<
     ICategoryCollection[] | null
   >([null]);
@@ -37,68 +35,71 @@ const CatalogSearchModal = ({}) => {
         }}
       >
         <header className={styles.header}>Поиск</header>
-        <div style={{ marginLeft: "19px" }} className={styles.rearch_box}>
+        <div className={styles.inputAndHints_block}>
+
           <IstInput
             inputType={inputTypesVars.any_string}
             placeholder={"Enter your request"}
             required={true}
-            outDataSetter={setItem}
-            actualData={item}
+            outDataSetter={setSearchState}
+            actualData={searchState}
             style={{
-              height: "55px",
+              height: "50px",
               borderRadius: "15px",
             }}
           />
-        </div>
 
-        <ISTCategoryHints
-          hintsLimit={3}
-          hints={[
-            {
-              actionName: "",
-              collectionName: "Производители",
-              collectionOfItems: [
-                { id: 1, itemName: "Kone" },
-                { id: 2, itemName: "OTIS" },
-                { id: 2, itemName: "ЩЛЗ" },
-              ],
-            },
-            {
-              actionName: "",
-              collectionName: "Узлы",
-              collectionOfItems: [
-                { id: 1, itemName: "Приямок шахты лифта" },
-                {
-                  id: 2,
-                  itemName:
-                    "Привод ДК, балки ДК и ДШ, двери кабины и шахты, порталы, БУАД, двери боствиг",
-                },
-                {
-                  id: 3,
-                  itemName:
-                    "Кабина (каркас) и интерьер кабины лифта, крыша кабины, противовес",
-                },
-              ],
-            },
-            {
-              actionName: "",
-              collectionName: "Типы",
-              collectionOfItems: [
-                {
-                  id: 1,
-                  itemName:
-                    "Резиновая/пластиковая прокладка, буфер, демпфер, вставка, отбойник",
-                },
-                { id: 2, itemName: "Башмак, вкладыш ДК/ДШ" },
-                {
-                  id: 3,
-                  itemName:
-                    "Башмак, вкладыш башмака направляющих кабины и противовеса",
-                },
-              ],
-            },
-          ]}
-        />
+            <div className={styles.hints_block}>
+                <ISTCategoryHints
+                  hintsLimit={3}
+                  hints={[
+                    {
+                      actionName: "",
+                      collectionName: "Производители",
+                      collectionOfItems: [
+                        { id: 1, itemName: "Kone" },
+                        { id: 2, itemName: "OTIS" },
+                        { id: 2, itemName: "ЩЛЗ" },
+                      ],
+                    },
+                    {
+                      actionName: "",
+                      collectionName: "Узлы",
+                      collectionOfItems: [
+                        { id: 1, itemName: "Приямок шахты лифта" },
+                        {
+                          id: 2,
+                          itemName:
+                            "Привод ДК, балки ДК и ДШ, двери кабины и шахты, порталы, БУАД, двери боствиг",
+                        },
+                        {
+                          id: 3,
+                          itemName:
+                            "Кабина (каркас) и интерьер кабины лифта, крыша кабины, противовес",
+                        },
+                      ],
+                    },
+                    {
+                      actionName: "",
+                      collectionName: "Типы",
+                      collectionOfItems: [
+                        {
+                          id: 1,
+                          itemName:
+                            "Резиновая/пластиковая прокладка, буфер, демпфер, вставка, отбойник",
+                        },
+                        { id: 2, itemName: "Башмак, вкладыш ДК/ДШ" },
+                        {
+                          id: 3,
+                          itemName:
+                            "Башмак, вкладыш башмака направляющих кабины и противовеса",
+                        },
+                      ],
+                    },
+                  ]}
+                />
+            </div>
+        </div>
       </div>
 
       {/*Products bock*/}
@@ -126,27 +127,29 @@ const CatalogSearchModal = ({}) => {
           )}
         </div>
         {searchResults ? (
-          <div className={"col-12 p-0 d-flex flex-wrap justify-content-center"}>
-            {new Array(10).fill("").map((i) => {
-              return (
-                <div
-                  className={styles.productCardVariant_Block}
-                  key={`productItem_${i}_key`}
-                >
-                  <ISTProductItem
-                    id={i}
-                    title={"Product Item"}
-                    price={"200"}
-                    style={{
-                      margin: "10px",
-                      inline: false,
-                    }}
-                    vendCode={"IST 000001"}
-                    currency={"RU"}
-                  />
-                </div>
-              );
-            })}
+          <div className={"col-12 p-0 d-flex justify-content-center"}>
+            <div className={styles.catalogItems_block}>
+                {new Array(10).fill("").map((i) => {
+                    return (
+                        <div
+                            className={styles.productCardVariant_Block}
+                            key={`productItem_${i}_u_key`}
+                        >
+                            <ISTProductItem
+                                id={i}
+                                title={"Product Item"}
+                                price={"200"}
+                                style={{
+                                    margin: "10px",
+                                    inline: false,
+                                }}
+                                vendCode={"IST 000001"}
+                                currency={"RU"}
+                            />
+                        </div>
+                    );
+                })}
+            </div>
           </div>
         ) : (
           <div className={styles.noResultsBlock}>

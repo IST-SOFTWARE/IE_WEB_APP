@@ -1,62 +1,48 @@
-import React, { useEffect, useState } from "react";
+import React, {CSSProperties, FC, useState} from "react";
 import styles from "./ICatalogHelper.module.scss";
 import CatalogHelperButton from "./ICatalogHelperButton";
 
-import searchIcon from "../../../public/MobileHelperIcons/search_icon.svg";
-import filterIcon from "../../../public/MobileHelperIcons/filter_icon.svg";
-import cartIcon from "../../../public/MobileHelperIcons/cart_icon.svg";
-import currencyIcon from "../../../public/MobileHelperIcons/currency_icon.svg";
+type customStyle = Pick<CSSProperties, "zIndex">
 
-interface ButtonHelpers {
+interface ISTBottomMenuItem {
   icon: string;
   title: string;
-  stateSetterFilterPage?: (...props: any) => any;
-  stateSetterCartPage?: (...props: any) => any;
   actionFoo?: (...props: any) => any;
 }
 
-const ICatalogHelper = ({ stateSetterFilterPage, stateSetterCartPage }) => {
-  const buttons = [
-    { icon: searchIcon, title: "Search" },
-    {
-      icon: filterIcon,
-      title: "Filters",
-      actionFoo: stateSetterFilterPage,
-    },
-    {
-      icon: cartIcon,
-      title: "Cart",
-      actionFoo: stateSetterCartPage,
-    },
-    { icon: currencyIcon, title: "USD" },
-  ];
+interface ISTBottomMenu{
+  items: Array<ISTBottomMenuItem>
+  style?: customStyle;
+}
 
-  const [buttonHelpers, setButtonHelpers] = useState<ButtonHelpers[]>(buttons);
+const ICatalogHelper:FC<ISTBottomMenu> = ({
+                                            items,
+                                            style
+                                          }) => {
+
   const [currentHelper, setCurrentHelper] = useState<number>(null);
 
-  console.log("ICatalogHelper render");
-
   return (
-    <div className={styles.catalog_help_mobile}>
-      <div className={styles.catalog_help_mobile_options}>
-        {buttonHelpers.map((el, i) => {
-          return (
-            <CatalogHelperButton
-              idx={i}
-              key={`HELPER_${i}`}
-              title={el.title}
-              icon={el.icon}
-              isCurrent={currentHelper === i}
-              action={setCurrentHelper}
-              foo={el.actionFoo}
-            />
-          );
-        })}
+      <div className={styles.catalog_help_mobile}
+           style={style ? style : null}
+      >
+        <div className={styles.catalog_help_mobile_options}>
+          {items?.map((el, i) => {
+            return (
+                <CatalogHelperButton
+                    idx={i}
+                    key={`HELPER_${i}`}
+                    title={el.title}
+                    icon={el.icon}
+                    isCurrent={currentHelper === i}
+                    action={setCurrentHelper}
+                    foo={el.actionFoo}
+                />
+            );
+          })}
+        </div>
       </div>
-    </div>
   );
 };
 
-export default React.memo(ICatalogHelper, () => {
-  return true;
-});
+export default ICatalogHelper;

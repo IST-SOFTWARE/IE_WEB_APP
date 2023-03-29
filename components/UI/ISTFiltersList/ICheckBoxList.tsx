@@ -13,11 +13,9 @@ type ICheckBoxItem = {
   onRevoke?: (...props: any) => any;
 };
 
-
 type mobileSettings = {
   type: mobileOpenType_dropdown | mobileOpenType_transfer,
   mobileListTransfer?: React.Dispatch<ICheckBoxItem[]>
-
 }
 
 interface ICheckBoxList
@@ -67,12 +65,15 @@ const ICheckBoxList:FC<ICheckBoxList> = ({
   };
 
   return (
-    <div className={`${styles.container}`}>
+    <div className={`
+      ${styles.container} 
+      ${mobileSettings?.type === "transfer" ? styles.mobile_transfer : ""}`
+    }>
       {hasFilters.length > 0 &&
           <div className={styles.dot}/>
       }
       <div
-        className={`${styles.title} 
+        className={`${styles.title}  
         ${hasFilters.length > 0 ? 
             styles.titleTransition 
             : null}`}
@@ -81,7 +82,7 @@ const ICheckBoxList:FC<ICheckBoxList> = ({
         {title}
       <div
         className={`${styles.vector} 
-        ${opened ? styles.active : null}`}
+        ${opened ? styles.active : ""}`}
       />
 
       </div>

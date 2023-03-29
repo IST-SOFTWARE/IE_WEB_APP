@@ -6,7 +6,7 @@
   width: 100%;
   position: relative;
   min-width: 250px;
-  @include gradient_bg($background: gradient);
+  @include gradient_bg($background: gradient, $radius: 20px);
   box-sizing: border-box;
   -webkit-box-shadow: 0px 0px 6px $def_light_blue;
   -moz-box-shadow: 0px 0px 6px $def_light_blue;
@@ -199,23 +199,28 @@
 }
 
 @media screen and (max-width: 900px) {
-  .container {
+  .mobile_transfer{
     box-shadow: none !important;
-    background: linear-gradient(111.69deg, #2c3641 0%, #151a20 100%);
+    @include gradient_bg($background:
+            linear-gradient(111.69deg, #2C3641 0%, #151A20 100%),
+            $radius: 20px,
+            $border_s: 0px
+    );
     border-radius: 20px !important;
     border: none !important;
     overflow: hidden !important;
   }
 
+  .vector {
+     position: relative;
+     background-color: $def_blue_gray;
+     transform-origin: (5px 0px 0px);
+     transform: rotate(-90deg);
+   }
+
+
   // .title {
-  //   .vector {
-  //     position: relative;
-  //     top: 10px;
-  //     right: 11px;
-  //     background-color: $def_blue_gray;
-  //     transform-origin: (5px 0px 0px);
-  //     transform: rotate(-90deg);
-  //   }
+  //
   // }
 }
 

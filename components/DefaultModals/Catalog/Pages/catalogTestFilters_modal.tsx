@@ -15,7 +15,11 @@ const CatalogTestFiltersModal:FC = () => {
                     {isActive: false, fieldName: "Field 2", checkBox: true},
                     {isActive: false, fieldName: "Field 3", checkBox: true},
                     {isActive: false, fieldName: "Field 4", checkBox: true},
-                ]}/>
+                ]}
+                   mobileSettings={{
+                       type: "transfer"
+                   }}
+                />
 
                 <ICheckBoxList title={"FILTER TEST"} isOpened={true} fields={[
                     {isActive: false, fieldName: "Field 1", checkBox: true},
