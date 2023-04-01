@@ -137,7 +137,7 @@ const CatalogSearchModal = ({}) => {
                         >
                             <ISTProductItem
                                 id={i}
-                                title={"Product Item"}
+                                title={"Product Item dsdfsdf sedfsdfs sdfsdfwsfwsdfsad"}
                                 price={"200"}
                                 style={{
                                     margin: "10px",
