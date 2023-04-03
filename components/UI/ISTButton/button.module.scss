@@ -9,9 +9,12 @@ $trans_speed: 0.3s;
   cursor: pointer;
   position: relative;
 
+  max-width: 100%;
+
   display: flex;
   align-items: center;
   justify-content: center;
+
 
   box-sizing: border-box;
   height: fit-content;
@@ -25,13 +28,13 @@ $trans_speed: 0.3s;
     display: flex;
     justify-content: center;
     flex-grow: 1;
-    padding: 10px;
-    padding-left: 0px !important;
+    padding: 10px 0px;
   }
 
   .img_btn{
     @include ratio-box(1/1);
     width: 100%;
+
     display: flex;
     flex: 1;
   }

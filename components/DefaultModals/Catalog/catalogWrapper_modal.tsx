@@ -55,10 +55,7 @@ const CatalogWrapperModal: FC<catalogWrapper> = ({
           }}
         >
           <div
-            className={"row"}
-            style={{
-              border: "solid 1px red",
-            }}
+            className={`row sticky-top ${styles.catalogHeader}`}
           >
             <button
               onClick={() => {
@@ -81,15 +78,14 @@ const CatalogWrapperModal: FC<catalogWrapper> = ({
               {JSON.stringify(currentState)}
             </div>
           </div>
+
           <div
-            className={"row h-100"}
-            style={{
-              border: "solid 1px blue",
-            }}
+            className={`row ${styles.catalogContent}`}
           >
             {children}
 
           </div>
+
         </div>
       </div>
     </>

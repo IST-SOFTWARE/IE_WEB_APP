@@ -1,12 +1,21 @@
 @import "../../../variables.scss";
 @import "../../../mixins/rfs_mixins.scss";
 
+$productItemSize: 180px;
+
 .header {
   font-weight: 500;
   @include font-size(1.75rem);
   line-height: 38px;
   color: $def_white;
-  margin-bottom: 17px;
+}
+
+.headerContainer{
+  height: 40px;
+  display: flex;
+  align-items: center;
+
+  margin-bottom: 15px;
 }
 
 .inputAndHints_block{
@@ -20,14 +29,19 @@
 }
 
 .catalogItems_block{
+  width: 100%;
+
   display: flex;
   flex-wrap: wrap;
   justify-content: start;
 }
 
 .productCardVariant_Block {
-  width: 100%;
-  min-width: 190px;
+  $productItemSize: calc(50% - 20px) !global;
+  width: $productItemSize;
+  min-width: $productItemSize;
+  margin: 10px;
+
   height: fit-content;
   display: flex;
   justify-content: center;
@@ -37,6 +51,8 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
+  height: calc(100% - 200px);
   margin: auto;
 }
 
@@ -49,40 +65,39 @@
   max-width: 186px;
 }
 
-@media screen and (max-width: 1350px) {
+@media screen and (min-width: 575.98px) {
   .productCardVariant_Block {
-    width: 33%;
+    $productItemSize: calc(33% - 20px) !global;
+    width: $productItemSize;
+    min-width: $productItemSize;
+
   }
 }
 
-@media screen and (max-width: 992px) {
+@media screen and (min-width: 829.98px) {
   .productCardVariant_Block {
-    width: 25%;
-  }
-}
+    $productItemSize: calc(24% - 15px) !global;
+    width: $productItemSize;
+    min-width: $productItemSize;
 
-@media screen and (max-width: 880px) {
-  .productCardVariant_Block {
-    width: 30%;
-  }
-}
-
-@media screen and (max-width: 768px) {
-  .productCardVariant_Block {
-    width: 40%;
-  }
-}
-
-@media screen and (max-width: 626px) {
-  .productCardVariant_Block {
-    width: 45%;
   }
 }
 
 
-@media screen and (max-width: 576px) {
+@media screen and (min-width: 991.98px) {
   .productCardVariant_Block {
-    width: 50%;
-  }
+    $productItemSize: calc(50% - 20px) !global;
+    width: $productItemSize;
+    min-width: $productItemSize;
 
+  }
+}
+
+@media screen and (min-width: 1199.98px) {
+  .productCardVariant_Block {
+    $productItemSize: calc(33% - 20px) !global;
+    width: $productItemSize;
+    min-width: $productItemSize;
+
+  }
 }

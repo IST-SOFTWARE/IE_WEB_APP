@@ -166,6 +166,9 @@ const IstButtonN:FC<btnComponent> = (
             <button
                 className={styles.btn}
                 ref={btnRef}
+                style={{
+                    padding: title ? "0px 10px" : "20%"
+                }}
 
                 onClick={(event)=>onClick ? onClick(event) : {}}
             >
@@ -185,7 +188,7 @@ const IstButtonN:FC<btnComponent> = (
                             style={{
                                 objectFit: "contain",
                                 objectPosition: "center",
-                                padding: '10px'
+                                padding: "0px"
                             }}
                         />
                     </div>: null

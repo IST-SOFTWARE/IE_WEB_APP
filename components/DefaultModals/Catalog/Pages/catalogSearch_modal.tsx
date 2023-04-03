@@ -30,11 +30,13 @@ const CatalogSearchModal = ({}) => {
       {/*Filters bock*/}
       <div
         className={`d-none d-lg-block col-0 col-lg-6`}
-        style={{
-          border: "solid 1px red",
-        }}
       >
-        <header className={styles.header}>Поиск</header>
+        <div className={styles.headerContainer}>
+            <header className={styles.header}>
+                Поиск
+            </header>
+        </div>
+
         <div className={styles.inputAndHints_block}>
 
           <IstInput
@@ -104,13 +106,14 @@ const CatalogSearchModal = ({}) => {
 
       {/*Products bock*/}
       <div
-        className={"col-12 col-lg-6 h-100"}
-        style={{
-          border: "solid 1px blue",
-        }}
+        className={"col-12 col-lg-6 h-100 pl-0 pl-lg-3 pr-0 pr-lg-3"}
       >
-        <div style={{ display: "flex", justifyContent: "space-between" }}>
-          <header className={styles.header}>Товары</header>
+        <div className={styles.headerContainer} style={{justifyContent: "space-between"}}>
+
+          <header className={styles.header}>
+              Товары
+          </header>
+
           {searchResults && (
             <div style={{ width: "180px", alignSelf: "center" }}>
               <ISTButtonN
@@ -126,7 +129,10 @@ const CatalogSearchModal = ({}) => {
             </div>
           )}
         </div>
+
         {searchResults ? (
+
+          //PRODUCTS LIST OUT
           <div className={"col-12 p-0 d-flex justify-content-center"}>
             <div className={styles.catalogItems_block}>
                 {new Array(10).fill("").map((i) => {
@@ -140,8 +146,7 @@ const CatalogSearchModal = ({}) => {
                                 title={"Product Item dsdfsdf sedfsdfs sdfsdfwsfwsdfsad"}
                                 price={"200"}
                                 style={{
-                                    margin: "10px",
-                                    inline: false,
+                                    inline: false
                                 }}
                                 vendCode={"IST 000001"}
                                 currency={"RU"}
@@ -151,7 +156,10 @@ const CatalogSearchModal = ({}) => {
                 })}
             </div>
           </div>
+
         ) : (
+
+          //EMPTY RESULT
           <div className={styles.noResultsBlock}>
             <Image
               src={cloudSearch}
@@ -167,6 +175,7 @@ const CatalogSearchModal = ({}) => {
               Start typing a query to search for a product
             </div>
           </div>
+
         )}
       </div>
     </>
