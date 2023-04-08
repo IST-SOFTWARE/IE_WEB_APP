@@ -14,10 +14,16 @@ import {ICatalogFiltersType} from "../../store/slices/catalogSlice/catalogFilter
 
 interface Header{
     children: React.ReactNode,
+
+    catalogOpener?: (...props: any) => void,
+    searchOpener?: (...props: any) => void
 }
 
 const Header:FC<Header> = ({
-    children
+    children,
+
+    catalogOpener,
+    searchOpener
     }) => {
 
     const reduxCatalogState = useAppSelector(state => state.catalog)
@@ -89,8 +95,10 @@ const Header:FC<Header> = ({
                     <div className={'px-0 px-sm-3 col-7 col-sm-7 col-lg-7 d-flex align-items-center h-75'}>
                         <div className={styles.headerCatalog}>
                             <button className={styles.catalogBtn}
-                                onClick={()=>
-                                    catalogDispatch(setCatalogState(true))
+                                onClick={()=> {
+                                        catalogOpener ? catalogOpener() : null
+                                        catalogDispatch(setCatalogState(true))
+                                    }
                                 }
                             >
                                 <div className={styles.catalogBtn_img}>
@@ -110,6 +118,11 @@ const Header:FC<Header> = ({
                                    className={`text-left ${styles.searchBtn}`}
                                    value={"Поиск"}
                                    name={"search"}
+
+                                   onClick={()=> {
+                                       searchOpener ? searchOpener() : null
+                                       catalogDispatch(setCatalogState(true))
+                                   }}
                             />
                         </div>
                     </div>

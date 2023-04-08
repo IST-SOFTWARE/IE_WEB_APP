@@ -1,23 +1,21 @@
 @import "../../variables";
 @import "../../mixins/scroll_mixin";
 
-$headerSize: 100px;
+$headerSize: 110px;
 
 .catalog_wrapper{
   min-width: 100vw;
   height: 100%;
   background: $def_dark;
-  overflow: auto;
   @include scroll($size: 3px);
+  overflow: auto;
 }
 
 .catalogHeader{
   height: $headerSize;
-  border: solid 1px red;
   background: $def_dark;
 }
 
 .catalogContent{
   height: calc(100% - $headerSize);
-  border: solid 1px blue;
 }

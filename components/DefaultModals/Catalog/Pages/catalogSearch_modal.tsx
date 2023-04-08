@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {useEffect, useRef, useState} from "react";
 import ISTProductItem from "../../../UI/ISTProductItem/ISTProductItem";
 import IstInput, { inputTypesVars } from "../../../UI/ISTInput/ISTInput";
 import ISTCategoryHints from "../../../UI/ISTCategoryHints/ISTCategoryHints";
@@ -18,18 +18,138 @@ type ICategoryCollection = {
   collectionOfItems: Array<ICategoryItem>;
 };
 
+type IProductItem = {
+    title: string,
+    price: string,
+    vendCode: string
+}
+
+const defCategoryHints: ICategoryCollection[] = [
+    {
+        actionName: "",
+        collectionName: "Производители",
+        collectionOfItems: [
+            { id: 1, itemName: "Kone" },
+            { id: 2, itemName: "OTIS" },
+            { id: 2, itemName: "ЩЛЗ" },
+        ],
+    },
+    {
+        actionName: "",
+        collectionName: "Узлы",
+        collectionOfItems: [
+            { id: 1, itemName: "Приямок шахты лифта" },
+            {
+                id: 2,
+                itemName:
+                    "Привод ДК, балки ДК и ДШ, двери кабины и шахты, порталы, БУАД, двери боствиг",
+            },
+            {
+                id: 3,
+                itemName:
+                    "Кабина (каркас) и интерьер кабины лифта, крыша кабины, противовес",
+            },
+        ],
+    },
+    {
+        actionName: "",
+        collectionName: "Типы",
+        collectionOfItems: [
+            {
+                id: 1,
+                itemName:
+                    "Резиновая/пластиковая прокладка, буфер, демпфер, вставка, отбойник",
+            },
+            { id: 2, itemName: "Башмак, вкладыш ДК/ДШ" },
+            {
+                id: 3,
+                itemName:
+                    "Башмак, вкладыш башмака направляющих кабины и противовеса",
+            },
+        ],
+    },
+]
+const defProdItems: IProductItem[] = [
+    {
+        title: "Product Item dsdfsdf sedfsdfs sdfsdfwsfwsdfsad",
+        price: "200",
+        vendCode: "IST000001"
+    },
+    {
+        title: "Product Item dsdfsdf sedfsdfs sdfsdfwsfwsdfsad",
+        price: "200",
+        vendCode: "IST000001"
+    },
+    {
+        title: "Product Item dsdfsdf sedfsdfs sdfsdfwsfwsdfsad",
+        price: "200",
+        vendCode: "IST000001"
+    },
+    {
+        title: "Product Item dsdfsdf sedfsdfs sdfsdfwsfwsdfsad",
+        price: "200",
+        vendCode: "IST000001"
+    },
+    {
+        title: "Product Item dsdfsdf sedfsdfs sdfsdfwsfwsdfsad",
+        price: "200",
+        vendCode: "IST000001"
+    },
+
+    {
+        title: "Product Item dsdfsdf sedfsdfs sdfsdfwsfwsdfsad",
+        price: "200",
+        vendCode: "IST000001"
+    },
+    {
+        title: "Product Item dsdfsdf sedfsdfs sdfsdfwsfwsdfsad",
+        price: "200",
+        vendCode: "IST000001"
+    },
+    {
+        title: "Product Item dsdfsdf sedfsdfs sdfsdfwsfwsdfsad",
+        price: "200",
+        vendCode: "IST000001"
+    },
+    {
+        title: "Product Item dsdfsdf sedfsdfs sdfsdfwsfwsdfsad",
+        price: "200",
+        vendCode: "IST000001"
+    },
+    {
+        title: "Product Item dsdfsdf sedfsdfs sdfsdfwsfwsdfsad",
+        price: "200",
+        vendCode: "IST000001"
+    },
+]
+
 const CatalogSearchModal = ({}) => {
+
+  const inputRef = useRef<HTMLInputElement>(null);
+
   const [searchState, setSearchState] = useState<string>("");
 
-  const [searchResults, setSearchResults] = useState<
-    ICategoryCollection[] | null
-  >([null]);
+  const [searchResults_categories,
+        setSearchResults_categories] = useState<ICategoryCollection[] | null>(
+      defCategoryHints
+  );
+
+  const [searchResults_products,
+        setSearchResults_products] = useState<IProductItem[]>(
+        defProdItems
+  )
+
+    useEffect(()=>{
+        if(inputRef && inputRef.current){
+            inputRef.current.focus();
+        }
+    },[inputRef])
 
   return (
     <>
       {/*Filters bock*/}
       <div
-        className={`d-none d-lg-block col-0 col-lg-6`}
+        className={`d-none d-lg-block col-0 col-lg-6 ${styles.catalogFiltersModal_comp}`}
       >
         <div className={styles.headerContainer}>
             <header className={styles.header}>
@@ -40,6 +160,7 @@ const CatalogSearchModal = ({}) => {
         <div className={styles.inputAndHints_block}>
 
           <IstInput
+            ref={inputRef}
             inputType={inputTypesVars.any_string}
             placeholder={"Enter your request"}
             required={true}
@@ -54,51 +175,7 @@ const CatalogSearchModal = ({}) => {
             <div className={styles.hints_block}>
                 <ISTCategoryHints
                   hintsLimit={3}
-                  hints={[
-                    {
-                      actionName: "",
-                      collectionName: "Производители",
-                      collectionOfItems: [
-                        { id: 1, itemName: "Kone" },
-                        { id: 2, itemName: "OTIS" },
-                        { id: 2, itemName: "ЩЛЗ" },
-                      ],
-                    },
-                    {
-                      actionName: "",
-                      collectionName: "Узлы",
-                      collectionOfItems: [
-                        { id: 1, itemName: "Приямок шахты лифта" },
-                        {
-                          id: 2,
-                          itemName:
-                            "Привод ДК, балки ДК и ДШ, двери кабины и шахты, порталы, БУАД, двери боствиг",
-                        },
-                        {
-                          id: 3,
-                          itemName:
-                            "Кабина (каркас) и интерьер кабины лифта, крыша кабины, противовес",
-                        },
-                      ],
-                    },
-                    {
-                      actionName: "",
-                      collectionName: "Типы",
-                      collectionOfItems: [
-                        {
-                          id: 1,
-                          itemName:
-                            "Резиновая/пластиковая прокладка, буфер, демпфер, вставка, отбойник",
-                        },
-                        { id: 2, itemName: "Башмак, вкладыш ДК/ДШ" },
-                        {
-                          id: 3,
-                          itemName:
-                            "Башмак, вкладыш башмака направляющих кабины и противовеса",
-                        },
-                      ],
-                    },
-                  ]}
+                  hints={searchResults_categories}
                 />
             </div>
         </div>
@@ -106,7 +183,7 @@ const CatalogSearchModal = ({}) => {
 
       {/*Products bock*/}
       <div
-        className={"col-12 col-lg-6 h-100 pl-0 pl-lg-3 pr-0 pr-lg-3"}
+        className={`col-12 col-lg-6 h-100 pl-0 pl-lg-3 pr-0 pr-lg-3 ${styles.catalogFiltersModal_comp}`}
       >
         <div className={styles.headerContainer} style={{justifyContent: "space-between"}}>
 
@@ -114,7 +191,7 @@ const CatalogSearchModal = ({}) => {
               Товары
           </header>
 
-          {searchResults && (
+          {searchResults_products && (
             <div style={{ width: "180px", alignSelf: "center" }}>
               <ISTButtonN
                 title={{ caption: "Все результаты" }}
@@ -130,12 +207,15 @@ const CatalogSearchModal = ({}) => {
           )}
         </div>
 
-        {searchResults ? (
+        {searchResults_products ? (
 
           //PRODUCTS LIST OUT
-          <div className={"col-12 p-0 d-flex justify-content-center"}>
-            <div className={styles.catalogItems_block}>
-                {new Array(10).fill("").map((i) => {
+
+            <div className={`
+                ${styles.catalogItems_block} 
+                ${searchResults_products?.length > 6 ? styles.longList : ''}`}
+            >
+                {searchResults_products.map((el, i) => {
                     return (
                         <div
                             className={styles.productCardVariant_Block}
@@ -143,19 +223,19 @@ const CatalogSearchModal = ({}) => {
                         >
                             <ISTProductItem
                                 id={i}
-                                title={"Product Item dsdfsdf sedfsdfs sdfsdfwsfwsdfsad"}
-                                price={"200"}
+                                title={el.title}
+                                price={el.price}
                                 style={{
                                     inline: false
                                 }}
-                                vendCode={"IST 000001"}
+                                vendCode={el.vendCode}
                                 currency={"RU"}
                             />
                         </div>
-                    );
+                    )
                 })}
             </div>
-          </div>
+
 
         ) : (
 
@@ -164,8 +244,8 @@ const CatalogSearchModal = ({}) => {
             <Image
               src={cloudSearch}
               alt={"not result"}
-              width={186}
-              height={186}
+              width={176}
+              height={176}
               fill={false}
               style={{
                 objectFit: "contain",

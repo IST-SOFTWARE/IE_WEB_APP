@@ -46,7 +46,6 @@ export default function MyApp({ Component, pageProps }) {
   const { modalComponent, ModalView } = useBaseModal("APP_BODY_WRAPPER");
   const { currentState } = useCatalog<ICatalogQueries<ICatalogFiltersType>>();
 
-  const [mobileState, setMobileState] = useState(0);
 
   useEffect(() => {
     if (modalComponent && currentState)
@@ -65,27 +64,6 @@ export default function MyApp({ Component, pageProps }) {
     }
   }, [modalComponent]);
 
-  const openFiltersPage = useCallback(() => {
-    if (modalComponent) {
-      modalComponent
-        .applyModalByName(toc_mobile_filter_page.typeName)
-        .then((el) => setMobileState(el.index));
-    }
-  }, [modalComponent]);
-
-  const openCartPage = useCallback(() => {
-    if (modalComponent)
-      modalComponent
-        .applyModalByName(toc_mobile_cart_page.typeName)
-        .then((el) => setMobileState(el.index));
-  }, [modalComponent]);
-
-  const openCatalog = useCallback(() => {
-    if (modalComponent)
-      modalComponent
-        .applyModalByName(toc_catalog_full_prod_list.typeName)
-        .then((el) => setMobileState(el.index));
-  }, [modalComponent]);
 
   return (
     <>
@@ -105,7 +83,15 @@ export default function MyApp({ Component, pageProps }) {
 
       <ApolloProvider client={apolloClient}>
         <Provider store={store}>
-          <Header>
+          <Header
+            catalogOpener={()=>{
+              modalComponent.applyModalByName(toc_catalog_full_prod_list.typeName)
+            }}
+
+            searchOpener={()=>{
+              modalComponent.applyModalByName(toc_catalog_search.typeName)
+            }}
+          >
             <RegionHandler baseRegion={router.locale} />
           </Header>
 
@@ -114,26 +100,26 @@ export default function MyApp({ Component, pageProps }) {
           <Footer route={router.locale} />
 
           {
-            modalComponent.getState ? (
-                <ICatalogHelper
-                    items={[
-                      { icon: searchIcon, title: "Search" },
-                      {
-                        icon: filterIcon,
-                        title: "Filters",
-                        actionFoo: openFiltersPage,
-                      },
-                      {
-                        icon: cartIcon,
-                        title: "Cart",
-                        actionFoo: openCartPage,
-                      },
-                      { icon: currencyIcon, title: "USD" },
-                    ]}
-                    style={{
-                      zIndex: 100
-                    }}
-                />
+            modalComponent.getState ? (<></>
+                // <ICatalogHelper
+                //     items={[
+                //       { icon: searchIcon, title: "Search" },
+                //       {
+                //         icon: filterIcon,
+                //         title: "Filters",
+                //         actionFoo: openFiltersPage,
+                //       },
+                //       {
+                //         icon: cartIcon,
+                //         title: "Cart",
+                //         actionFoo: openCartPage,
+                //       },
+                //       { icon: currencyIcon, title: "USD" },
+                //     ]}
+                //     style={{
+                //       zIndex: 100
+                //     }}
+                // />
             ) : null
           }
 
