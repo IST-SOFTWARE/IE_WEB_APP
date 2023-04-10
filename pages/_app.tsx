@@ -59,7 +59,7 @@ export default function MyApp({ Component, pageProps }) {
           toc_catalog_search,
           toc_catalog_full_prod_list,
         ],
-        0
+        1
       );
     }
   }, [modalComponent]);

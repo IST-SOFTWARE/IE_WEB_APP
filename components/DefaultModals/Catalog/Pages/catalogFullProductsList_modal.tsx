@@ -16,68 +16,13 @@ const CatalogFullProductsListModal = ({}) => {
   return (
     <>
       {/*Filters bock*/}
-      {/* {window.screen.width <= 576 ? (
-        <div className={`col-12 ${styles.modileLayout}`}>
-          <div
-            className={`${styles.mobileVersionFilters} ${
-              opened ? styles.active : null
-            }`}
-          >
-            <div className={`${styles.header}`} onClick={openFilters}>
-              <div className={styles.title}>Фильтры</div>
-              <div
-                className={`${styles.vector} ${opened ? styles.active : null}`}
-              ></div>
-            </div>
-            <div
-              className={`${styles.filtersItems} ${
-                opened ? styles.active : null
-              } `}
-            >
-              <ISTFiltersList
-                title={"производители"}
-                isOpened={false}
-                fields={[
-                  {
-                    isActive: false,
-                    fieldName:
-                      "фильтр 1 с большим описанием. Этот фильтр сделан для тестирования длинны текста фильтра, а так же для тестирования окна полного описания фильтра. Если длинна названия фильтра менее задaнной величины (23 символа) окно с полным описанием выводиться не будет.",
-                    checkBox: true,
-                  },
-                  { isActive: false, fieldName: "фильтр 2", checkBox: true },
-                  { isActive: false, fieldName: "фильтр 3", checkBox: true },
-                  { isActive: false, fieldName: "фильтр 4", checkBox: true },
-                ]}
-              />
-               <ISTFiltersList
-                title={"производители 123"}
-                isOpened={false}
-                fields={[
-                  {
-                    isActive: false,
-                    fieldName:
-                      "фильтр 1 с большим описанием. Этот ",
-                    checkBox: true,
-                  },
-                  { isActive: false, fieldName: "фильтр 2", checkBox: true },
-                  { isActive: false, fieldName: "фильтр 3", checkBox: true },
-                  { isActive: false, fieldName: "фильтр 4", checkBox: true },
-                ]}
-              />
-            </div>
-          </div>
-        </div> */}
-              
-      ) : (
-      <div className={"col-md-5 col-xl-4 position-relative p-0"}>
+      <div className={"col-4 position-relative p-0 d-none d-lg-flex"}
+           style={{
+               border: "solid 1px yellow",
+           }}
+      >
         <div
-          className={`col-md-4 col-xl-3 position-fixed p-0 `}
-          style={{
-            border: "solid 1px yellow",
-            minHeight: "50px",
-            marginTop: "10px",
-            maxWidth: "370px",
-          }}
+            className={styles.catalogFilter_Block}
         >
           <ICheckBoxList
             title={"производители"}
@@ -100,9 +45,15 @@ const CatalogFullProductsListModal = ({}) => {
           />
         </div>
       </div>
-      ){/*Products bock*/}
-      {/* <div className={"col-md-7 col-xl-8 d-flex flex-wrap  h-100"}>
-        {new Array(10).fill("").map((i) => {
+
+    {/*Products bock*/}
+
+       <div className={"col-12 col-lg-8 p-0 pl-lg-2 d-flex flex-wrap h-100"}
+            style={{
+                border: "solid 1px red",
+            }}
+       >
+        {new Array(10).fill("").map((el, i) => {
           return (
             <div
               className={styles.productCardVariant_Block}
@@ -113,7 +64,6 @@ const CatalogFullProductsListModal = ({}) => {
                 title={"Product Item"}
                 price={"200"}
                 style={{
-                  margin: "10px 5px",
                   inline: false,
                 }}
                 vendCode={"IST 000001"}
@@ -122,7 +72,8 @@ const CatalogFullProductsListModal = ({}) => {
             </div>
           );
         })}
-      </div> */}
+      </div>
+
     </>
   );
 };
