@@ -1,0 +1,107 @@
+@import "../scss/variables.scss";
+@import "../scss/mixins/background_mixin.scss";
+
+@media screen and (max-width: 1399.98px) {
+  .XXL_1400{
+    box-shadow: none !important;
+    @include gradient_bg($background:
+            linear-gradient(111.69deg, #2C3641 0%, #151A20 100%),
+    $radius: 20px,
+    $border_s: 0px
+    );
+    border-radius: 20px !important;
+    border: none !important;
+    overflow: hidden !important;
+
+    .vector {
+      position: relative;
+      background-color: $def_blue_gray;
+      transform-origin: (5px 0px 0px);
+      transform: rotate(-90deg);
+    }
+  }
+}
+
+@media screen and (max-width: 1199.98px) {
+  .XL_1200{
+    box-shadow: none !important;
+    @include gradient_bg($background:
+            linear-gradient(111.69deg, #2C3641 0%, #151A20 100%),
+    $radius: 20px,
+    $border_s: 0px
+    );
+    border-radius: 20px !important;
+    border: none !important;
+    overflow: hidden !important;
+
+    .vector {
+      position: relative;
+      background-color: $def_blue_gray;
+      transform-origin: (5px 0px 0px);
+      transform: rotate(-90deg);
+    }
+  }
+}
+
+@media screen and (max-width: 991.98px) {
+  .LG_992{
+    box-shadow: none !important;
+    @include gradient_bg($background:
+            linear-gradient(111.69deg, #2C3641 0%, #151A20 100%),
+    $radius: 20px,
+    $border_s: 0px
+    );
+    border-radius: 20px !important;
+    border: none !important;
+    overflow: hidden !important;
+
+    .vector {
+      position: relative;
+      background-color: $def_blue_gray;
+      transform-origin: (5px 0px 0px);
+      transform: rotate(-90deg);
+    }
+  }
+}
+
+@media screen and (max-width: 767.98px) {
+  .MD_768{
+    box-shadow: none !important;
+    @include gradient_bg($background:
+            linear-gradient(111.69deg, #2C3641 0%, #151A20 100%),
+    $radius: 20px,
+    $border_s: 0px
+    );
+    border-radius: 20px !important;
+    border: none !important;
+    overflow: hidden !important;
+
+    .vector {
+      position: relative;
+      background-color: $def_blue_gray;
+      transform-origin: (5px 0px 0px);
+      transform: rotate(-90deg);
+    }
+  }
+}
+
+@media screen and (max-width: 575.98px) {
+  .SM_576{
+    box-shadow: none !important;
+    @include gradient_bg($background:
+            linear-gradient(111.69deg, #2C3641 0%, #151A20 100%),
+    $radius: 20px,
+    $border_s: 0px
+    );
+    border-radius: 20px !important;
+    border: none !important;
+    overflow: hidden !important;
+
+    .vector {
+      position: relative;
+      background-color: $def_blue_gray;
+      transform-origin: (5px 0px 0px);
+      transform: rotate(-90deg);
+    }
+  }
+}

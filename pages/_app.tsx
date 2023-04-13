@@ -58,8 +58,9 @@ export default function MyApp({ Component, pageProps }) {
         [
           toc_catalog_search,
           toc_catalog_full_prod_list,
+          {typeName: "test", _header: "", _paragraph: ""}
         ],
-        1
+        2
       );
     }
   }, [modalComponent]);
@@ -134,6 +135,10 @@ export default function MyApp({ Component, pageProps }) {
                 toc_catalog_full_prod_list.typeName
               ) ? (
                 <CatalogFullProductsListModal />
+              ) : null}
+
+              {modalComponent.isCurrentModal("test") ? (
+                  <CatalogTestFiltersModal/>
               ) : null}
 
             </CatalogWrapper_modal>

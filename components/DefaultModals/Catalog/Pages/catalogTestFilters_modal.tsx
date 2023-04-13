@@ -1,5 +1,6 @@
 import React, {FC} from 'react';
 import ICheckBoxList from "../../../UI/ISTFiltersList/ICheckBoxList";
+import ISTProductItem from "../../../UI/ISTProductItem/ISTProductItem";
 
 const CatalogTestFiltersModal:FC = () => {
     return (
@@ -17,7 +18,8 @@ const CatalogTestFiltersModal:FC = () => {
                     {isActive: false, fieldName: "Field 4", checkBox: true},
                 ]}
                    mobileSettings={{
-                       type: "transfer"
+                       type: "transfer",
+                       mobileSizeTrigger: "LG_992"
                    }}
                 />
 
@@ -30,6 +32,7 @@ const CatalogTestFiltersModal:FC = () => {
 
             </div>
         </>
+
     );
 };
 

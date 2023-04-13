@@ -1,9 +1,11 @@
 import React, { FC, useEffect, useState } from "react";
 import Filter from "./Filter";
 import styles from "./checkBoxList.module.scss";
+import adaptiveStyles from "./checkBoxListAdaptive.module.scss"
 
 type mobileOpenType_dropdown = "dropdown"
 type mobileOpenType_transfer = "transfer"
+type mobileTrigger_size = "XXL_1400" | "XL_1200" | "LG_992" | "MD_768" | "SM_576"
 
 type ICheckBoxItem = {
   isActive: boolean;
@@ -15,7 +17,8 @@ type ICheckBoxItem = {
 
 type mobileSettings = {
   type: mobileOpenType_dropdown | mobileOpenType_transfer,
-  mobileListTransfer?: React.Dispatch<ICheckBoxItem[]>
+  mobileSizeTrigger?: mobileTrigger_size
+  mobileListTransfer?: React.Dispatch<ICheckBoxItem[]>,
 }
 
 interface ICheckBoxList
@@ -67,7 +70,13 @@ const ICheckBoxList:FC<ICheckBoxList> = ({
   return (
     <div className={`
       ${styles.container} 
-      ${mobileSettings?.type === "transfer" ? styles.mobile_transfer : ""}`
+      ${mobileSettings?.type === "transfer" ? 
+        adaptiveStyles[
+            mobileSettings?.mobileSizeTrigger ? 
+            mobileSettings?.mobileSizeTrigger : 
+            "SM_576"
+          ] 
+        : ""}`
     }>
       {hasFilters.length > 0 &&
           <div className={styles.dot}/>
