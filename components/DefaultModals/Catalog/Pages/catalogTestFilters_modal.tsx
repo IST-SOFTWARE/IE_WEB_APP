@@ -1,8 +1,14 @@
-import React, {FC} from 'react';
-import ICheckBoxList from "../../../UI/ISTFiltersList/ICheckBoxList";
+import React, {FC, useState} from 'react';
+import ISTFiltersList from "../../../UI/ISTFiltersList/components/ISTFiltersList";
 import ISTProductItem from "../../../UI/ISTProductItem/ISTProductItem";
+import ISTFiltersWrapper from "../../../UI/ISTFiltersList/components/ISTFiltersWrapper";
+import useISTFiltersList from "../../../UI/ISTFiltersList/hook/useISTFiltersList";
 
 const CatalogTestFiltersModal:FC = () => {
+
+    const [firstActives, setFirstActives] = useState<boolean>(false)
+    const {hookedData, hasActives} = useISTFiltersList()
+
     return (
         <>
             <div
@@ -11,25 +17,28 @@ const CatalogTestFiltersModal:FC = () => {
                     height: "450px"
                 }}
             >
-                <ICheckBoxList title={"FILTER TEST"} isOpened={true} fields={[
-                    {isActive: false, fieldName: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. ", checkBox: true},
-                    {isActive: false, fieldName: "Field 2", checkBox: true},
-                    {isActive: false, fieldName: "Field 3", checkBox: true},
-                    {isActive: false, fieldName: "Field 4", checkBox: true},
-                ]}
-                   mobileSettings={{
-                       type: "transfer",
-                       mobileSizeTrigger: "LG_992"
-                   }}
-                />
+                <ISTFiltersWrapper
+                    title={"FILTER TEST"}
+                    isOpened={true}
+                    hasActives={hasActives}
+                    mobileSettings={{
+                        type: "transfer",
+                        mobileSizeTrigger: "LG_992"
+                    }}
+                >
 
-                <ICheckBoxList title={"FILTER TEST"} isOpened={true} fields={[
-                    {isActive: false, fieldName: "Field 1", checkBox: true},
-                    {isActive: false, fieldName: "Field 2", checkBox: true},
-                    {isActive: false, fieldName: "Field 3", checkBox: true},
-                    {isActive: false, fieldName: "Field 4", checkBox: true},
-                ]}/>
+                    <ISTFiltersList fields={[
+                        {isActive: false, fieldName: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. ",
+                            isCheckBox: true},
+                        {isActive: false, fieldName: "Field 2", isCheckBox: true},
+                        {isActive: false, fieldName: "Field 3", isCheckBox: true},
+                        {isActive: false, fieldName: "Field 4", isCheckBox: true},
+                        ]}
 
+                        hookedData={hookedData}
+                    />
+
+                </ISTFiltersWrapper>
             </div>
         </>
 

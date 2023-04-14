@@ -1,0 +1,99 @@
+@import "../../scss/variables";
+@import "../../scss/mixins/background_mixin";
+@import "../../scss/mixins/rfs_mixins";
+
+.filter {
+  &:first-child {
+    margin-top: 16px;
+  }
+  width: 100%;
+  box-sizing: border-box;
+  padding: 8px;
+
+  color: $def_white;
+  font-weight: 500;
+  @include font-size(1.15rem);
+  line-height: 23px;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  margin: 4px 0px;
+  cursor: pointer;
+  transition: all 0.1s ease-in-out;
+
+  &:hover {
+    background: $def_page_bg;
+    box-shadow: 0px 0px 4px $def_dark;
+    border-radius: 10px;
+    transition: all 0.1s ease-in-out;
+  }
+
+  .columnField {
+
+    user-select: none;
+
+    > .describingFilter {
+      background: $def_page_bg;
+      box-sizing: border-box;
+      position: absolute;
+      width: 75%;
+
+      left: 18px;
+      transform: translateY(15px);
+
+      box-shadow: 0px 0px 5px $def_dark;
+      border-radius: 10px;
+      padding: 8px;
+
+      font-weight: 500;
+      @include font-size(1rem);
+      line-height: 18px;
+      color: $def_white;
+
+      animation: describingFilterActive 0.2s ease-in-out;
+    }
+  }
+
+  > .fieldName {
+    width: 100%;
+    box-sizing: border-box;
+    transition: color 0.1s ease-in-out;
+  }
+
+  .activeText {
+    color: $def_light_blue;
+    transition: color 0.1s ease-in-out;
+  }
+
+  > .checkPoint {
+    position: relative;
+    width: 20px;
+    height: 20px;
+    border: 2px solid $def_light_blue;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.1s ease-in-out;
+
+    &::after {
+      position: absolute;
+      content: "-";
+      @include font-size(1.5rem);
+      color: $def_light_blue;
+      font-weight: 400;
+
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+  }
+
+  > .active {
+    border: 2px solid $def_blue_gray;
+    &::after {
+      content: "+";
+      @include font-size(1rem);
+    }
+  }
+}

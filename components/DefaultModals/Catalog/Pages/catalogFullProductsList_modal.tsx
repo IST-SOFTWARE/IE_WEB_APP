@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import ISTProductItem from "../../../UI/ISTProductItem/ISTProductItem";
-import ICheckBoxList from "../../../UI/ISTFiltersList/ICheckBoxList";
+import ISTFiltersList from "../../../UI/ISTFiltersList/components/ISTFiltersList";
 import styles from "../../../../styles/Modals/catalog/catalogProducts/catalogFullProductsList.module.scss";
 import ICatalogHelper from "../../../UI/ICatalogHelper/ICatalogHelper";
 
@@ -24,25 +24,25 @@ const CatalogFullProductsListModal = ({}) => {
         <div
             className={styles.catalogFilter_Block}
         >
-          <ICheckBoxList
-            title={"производители"}
-            isOpened={false}
-            fields={[
-              {
-                isActive: false,
-                fieldName:
-                  "фильтр 1 с большим описанием. Этот фильтр сделан для тестирования длинны текста фильтра, а так же для тестирования окна полного описания фильтра. Если длинна названия фильтра менее задaнной величины (23 символа) окно с полным описанием выводиться не будет.",
-                checkBox: true,
-              },
-              { isActive: false, fieldName: "фильтр 2", checkBox: true },
-              { isActive: false, fieldName: "фильтр 3", checkBox: true },
-              { isActive: false, fieldName: "фильтр 4", checkBox: true },
-            ]}
-            mobileSettings={{
-                type: "transfer",
-                mobileListTransfer: undefined
-            }}
-          />
+          {/*<ICheckBoxList*/}
+          {/*  title={"производители"}*/}
+          {/*  isOpened={false}*/}
+          {/*  fields={[*/}
+          {/*    {*/}
+          {/*      isActive: false,*/}
+          {/*      fieldName:*/}
+          {/*        "фильтр 1 с большим описанием. Этот фильтр сделан для тестирования длинны текста фильтра, а так же для тестирования окна полного описания фильтра. Если длинна названия фильтра менее задaнной величины (23 символа) окно с полным описанием выводиться не будет.",*/}
+          {/*      isCheckBox: true,*/}
+          {/*    },*/}
+          {/*    { isActive: false, fieldName: "фильтр 2", isCheckBox: true },*/}
+          {/*    { isActive: false, fieldName: "фильтр 3", isCheckBox: true },*/}
+          {/*    { isActive: false, fieldName: "фильтр 4", isCheckBox: true },*/}
+          {/*  ]}*/}
+          {/*  mobileSettings={{*/}
+          {/*      type: "transfer",*/}
+          {/*      mobileListTransfer: undefined*/}
+          {/*  }}*/}
+          {/*/>*/}
         </div>
       </div>
 

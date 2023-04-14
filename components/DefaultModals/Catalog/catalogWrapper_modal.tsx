@@ -23,7 +23,7 @@ import { ICatalogQueries } from "../../ISTCatalog/ICatalogQueries";
 import { ICatalogFiltersType } from "../../../store/slices/catalogSlice/catalogFiltersType";
 
 import ISTProductItem from "../../UI/ISTProductItem/ISTProductItem";
-import ICheckBoxList from "../../UI/ISTFiltersList/ICheckBoxList";
+import ISTFiltersList from "../../UI/ISTFiltersList/components/ISTFiltersList";
 
 import ICatalogHelper from "../../UI/ICatalogHelper/ICatalogHelper";
 
