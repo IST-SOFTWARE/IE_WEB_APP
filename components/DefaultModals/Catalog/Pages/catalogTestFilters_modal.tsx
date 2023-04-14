@@ -7,7 +7,7 @@ import useISTFiltersList from "../../../UI/ISTFiltersList/hook/useISTFiltersList
 const CatalogTestFiltersModal:FC = () => {
 
     const [firstActives, setFirstActives] = useState<boolean>(false)
-    const {hookedData, hasActives} = useISTFiltersList()
+    const [firstFilter, firstActive] = useISTFiltersList()
 
     return (
         <>
@@ -20,7 +20,7 @@ const CatalogTestFiltersModal:FC = () => {
                 <ISTFiltersWrapper
                     title={"FILTER TEST"}
                     isOpened={true}
-                    hasActives={hasActives}
+                    hasActives={firstActive}
                     mobileSettings={{
                         type: "transfer",
                         mobileSizeTrigger: "LG_992"
@@ -35,7 +35,7 @@ const CatalogTestFiltersModal:FC = () => {
                         {isActive: false, fieldName: "Field 4", isCheckBox: true},
                         ]}
 
-                        hookedData={hookedData}
+                        hookedData={firstFilter}
                     />
 
                 </ISTFiltersWrapper>

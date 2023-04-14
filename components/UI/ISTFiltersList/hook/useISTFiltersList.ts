@@ -1,7 +1,7 @@
 import {useCallback, useEffect, useState} from "react";
 import {ICheckBoxItem, IST_HookedData} from "../common";
 
-const useISTFiltersList = () =>{
+const useISTFiltersList = ():[IST_HookedData, boolean] =>{
     const[filters, filtersUpdater] = useState<ICheckBoxItem[]>([])
     const[hasActives, setActives] = useState<boolean>(false);
 
@@ -16,14 +16,13 @@ const useISTFiltersList = () =>{
     },[filters])
 
 
-    return{
-        hookedData: {
+    return[
+        {
             fields: filters,
             fieldsSetter: filtersUpdater
         } as IST_HookedData,
-        
         hasActives
-    }
+    ]
 }
 
 export default useISTFiltersList

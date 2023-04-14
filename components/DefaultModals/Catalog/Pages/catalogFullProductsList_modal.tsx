@@ -1,19 +1,19 @@
 import React, { useState } from "react";
-import ISTProductItem from "../../../UI/ISTProductItem/ISTProductItem";
-import ISTFiltersList from "../../../UI/ISTFiltersList/components/ISTFiltersList";
 import styles from "../../../../styles/Modals/catalog/catalogProducts/catalogFullProductsList.module.scss";
-import ICatalogHelper from "../../../UI/ICatalogHelper/ICatalogHelper";
+
+import ISTProductItem from "../../../UI/ISTProductItem/ISTProductItem";
+
+import ISTFiltersList from "../../../UI/ISTFiltersList/components/ISTFiltersList";
+import ISTFiltersWrapper from "../../../UI/ISTFiltersList/components/ISTFiltersWrapper";
+import useISTFiltersList from "../../../UI/ISTFiltersList/hook/useISTFiltersList";
 
 const CatalogFullProductsListModal = ({}) => {
-  const [opened, setOpened] = useState(false); //откртие/закрытие списко фильтров
 
-  const openFilters = () => {
-    opened ? setOpened(false) : setOpened(true);
-  };
+    const[mfg_filter, mfg_active] = useISTFiltersList();
+    const[types_filter, types_active] = useISTFiltersList();
+    const[units_filter, units_active] = useISTFiltersList();
 
-
-
-  return (
+    return (
     <>
       {/*Filters bock*/}
       <div className={"col-4 position-relative p-0 d-none d-lg-flex"}
@@ -24,25 +24,78 @@ const CatalogFullProductsListModal = ({}) => {
         <div
             className={styles.catalogFilter_Block}
         >
-          {/*<ICheckBoxList*/}
-          {/*  title={"производители"}*/}
-          {/*  isOpened={false}*/}
-          {/*  fields={[*/}
-          {/*    {*/}
-          {/*      isActive: false,*/}
-          {/*      fieldName:*/}
-          {/*        "фильтр 1 с большим описанием. Этот фильтр сделан для тестирования длинны текста фильтра, а так же для тестирования окна полного описания фильтра. Если длинна названия фильтра менее задaнной величины (23 символа) окно с полным описанием выводиться не будет.",*/}
-          {/*      isCheckBox: true,*/}
-          {/*    },*/}
-          {/*    { isActive: false, fieldName: "фильтр 2", isCheckBox: true },*/}
-          {/*    { isActive: false, fieldName: "фильтр 3", isCheckBox: true },*/}
-          {/*    { isActive: false, fieldName: "фильтр 4", isCheckBox: true },*/}
-          {/*  ]}*/}
-          {/*  mobileSettings={{*/}
-          {/*      type: "transfer",*/}
-          {/*      mobileListTransfer: undefined*/}
-          {/*  }}*/}
-          {/*/>*/}
+
+        {/*Производители*/}
+
+            <ISTFiltersWrapper
+                title={"Производители"}
+                isOpened={true}
+                hasActives={mfg_active}
+                mobileSettings={{
+                    type: "transfer",
+                    mobileSizeTrigger: "LG_992"
+                }}
+            >
+
+                <ISTFiltersList fields={[
+                    {isActive: false, fieldName: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. ",
+                        isCheckBox: true},
+                    {isActive: false, fieldName: "Field 2", isCheckBox: true},
+                    {isActive: false, fieldName: "Field 3", isCheckBox: true},
+                    {isActive: false, fieldName: "Field 4", isCheckBox: true},
+                ]}
+                    hookedData={mfg_filter}
+                />
+            </ISTFiltersWrapper>
+
+        {/*Типы*/}
+
+            <ISTFiltersWrapper
+                title={"Типы"}
+                isOpened={false}
+                hasActives={types_active}
+                mobileSettings={{
+                    type: "transfer",
+                    mobileSizeTrigger: "LG_992"
+                }}
+            >
+
+                <ISTFiltersList fields={[
+                    {isActive: false, fieldName: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. ",
+                        isCheckBox: true},
+                    {isActive: false, fieldName: "Field 2", isCheckBox: true},
+                    {isActive: false, fieldName: "Field 3", isCheckBox: true},
+                    {isActive: false, fieldName: "Field 4", isCheckBox: true},
+                ]}
+
+                    hookedData={types_filter}
+                />
+            </ISTFiltersWrapper>
+
+        {/*Узлы*/}
+
+            <ISTFiltersWrapper
+                title={"Узлы"}
+                isOpened={false}
+                hasActives={units_active}
+                mobileSettings={{
+                    type: "transfer",
+                    mobileSizeTrigger: "LG_992"
+                }}
+            >
+
+                <ISTFiltersList fields={[
+                    {isActive: false, fieldName: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. ",
+                        isCheckBox: true},
+                    {isActive: false, fieldName: "Field 2", isCheckBox: true},
+                    {isActive: false, fieldName: "Field 3", isCheckBox: true},
+                    {isActive: false, fieldName: "Field 4", isCheckBox: true},
+                ]}
+                    hookedData={units_filter}
+                />
+            </ISTFiltersWrapper>
+
+
         </div>
       </div>
 
