@@ -1,6 +1,27 @@
 @import "../../scss/variables";
 @import "../../scss/mixins/background_mixin";
 
+.titleHandlerBlock{
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  padding: 20px;
+
+  top: -10px;
+  left: 0;
+}
+
+.mobile_transfer{
+  display: none;
+  background: red;
+}
+
+.default_handler{
+  display: block;
+  background: blue;
+}
+
+
 @media screen and (max-width: 1399.98px) {
   .XXL_1400{
     box-shadow: none !important;
@@ -19,6 +40,15 @@
       transform-origin: (5px 0px 0px);
       transform: rotate(-90deg);
     }
+
+    .mobile_transfer_XXL_1400{
+      display: block;
+    }
+
+    .default_handler_XXL_1400{
+      display: none;
+    }
+
   }
 }
 
@@ -40,6 +70,15 @@
       transform-origin: (5px 0px 0px);
       transform: rotate(-90deg);
     }
+
+    .mobile_transfer_XL_1200{
+      display: block;
+    }
+
+    .default_handler_XL_1200{
+      display: none;
+    }
+
   }
 }
 
@@ -61,6 +100,15 @@
       transform-origin: (5px 0px 0px);
       transform: rotate(-90deg);
     }
+
+    .mobile_transfer_LG_992{
+      display: block;
+    }
+
+    .default_handler_LG_992{
+      display: none;
+    }
+
   }
 }
 
@@ -82,6 +130,15 @@
       transform-origin: (5px 0px 0px);
       transform: rotate(-90deg);
     }
+
+    .mobile_transfer_MD_768{
+      display: block;
+    }
+
+    .default_handler_MD_768{
+      display: none;
+    }
+
   }
 }
 
@@ -103,5 +160,14 @@
       transform-origin: (5px 0px 0px);
       transform: rotate(-90deg);
     }
+
+    .mobile_transfer_SM_576{
+      display: block;
+    }
+
+    .default_handler_SM_576{
+      display: none;
+    }
+
   }
 }

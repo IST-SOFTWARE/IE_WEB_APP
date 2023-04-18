@@ -1,7 +1,7 @@
 import React, {ReactNode} from "react";
 
-type mobileOpenType_dropdown = "dropdown"
-type mobileOpenType_transfer = "transfer"
+export type mobileOpenType_dropdown = "dropdown"
+export type mobileOpenType_transfer = "transfer"
 type mobileTrigger_size = "XXL_1400" | "XL_1200" | "LG_992" | "MD_768" | "SM_576"
 
 export type ICheckBoxItem = {
@@ -24,7 +24,8 @@ export interface IST_Filter
 
 type mobileSettings = {
     type: mobileOpenType_dropdown | mobileOpenType_transfer,
-    mobileSizeTrigger?: mobileTrigger_size
+    mobileSizeTrigger?: mobileTrigger_size,
+    onTransfer?: (...props) => any,
 }
 
 export interface IST_IFiltersWrapper{
