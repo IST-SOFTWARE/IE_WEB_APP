@@ -22,11 +22,19 @@ export interface IST_Filter
     // hasActivesSetter?: React.Dispatch<boolean>;
 }
 
-type mobileSettings = {
-    type: mobileOpenType_dropdown | mobileOpenType_transfer,
-    mobileSizeTrigger?: mobileTrigger_size,
+type mobileSettings = mobileSettings_transfer | mobileSettings_dropdown
+
+export interface mobileSettings_transfer{
+    type: mobileOpenType_transfer,
+    mobileSizeTrigger: mobileTrigger_size,
     onTransfer?: (...props) => any,
 }
+
+export interface mobileSettings_dropdown{
+    type: mobileOpenType_dropdown,
+    mobileSizeTrigger: mobileTrigger_size,
+}
+
 
 export interface IST_IFiltersWrapper{
     children: ReactNode,
@@ -41,3 +49,27 @@ export interface IST_HookedData{
     fields: Array<ICheckBoxItem>
     fieldsSetter: React.Dispatch<Array<ICheckBoxItem>>
 }
+
+//Actions
+
+export const getMobileSettings_triggerSize = (mobileSettings: mobileSettings):mobileTrigger_size => {
+    if(mobileSettings && mobileSettings.mobileSizeTrigger)
+        return mobileSettings.mobileSizeTrigger
+    else
+        return "SM_576"
+}
+
+export const getMobileSettings_isTransfer = (mobileSettings: mobileSettings):boolean => {
+    if(mobileSettings && mobileSettings.type && mobileSettings.type === "transfer")
+        return true
+    else
+        return false
+}
+
+export const getMobileSettings_isDropdown = (mobileSettings: mobileSettings):boolean => {
+    if(mobileSettings && mobileSettings.type && mobileSettings.type === "dropdown")
+        return true
+    else
+        return false
+}
+

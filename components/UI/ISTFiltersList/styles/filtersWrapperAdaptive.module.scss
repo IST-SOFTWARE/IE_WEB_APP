@@ -13,12 +13,10 @@
 
 .mobile_transfer{
   display: none;
-  background: red;
 }
 
 .default_handler{
   display: block;
-  background: blue;
 }
 
 
@@ -34,11 +32,15 @@
     border: none !important;
     overflow: hidden !important;
 
-    .vector {
+    .vector_XXL_1400{
       position: relative;
       background-color: $def_blue_gray;
       transform-origin: (5px 0px 0px);
       transform: rotate(-90deg);
+    }
+
+    .ch_wrapper_hider_XXL_1400{
+      display: none !important;
     }
 
     .mobile_transfer_XXL_1400{
@@ -48,7 +50,6 @@
     .default_handler_XXL_1400{
       display: none;
     }
-
   }
 }
 
@@ -64,11 +65,15 @@
     border: none !important;
     overflow: hidden !important;
 
-    .vector {
+    .vector_XL_1200 {
       position: relative;
       background-color: $def_blue_gray;
       transform-origin: (5px 0px 0px);
       transform: rotate(-90deg);
+    }
+
+    .ch_wrapper_hider_XL_1200{
+      display: none !important;
     }
 
     .mobile_transfer_XL_1200{
@@ -78,7 +83,6 @@
     .default_handler_XL_1200{
       display: none;
     }
-
   }
 }
 
@@ -94,11 +98,15 @@
     border: none !important;
     overflow: hidden !important;
 
-    .vector {
+    .vector_LG_992 {
       position: relative;
       background-color: $def_blue_gray;
       transform-origin: (5px 0px 0px);
       transform: rotate(-90deg);
+    }
+
+    .ch_wrapper_hider_LG_992{
+      display: none !important;
     }
 
     .mobile_transfer_LG_992{
@@ -108,7 +116,6 @@
     .default_handler_LG_992{
       display: none;
     }
-
   }
 }
 
@@ -124,11 +131,15 @@
     border: none !important;
     overflow: hidden !important;
 
-    .vector {
+    .vector_MD_768 {
       position: relative;
       background-color: $def_blue_gray;
       transform-origin: (5px 0px 0px);
       transform: rotate(-90deg);
+    }
+
+    .ch_wrapper_hider_MD_768{
+      display: none !important;
     }
 
     .mobile_transfer_MD_768{
@@ -138,7 +149,6 @@
     .default_handler_MD_768{
       display: none;
     }
-
   }
 }
 
@@ -154,11 +164,15 @@
     border: none !important;
     overflow: hidden !important;
 
-    .vector {
+    .vector_SM_576 {
       position: relative;
       background-color: $def_blue_gray;
       transform-origin: (5px 0px 0px);
       transform: rotate(-90deg);
+    }
+
+    .ch_wrapper_hider_SM_576{
+      display: none !important;
     }
 
     .mobile_transfer_SM_576{
@@ -168,6 +182,5 @@
     .default_handler_SM_576{
       display: none;
     }
-
   }
 }
