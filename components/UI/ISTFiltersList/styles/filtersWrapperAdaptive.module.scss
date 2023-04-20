@@ -19,6 +19,9 @@
   display: block;
 }
 
+.transferVector_active{
+  transform: rotate(-180deg);
+}
 
 @media screen and (max-width: 1399.98px) {
   .XXL_1400{
@@ -103,6 +106,10 @@
       background-color: $def_blue_gray;
       transform-origin: (5px 0px 0px);
       transform: rotate(-90deg);
+
+      &.vector_active{
+        transform: rotate(90deg) !important;
+      }
     }
 
     .ch_wrapper_hider_LG_992{

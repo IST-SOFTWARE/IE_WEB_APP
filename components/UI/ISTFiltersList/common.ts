@@ -27,7 +27,7 @@ type mobileSettings = mobileSettings_transfer | mobileSettings_dropdown
 export interface mobileSettings_transfer{
     type: mobileOpenType_transfer,
     mobileSizeTrigger: mobileTrigger_size,
-    onTransfer?: (...props) => any,
+    onTransfer: (...props) => any,
 }
 
 export interface mobileSettings_dropdown{

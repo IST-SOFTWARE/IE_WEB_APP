@@ -76,9 +76,15 @@ const ISTFiltersWrapper:FC<IST_IFiltersWrapper> = ({
                     <div
                         className={`
                             ${getMobileSettings_isTransfer(mobileSettings) ? 
-                                adaptiveStyles[`vector_${getMobileSettings_triggerSize(mobileSettings)}`] : ""}
+                                adaptiveStyles[`vector_${getMobileSettings_triggerSize(mobileSettings)}`] : 
+                            ""}
+                           
                             ${styles.vector} 
                             ${openState ? styles.active : ""}
+                            
+                            ${getMobileSettings_isTransfer(mobileSettings) && openState ? 
+                                adaptiveStyles.vector_active : ""
+                            }
                         `}
                     />
                 </div>

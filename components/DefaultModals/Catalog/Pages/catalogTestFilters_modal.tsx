@@ -23,7 +23,8 @@ const CatalogTestFiltersModal:FC = () => {
                     hasActives={firstActive}
                     mobileSettings={{
                         type: "transfer",
-                        mobileSizeTrigger: "LG_992"
+                        mobileSizeTrigger: "LG_992",
+                        onTransfer: ()=>{}
                     }}
                 >
 
