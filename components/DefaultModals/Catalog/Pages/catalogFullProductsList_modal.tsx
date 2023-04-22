@@ -32,6 +32,7 @@ const CatalogFullProductsListModal = ({}) => {
                 isOpened={true}
                 hasActives={mfg_active}
                 mobileSettings={{
+                    onTransfer: ()=>{},
                     type: "transfer",
                     mobileSizeTrigger: "LG_992"
                 }}
@@ -55,6 +56,7 @@ const CatalogFullProductsListModal = ({}) => {
                 isOpened={false}
                 hasActives={types_active}
                 mobileSettings={{
+                    onTransfer: ()=>{},
                     type: "transfer",
                     mobileSizeTrigger: "LG_992"
                 }}
@@ -79,6 +81,7 @@ const CatalogFullProductsListModal = ({}) => {
                 isOpened={false}
                 hasActives={units_active}
                 mobileSettings={{
+                    onTransfer: ()=>{},
                     type: "transfer",
                     mobileSizeTrigger: "LG_992"
                 }}

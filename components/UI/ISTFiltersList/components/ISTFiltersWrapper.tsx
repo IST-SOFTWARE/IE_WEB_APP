@@ -22,17 +22,15 @@ const ISTFiltersWrapper:FC<IST_IFiltersWrapper> = ({
         setOpenState(!openState);
     }
 
-    //
-    // const filterClickHandler = useCallback(() => {
-    //     if(mobileSettings.onTransfer && mobileSettings.type === "transfer")
-    //         mobileSettings.onTransfer()
-    //
-    //     else if(!mobileSettings.onTransfer && mobileSettings.type === "transfer")
-    //         throw new Error("When selecting the \"transfer\" type, you must specify the \"onTransfer\" function")
-    //
-    //     else
-    //         switchOpenState()
-    // },[mobileSettings, switchOpenState])
+
+    const transferHandler = useCallback(() => {
+        if(mobileSettings && mobileSettings.type === "transfer")
+            mobileSettings.onTransfer()
+
+        else
+            throw new Error("failed to define the handler function \"onTransfer\" from the settings of the mobile version of the component")
+
+    },[mobileSettings])
 
     return(
         <>
@@ -68,7 +66,7 @@ const ISTFiltersWrapper:FC<IST_IFiltersWrapper> = ({
                             getMobileSettings_triggerSize(mobileSettings)
                         }`]: ""}
                     `}
-                        onClick={()=>{}}
+                        onClick={()=>transferHandler()}
                     />
 
                         {title}
