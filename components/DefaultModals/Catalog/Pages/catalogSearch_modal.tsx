@@ -222,14 +222,19 @@ const CatalogSearchModal = ({}) => {
                             key={`productItem_${i}_u_key`}
                         >
                             <ISTProductItem
-                                id={i}
-                                title={el.title}
-                                price={el.price}
-                                style={{
-                                    inline: false
-                                }}
-                                vendCode={el.vendCode}
                                 currency={"RU"}
+                                itemType={{
+                                    productType: "catalog",
+                                    parameters: {
+                                        inline: false
+                                    },
+                                    data: {
+                                        id: i,
+                                        title: "Product Item",
+                                        price: "200",
+                                        vendCode: "IST000001"
+                                    }
+                                }}
                             />
                         </div>
                     )

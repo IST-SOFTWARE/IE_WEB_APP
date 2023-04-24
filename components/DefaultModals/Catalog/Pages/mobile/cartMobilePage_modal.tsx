@@ -17,19 +17,20 @@ const CartMobilePageModal = ({ closeMobileFilter }) => {
       <div className={`${styles.mobileVersionCart}`}>
         {cartProductItems.map((item, index) => {
           return (
-            <ISTProductItem
-              key={`productItem_${index}`}
-              id={index}
-              title={"Product Item"}
-              price={"200"}
-              style={{
-                margin: "10px 5px",
-                inline: true,
-              }}
-              addedToCart={3} //при добавлении колличества штук в корзину
-              vendCode={"IST 000001"}
-              currency={"RU"}
-            />
+              <></>
+            // <ISTProductItem
+            //   key={`productItem_${index}`}
+            //   id={index}
+            //   title={"Product Item"}
+            //   price={"200"}
+            //   style={{
+            //     margin: "10px 5px",
+            //     inline: true,
+            //   }}
+            //   addedToCart={3} //при добавлении колличества штук в корзину
+            //   vendCode={"IST 000001"}
+            //   currency={"RU"}
+            // />
           );
         })}
       </div>

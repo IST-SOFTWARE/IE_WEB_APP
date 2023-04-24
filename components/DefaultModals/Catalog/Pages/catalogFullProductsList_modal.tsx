@@ -115,16 +115,22 @@ const CatalogFullProductsListModal = ({}) => {
               className={styles.productCardVariant_Block}
               key={`productItemCatalog_${i}_key`}
             >
-              <ISTProductItem
-                id={i}
-                title={"Product Item"}
-                price={"200"}
-                style={{
-                  inline: false,
-                }}
-                vendCode={"IST 000001"}
-                currency={"RU"}
-              />
+                <ISTProductItem
+                    currency={"RU"}
+                    itemType={{
+                     productType: "catalog",
+                         parameters: {
+                         inline: false
+                     },
+                     data: {
+                        id: i,
+                        title: "Product Item",
+                        price: "200",
+                        vendCode: "IST000001"
+                     }
+                    }}
+                />
+
             </div>
           );
         })}
