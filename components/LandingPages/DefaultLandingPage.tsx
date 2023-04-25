@@ -5,7 +5,7 @@ import styles from "../../styles/LandingStyles/defaultLanding.module.scss"
 import {ChildNode} from "postcss";
 import useWindowDimensions from "../../Hooks/useWindowsDimensions";
 import {setActualPosition, updatePosition} from "../../store/slices/pageTrackerSlice";
-import {useAppDispatch, useAppSelector} from "../../Hooks/hooks";
+import {useAppDispatch, useAppSelector} from "../../Hooks/reduxSettings";
 import {createScrollSpyConfig} from "../pageTracker/data/scrollSpy";
 // import {useAppDispatch, useAppSelector} from "../../Hooks/hooks";
 

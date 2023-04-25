@@ -1,7 +1,7 @@
 import React, {FC, useEffect, useRef, useState} from 'react';
 import useWindowDimensions from "../../../Hooks/useWindowsDimensions";
 import styles from "../../../styles/PageTracker/pageTracker.module.scss"
-import {useAppSelector} from "../../../Hooks/hooks";
+import {useAppSelector} from "../../../Hooks/reduxSettings";
 import TrackerPoint from "./trackerPoint";
 import {IScrollSpyState} from "../data/scrollSpy";
 

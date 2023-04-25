@@ -10,7 +10,7 @@ import { modalStater } from "../../ISTModals/modalSetter";
 import styles from "../../../styles/Modals/catalog/catalogWrapper.module.scss";
 import { useRouter } from "next/router";
 
-import { useAppSelector } from "../../../Hooks/hooks";
+import { useAppSelector } from "../../../Hooks/reduxSettings";
 import {
   setCatalogState,
   switchCatalog,
@@ -19,7 +19,7 @@ import {
 import { useCatalog } from "../../../Hooks/useCatalog/useCatalog";
 import { useDispatch } from "react-redux";
 
-import { ICatalogQueries } from "../../ISTCatalog/ICatalogQueries";
+import { ICatalogQueries } from "../../../Hooks/useCatalog/ICatalogQueries";
 import { ICatalogFiltersType } from "../../../store/slices/catalogSlice/catalogFiltersType";
 
 import ISTProductItem from "../../UI/ISTProductItem/ISTProductItem";

@@ -8,7 +8,7 @@ import ProductDemo from "../../components/LandingPages/ProductDemo/ProductDemo";
 import OurPartnersPage from "../../components/LandingPages/OurPartners/OurPartnersPage";
 import PageTracker from "../../components/pageTracker/UI/pageTracker";
 import {getActualPosition, scrollPosition} from "../../components/pageTracker/data/scrollSpy";
-import {useAppDispatch, useAppSelector} from "../../Hooks/hooks";
+import {useAppDispatch, useAppSelector} from "../../Hooks/reduxSettings";
 import {setActualPosition} from "../../store/slices/pageTrackerSlice";
 import TrackerBody from "../../components/pageTracker/trackerBody";
 import {useRouter} from "next/router";

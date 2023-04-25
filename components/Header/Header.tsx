@@ -1,19 +1,18 @@
 import React, {FC, useEffect} from 'react';
 import styles from "../../styles/Header/Header.module.scss"
 import Image from "next/image";
-import {useAppDispatch, useAppSelector} from "../../Hooks/hooks";
+import {useAppDispatch, useAppSelector} from "../../Hooks/reduxSettings";
 import {useDispatch} from "react-redux";
 import {
-
     setCatalogState,
     updateCatalog
 } from "../../store/slices/catalogSlice/catalogSlice";
 import {useCatalog} from "../../Hooks/useCatalog/useCatalog"
-import {ICatalogQueries} from "../ISTCatalog/ICatalogQueries";
+import {ICatalogQueries} from "../../Hooks/useCatalog/ICatalogQueries";
 import {ICatalogFiltersType} from "../../store/slices/catalogSlice/catalogFiltersType";
 
 interface Header{
-    children: React.ReactNode,
+    children?: React.ReactNode,
 
     catalogOpener?: (...props: any) => void,
     searchOpener?: (...props: any) => void
@@ -21,38 +20,27 @@ interface Header{
 
 const Header:FC<Header> = ({
     children,
-
     catalogOpener,
     searchOpener
     }) => {
 
     const reduxCatalogState = useAppSelector(state => state.catalog)
-    const catalogDispatch = useDispatch();
+
 
     const {pushQuery, currentState} = useCatalog<ICatalogQueries<ICatalogFiltersType>,
         ICatalogFiltersType>(
-        {
-            arrayFormat: "bracket-separator",
-            arrayFormatSeparator: "|"
-        },
-        {
-            option: "filters",
-            params: ["mfg", "unit", "available", "type"]
-        }
+
     )
 
-    useEffect(()=>{
-        if(currentState && reduxCatalogState && reduxCatalogState.catalog === undefined)
-            catalogDispatch(updateCatalog(currentState));
+    // useEffect(()=>{
+    //     if(currentState && reduxCatalogState && reduxCatalogState.catalog === undefined)
+    //         catalogDispatch(updateCatalog(currentState));
+    // },[currentState, reduxCatalogState])
 
-    },[currentState, reduxCatalogState])
-
-    useEffect(()=>{
-        if(reduxCatalogState && reduxCatalogState.catalog !== undefined)
-            pushQuery(reduxCatalogState);
-    },[reduxCatalogState])
-
-
+    // useEffect(()=>{
+    //     if(reduxCatalogState && reduxCatalogState.catalog !== undefined)
+    //         pushQuery(reduxCatalogState);
+    // },[reduxCatalogState])
 
     return(
         <div className={styles.headerCont}>
@@ -97,7 +85,7 @@ const Header:FC<Header> = ({
                             <button className={styles.catalogBtn}
                                 onClick={()=> {
                                         catalogOpener ? catalogOpener() : null
-                                        catalogDispatch(setCatalogState(true))
+
                                     }
                                 }
                             >
@@ -121,7 +109,7 @@ const Header:FC<Header> = ({
 
                                    onClick={()=> {
                                        searchOpener ? searchOpener() : null
-                                       catalogDispatch(setCatalogState(true))
+
                                    }}
                             />
                         </div>

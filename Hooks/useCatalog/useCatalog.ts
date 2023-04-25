@@ -1,8 +1,8 @@
 import {useRouter} from "next/router";
 import {useCallback, useEffect, useState} from "react";
 import queryString from "query-string";
-import {useAppSelector} from "../hooks";
-import {ICatalogQueries} from "../../components/ISTCatalog/ICatalogQueries";
+import {useAppSelector} from "../reduxSettings";
+import {ICatalogQueries} from "./ICatalogQueries";
 import {ICatalogFiltersType} from "../../store/slices/catalogSlice/catalogFiltersType";
 
 export const useCatalog = <T extends ICatalogQueries<FT>, FT = any>(
@@ -23,20 +23,6 @@ export const useCatalog = <T extends ICatalogQueries<FT>, FT = any>(
         }
     )
 
-    // const getCurrentState = <FILTER_TYPE = any>(deepOption: {
-    //     option: keyof T,
-    //     params: Array<keyof FILTER_TYPE>
-    // }):T => {
-    //
-    //     const query = location.search;
-    //     const parsed = queryString.parse(query, {
-    //             parseBooleans: true,
-    //             parseNumbers: true,
-    //             ..._parseOptions
-    //         }
-    //     )
-    //
-    // }
 
     useEffect(()=>{
         const query = location.search;
@@ -66,7 +52,7 @@ export const useCatalog = <T extends ICatalogQueries<FT>, FT = any>(
 
         setCurrentState(outObj);
 
-    },[router.query])
+    },[router])
 
 
     const pushQuery = useCallback((q: T) => {

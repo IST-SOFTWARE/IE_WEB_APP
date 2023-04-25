@@ -6,7 +6,8 @@ import {
     ISTCatalogCreate,
     ISTCatalogFilter,
     ICatalogQueries
-} from "../../../components/ISTCatalog/ICatalogQueries";
+} from "../../../Hooks/useCatalog/ICatalogQueries";
+
 
 const initialState =
     ISTCatalogCreate<ICatalogFiltersType>({
