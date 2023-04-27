@@ -64,7 +64,7 @@ export default function MyApp({ Component, pageProps }) {
       <ApolloProvider client={apolloClient}>
         <Provider store={store}>
             <LandingLayout>
-                <Component {...pageProps} key={router.asPath} />
+                <Component {...pageProps}/>
             </LandingLayout>
         </Provider>
       </ApolloProvider>

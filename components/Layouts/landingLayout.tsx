@@ -15,6 +15,7 @@ import Footer from "../Footer/Footer";
 import {useAppSelector} from "../../Hooks/reduxSettings";
 import {useDispatch} from "react-redux";
 import {setCatalogState, updateCatalog} from "../../store/slices/catalogSlice/catalogSlice";
+import Catalog from "../Catalog/Catalog";
 
 interface ILandingLayout{
     children?: ReactNode
@@ -23,47 +24,9 @@ interface ILandingLayout{
 export const LandingLayout:FC<ILandingLayout> = ({
     children
 }) => {
-
     const router = useRouter();
-
     const { modalComponent, ModalView } = useBaseModal("APP_BODY_WRAPPER");
-    const { currentState, pushQuery } = useCatalog<ICatalogQueries<ICatalogFiltersType>>(
-        {
-            arrayFormat: "bracket-separator",
-            arrayFormatSeparator: "|"
-        },
-        {
-            option: "filters",
-            params: ["mfg", "unit", "available", "type"]
-        }
-    );
-
-    const reduxCatalogState = useAppSelector(state => state.catalog);
-    const dispatch = useDispatch();
-
-    //
-    useEffect(() => {
-        if (modalComponent && reduxCatalogState.catalog !== undefined)
-            modalComponent.switch(reduxCatalogState.catalog);
-    }, [reduxCatalogState, modalComponent]);
-
-
-    //update REDUX (first load if query)
-    useEffect(()=>{
-        if(currentState && reduxCatalogState.catalog === undefined)
-            dispatch(updateCatalog(currentState));
-    },[currentState, reduxCatalogState])
-
-
-    // Update query from REDUX
-    useEffect(()=>{
-        if(reduxCatalogState.catalog !== undefined)
-            pushQuery(reduxCatalogState);
-    },[reduxCatalogState])
-
-    useEffect(()=>{
-        console.log("Current state: ", currentState, "redux: ", reduxCatalogState);
-    },[currentState, reduxCatalogState])
+    const dispatch = useDispatch()
 
     useEffect(() => {
         if (modalComponent) {
@@ -78,43 +41,49 @@ export const LandingLayout:FC<ILandingLayout> = ({
         }
     }, [modalComponent]);
 
+
+
     return(
         <>
+            <Catalog
+                modal={modalComponent}
+            >
+                <ModalView>
+                    <CatalogWrapper_modal>
+
+                        {modalComponent.isCurrentModal(toc_catalog_search.typeName) ? (
+                            <CatalogSearchModal />
+                        ) : null}
+
+                        {modalComponent.isCurrentModal(
+                            toc_catalog_full_prod_list.typeName
+                        ) ? (
+                            <CatalogFullProductsListModal />
+                        ) : null}
+
+                        {modalComponent.isCurrentModal("test") ? (
+                            <CatalogTestFiltersModal/>
+                        ) : null}
+
+                    </CatalogWrapper_modal>
+                </ModalView>
+            </Catalog>
+
             <Header
               catalogOpener={()=>{
-                modalComponent.applyModalByName(toc_catalog_full_prod_list.typeName)
-                dispatch(setCatalogState(true))
+                dispatch(setCatalogState(true));
               }}
               searchOpener={()=>{
-                modalComponent.applyModalByName(toc_catalog_search.typeName)
-                dispatch(setCatalogState(true))
+                  modalComponent.applyModalByName(toc_catalog_search.typeName)
+                  dispatch(setCatalogState(true));
               }}
             />
-
                 {children}
-
             <Footer route={router.locale} />
 
+            {/**/}
 
-            <ModalView>
-                <CatalogWrapper_modal>
 
-                    {modalComponent.isCurrentModal(toc_catalog_search.typeName) ? (
-                        <CatalogSearchModal />
-                    ) : null}
-
-                    {modalComponent.isCurrentModal(
-                        toc_catalog_full_prod_list.typeName
-                    ) ? (
-                        <CatalogFullProductsListModal />
-                    ) : null}
-
-                    {modalComponent.isCurrentModal("test") ? (
-                        <CatalogTestFiltersModal/>
-                    ) : null}
-
-                </CatalogWrapper_modal>
-            </ModalView>
 
         </>
     )

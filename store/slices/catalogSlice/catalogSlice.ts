@@ -11,7 +11,7 @@ import {
 
 const initialState =
     ISTCatalogCreate<ICatalogFiltersType>({
-        catalog: undefined,
+        catalog: false,
         filters: <ICatalogFiltersType>{},
         search: undefined
     })
@@ -57,3 +57,4 @@ export const {
 } = CatalogQuerySlice.actions
 
 export default CatalogQuerySlice.reducer
+

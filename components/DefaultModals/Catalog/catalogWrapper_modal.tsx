@@ -75,7 +75,7 @@ const CatalogWrapperModal: FC<catalogWrapper> = ({
               {JSON.stringify(reduxCatalogState)}
               <br />
               OUT FROM LINK:
-              {JSON.stringify(currentState)}
+              {/*{JSON.stringify(currentState)}*/}
             </div>
           </div>
 
