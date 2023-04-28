@@ -1,48 +1,85 @@
-import React, {FC, useState} from 'react';
+import React, { FC, useCallback, useEffect, useState } from "react";
 import ISTFiltersList from "../../../UI/ISTFiltersList/components/ISTFiltersList";
 import ISTProductItem from "../../../UI/ISTProductItem/ISTProductItem";
 import ISTFiltersWrapper from "../../../UI/ISTFiltersList/components/ISTFiltersWrapper";
 import useISTFiltersList from "../../../UI/ISTFiltersList/hook/useISTFiltersList";
+import { useQuery } from "@apollo/client";
+import {
+  IProductData,
+  cartItemGetter_fnc,
+} from "../../../UI/ISTProductItem/common";
+import {
+  GET_CART_COLLECTION_BY_ID,
+  ICartCollection,
+  GET_PRODUCT_CART_BY_ID,
+} from "../../../../queries/cart/cartActions";
+import { apolloClient } from "../../../../Apollo/apolloClient";
 
-const CatalogTestFiltersModal:FC = () => {
+interface cartCollection {
+  cartCollection_by_id: ICartCollection;
+}
 
-    const [firstFilter, firstActive] = useISTFiltersList()
+export async function getCartProductDataById(id: number | string): IProductData {
 
-    return (
-        <>
-            <div
-                style={{
-                    width: "350px",
-                    height: "450px"
-                }}
-            >
-                <ISTFiltersWrapper
-                    title={"FILTER TEST"}
-                    isOpened={true}
-                    hasActives={firstActive}
-                    mobileSettings={{
-                        type: "dropdown",
-                        mobileSizeTrigger: "LG_992",
-                    }}
-                >
+  const inIsNumber = Number(id)
 
-                    <ISTFiltersList fields={[
-                        {isActive: false, fieldName: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. ",
-                            isCheckBox: true},
-                        {isActive: false, fieldName: "Field 2", isCheckBox: true},
-                        {isActive: false, fieldName: "Field 3", isCheckBox: true},
-                        {isActive: false, fieldName: "Field 4", isCheckBox: true},
-                        ]}
+  const { data } = await apolloClient.query({
+    query: GET_PRODUCT_CART_BY_ID,
+    variables: {
+      id: inIsNumber,
+    },
+  });
 
-                        hookedData={firstFilter}
-                    />
+  return {
+    data,
+  };
+}
 
-                </ISTFiltersWrapper>
+//testing getCartProductById function
+// Promise.resolve(getCartProductDataById(195))
+//   .then((data) => {
+//     console.log(data);
+//   })
+//   .catch((err) => {
+//     console.log(err);
+//   });
 
-            </div>
-        </>
+const CatalogTestFiltersModal: FC = () => {
+  const { data, loading, error } = useQuery<cartCollection>(
+    GET_CART_COLLECTION_BY_ID,
+    {
+      variables: { id: "f6a83d43-c82b-4e3e-a921-3519c31a5312" },
+    }
+  );
 
-    );
+  return (
+    <>
+      <div style={{ width: "600px" }}>
+        {!loading &&
+          !error &&
+          data?.cartCollection_by_id?.cart_model.map(
+            ({ price, product_id, quantity }, index) => {
+              return (
+                <ISTProductItem
+                  currency="RU"
+                  key={`ISTProductItem_${index}`}
+                  itemType={{
+                    productType: "cart",
+                    displayingOption: "Functional",
+                    data: {
+                      amountPrice: price,
+                      productId: product_id,
+                      quantity: quantity,
+                      cartItemGetter: getCartProductDataById,
+                    },
+                  }}
+                />
+              );
+            }
+          )}
+      </div>
+    </>
+  );
 };
 
 export default CatalogTestFiltersModal;

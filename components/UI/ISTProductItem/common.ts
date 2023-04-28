@@ -24,7 +24,7 @@ export interface IProductData{
 export interface IProductItem {
     itemType: productItemType;
     style?: ISTProductItemStyles;
-    currency: "RU" | "EN";
+    currency: "RU" | "EN"; //откуда каренси прилетает?
 }
 
 
