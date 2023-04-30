@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useEffect, useState } from "react";
+import React, {Dispatch, FC, useCallback, useEffect, useState} from "react";
 import ISTFiltersList from "../../../UI/ISTFiltersList/components/ISTFiltersList";
 import ISTProductItem from "../../../UI/ISTProductItem/ISTProductItem";
 import ISTFiltersWrapper from "../../../UI/ISTFiltersList/components/ISTFiltersWrapper";
@@ -10,41 +10,50 @@ import {
 } from "../../../UI/ISTProductItem/common";
 import {
   GET_CART_COLLECTION_BY_ID,
-  ICartCollection,
-  GET_PRODUCT_CART_BY_ID,
+  ICartCollection
 } from "../../../../queries/cart/cartActions";
 import { apolloClient } from "../../../../Apollo/apolloClient";
+import {GET_PRODUCT_BY_ID, IProducts} from "../../../../queries/products/productActions";
 
 interface cartCollection {
   cartCollection_by_id: ICartCollection;
 }
 
-export async function getCartProductDataById(id: number | string): IProductData {
 
-  const inIsNumber = Number(id)
+export const getCartProductDataById: cartItemGetter_fnc =
+    async (id: number | string, sideEffect): Promise<IProductData> => {
 
-  const { data } = await apolloClient.query({
-    query: GET_PRODUCT_CART_BY_ID,
+  let outProduct = {} as IProductData
+
+  await apolloClient.query<IProducts>({
+    query: GET_PRODUCT_BY_ID,
     variables: {
-      id: inIsNumber,
+      id: Number(id),
     },
+  }).then(prod => {
+    if (prod.data && prod.data.Products[0]) {
+      const _data = prod.data.Products[0];
+
+      outProduct = {
+        id: _data.id,
+        image: _data.image_url,
+        title: _data.product_name_ru,
+        price: _data.price.toString(),
+        vendCode: _data.vend_code.toString(),
+        slug: _data.slug
+      }
+    }
   });
 
-  return {
-    data,
-  };
+  if(sideEffect.sideEffect && sideEffect.flag === true)
+    sideEffect.sideEffect(outProduct)
+
+  return outProduct
 }
 
-//testing getCartProductById function
-// Promise.resolve(getCartProductDataById(195))
-//   .then((data) => {
-//     console.log(data);
-//   })
-//   .catch((err) => {
-//     console.log(err);
-//   });
 
-const CatalogTestFiltersModal: FC = () => {
+
+const CatalogTestFiltersModal:FC = () => {
   const { data, loading, error } = useQuery<cartCollection>(
     GET_CART_COLLECTION_BY_ID,
     {

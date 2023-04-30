@@ -19,22 +19,3 @@ query getSessionItem($id: ID!){
     }
 }
 `;
-
-export const GET_PRODUCT_CART_BY_ID = gql`
-query getProductById($id: Float){
-
-  Products(filter: {
-      id: {
-          _eq: $id
-      }
-  }){
-      id,
-      image_url,
-      product_name,
-      product_name_ru,
-      slug,
-      vend_code,
-      price
-  }
-  }
-`;
