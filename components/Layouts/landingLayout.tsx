@@ -1,4 +1,4 @@
-import React, {FC, ReactNode, useEffect} from 'react';
+import React, {FC, ReactNode, useEffect, useState} from 'react';
 import {useRouter} from "next/router";
 import useBaseModal from "../ISTModals/useBaseModal";
 import {useCatalog} from "../../Hooks/useCatalog/useCatalog";
@@ -9,13 +9,15 @@ import {toc_catalog_full_prod_list} from "../DefaultModals/table_of_contents/Cat
 import CatalogWrapper_modal from "../DefaultModals/Catalog/catalogWrapper_modal";
 import CatalogSearchModal from "../DefaultModals/Catalog/Pages/catalogSearch_modal";
 import CatalogFullProductsListModal from "../DefaultModals/Catalog/Pages/catalogFullProductsList_modal";
-import CatalogTestFiltersModal from "../DefaultModals/Catalog/Pages/catalogTestFilters_modal";
 import Header from "../Header/Header";
 import Footer from "../Footer/Footer";
 import {useAppSelector} from "../../Hooks/reduxSettings";
 import {useDispatch} from "react-redux";
 import {setCatalogState, updateCatalog} from "../../store/slices/catalogSlice/catalogSlice";
 import Catalog from "../Catalog/Catalog";
+import CatalogTestProdsModal from "../DefaultModals/Catalog/Pages/catalogTestProds_modal";
+import CatalogTestFiltersModal from "../DefaultModals/Catalog/Pages/catalogTestFilters_modal";
+
 
 interface ILandingLayout{
     children?: ReactNode
@@ -28,19 +30,21 @@ export const LandingLayout:FC<ILandingLayout> = ({
     const { modalComponent, ModalView } = useBaseModal("APP_BODY_WRAPPER");
     const dispatch = useDispatch()
 
+    const [st, sSt] = useState<boolean>(false)
+
     useEffect(() => {
         if (modalComponent) {
             modalComponent.editModals(
                 [
                     toc_catalog_search,
                     toc_catalog_full_prod_list,
-                    {typeName: "test", _header: "", _paragraph: ""}
+                    {typeName: "testProd", _header: "", _paragraph: ""},
+                    {typeName: "testFilters", _header: "", _paragraph: ""}
                 ],
-                2
+                0
             );
         }
     }, [modalComponent]);
-
 
 
     return(
@@ -49,6 +53,45 @@ export const LandingLayout:FC<ILandingLayout> = ({
                 modal={modalComponent}
             >
                 <ModalView>
+
+                    <div style={{
+                        position: "absolute",
+                        bottom: "20px",
+                        left: "20px",
+                        display: "flex",
+                        zIndex: "1000"
+                    }}>
+
+                        <button onClick={()=> {
+                            modalComponent.applyModalByName(toc_catalog_full_prod_list.typeName)
+                                .then(()=>sSt(!st))
+                        }}>
+                            Full prod list
+                        </button>
+
+                        <button onClick={()=> {
+                            modalComponent.applyModalByName(toc_catalog_search.typeName)
+                                .then(()=>sSt(!st))
+                        }}>
+                            Search
+                        </button>
+
+                        <button onClick={()=> {
+                            modalComponent.applyModalByName("testFilters")
+                                .then(()=>sSt(!st))
+                        }}>
+                            Test filters
+                        </button>
+
+                        <button onClick={()=> {
+                            modalComponent.applyModalByName("testProd")
+                                .then(()=>sSt(!st))
+                        }}>
+                            Test prods
+                        </button>
+
+                    </div>
+
                     <CatalogWrapper_modal>
 
                         {modalComponent.isCurrentModal(toc_catalog_search.typeName) ? (
@@ -61,7 +104,11 @@ export const LandingLayout:FC<ILandingLayout> = ({
                             <CatalogFullProductsListModal />
                         ) : null}
 
-                        {modalComponent.isCurrentModal("test") ? (
+                        {modalComponent.isCurrentModal("testProd") ? (
+                            <CatalogTestProdsModal/>
+                        ) : null}
+
+                        {modalComponent.isCurrentModal("testFilters") ? (
                             <CatalogTestFiltersModal/>
                         ) : null}
 
@@ -80,10 +127,6 @@ export const LandingLayout:FC<ILandingLayout> = ({
             />
                 {children}
             <Footer route={router.locale} />
-
-            {/**/}
-
-
 
         </>
     )

@@ -1,93 +1,81 @@
-import React, {Dispatch, FC, useCallback, useEffect, useState} from "react";
+import React, {FC, useCallback, useEffect, useState} from 'react';
 import ISTFiltersList from "../../../UI/ISTFiltersList/components/ISTFiltersList";
 import ISTProductItem from "../../../UI/ISTProductItem/ISTProductItem";
 import ISTFiltersWrapper from "../../../UI/ISTFiltersList/components/ISTFiltersWrapper";
 import useISTFiltersList from "../../../UI/ISTFiltersList/hook/useISTFiltersList";
-import { useQuery } from "@apollo/client";
-import {
-  IProductData,
-  cartItemGetter_fnc,
-} from "../../../UI/ISTProductItem/common";
-import {
-  GET_CART_COLLECTION_BY_ID,
-  ICartCollection
-} from "../../../../queries/cart/cartActions";
-import { apolloClient } from "../../../../Apollo/apolloClient";
-import {GET_PRODUCT_BY_ID, IProducts} from "../../../../queries/products/productActions";
-
-interface cartCollection {
-  cartCollection_by_id: ICartCollection;
-}
-
-
-export const getCartProductDataById: cartItemGetter_fnc =
-    async (id: number | string, sideEffect): Promise<IProductData> => {
-
-  let outProduct = {} as IProductData
-
-  await apolloClient.query<IProducts>({
-    query: GET_PRODUCT_BY_ID,
-    variables: {
-      id: Number(id),
-    },
-  }).then(prod => {
-    if (prod.data && prod.data.Products[0]) {
-      const _data = prod.data.Products[0];
-
-      outProduct = {
-        id: _data.id,
-        image: _data.image_url,
-        title: _data.product_name_ru,
-        price: _data.price.toString(),
-        vendCode: _data.vend_code.toString(),
-        slug: _data.slug
-      }
-    }
-  });
-
-  if(sideEffect.sideEffect && sideEffect.flag === true)
-    sideEffect.sideEffect(outProduct)
-
-  return outProduct
-}
-
-
+import {ICatalogFiltersType} from "../../../../store/slices/catalogSlice/catalogFiltersType";
+import {IST_HookedData} from "../../../UI/ISTFiltersList/common";
+import {useDispatch} from "react-redux";
+import {addNewFilter} from "../../../../store/slices/catalogSlice/catalogSlice";
+import {ICartItem, ICartItem_properties} from "../../../UI/ISTProductItem/ICartTypes";
 
 const CatalogTestFiltersModal:FC = () => {
-  const { data, loading, error } = useQuery<cartCollection>(
-    GET_CART_COLLECTION_BY_ID,
-    {
-      variables: { id: "f6a83d43-c82b-4e3e-a921-3519c31a5312" },
-    }
-  );
+
+  const dispatch = useDispatch();
+
+  const [firstFilter, firstActive] = useISTFiltersList()
+
+  const getActiveFilters = (data: IST_HookedData): string[] => {
+    const outData = [];
+    if(data && data.fields)
+      data.fields.map((el, i) => {
+        if(el.isActive)
+          outData.push(el.fieldName);
+      })
+
+    return outData;
+  }
+
+  const handleClick = useCallback(()=>{
+    dispatch(addNewFilter({
+      key: "mfg",
+      filter: getActiveFilters(firstFilter)
+    }))
+  },[firstFilter])
 
   return (
-    <>
-      <div style={{ width: "600px" }}>
-        {!loading &&
-          !error &&
-          data?.cartCollection_by_id?.cart_model.map(
-            ({ price, product_id, quantity }, index) => {
-              return (
-                <ISTProductItem
-                  currency="RU"
-                  key={`ISTProductItem_${index}`}
-                  itemType={{
-                    productType: "cart",
-                    displayingOption: "Functional",
-                    data: {
-                      amountPrice: price,
-                      productId: product_id,
-                      quantity: quantity,
-                      cartItemGetter: getCartProductDataById,
-                    },
-                  }}
-                />
-              );
-            }
-          )}
-      </div>
-    </>
+      <>
+        <div
+            style={{
+              width: "350px",
+              height: "450px"
+            }}
+        >
+
+          <button
+              onClick={()=>
+                  handleClick()
+              }
+          >
+            Add
+          </button>
+
+          <ISTFiltersWrapper
+              title={"FILTER TEST"}
+              isOpened={true}
+              hasActives={firstActive}
+              mobileSettings={{
+                type: "dropdown",
+                mobileSizeTrigger: "LG_992",
+              }}
+          >
+
+            <ISTFiltersList fields={[
+              {isActive: false, fieldName: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. ",
+                isCheckBox: true},
+              {isActive: false, fieldName: "Field 2", isCheckBox: true},
+              {isActive: false, fieldName: "Field 3", isCheckBox: true},
+              {isActive: false, fieldName: "Field 4", isCheckBox: true},
+            ]}
+
+            hookedData={firstFilter}
+            />
+
+          </ISTFiltersWrapper>
+
+        </div>
+      </>
+
   );
 };
 
