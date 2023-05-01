@@ -6,9 +6,9 @@ type pit_cart_informational = "Informational";
 type displayingOption = pit_cart_functional | pit_cart_informational
 
 export interface ICartItem_properties {
-    productId: number
+    productId: number | string,
     quantity: number,
-    amountPrice: number,
+    amountPrice: number | string,
 
     quantityEditor?: quantityEditor_fnc
     cartItemGetter?: cartItemGetter_fnc

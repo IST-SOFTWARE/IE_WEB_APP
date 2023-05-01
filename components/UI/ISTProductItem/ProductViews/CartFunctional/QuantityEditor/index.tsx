@@ -16,7 +16,7 @@ const QuantityEditor: FC<quentityEditor> = ({ clickEvent, value }) => {
   // const maxQ = 10; // Max Quantity for one product position
 
   // const [isFocus, setFocus] = useState(false);
-  // const [inputVal, setInputVal] = useState(value);
+  const [inputVal, setInputVal] = useState(value);
 
   // const [state, dispatch] = useReducer(reducer, {
   //   quantity: value,

@@ -1,17 +1,14 @@
-import React, { CSSProperties, FC } from "react";
+import React, { CSSProperties, FC, useEffect, useState } from "react";
 import { maxLengthText } from "../common";
 import CatalogView from "./ProductViews/CatalogView/Index";
 import CatalogInline from "./ProductViews/CatalogInline";
 import CartInformational from "./ProductViews/CartInformational";
 import CartFunctional from "./ProductViews/CartFunctional";
-import {IProductItem} from "./common";
+import { IProductItem } from "./common";
 
 
-const IstProductItem: FC<IProductItem> = ({
-  itemType,
-  style,
-  currency,
-}) => {
+const IstProductItem: FC<IProductItem> = ({ itemType, style, currency }) => {
+
   switch (itemType.productType) {
     case "catalog": {
       if (itemType.parameters.inline) {
