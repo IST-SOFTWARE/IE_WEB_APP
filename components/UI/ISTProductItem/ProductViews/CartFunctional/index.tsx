@@ -17,7 +17,7 @@ const CartFunctional: FC<IProductItem_cart> = ({
 
   const [productData, setProductData] = useState<IProductData>();
 
-  const [currentQuantity, setCurrentQuantity] = useState<number>(data.quantity);
+
   const [currentAmountPrice, setCurrentAmountPrice] = useState<number>(
       Number(data.amountPrice)
   );
@@ -32,12 +32,16 @@ const CartFunctional: FC<IProductItem_cart> = ({
         flag: isSub
       }).catch(ex => console.warn(ex));
 
-    return ()=> {
+    return () => {
       isSub = false
     }
 
   },[data])
 
+  const quentityEditorBuilder = useCallback((quentity)=> {
+    data && data.quantityEditor ? data.quantityEditor(data.productId, quentity) : null
+  }, [data])
+  
 
   return (
     <>
@@ -82,7 +86,7 @@ const CartFunctional: FC<IProductItem_cart> = ({
           </a>
 
           <div className={styles.qAndPrice}>
-            <QuantityEditor clickEvent={() => {}} value={currentQuantity} />
+            <QuantityEditor quantity={data?.quantity} onChange={quentityEditorBuilder }/>
 
             <p>
               <span className={styles.priceTag}>Цена: </span>

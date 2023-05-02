@@ -19,3 +19,15 @@ query getSessionItem($id: ID!){
     }
 }
 `;
+
+
+export const UPDATE_CART_BY_ID = gql`
+mutation updateCartCollectionItem(
+  $data: update_cartCollection_input!
+  $id: ID!
+) {
+  update_cartCollection_item(data: $data, id: $id) {
+    id
+  }
+}
+`;
