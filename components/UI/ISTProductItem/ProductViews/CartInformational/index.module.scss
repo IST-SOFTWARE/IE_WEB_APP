@@ -5,75 +5,77 @@
 .productCardVariant_Inline {
   width: 100%;
 
-
-  > .cardInline {
+  .cardInline {
     display: flex;
-    max-width: 375px;
-    min-width: 300px;
-    max-height: 187px;
-    height: 100%;
+    width: 100%;
+
     background: rgba(82, 86, 92, 0.5);
     box-shadow: 4px 4px 5px rgba(21, 26, 32, 0.5);
     border-radius: 15px;
     overflow: hidden;
     padding: 10px 15px 10px 10px;
 
-
-    .imageBox {
-      width: 163px;
-      margin-right: 20px;
-      border-radius: 20px;
-      box-sizing: border-box;
-      overflow: hidden;
-      height: 100%;
-      position: relative;
-      border: 1px solid white;
-    }
-
-    .productInformationInline {
-      width: 80%;
-      border-radius: 15px;
-      border: none !important;
+    .productContainer{
+      width: 100%;
+      height: inherit;
       display: flex;
-      flex-direction: column;
-      justify-content: space-between;
+      position: relative;
 
-      .title {
+
+      .imageBox {
+        width: 33%;
+        @include ratio-box(1/1);
+        border-radius: 5%;
+        box-sizing: border-box;
+        overflow: hidden;
+      }
+
+      .productInformationInline {
+        width: 80%;
+        border-radius: 15px;
+        border: none !important;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
-      }
-      .productTitle {
-        font-weight: 600;
-        @include font-size(1.375);
+        padding-left: 12px;
 
-        line-height: 26px;
-        color: $def_white;
-      }
-
-      .priceContainer {
-        display: flex;
-        justify-content: space-between;
-
-        .quantityBasket {
-          color: $def_blue_gray;
-          @include font-size(0.813rem);
-          font-weight: 500;
+        .title {
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
         }
-
-        .price {
+        .productTitle {
           font-weight: 600;
-          @include font-size(1.063rem);
-          line-height: 20px;
+          @include font-size(1.375);
+
+          line-height: 26px;
           color: $def_white;
         }
-      }
 
-      .vendCode {
-        font-weight: 600;
-        @include font-size(0.875em);
-        line-height: 20px;
-        color: $def_light_blue;
+        .priceContainer {
+          display: flex;
+          justify-content: space-between;
+
+          .quantityBasket {
+            color: $def_blue_gray;
+            @include font-size(0.813rem);
+            font-weight: 500;
+          }
+
+          .price {
+            font-weight: 600;
+            @include font-size(1.063rem);
+            line-height: 20px;
+            color: $def_white;
+          }
+        }
+
+        .vendCode {
+          font-weight: 600;
+          @include font-size(0.875em);
+          line-height: 20px;
+          color: $def_light_blue;
+        }
       }
     }
   }

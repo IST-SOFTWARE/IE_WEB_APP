@@ -26,7 +26,6 @@ const CartFunctional: FC<IProductItem_cart> = ({
 
   useEffect(()=>{
     let isSub = true
-
     if(data.cartItemGetter)
       data.cartItemGetter(data.productId, {
         sideEffect: setProductData,

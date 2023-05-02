@@ -1,9 +1,10 @@
-import React, { FC } from "react";
+import React, { FC, useEffect, useState } from "react";
 import styles from "./index.module.scss";
 
 import noImg from "../src/Empty_Prod_image.svg";
 import Image from "next/image";
 import {IProductItem_catalog} from "../../ICatalogTypes";
+import { IProductData } from "../../common";
 
 
 const CatalogInline: FC<IProductItem_catalog> = ({
@@ -11,6 +12,12 @@ const CatalogInline: FC<IProductItem_catalog> = ({
     currency,
     data
 }) => {
+  const [productData, setProductData] = useState<IProductData>();
+
+  useEffect(() => {
+    if(data) setProductData(data)
+  }, [data])
+
   return (
     <>
       <div
@@ -21,8 +28,8 @@ const CatalogInline: FC<IProductItem_catalog> = ({
       >
         <div className={styles.cardInline}>
           <div className={styles.imageBox}>
-            {data.image ? (
-              <Image alt="Product Item Image" src={data.image} />
+            {productData.image ? (
+              <Image alt="Product Item Image" src={productData.image} />
             ) : (
               <Image width={120} alt="Product item empty image" src={noImg} />
             )}
@@ -30,11 +37,11 @@ const CatalogInline: FC<IProductItem_catalog> = ({
 
           <div className={styles.productInformationInline}>
             <div className={styles.title}>
-              <div className={styles.productTitle}>{data.title}</div>
-              <div className={styles.vendCode}>Артикул: {data.vendCode}</div>
+              <div className={styles.productTitle}>{productData.title}</div>
+              <div className={styles.vendCode}>Артикул: {productData.vendCode}</div>
             </div>
 
-            <div className={styles.price}>Цена: {data.price}$</div>
+            <div className={styles.price}>Цена: {productData.price}$</div>
           </div>
         </div>
       </div>

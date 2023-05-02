@@ -39,50 +39,53 @@ const CartInformational: FC<IProductItem_cart> = ({
         }}
       >
         <div className={styles.cardInline}>
-          <div className={styles.imageBox}>
-            {productData && productData.image ? (
-              <Image
-                alt="Product Item Image"
-                src={productData.image}
-                fill={true}
-                style={{
-                  objectFit: "cover",
-                  objectPosition: "center"
-                }}
-              />
-            ) : (
-              <Image
-                fill={true}
-                alt="Product item empty image"
-                src={emptyProduct}
-              />
-            )}
-          </div>
-
-          <div className={styles.productInformationInline}>
-            <div className={styles.title}>
-              <div className={styles.productTitle}>
-                {productData && productData.title ? productData.title : ""}
-              </div>
-
-              <div className={styles.vendCode}>
-                Артикул:{" "}
-                {productData && productData.vendCode
-                  ? productData.vendCode
-                  : ""}
-              </div>
+          <div className={styles.productContainer}>
+            <div className={styles.imageBox}>
+              {productData && productData.image ? (
+                <Image
+                  alt="Product Item Image"
+                  src={productData.image}
+                  fill={true}
+                  style={{
+                    objectFit: "cover",
+                    objectPosition: "center"
+                  }}
+                />
+              ) : (
+                <Image
+                  fill={true}
+                  alt="Product item empty image"
+                  src={emptyProduct}
+                />
+              )}
             </div>
 
-            <div className={styles.priceContainer}>
-              {data && data.quantity ? (
-                <div className={styles.quantityBasket}>{data.quantity} шт</div>
-              ) : null}
+              <div className={styles.productInformationInline}>
+                <div className={styles.title}>
+                  <div className={styles.productTitle}>
+                    {productData && productData.title ? productData.title : ""}
+                  </div>
 
-              <div className={styles.price}>
-                Цена: {data && data.amountPrice ? data.amountPrice : ""}$
+                  <div className={styles.vendCode}>
+                    Артикул:{" "}
+                    {productData && productData.vendCode
+                      ? productData.vendCode
+                      : ""}
+                  </div>
+                </div>
+
+                <div className={styles.priceContainer}>
+                  {data && data.quantity ? (
+                    <div className={styles.quantityBasket}>{data.quantity} шт</div>
+                  ) : null}
+
+                  <div className={styles.price}>
+                    Цена: {data && data.amountPrice ? data.amountPrice : ""}$
+                  </div>
+                </div>
               </div>
+
             </div>
-          </div>
         </div>
       </div>
     </>
