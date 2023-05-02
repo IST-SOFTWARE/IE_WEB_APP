@@ -77,7 +77,7 @@ const CartFunctional: FC<IProductItem_cart> = ({
             </p>
           </div>
 
-          <a href="#">
+          <a>
             Артикул:{" "}
             {productData && productData.vendCode ? productData.vendCode : ""}
           </a>

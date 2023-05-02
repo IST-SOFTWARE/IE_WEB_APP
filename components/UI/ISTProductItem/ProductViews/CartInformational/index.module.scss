@@ -1,23 +1,23 @@
 @import "../../../scss/variables.scss";
-@import "../../../scss/variables.scss";
 @import "../../../scss/mixins/rfs_mixins";
 @import "../../../scss/mixins/ratioBox/ratio-box";
 
 .productCardVariant_Inline {
   width: 100%;
 
+
   > .cardInline {
     display: flex;
     max-width: 375px;
     min-width: 300px;
     max-height: 187px;
-    // box-sizing: border-box;
-    // background: $def_dark;
+    height: 100%;
     background: rgba(82, 86, 92, 0.5);
     box-shadow: 4px 4px 5px rgba(21, 26, 32, 0.5);
     border-radius: 15px;
-    // overflow: hidden;
+    overflow: hidden;
     padding: 10px 15px 10px 10px;
+
 
     .imageBox {
       width: 163px;
@@ -25,7 +25,9 @@
       border-radius: 20px;
       box-sizing: border-box;
       overflow: hidden;
-      // border: 1px solid white;
+      height: 100%;
+      position: relative;
+      border: 1px solid white;
     }
 
     .productInformationInline {

@@ -3,12 +3,59 @@ import { useEffect, useState, useReducer, FC } from "react";
 
 interface quentityEditor {
   clickEvent: (...props: any) => any;
-  value: any;
+  value: number;
 }
 
 const QuantityEditor: FC<quentityEditor> = ({ clickEvent, value }) => {
 
-  // const Inc_BP = "increment";
+  const [inputVal, setInputVal] = useState(value);
+
+  return (
+    <>
+      <div className={styles.QuantityEditor}>
+        <div className={styles.ActionsContainer}>
+          <button
+            className={styles.lButton}
+            onClick={() => {
+              // dispatch(Decrement_AG(k));
+            }}
+          >
+            -
+          </button>
+
+          <input
+            type="text"
+            // value={inputVal}
+            // onKeyPress={(e) => validate(e)}
+            // onChange={(e) => setInputVal(e.target.value)}
+            // onFocus={() => setFocus(true)}
+            // onBlur={() => setFocus(false)}
+          />
+
+          <button
+            className={styles.rButton}
+            onClick={() => {
+              // dispatch(Increment_AG(k));
+            }}
+          >
+            +
+          </button>
+        </div>
+      </div>
+    </>
+  );
+};
+
+export default QuantityEditor;
+
+
+
+
+
+
+
+
+// const Inc_BP = "increment";
   // const Decr_BP = "decrement";
   // const Input_BP = "input";
 
@@ -16,7 +63,7 @@ const QuantityEditor: FC<quentityEditor> = ({ clickEvent, value }) => {
   // const maxQ = 10; // Max Quantity for one product position
 
   // const [isFocus, setFocus] = useState(false);
-  const [inputVal, setInputVal] = useState(value);
+  // const [inputVal, setInputVal] = useState(value);
 
   // const [state, dispatch] = useReducer(reducer, {
   //   quantity: value,
@@ -94,41 +141,3 @@ const QuantityEditor: FC<quentityEditor> = ({ clickEvent, value }) => {
   //     if ({ ...state } !== state) QuentityGetter();
   //   }
   // }, [state]);
-
-  return (
-    <>
-      <div className={styles.QuantityEditor}>
-        <div className={styles.ActionsContainer}>
-          <button
-            className={styles.lButton}
-            // onClick={() => {
-            //   dispatch(Decrement_AG(k));
-            // }}
-          >
-            -
-          </button>
-
-          <input
-            type="text"
-            // value={inputVal}
-            // onKeyPress={(e) => validate(e)}
-            // onChange={(e) => setInputVal(e.target.value)}
-            // onFocus={() => setFocus(true)}
-            // onBlur={() => setFocus(false)}
-          />
-
-          <button
-            className={styles.rButton}
-            // onClick={() => {
-            //   dispatch(Increment_AG(k));
-            // }}
-          >
-            +
-          </button>
-        </div>
-      </div>
-    </>
-  );
-};
-
-export default QuantityEditor;

@@ -74,7 +74,7 @@ const CatalogTestProdsModal:FC = () => {
                   key={`ISTProductItem_${index}`}
                   itemType={{
                     productType: "cart",
-                    displayingOption: "Functional",
+                    displayingOption: "Informational",
                     data: {
                       amountPrice: price,
                       productId: product_id,
