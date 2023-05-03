@@ -75,7 +75,26 @@ const CatalogTestProdsModal: FC = () => {
         (element) => element.product_id !== id
       );
 
-      newCartItem.push({ quantity: newQuantity, price: null, product_id: id });
+      const indexCartItemInCartcollection =
+        data.cartCollection_by_id.cart_model.findIndex((cartItem) => {
+         return cartItem.product_id === id
+        });
+
+        // функция indexCartItemInCartcollection - возвращает индекс объекта в массиве. Она работает.
+        // хотел реализовать newCartItem.splice(indexCartItemInCartcollection, 1, {
+        //   quantity: newQuantity,
+        //   price: null,
+        //   product_id: id,
+        // });
+        // но сплайс реализовать, пока что, не удалось села батарейка :-(
+        // да и ошибку выдавало... можешь потестить. если что пиши, мне самому интересно почему ошибку давал
+
+      newCartItem.push({
+        quantity: newQuantity,
+        price: null,
+        product_id: id,
+      });
+
       const variables = {
         id: data.cartCollection_by_id.id,
         data: {
@@ -86,7 +105,7 @@ const CatalogTestProdsModal: FC = () => {
 
       await apolloClient.mutate({
         mutation: UPDATE_CART_BY_ID,
-        variables: variables ,
+        variables: variables,
       });
 
       return new Promise<boolean>((resolve) => {
