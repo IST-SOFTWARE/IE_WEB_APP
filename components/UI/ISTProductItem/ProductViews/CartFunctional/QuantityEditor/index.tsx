@@ -22,19 +22,17 @@ const QuantityEditor: FC<quentityEditor> = ({ onChange, quantity }) => {
 
   const increment = useCallback(() => {
     const newValue = currentQuantity + 1;
-    checkValue(newValue) ? setCurrentQuantity(newValue) : null;
-    if(onChange) {
-      onChange(currentQuantity)
-    }
+    if (!checkValue(newValue)) return null;
+    setCurrentQuantity(newValue);
+    onChange(newValue);
   }, [currentQuantity, onChange]);
 
   const decrement = useCallback(() => {
     const newValue = currentQuantity - 1;
-    checkValue(newValue) ? setCurrentQuantity(newValue) : null;
-    if(onChange) {
-      onChange(currentQuantity)
-    }
-  },[currentQuantity, onChange]);
+    if (!checkValue(newValue)) return null;
+    setCurrentQuantity(newValue);
+    onChange(newValue);
+  }, [currentQuantity, onChange]);
 
   const checkValue = (value: number): boolean => {
     if (value > 0 && value <= maxValue) {
@@ -65,7 +63,7 @@ const QuantityEditor: FC<quentityEditor> = ({ onChange, quantity }) => {
               handleValue(Number(event.target.value));
             }}
             onBlur={() => {
-              onChange(currentQuantity)
+              onChange(currentQuantity);
             }}
             value={currentQuantity}
             ref={input}

@@ -16,12 +16,6 @@ const CartFunctional: FC<IProductItem_cart> = ({
 ) => {
 
   const [productData, setProductData] = useState<IProductData>();
-
-
-  const [currentAmountPrice, setCurrentAmountPrice] = useState<number>(
-      Number(data.amountPrice)
-  );
-
   const [checkedState, setCheckedState] = useState<boolean>(false);
 
   useEffect(()=>{
@@ -36,11 +30,13 @@ const CartFunctional: FC<IProductItem_cart> = ({
       isSub = false
     }
 
+
   },[data])
 
-  const quentityEditorBuilder = useCallback((quentity)=> {
+  const quentityEditorBuilder = (quentity: number) => {
     data && data.quantityEditor ? data.quantityEditor(data.productId, quentity) : null
-  }, [data])
+    
+  }
   
 
   return (
@@ -86,13 +82,13 @@ const CartFunctional: FC<IProductItem_cart> = ({
           </a>
 
           <div className={styles.qAndPrice}>
-            <QuantityEditor quantity={data?.quantity} onChange={quentityEditorBuilder }/>
+            <QuantityEditor quantity={data?.quantity} onChange={quentityEditorBuilder}/>
 
             <p>
               <span className={styles.priceTag}>Цена: </span>
 
-              {currentAmountPrice && !isNaN(currentAmountPrice)
-                ? new Intl.NumberFormat(currency).format(currentAmountPrice)
+              {productData && !isNaN(Number(productData?.price))
+                ? new Intl.NumberFormat(currency).format(Number(productData?.price))
                 : null}
 
               <span className={styles.priceTag}> руб</span>
