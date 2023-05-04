@@ -10,14 +10,14 @@ export type ICheckBoxItem = {
     fieldName: string;
 
     idx?: number;
-    switchActiveState?: (...props)=>any
+    switchActiveState?: (...props: any )=>any
 };
 
 export type IST_IFilterItem = Pick<ICheckBoxItem, "fieldName" | "isActive" | "isCheckBox">
 
 export interface IST_Filter
 {
-    fields: Array<IST_IFilterItem>;
+    fields?: Array<IST_IFilterItem>;
     hookedData?: IST_HookedData
     // hasActivesSetter?: React.Dispatch<boolean>;
 }

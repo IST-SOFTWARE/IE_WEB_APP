@@ -49,7 +49,7 @@ const ISTFiltersList:FC<IST_Filter> = ({
 
   }, [filtersFields, hookedData])
 
-  const outFilters = (data: ICheckBoxItem[]): React.ReactNode => (
+  const outFilters = useCallback((data: ICheckBoxItem[]): React.ReactNode => (
       <>
         {data?.map((filter, i) => (
             <Filter
@@ -58,7 +58,8 @@ const ISTFiltersList:FC<IST_Filter> = ({
                 isCheckBox={true}
 
                 switchActiveState={()=>{
-                  checkBox_Switcher(i)
+                  // checkBox_Switcher(i)
+                  console.log(filter.switchActiveState);
                 }}
 
                 isActive={filter.isActive}
@@ -66,7 +67,7 @@ const ISTFiltersList:FC<IST_Filter> = ({
             />
         ))}
       </>
-  )
+  ),[checkBox_Switcher])
 
   return (
     <>

@@ -1,7 +1,5 @@
-const locales_var = process.env.NEXT_PUBLIC_LOCALES_VAR
-
-
 module.exports = {
+
   i18n: {
     locales: ['default' ,'en-US', 'ru-RU', 'de-DE'],
     defaultLocale:'default',
@@ -14,10 +12,17 @@ module.exports = {
     domains: ['res.cloudinary.com']
   },
 
+
   webpack: (config, { isServer }) => {
     if (!isServer) {
       config.resolve.fallback.fs = false
     }
+
+    config.module.rules.push({
+        test: /\.(graphql|gql)$/,
+        exclude: /node_modules/,
+        loader: 'graphql-tag/loader',
+    });
 
     return config
   }

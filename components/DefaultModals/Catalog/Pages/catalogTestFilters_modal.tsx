@@ -4,79 +4,101 @@ import ISTProductItem from "../../../UI/ISTProductItem/ISTProductItem";
 import ISTFiltersWrapper from "../../../UI/ISTFiltersList/components/ISTFiltersWrapper";
 import useISTFiltersList from "../../../UI/ISTFiltersList/hook/useISTFiltersList";
 import {ICatalogFiltersType} from "../../../../store/slices/catalogSlice/catalogFiltersType";
-import {IST_HookedData} from "../../../UI/ISTFiltersList/common";
+import {IST_HookedData, IST_IFilterItem, IST_IFiltersWrapper} from "../../../UI/ISTFiltersList/common";
 import {useDispatch} from "react-redux";
 import {addNewFilter} from "../../../../store/slices/catalogSlice/catalogSlice";
 import {ICartItem, ICartItem_properties} from "../../../UI/ISTProductItem/ICartTypes";
+import {useAppSelector} from "../../../../Hooks/reduxSettings";
+import {useQuery} from "@apollo/client";
+import {GET_MFG_CATEGORY_LIST, ICategoryMFG_Q} from "../../../../queries/categories/MFG/mfgCategoryQuery";
 
-const CatalogTestFiltersModal:FC = () => {
+const CatalogTestFiltersModal: FC = () => {
 
-  const dispatch = useDispatch();
+    const dispatch = useDispatch();
+    const catalog = useAppSelector(state => state.catalog);
+    const [firstFilter, firstActive] = useISTFiltersList()
 
-  const [firstFilter, firstActive] = useISTFiltersList()
+    const {data} = useQuery<ICategoryMFG_Q>(
+        GET_MFG_CATEGORY_LIST,
+    )
 
-  const getActiveFilters = (data: IST_HookedData): string[] => {
-    const outData = [];
-    if(data && data.fields)
-      data.fields.map((el, i) => {
-        if(el.isActive)
-          outData.push(el.fieldName);
-      })
+    useEffect(()=>{
+        if(!data || !data?.manufacturer_category || !catalog) return
 
-    return outData;
-  }
+        firstFilter.fieldsSetter(
+            data.manufacturer_category?.map(el=>{
+                return({
+                    fieldName: el.manufacturer_name,
+                    isCheckBox: true,
+                    isActive: catalog.filters.mfg?.filter
+                    (e => e === el.manufacturer_name).length > 0,
+                    switchActiveState: ()=>{
+                        console.log("LOG")
+                        filter_handleClick(el.manufacturer_name, "mfg")
+                    }
+                })
+            })
+        )
 
-  const handleClick = useCallback(()=>{
-    dispatch(addNewFilter({
-      key: "mfg",
-      filter: getActiveFilters(firstFilter)
-    }))
-  },[firstFilter])
+    },[data, catalog])
 
-  return (
-      <>
-        <div
-            style={{
-              width: "350px",
-              height: "450px"
-            }}
-        >
 
-          <button
-              onClick={()=>
-                  handleClick()
-              }
-          >
-            Add
-          </button>
 
-          <ISTFiltersWrapper
-              title={"FILTER TEST"}
-              isOpened={true}
-              hasActives={firstActive}
-              mobileSettings={{
-                type: "dropdown",
-                mobileSizeTrigger: "LG_992",
-              }}
-          >
+    const getActiveFilters = (data: IST_HookedData): string[] => {
+        const outData = [];
+        if (data && data.fields)
+            data.fields.map((el, i) => {
+                if (el.isActive)
+                    outData.push(el.fieldName);
+            })
 
-            <ISTFiltersList fields={[
-              {isActive: false, fieldName: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. ",
-                isCheckBox: true},
-              {isActive: false, fieldName: "Field 2", isCheckBox: true},
-              {isActive: false, fieldName: "Field 3", isCheckBox: true},
-              {isActive: false, fieldName: "Field 4", isCheckBox: true},
-            ]}
+        return outData;
+    }
 
-            hookedData={firstFilter}
-            />
+    const filter_handleClick = useCallback((filter: string,
+                                     key: keyof ICatalogFiltersType) => {
 
-          </ISTFiltersWrapper>
+        let filters: Array<string> = getActiveFilters(firstFilter);
 
-        </div>
-      </>
+        const elIdx = filters.indexOf(filter);
+        elIdx > -1 ? filters.splice(elIdx, 1) : filters.push(filter);
 
-  );
+        dispatch(addNewFilter({
+            key: key,
+            filter: filters
+        }))
+
+    }, [firstFilter])
+
+    return (
+        <>
+            <div
+                style={{
+                    width: "350px",
+                    height: "450px"
+                }}
+            >
+
+                <ISTFiltersWrapper
+                    title={"FILTER TEST"}
+                    isOpened={true}
+                    hasActives={firstActive}
+                    mobileSettings={{
+                        type: "dropdown",
+                        mobileSizeTrigger: "LG_992",
+                    }}
+                >
+
+                    <ISTFiltersList
+                        hookedData={firstFilter}
+                    />
+
+                </ISTFiltersWrapper>
+
+            </div>
+        </>
+
+    );
 };
 
 export default CatalogTestFiltersModal;

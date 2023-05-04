@@ -94,6 +94,7 @@
     &::after {
       content: "+";
       @include font-size(1rem);
+      color: $def_blue_gray;
     }
   }
 }
