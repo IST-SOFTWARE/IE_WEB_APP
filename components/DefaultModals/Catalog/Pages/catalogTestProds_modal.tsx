@@ -65,35 +65,49 @@ const CatalogTestProdsModal: FC = () => {
     GET_CART_COLLECTION_BY_ID,
     {
       fetchPolicy: "cache-and-network",
-      variables: { id: "161d44ce-3011-4f6d-8866-334d58a99e36" },
+      variables: { id: "5d00b872-dab1-4595-8c5c-26e5b4e53955" },
     }
   );
 
   const editQuantity = useCallback<quantityEditor_fnc>(
     async (id, newQuantity, callBack) => {
-      const newCartItem = data.cartCollection_by_id.cart_model.filter(
-        (element) => element.product_id !== id
-      );
+      const newCartItem = data.cartCollection_by_id.cart_model;
 
-      const indexCartItemInCartcollection =
+      const indexCartItemInCartCollection =
         data.cartCollection_by_id.cart_model.findIndex((cartItem) => {
-         return cartItem.product_id === id
+          return cartItem.product_id === id;
         });
 
-        // функция indexCartItemInCartcollection - возвращает индекс объекта в массиве. Она работает.
-        // хотел реализовать newCartItem.splice(indexCartItemInCartcollection, 1, {
-        //   quantity: newQuantity,
-        //   price: null,
-        //   product_id: id,
-        // });
-        // но сплайс реализовать, пока что, не удалось села батарейка :-(
-        // да и ошибку выдавало... можешь потестить. если что пиши, мне самому интересно почему ошибку давал
-
-      newCartItem.push({
-        quantity: newQuantity,
-        price: null,
-        product_id: id,
+    newCartItem.map((element, index) => {
+        if (index === indexCartItemInCartCollection) {
+          console.log(element);
+          element = { quantity: newQuantity, price: null, product_id: id };
+        }
       });
+      
+      console.log(newCartItem);
+
+      // const newItem = [
+      //   ...newCartItem,
+      //   (newCartItem[indexCartItemInCartCollection] = {
+      //     quantity: newQuantity,
+      //     price: null,
+      //     product_id: id,
+      //   }),
+      // ];
+      // console.log(newItem);
+
+      // newCartItem.splice(indexCartItemInCartCollection, 1, {
+      //   quantity: newQuantity,
+      //   price: null,
+      //   product_id: id,
+      // });
+
+      // newCartItem.push({
+      //   quantity: newQuantity,
+      //   price: null,
+      //   product_id: id,
+      // });
 
       const variables = {
         id: data.cartCollection_by_id.id,
