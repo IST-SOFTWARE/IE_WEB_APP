@@ -65,55 +65,37 @@ const CatalogTestProdsModal: FC = () => {
     GET_CART_COLLECTION_BY_ID,
     {
       fetchPolicy: "cache-and-network",
-      variables: { id: "5d00b872-dab1-4595-8c5c-26e5b4e53955" },
+      variables: { id: "4ae000f3-8d24-44c7-a249-932149417450" },
     }
   );
 
   const editQuantity = useCallback<quantityEditor_fnc>(
     async (id, newQuantity, callBack) => {
-      const newCartItem = data.cartCollection_by_id.cart_model;
+      const cart = data.cartCollection_by_id.cart_model;
 
-      const indexCartItemInCartCollection =
+      const indexProductInCartCollection =
         data.cartCollection_by_id.cart_model.findIndex((cartItem) => {
           return cartItem.product_id === id;
         });
 
-    newCartItem.map((element, index) => {
-        if (index === indexCartItemInCartCollection) {
-          console.log(element);
-          element = { quantity: newQuantity, price: null, product_id: id };
-        }
+      const changeCartProduct = cart.map((product, productIndex) => {
+        if (productIndex !== indexProductInCartCollection) return null;
+        product = { quantity: newQuantity, price: null, product_id: id };
+        const left = cart.slice(0, indexProductInCartCollection);
+        const right = cart.slice(
+          indexProductInCartCollection + 1,
+          cart.length
+        );
+        return [...left, product, ...right];
       });
-      
-      console.log(newCartItem);
 
-      // const newItem = [
-      //   ...newCartItem,
-      //   (newCartItem[indexCartItemInCartCollection] = {
-      //     quantity: newQuantity,
-      //     price: null,
-      //     product_id: id,
-      //   }),
-      // ];
-      // console.log(newItem);
-
-      // newCartItem.splice(indexCartItemInCartCollection, 1, {
-      //   quantity: newQuantity,
-      //   price: null,
-      //   product_id: id,
-      // });
-
-      // newCartItem.push({
-      //   quantity: newQuantity,
-      //   price: null,
-      //   product_id: id,
-      // });
+      const newCart = changeCartProduct[indexProductInCartCollection]
 
       const variables = {
         id: data.cartCollection_by_id.id,
         data: {
           status: "Draft",
-          cart_model: newCartItem,
+          cart_model: newCart,
         },
       } as ICartCollectionVariables;
 
