@@ -4,7 +4,7 @@ import ISTProductItem from "../../../UI/ISTProductItem/ISTProductItem";
 import ISTFiltersWrapper from "../../../UI/ISTFiltersList/components/ISTFiltersWrapper";
 import useISTFiltersList from "../../../UI/ISTFiltersList/hook/useISTFiltersList";
 import {ICatalogFiltersType} from "../../../../store/slices/catalogSlice/catalogFiltersType";
-import {IST_HookedData, IST_IFilterItem, IST_IFiltersWrapper} from "../../../UI/ISTFiltersList/common";
+import {onFilterSwitch_t} from "../../../UI/ISTFiltersList/common";
 import {useDispatch} from "react-redux";
 import {addNewFilter} from "../../../../store/slices/catalogSlice/catalogSlice";
 import {ICartItem, ICartItem_properties} from "../../../UI/ISTProductItem/ICartTypes";
@@ -22,53 +22,62 @@ const CatalogTestFiltersModal: FC = () => {
         GET_MFG_CATEGORY_LIST,
     )
 
-    useEffect(()=>{
-        if(!data || !data?.manufacturer_category || !catalog) return
-
-        firstFilter.fieldsSetter(
-            data.manufacturer_category?.map(el=>{
-                return({
-                    fieldName: el.manufacturer_name,
-                    isCheckBox: true,
-                    isActive: catalog.filters.mfg?.filter
-                    (e => e === el.manufacturer_name).length > 0,
-                    switchActiveState: ()=>{
-                        console.log("LOG")
-                        filter_handleClick(el.manufacturer_name, "mfg")
-                    }
-                })
-            })
-        )
-
-    },[data, catalog])
-
+    // useEffect(()=>{
+    //     if(!data || !data?.manufacturer_category) return
+    //
+    //     firstFilter.fieldsSetter(
+    //         data.manufacturer_category?.map(el=>{
+    //             return({
+    //                 fieldName: el.manufacturer_name,
+    //                 isCheckBox: true,
+    //                 isActive: catalog.filters.mfg?.indexOf(
+    //                     el.manufacturer_name) > -1,
+    //                 switchActiveState: (()=>{
+    //                     handleClick(el.manufacturer_name, "mfg")
+    //                 })
+    //             })
+    //         })
+    //     )
+    //
+    // },[data, catalog])
 
 
-    const getActiveFilters = (data: IST_HookedData): string[] => {
-        const outData = [];
-        if (data && data.fields)
-            data.fields.map((el, i) => {
-                if (el.isActive)
-                    outData.push(el.fieldName);
-            })
+    //
+    // const getActiveFilters = (data: IST_HookedData): string[] => {
+    //     const outData = [];
+    //     if (data && data.fields)
+    //         data.fields.map((el, i) => {
+    //             if (el.isActive)
+    //                 outData.push(el.fieldName);
+    //         })
+    //
+    //     return outData;
+    // }
 
-        return outData;
+    // const handleClick = useCallback((filter: string,
+    //                                  key: keyof ICatalogFiltersType) => {
+    //
+    //     let filters: Array<string> =
+    //
+    //     const elIdx = filters.indexOf(filter);
+    //     elIdx > -1 ? filters.splice(elIdx, 1) : filters.push(filter);
+    //
+    //     console.log("PROPS: ", filter, key, "out: ", filters);
+    //
+    //     dispatch(addNewFilter({
+    //         key: key,
+    //         filter: filters
+    //     }))
+    //
+    // }, [firstFilter, catalog])
+
+    // useEffect(()=>{
+    //     console.log(firstFilter);
+    // },[firstFilter])
+
+    const switchFilter:onFilterSwitch_t = (idx, state, name) =>{
+        console.log(idx, state, name);
     }
-
-    const filter_handleClick = useCallback((filter: string,
-                                     key: keyof ICatalogFiltersType) => {
-
-        let filters: Array<string> = getActiveFilters(firstFilter);
-
-        const elIdx = filters.indexOf(filter);
-        elIdx > -1 ? filters.splice(elIdx, 1) : filters.push(filter);
-
-        dispatch(addNewFilter({
-            key: key,
-            filter: filters
-        }))
-
-    }, [firstFilter])
 
     return (
         <>
@@ -88,10 +97,22 @@ const CatalogTestFiltersModal: FC = () => {
                         mobileSizeTrigger: "LG_992",
                     }}
                 >
+                    {data && data?.manufacturer_category ? (
+                        <ISTFiltersList
+                            fields={
+                                data?.manufacturer_category?.map(el=>{
+                                    return({
+                                        fieldName: el.manufacturer_name,
+                                        isCheckBox: true,
+                                        isActive: false,
+                                    })
+                                })
+                            }
 
-                    <ISTFiltersList
-                        hookedData={firstFilter}
-                    />
+                            hookedData={firstFilter}
+                            onFilterSwitch={switchFilter}
+                        />
+                    ) : null}
 
                 </ISTFiltersWrapper>
 

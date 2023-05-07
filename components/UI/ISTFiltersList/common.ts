@@ -4,24 +4,42 @@ export type mobileOpenType_dropdown = "dropdown"
 export type mobileOpenType_transfer = "transfer"
 type mobileTrigger_size = "XXL_1400" | "XL_1200" | "LG_992" | "MD_768" | "SM_576"
 
+// BASE FILTER_ITEM TYPE
+
+
 export type ICheckBoxItem = {
     isActive: boolean;
     isCheckBox: boolean;
     fieldName: string;
+    idx: number;
 
-    idx?: number;
-    switchActiveState?: (...props: any )=>any
 };
 
-export type IST_IFilterItem = Pick<ICheckBoxItem, "fieldName" | "isActive" | "isCheckBox">
-
-export interface IST_Filter
-{
-    fields?: Array<IST_IFilterItem>;
-    hookedData?: IST_HookedData
-    // hasActivesSetter?: React.Dispatch<boolean>;
+// HOOK'S TYPE
+export interface IST_HookedData{
+    fields: Array<ICheckBoxItem>
+    fieldsSetter: React.Dispatch<Array<ICheckBoxItem>>
 }
 
+//UI FILTERS LIST TYPES
+export type onFilterSwitch_t =
+    (idx: number, nState: boolean, name?: string) => void | {idx: number, name: string};
+
+export type IST_IFilterListItem = Omit<ICheckBoxItem, "idx">
+export interface IST_FilterList
+{
+    fields?: Array<IST_IFilterListItem>;
+    hookedData?: IST_HookedData;
+    onFilterSwitch?: onFilterSwitch_t;
+}
+
+//UI FILTER ITEM TYPES
+export interface IST_FilterItem extends ICheckBoxItem{
+    hookedData: IST_HookedData,
+    onFilterSwitch?: onFilterSwitch_t;
+}
+
+//MOBILE UI TYPES
 type mobileSettings = mobileSettings_transfer | mobileSettings_dropdown
 
 export interface mobileSettings_transfer{
@@ -45,10 +63,7 @@ export interface IST_IFiltersWrapper{
     hasActives?: boolean
 }
 
-export interface IST_HookedData{
-    fields: Array<ICheckBoxItem>
-    fieldsSetter: React.Dispatch<Array<ICheckBoxItem>>
-}
+
 
 //Actions
 
@@ -61,13 +76,6 @@ export const getMobileSettings_triggerSize = (mobileSettings: mobileSettings):mo
 
 export const getMobileSettings_isTransfer = (mobileSettings: mobileSettings):boolean => {
     if(mobileSettings && mobileSettings.type && mobileSettings.type === "transfer")
-        return true
-    else
-        return false
-}
-
-export const getMobileSettings_isDropdown = (mobileSettings: mobileSettings):boolean => {
-    if(mobileSettings && mobileSettings.type && mobileSettings.type === "dropdown")
         return true
     else
         return false

@@ -1,10 +1,11 @@
 import React, {FC, useCallback, useEffect, useState} from "react";
 import Filter from "./Filter";
-import {IST_Filter, ICheckBoxItem} from "../common"
+import {IST_FilterList, ICheckBoxItem} from "../common"
 
-const ISTFiltersList:FC<IST_Filter> = ({
+const ISTFiltersList:FC<IST_FilterList> = ({
   fields,
-  hookedData
+  hookedData,
+  onFilterSwitch
 }) => {
 
   const [filtersFields, setFiltersFields] = useState<ICheckBoxItem[]>([]);
@@ -17,66 +18,76 @@ const ISTFiltersList:FC<IST_Filter> = ({
         const newEl = {
           idx: i,
           ...el
-        };
+        } as ICheckBoxItem;
+
         fieldsArr.push(newEl)
       })
 
-      if(hookedData)
-        hookedData.fieldsSetter(fieldsArr);
-      else
-        setFiltersFields(fieldsArr);
+      setFiltersFields(fieldsArr);
     }
   },[])
 
-
-  const checkBox_Switcher= useCallback((idx: number) => {
-    let fields: ICheckBoxItem[];
-
+  useEffect(()=>{
     if(hookedData)
-      fields = [...hookedData.fields];
-    else
-      fields = [...filtersFields];
+      hookedData.fieldsSetter(filtersFields);
 
-    fields.map((el) => {
-      if(el.idx === idx)
-        el.isActive = !el.isActive;
-    })
+  },[filtersFields])
 
-    if(hookedData)
-      hookedData.fieldsSetter(fields);
-    else
-      setFiltersFields(fields);
+  // useEffect(()=>{
+  //   if(hookedData && hookedData.fields){
+  //     console.log("RENDER")
+  //     setFiltersFields(hookedData.fields);
+  //   }
+  // },[hookedData])
+  // //
+  // useEffect(()=>{
+  //   console.log("filtersFields: ",);
+  // },[filtersFields])
 
-  }, [filtersFields, hookedData])
+  // const Switcher = useCallback((idx: number)=>{
+  //
+  //   console.log(filtersFields[idx], filtersFields);
+  //   console.log(idx);
+  //
+  //   setFiltersFields(prevState => {
+  //     const state = [...prevState]
+  //     state.map(el => {
+  //       if(el.idx === idx)
+  //         el.isActive = !el.isActive
+  //     })
+  //
+  //     return state
+  //   });
+  // },[filtersFields])
+  //
+  // const checkBox_Switcher_out = useCallback((idx: number) => {
+  //   Switcher(idx);
+  // },[Switcher]);
 
-  const outFilters = useCallback((data: ICheckBoxItem[]): React.ReactNode => (
+  return (
       <>
-        {data?.map((filter, i) => (
+        {filtersFields?.map((filter, i) => (
             <Filter
                 idx={filter.idx}
-                fieldName={filter.fieldName}
-                isCheckBox={true}
 
-                switchActiveState={()=>{
-                  // checkBox_Switcher(i)
-                  console.log(filter.switchActiveState);
+                hookedData={{
+                  fields: filtersFields,
+                  fieldsSetter: setFiltersFields
                 }}
 
+                fieldName={filter.fieldName}
+                isCheckBox={true}
                 isActive={filter.isActive}
                 key={`filterItem_${i}_key`}
+
+                onFilterSwitch={
+                  onFilterSwitch ?
+                  onFilterSwitch : null
+                }
+
             />
         ))}
       </>
-  ),[checkBox_Switcher])
-
-  return (
-    <>
-      {
-        outFilters(
-    hookedData ? hookedData.fields
-          : filtersFields)
-      }
-    </>
   );
 };
 

@@ -1,19 +1,57 @@
-import React, {FC, useState} from "react";
+import React, {FC, useCallback, useEffect, useState} from "react";
 import styles from "../styles/filtersList.module.scss";
 import { maxLengthText } from "../../common";
-import {ICheckBoxItem} from "../common";
+import {ICheckBoxItem, IST_FilterItem} from "../common";
+import {Properties} from "csstype";
 
-const Filter:FC<ICheckBoxItem> = ({
+const Filter:FC<IST_FilterItem> = ({
   fieldName,
   isActive,
-  switchActiveState,
-  isCheckBox
+  isCheckBox,
+
+  idx,
+  hookedData,
+
+  onFilterSwitch
 }) => {
 
   const MAX_FIELD_LENGTH = 23;
-
   const [describing, setDescribing] = useState<boolean>(false);
 
+  const switchState = useCallback(()=>{
+    let filters: ICheckBoxItem[] = [];
+    let editingFilter = {} as
+        Parameters<typeof onFilterSwitch>
+
+    if(!hookedData || !hookedData.fields || !hookedData.fieldsSetter)
+      return
+
+    filters = [...hookedData.fields]
+
+    filters.map(el => {
+      if(el.idx === idx){
+        const nState = !el.isActive;
+
+        filters[idx] = {
+          ...el,
+          isActive: nState
+        }
+
+        editingFilter = [
+            idx,
+            nState,
+            el.fieldName ?
+                el.fieldName : ""
+        ];
+      }
+    })
+
+    if(onFilterSwitch)
+      onFilterSwitch(...editingFilter);
+
+    hookedData.fieldsSetter(filters);
+
+  },[hookedData, onFilterSwitch])
 
   const activeDescribing = () => {
     const device = navigator.userAgent.match(
@@ -36,7 +74,9 @@ const Filter:FC<ICheckBoxItem> = ({
   return (
     <div
       className={`${styles.filter}`}
-      onClick={switchActiveState}
+      onClick={()=>{
+        switchState()
+      }}
       onMouseEnter={activeDescribing}
       onMouseLeave={hideDescribing}
     >
