@@ -65,7 +65,7 @@ const CatalogTestProdsModal: FC = () => {
     GET_CART_COLLECTION_BY_ID,
     {
       fetchPolicy: "cache-and-network",
-      variables: { id: "4ae000f3-8d24-44c7-a249-932149417450" },
+      variables: { id: "8e52446f-ab77-45b1-8994-a2e2046648f8" },
     }
   );
 
@@ -78,18 +78,10 @@ const CatalogTestProdsModal: FC = () => {
           return cartItem.product_id === id;
         });
 
-      const changeCartProduct = cart.map((product, productIndex) => {
-        if (productIndex !== indexProductInCartCollection) return null;
-        product = { quantity: newQuantity, price: null, product_id: id };
-        const left = cart.slice(0, indexProductInCartCollection);
-        const right = cart.slice(
-          indexProductInCartCollection + 1,
-          cart.length
-        );
-        return [...left, product, ...right];
-      });
-
-      const newCart = changeCartProduct[indexProductInCartCollection]
+      const product = { quantity: newQuantity, price: null, product_id: id };
+      const left = cart.slice(0, indexProductInCartCollection);
+      const right = cart.slice(indexProductInCartCollection + 1, cart.length);
+      const newCart = [...left, product, ...right];
 
       const variables = {
         id: data.cartCollection_by_id.id,
