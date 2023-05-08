@@ -1,4 +1,4 @@
-import React, {ReactNode} from "react";
+import React, {Dispatch, ReactNode} from "react";
 
 export type mobileOpenType_dropdown = "dropdown"
 export type mobileOpenType_transfer = "transfer"
@@ -57,10 +57,11 @@ export interface mobileSettings_dropdown{
 export interface IST_IFiltersWrapper{
     children: ReactNode,
     title: string
-    isOpened: boolean;
     mobileSettings?: mobileSettings,
 
-    hasActives?: boolean
+    hasActives?: boolean,
+
+    isOpened: boolean
 }
 
 
