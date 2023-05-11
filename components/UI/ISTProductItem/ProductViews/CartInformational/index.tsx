@@ -1,18 +1,34 @@
-import React, {FC, useState} from "react";
+import React, { FC, useEffect, useState } from "react";
 import styles from "./index.module.scss";
 
-import noImg from "../src/Empty_Prod_image.svg";
+import emptyProduct from "../src/Empty_Prod_image.svg";
+
 import Image from "next/image";
-import {IProductItem_cart} from "../../ICartTypes";
-import {IProductData} from "../../common";
+import { IProductItem_cart } from "../../ICartTypes";
+import { IProductData } from "../../common";
 
 const CartInformational: FC<IProductItem_cart> = ({
   style,
   currency,
-  data
+  data,
 }) => {
+  const [productData, setProductData] = useState<IProductData>();
 
-  const [productData, setProductData] = useState<IProductData>()
+  useEffect(() => {
+    let isSub = true;
+
+    if (!data.cartItemGetter)
+      return () => {
+        isSub = false;
+      };
+
+    data
+      .cartItemGetter(data.productId, {
+        sideEffect: setProductData,
+        flag: isSub,
+      })
+      .catch((err) => console.log(err));
+  }, [data]);
 
   return (
     <>
@@ -23,45 +39,53 @@ const CartInformational: FC<IProductItem_cart> = ({
         }}
       >
         <div className={styles.cardInline}>
-          <div className={styles.imageBox}>
-            {productData && productData.image ? (
-              <Image alt="Product Item Image" src={productData.image} />
-            ) : (
-              <Image width={120} alt="Product item empty image" src={noImg} />
-            )}
-          </div>
+          <div className={styles.productContainer}>
+            <div className={styles.imageBox}>
+              {productData && productData.image ? (
+                <Image
+                  alt="Product Item Image"
+                  src={productData.image}
+                  fill={true}
+                  style={{
+                    objectFit: "cover",
+                    objectPosition: "center"
+                  }}
+                />
+              ) : (
+                <Image
+                  fill={true}
+                  alt="Product item empty image"
+                  src={emptyProduct}
+                />
+              )}
+            </div>
 
-          <div className={styles.productInformationInline}>
-            <div className={styles.title}>
+              <div className={styles.productInformationInline}>
+                <div className={styles.title}>
+                  <div className={styles.productTitle}>
+                    {productData && productData.title ? productData.title : ""}
+                  </div>
 
-              <div className={styles.productTitle}>{
-                  productData && productData.title ?
-                  productData.title :
-                  ""}
-              </div>
+                  <div className={styles.vendCode}>
+                    Артикул:{" "}
+                    {productData && productData.vendCode
+                      ? productData.vendCode
+                      : ""}
+                  </div>
+                </div>
 
-              <div className={styles.vendCode}>Артикул: {
-                  productData && productData.vendCode ?
-                  productData.vendCode :
-                  ""}
+                <div className={styles.priceContainer}>
+                  {data && data.quantity ? (
+                    <div className={styles.quantityBasket}>{data.quantity} шт</div>
+                  ) : null}
+
+                  <div className={styles.price}>
+                    Цена: {data && data.amountPrice ? data.amountPrice : ""}$
+                  </div>
+                </div>
               </div>
 
             </div>
-
-            <div className={styles.priceContainer}>
-
-              {data && data.quantity ? (
-                <div className={styles.quantityBasket}>{data.quantity} шт</div>
-              ) : null}
-
-              <div className={styles.price}>Цена: {
-                data && data.amountPrice ?
-                data.amountPrice :
-                ""}$
-              </div>
-
-            </div>
-          </div>
         </div>
       </div>
     </>
