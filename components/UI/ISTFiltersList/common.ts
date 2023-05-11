@@ -1,8 +1,8 @@
-import React, {Dispatch, ReactNode} from "react";
+import React, {ReactNode} from "react";
+import {mobileTrigger_size} from "../common";
 
 export type mobileOpenType_dropdown = "dropdown"
 export type mobileOpenType_transfer = "transfer"
-type mobileTrigger_size = "XXL_1400" | "XL_1200" | "LG_992" | "MD_768" | "SM_576"
 
 // BASE FILTER_ITEM TYPE
 

@@ -1,5 +1,7 @@
 import {CSSProperties} from "react";
 
+export type mobileTrigger_size = "XXL_1400" | "XL_1200" | "LG_992" | "MD_768" | "SM_576"
+
 export type commonStyles =
     Pick<CSSProperties, "borderRadius" | "height">
 
