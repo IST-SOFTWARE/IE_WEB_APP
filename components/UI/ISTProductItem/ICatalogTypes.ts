@@ -12,7 +12,7 @@ export type ICatalogItem = {
     };
 };
 
-export interface IProductItem_catalog extends Omit<IProductItem, "itemType"> {
+export interface IProductItem_catalog extends Omit<IProductItem, "itemType" | "mobileSettings" | "cartSelector"> {
     data: IProductData,
     cartaAdder?: cartAdder_fnc
 }

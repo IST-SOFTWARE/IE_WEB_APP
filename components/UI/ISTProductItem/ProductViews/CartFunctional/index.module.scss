@@ -2,223 +2,89 @@
 @import "../../../scss/mixins/rfs_mixins";
 @import "../../../scss/mixins/ratioBox/ratio-box";
 
-.CartPageCont {
-  padding-top: 100px;
-  position: relative;
-  z-index: 10;
-  overflow-x: hidden;
-  padding-bottom: 30px;
-  min-height: 100vh;
-}
-
-.AddedProductsBlock {
-  width: 100%;
-  height: 100px;
-  height: fit-content;
-  position: relative;
-  display: flex;
-  flex-direction: column;
-}
-
 .CartItemContainer {
-  height: 200px;
   width: 100%;
   background: $def_page_bg;
   box-shadow: 0px 4px 22px rgba(0, 0, 0, 0.21);
   border-radius: 46px;
-  margin-top: 20px;
-  display: flex;
   position: relative;
-}
-.ItemImg {
-  min-width: 209px;
-  overflow: hidden;
-  border-radius: 46px 0px 0px 46px;
-  height: 100%;
-  width: 209px;
-  position: relative;
-  cursor: pointer;
-}
-.ItemDescription {
-  display: flex;
-  flex-direction: column;
-  width: 60%;
-  padding-left: 18px;
-  padding-top: 23px;
-}
-.ItemDescription p {
-  font-family: "Roboto";
-  font-style: normal;
-  font-weight: 500;
-  @include font-size(1.375rem);
+  height: inherit;
 
-  line-height: 21px;
-  color: $def_white;
-  height: fit-content;
-  word-break: break-word;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -moz-box-orient: vertical;
-  -ms-box-orient: vertical;
-  box-orient: vertical;
-  -webkit-line-clamp: 2;
-  -moz-line-clamp: 2;
-  -ms-line-clamp: 2;
-  line-clamp: 2;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.ItemDescription a {
-  font-family: "Roboto";
-  font-style: normal;
-  font-weight: 500;
-  @include font-size(1rem);
-  line-height: 19px;
-  color: $def_light_blue !important;
-  margin-top: 3px;
-}
-
-.CheckBoxBlock {
-  position: absolute;
-  top: 0;
-  right: 0;
-  display: block;
-  transform: translate(20%, -20%);
-}
-.qAndPrice {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  height: 100%;
-}
-.qAndPrice p {
-  font-family: "Roboto";
-  font-style: normal;
-  font-weight: 500;
-  @include font-size(1.375rem);
-  color: $def_white;
-  transform: translateY(25%);
-}
-.priceLilTag {
-  display: none;
-}
-
-@media (max-width: 1400.98px) {
-  .CartData {
-    max-width: 350px;
-  }
-}
-@media (max-width: 1200.98px) {
-  .CartData {
-    max-width: 280px;
-    padding: 20px;
-    border-radius: 40px;
-  }
-  .CartItemContainer {
-    height: 180px;
-  }
-  .ItemDescription {
-    padding-left: 15px;
-    padding-top: 15px;
-    width: 57%;
-  }
-
-  .SendOrderBtn {
-    height: 50px;
-  }
-}
-
-@media (max-width: 992.98px) {
-  .CartPageCont {
-    padding-bottom: 180px;
-  }
-  .CartPageCont {
-    padding-top: 70px;
-  }
-  .ItemDescription {
-    width: 55%;
-  }
-
-  .CartItemContainer {
-    width: 80%;
-    margin-left: 50%;
-    transform: translateX(-50%);
-  }
-
-  .ItemDescription p {
-    @include font-size(1.375rem);
-  }
-}
-@media (max-width: 767.98px) {
-  .CartItemContainer {
-    height: 170px;
-    margin-left: 0px;
-    transform: none;
-    width: auto;
-  }
-  .ItemDescription {
-    width: 60%;
-    padding-top: 10px;
-  }
-  .ItemImg {
-    min-width: 170px;
-    width: 170px;
-  }
-}
-@media (max-width: 576.98px) {
-  .CartActions {
-    width: calc(100vw - 30px);
-  }
-  .CartItemContainer {
-    max-width: calc(100vw - 30px);
-    height: 140px;
-  }
-  .RemoveSelectedBtn button {
+  .productContainer {
+    width: 100%;
+    height: inherit;
     display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  .ItemDescription {
-    width: 60%;
-    padding-top: 7px;
-    padding-left: 5px;
-  }
-  .ItemImg {
-    min-width: 130px;
-    width: 130px;
-    border: solid 5px #2c3641;
-    box-sizing: border-box;
-    border-radius: 46px;
-  }
-  .priceTag {
-    display: none;
-  }
-  .priceLilTag {
-    display: inline;
-    width: min-content;
-  }
-  .qAndPrice p {
-    white-space: nowrap;
-    position: absolute;
-    right: 0;
-    bottom: 0;
-    padding: 3px 10px;
-    border-radius: 30px;
-    background-color: $def_light_blue;
-    color: $def_white;
-  }
-  .SendOrderBtn {
-    height: 45px;
-    width: 50%;
-  }
-  .TotalFinalyBlock {
-    align-items: center;
-    margin-top: 5px;
-  }
-  .TotalSum_FinSum {
-    margin-top: 16px;
-    padding-right: 10px;
+    position: relative;
+
+    .ItemImg {
+      width: 33%;
+      @include ratio-box(1/1);
+      overflow: hidden;
+      border-radius: 46px 0px 0px 46px;
+      cursor: pointer;
+    }
+    .ItemDescription {
+      display: flex;
+      flex-direction: column;
+      width: 60%;
+      padding-left: 18px;
+      padding-top: 23px;
+    }
+    .ItemDescription p {
+      font-family: "Roboto";
+      font-style: normal;
+      font-weight: 500;
+      @include font-size(1.375rem);
+
+      line-height: 21px;
+      color: $def_white;
+      height: fit-content;
+      word-break: break-word;
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -moz-box-orient: vertical;
+      -ms-box-orient: vertical;
+      box-orient: vertical;
+      -webkit-line-clamp: 2;
+      -moz-line-clamp: 2;
+      -ms-line-clamp: 2;
+      line-clamp: 2;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .ItemDescription a {
+      font-family: "Roboto";
+      font-style: normal;
+      font-weight: 500;
+      @include font-size(1rem);
+      line-height: 19px;
+      color: $def_light_blue !important;
+      margin-top: 3px;
+    }
+
+    .CheckBoxBlock {
+      position: absolute;
+      top: 0;
+      right: 0;
+      display: block;
+      transform: translate(20%, -20%);
+    }
+    .qAndPrice {
+      width: 100%;
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      height: 100%;
+      padding-bottom: 15px;
+    }
+    .qAndPrice p {
+      font-family: "Roboto";
+      font-style: normal;
+      font-weight: 500;
+      @include font-size(1.375rem);
+      color: $def_white;
+      transform: translateY(25%);
+    }
   }
 }

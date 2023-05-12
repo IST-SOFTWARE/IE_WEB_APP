@@ -7,10 +7,11 @@ import Image from "next/image";
 import { IProductItem_cart } from "../../ICartTypes";
 import { IProductData } from "../../common";
 
-const CartInformational: FC<IProductItem_cart> = ({
+const CartFunctional_mobile: FC<IProductItem_cart> = ({
   style,
   currency,
   data,
+  cartSelector
 }) => {
   const [productData, setProductData] = useState<IProductData>();
 
@@ -92,4 +93,4 @@ const CartInformational: FC<IProductItem_cart> = ({
   );
 };
 
-export default CartInformational;
+export default CartFunctional_mobile;

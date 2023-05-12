@@ -1,6 +1,7 @@
 import {CSSProperties, Dispatch} from "react";
 import {ICatalogItem} from "./ICatalogTypes";
 import {ICartItem} from "./ICartTypes";
+import { mobileTrigger_size } from "../common";
 
 export type pit_catalog = "catalog"
 export type pit_cart = "cart"
@@ -17,7 +18,7 @@ export type cartAdder_fnc = (...props: any) => any;
 export type quantityEditor_fnc = (id: string | number, newQuantity: number, callBack?: callBack_fnc) => Promise<boolean>
 export type cartItemGetter_fnc = (id: string | number, callBack?: callBack_fnc) => Promise<IProductData>
 
-export interface IProductData{
+export interface IProductData {
     id: number | string;
     image?: string;
     title: string;
@@ -30,8 +31,19 @@ export interface IProductItem {
     itemType: productItemType;
     style?: ISTProductItemStyles;
     currency: "RU" | "EN";
+    mobileSettings: mobileSettings;
+    cartSelector?: ICartSelector;
 }
 
+interface ICartSelector {
+    id: number;
+    selectedState: number[];
+    setSelectedState: Dispatch<number[]>; 
+}
+
+interface mobileSettings {
+    mobileSizeTrigger: mobileTrigger_size;
+}
 
 
 

@@ -1,9 +1,6 @@
-import {cartItemGetter_fnc, IProductItem, pit_cart, quantityEditor_fnc} from "./common";
-
-type pit_cart_functional = "Functional";
-type pit_cart_informational = "Informational";
-
-type displayingOption = pit_cart_functional | pit_cart_informational
+import { Dispatch, ReactNode } from "react";
+import { mobileTrigger_size } from "../common";
+import {cartItemGetter_fnc, IProductData, IProductItem, pit_cart, quantityEditor_fnc} from "./common";
 
 export interface ICartItem_properties {
     productId: number | string,
@@ -17,9 +14,12 @@ export interface ICartItem_properties {
 export type ICartItem = {
     productType: pit_cart;
     data: ICartItem_properties;
-    displayingOption: displayingOption;
 }
 
-export interface IProductItem_cart extends Omit<IProductItem, "itemType"> {
-    data: ICartItem_properties
+export interface IProductItem_cart extends Omit<IProductItem, "itemType" | "mobileSettings"> {
+    data: ICartItem_properties;
 };
+
+export interface IProductItem_distributer extends Omit<IProductItem, "itemType">  {
+    data: ICartItem_properties;
+}
