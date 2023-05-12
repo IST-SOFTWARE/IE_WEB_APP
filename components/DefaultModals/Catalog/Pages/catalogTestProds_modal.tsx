@@ -122,11 +122,13 @@ const CatalogTestProdsModal: FC = () => {
                   key={`ISTProductItem_${index}`}
                   mobileSettings={{ mobileSizeTrigger: "MD_768" }}
                   style={{ margin: "20px 0 0 0" }}
+
                   cartSelector={{
-                    id: index,
-                    selectedState: selected,
-                    setSelectedState: setSelected,
+                      id: index,
+                      selectedState: selected,
+                      setSelectedState: setSelected,
                   }}
+
                   itemType={{
                     productType: "cart",
                     data: {
@@ -137,6 +139,7 @@ const CatalogTestProdsModal: FC = () => {
                       quantityEditor: editQuantity,
                     },
                   }}
+
                 />
               );
             }

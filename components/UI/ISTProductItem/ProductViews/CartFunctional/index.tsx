@@ -18,11 +18,24 @@ const CartFunctional: FC<IProductItem_cart> = ({
   const [checkedState, setCheckedState] = useState<boolean>(false);
 
   useEffect(() => {
-    if (!cartSelector) return;
-
-    setCheckedState(cartSelector?.selectedState.indexOf(cartSelector.id) > -1);
+      setCheckedState(cartSelector?.selectedState.indexOf(cartSelector.id) > -1);
   }, [cartSelector]);
-console.log(cartSelector)
+
+  const switchSelectedState = useCallback((idx: number)=>{
+    if(!cartSelector) return
+
+      const prevSelectorsList = [...cartSelector.selectedState];
+      const foundIdx = prevSelectorsList.indexOf(idx);
+
+      foundIdx > -1 ?
+          prevSelectorsList.splice(foundIdx, 1) :
+          prevSelectorsList.push(idx);
+
+      cartSelector.setSelectedState(prevSelectorsList);
+
+  },[cartSelector])
+
+
   useEffect(() => {
     let isSub = true;
     if (data.cartItemGetter)
@@ -38,11 +51,13 @@ console.log(cartSelector)
     };
   }, [data]);
 
+
   const quentityEditorBuilder = (quentity: number) => {
     data && data.quantityEditor
       ? data.quantityEditor(data.productId, quentity)
       : null;
   };
+
 
   return (
     <>
@@ -107,7 +122,9 @@ console.log(cartSelector)
             <div className={styles.CheckBoxBlock}>
               <ProductItemSelector
                 state={checkedState}
-                stateSetter={setCheckedState}
+                onSelect={()=>{
+                  switchSelectedState(cartSelector.id);
+                }}
               />
             </div>
           ) : null}

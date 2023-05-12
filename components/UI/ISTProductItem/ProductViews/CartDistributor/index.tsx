@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React, {FC, useEffect} from "react";
 import { IProductItem_distributer } from "../../ICartTypes";
 import styles from "./index.module.scss";
 import CartFunctional from "../CartFunctional";
@@ -11,19 +11,34 @@ const CartDistributer: FC<IProductItem_distributer> = ({
   mobileSettings,
   cartSelector,
 }) => {
+
   return (
     <>
       <div
         className={`${styles[`desktop_${mobileSettings.mobileSizeTrigger}`]} 
       ${styles[`def_desktop`]}`}
       >
-        <CartFunctional currency="RU" data={data} style={style} cartSelector={cartSelector}/>
+
+        <CartFunctional
+            currency="RU"
+            data={data}
+            style={style}
+            cartSelector={cartSelector}
+        />
+
       </div>
       <div
         className={`${styles[`mobile_${mobileSettings.mobileSizeTrigger}`]} 
       ${styles[`def_mobile`]}`}
       >
-        <CartFunctional_mobile currency="RU" data={data} style={style} cartSelector={cartSelector} />
+
+        <CartFunctional_mobile
+            currency="RU"
+            data={data}
+            style={style}
+            cartSelector={cartSelector}
+        />
+
       </div>
     </>
   );

@@ -12,6 +12,7 @@ const IstProductItem: FC<IProductItem> = ({
   style,
   currency,
   mobileSettings,
+  cartSelector
 }) => {
   const [mobileState, setMobileState] = useState<boolean>(false);
 
@@ -44,6 +45,7 @@ const IstProductItem: FC<IProductItem> = ({
           currency={currency}
           style={style}
           mobileSettings={mobileSettings}
+          cartSelector={cartSelector}
         />
       );
     }
