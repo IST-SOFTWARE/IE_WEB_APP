@@ -63,10 +63,6 @@ const getCartProductDataById: cartItemGetter_fnc = async (
 const CatalogTestProdsModal: FC = () => {
   const [selected, setSelected] = useState<number[]>([]);
 
-  // const selectedHelper = useCallback<onSelect_cartItem_fnc>((id) => {
-
-  // }, [selected])
-
   const { data, loading, error } = useQuery<cartCollection>(
     GET_CART_COLLECTION_BY_ID,
     {
@@ -111,7 +107,7 @@ const CatalogTestProdsModal: FC = () => {
 
   return (
     <>
-      <div style={{ width: "900px" }}>
+      <div style={{ width: "500зч" }}>
         {!loading &&
           !error &&
           data?.cartCollection_by_id?.cart_model.map(
@@ -120,15 +116,15 @@ const CatalogTestProdsModal: FC = () => {
                 <ISTProductItem
                   currency="RU"
                   key={`ISTProductItem_${index}`}
-                  mobileSettings={{ mobileSizeTrigger: "MD_768" }}
+                  mobileSettings={{ mobileSizeTrigger: "LG_992" }}
                   style={{ margin: "20px 0 0 0" }}
-
+                  
                   cartSelector={{
                       id: index,
                       selectedState: selected,
                       setSelectedState: setSelected,
                   }}
-
+                  
                   itemType={{
                     productType: "cart",
                     data: {
