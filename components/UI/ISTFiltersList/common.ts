@@ -12,7 +12,6 @@ export type ICheckBoxItem = {
     isCheckBox: boolean;
     fieldName: string;
     idx: number;
-
 };
 
 // HOOK'S TYPE
@@ -22,21 +21,33 @@ export interface IST_HookedData{
 }
 
 //UI FILTERS LIST TYPES
-export type onFilterSwitch_t =
-    (idx: number, nState: boolean, name?: string) => void | {idx: number, name: string};
+export type onFilterSwitchCustom_t<T = any> = (
+    idx: number,
+    nState: boolean,
+    name: string,
+
+    options?: T,
+) => void
+
+export type onFilterSwitchDefault_t =
+    (idx: number) => void
 
 export type IST_IFilterListItem = Omit<ICheckBoxItem, "idx">
-export interface IST_FilterList
-{
+export interface IST_FilterList {
     fields?: Array<IST_IFilterListItem>;
     hookedData?: IST_HookedData;
-    onFilterSwitch?: onFilterSwitch_t;
+    switcherOptions?: ISwitcherOptions;
 }
+
+interface ISwitcherOptions{
+    onSwitch: onFilterSwitchCustom_t
+    filterDesignation: string;
+}
+
 
 //UI FILTER ITEM TYPES
 export interface IST_FilterItem extends ICheckBoxItem{
-    hookedData: IST_HookedData,
-    onFilterSwitch?: onFilterSwitch_t;
+    onFilterSwitch: onFilterSwitchDefault_t;
 }
 
 //MOBILE UI TYPES
@@ -58,12 +69,9 @@ export interface IST_IFiltersWrapper{
     children: ReactNode,
     title: string
     mobileSettings?: mobileSettings,
-
     hasActives?: boolean,
-
     isOpened: boolean
 }
-
 
 
 //Actions

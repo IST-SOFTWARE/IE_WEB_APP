@@ -1,5 +1,15 @@
 import {ICatalogFiltersType} from "../../store/slices/catalogSlice/catalogFiltersType";
 
+
+// interface getFiltersDesignationSList_out_t {
+//     designations: string[],
+// }
+
+export const getFiltersDesignationSList_filtersHelper =
+    (selectedTypes: keyof ICatalogFiltersType): string=> {
+    return selectedTypes
+}
+
 export const filterSetter_filtersHelper = (
     filtersList: ICatalogFiltersType,
     key: keyof ICatalogFiltersType,

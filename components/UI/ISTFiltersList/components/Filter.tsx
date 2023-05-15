@@ -8,50 +8,12 @@ const Filter:FC<IST_FilterItem> = ({
   fieldName,
   isActive,
   isCheckBox,
-
   idx,
-  hookedData,
-
   onFilterSwitch
 }) => {
 
   const MAX_FIELD_LENGTH = 23;
   const [describing, setDescribing] = useState<boolean>(false);
-
-  const switchState = useCallback(()=>{
-    let filters: ICheckBoxItem[] = [];
-    let editingFilter = {} as
-        Parameters<typeof onFilterSwitch>
-
-    if(!hookedData || !hookedData.fields || !hookedData.fieldsSetter)
-      return
-
-    filters = [...hookedData.fields]
-
-    filters.map(el => {
-      if(el.idx === idx){
-        const nState = !el.isActive;
-
-        filters[idx] = {
-          ...el,
-          isActive: nState
-        }
-
-        editingFilter = [
-            idx,
-            nState,
-            el.fieldName ?
-                el.fieldName : ""
-        ];
-      }
-    })
-
-    if(onFilterSwitch)
-      onFilterSwitch(...editingFilter);
-
-    hookedData.fieldsSetter(filters);
-
-  },[hookedData, onFilterSwitch])
 
   const activeDescribing = () => {
     const device = navigator.userAgent.match(
@@ -67,6 +29,7 @@ const Filter:FC<IST_FilterItem> = ({
     }
   };
 
+
   const hideDescribing = () => {
     setDescribing(false);
   };
@@ -75,7 +38,7 @@ const Filter:FC<IST_FilterItem> = ({
     <div
       className={`${styles.filter}`}
       onClick={()=>{
-        switchState()
+        onFilterSwitch(idx)
       }}
       onMouseEnter={activeDescribing}
       onMouseLeave={hideDescribing}
@@ -89,7 +52,9 @@ const Filter:FC<IST_FilterItem> = ({
           {maxLengthText(fieldName, MAX_FIELD_LENGTH)}
         </div>
         {describing ? (
-          <span className={styles.describingFilter}>{fieldName}</span>
+          <span className={styles.describingFilter}>
+            {fieldName}
+          </span>
         ) : null}
       </div>
 

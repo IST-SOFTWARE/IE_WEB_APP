@@ -2,10 +2,13 @@
 @import "../../scss/mixins/background_mixin";
 @import "../../scss/mixins/rfs_mixins";
 
+$hasDescribing: 0;
+
 .filter {
   &:first-child {
     margin-top: 16px;
   }
+
   width: 100%;
   box-sizing: border-box;
   padding: 8px;
@@ -31,10 +34,8 @@
   }
 
   .columnField {
-
     user-select: none;
-
-    > .describingFilter {
+    .describingFilter {
       background: $def_page_bg;
       box-sizing: border-box;
       position: absolute;
@@ -48,18 +49,22 @@
       padding: 8px;
 
       font-weight: 500;
-      @include font-size(1rem);
-      line-height: 18px;
+      @include font-size(1.15rem);
+      line-height: 25px;
       color: $def_white;
+      word-break: break-all;
 
       animation: describingFilterActive 0.2s ease-in-out;
+      z-index: 1;
     }
   }
 
-  > .fieldName {
+  .fieldName {
+
     width: 100%;
     box-sizing: border-box;
     transition: color 0.1s ease-in-out;
+
   }
 
   .activeText {
@@ -67,7 +72,9 @@
     transition: color 0.1s ease-in-out;
   }
 
-  > .checkPoint {
+
+
+  .checkPoint {
     position: relative;
     width: 20px;
     height: 20px;
@@ -89,7 +96,7 @@
     }
   }
 
-  > .active {
+  .active {
     border: 2px solid $def_blue_gray;
     &::after {
       content: "+";

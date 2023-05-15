@@ -1,17 +1,68 @@
-import React, { useState } from "react";
-import styles from "../../../../styles/Modals/catalog/catalogProducts/catalogFullProductsList.module.scss";
+import React, {useCallback, useState} from "react";
+import styles from "../../../../../styles/Modals/catalog/catalogProducts/catalogFullProductsList.module.scss";
 
-import ISTProductItem from "../../../UI/ISTProductItem/ISTProductItem";
+import ISTProductItem from "../../../../UI/ISTProductItem/ISTProductItem";
 
-import ISTFiltersList from "../../../UI/ISTFiltersList/components/ISTFiltersList";
-import ISTFiltersWrapper from "../../../UI/ISTFiltersList/components/ISTFiltersWrapper";
-import useISTFiltersList from "../../../UI/ISTFiltersList/hook/useISTFiltersList";
+import ISTFiltersList from "../../../../UI/ISTFiltersList/components/ISTFiltersList";
+import ISTFiltersWrapper from "../../../../UI/ISTFiltersList/components/ISTFiltersWrapper";
+import useISTFiltersList from "../../../../UI/ISTFiltersList/hook/useISTFiltersList";
+import {useDispatch} from "react-redux";
+import {useAppSelector} from "../../../../../Hooks/reduxSettings";
+import {useQuery} from "@apollo/client";
+import {GET_MFG_CATEGORY_LIST, ICategoryMFG_Q} from "../../../../../queries/categories/MFG/mfgCategoryQuery";
+import {onFilterSwitchCustom_t} from "../../../../UI/ISTFiltersList/common";
+import {filterSetter_filtersHelper, isActiveNow_filtersHelper} from "../../../../../helpers/Catalog/filters";
+import {addNewFilter} from "../../../../../store/slices/catalogSlice/catalogSlice";
+import {ICatalogFiltersType} from "../../../../../store/slices/catalogSlice/catalogFiltersType";
 
 const CatalogFullProductsListModal = ({}) => {
 
-    const[mfg_filter, mfg_active] = useISTFiltersList();
-    const[types_filter, types_active] = useISTFiltersList();
-    const[units_filter, units_active] = useISTFiltersList();
+    // Filters state
+    const[mfg_filter, mfg_active, mfg_designation] =
+        useISTFiltersList<ICatalogFiltersType>(
+     "mfg"
+    );
+
+    const[types_filter, types_active, types_designation] =
+        useISTFiltersList<ICatalogFiltersType>(
+            "type"
+    );
+
+    const[units_filter, units_active, units_designation] =
+        useISTFiltersList<ICatalogFiltersType>(
+        "unit"
+    );
+
+    // Filters query
+    const {data} = useQuery<ICategoryMFG_Q>(
+        GET_MFG_CATEGORY_LIST,
+    )
+
+    // Redux catalog state & dispatch
+    const dispatch = useDispatch();
+    const catalog = useAppSelector(state => state.catalog);
+
+    // add/remove function (Catalog)
+    const switchFilter: onFilterSwitchCustom_t<keyof ICatalogFiltersType> = useCallback((
+        idx,
+        state,
+        name,
+        options
+    ) => {
+
+        if(!catalog || !catalog.filters || !options)
+            return
+
+        const newFilters =
+            filterSetter_filtersHelper(catalog.filters, options , name);
+
+        dispatch(addNewFilter({
+            key: options,
+            filter: newFilters
+        }))
+
+    },[dispatch, catalog])
+
 
     return (
     <>
@@ -32,21 +83,33 @@ const CatalogFullProductsListModal = ({}) => {
                 isOpened={true}
                 hasActives={mfg_active}
                 mobileSettings={{
-                    onTransfer: ()=>{},
-                    type: "transfer",
+                    type: "dropdown",
                     mobileSizeTrigger: "LG_992"
                 }}
             >
+                <ISTFiltersList
+                    fields={
+                        data?.manufacturer_category?.map(el=>{
+                            return({
+                                fieldName: el.manufacturer_name,
+                                isCheckBox: true,
+                                isActive: isActiveNow_filtersHelper(
+                                    catalog?.filters,
+                                    "mfg",
+                                    el.manufacturer_name),
+                            })
+                        })
+                    }
 
-                <ISTFiltersList fields={[
-                    {isActive: false, fieldName: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. ",
-                        isCheckBox: true},
-                    {isActive: false, fieldName: "Field 2", isCheckBox: true},
-                    {isActive: false, fieldName: "Field 3", isCheckBox: true},
-                    {isActive: false, fieldName: "Field 4", isCheckBox: true},
-                ]}
+
                     hookedData={mfg_filter}
+
+                    switcherOptions={{
+                        onSwitch: switchFilter,
+                        filterDesignation: mfg_designation
+                    }}
                 />
+
             </ISTFiltersWrapper>
 
         {/*Типы*/}
@@ -71,6 +134,11 @@ const CatalogFullProductsListModal = ({}) => {
                 ]}
 
                     hookedData={types_filter}
+
+                    switcherOptions={{
+                        onSwitch: switchFilter,
+                        filterDesignation: types_designation
+                    }}
                 />
             </ISTFiltersWrapper>
 
@@ -95,6 +163,11 @@ const CatalogFullProductsListModal = ({}) => {
                     {isActive: false, fieldName: "Field 4", isCheckBox: true},
                 ]}
                     hookedData={units_filter}
+
+                    switcherOptions={{
+                        onSwitch: switchFilter,
+                        filterDesignation: units_designation
+                    }}
                 />
             </ISTFiltersWrapper>
 
