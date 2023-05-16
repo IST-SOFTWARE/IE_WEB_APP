@@ -13,16 +13,19 @@ import Image from "next/image";
 
 interface quentityEditor {
   quantity: number;
-  onChange?: (...props: any) => any;
+  onChange?: (quantity: number) => void;
+  onDelete?: () => void;
 }
 
-const QuantityEditor: FC<quentityEditor> = ({ onChange, quantity }) => {
+const QuantityEditor: FC<quentityEditor> = ({
+  onChange,
+  quantity,
+  onDelete,
+}) => {
   const [currentQuantity, setCurrentQuantity] = useState<number>(quantity);
 
   const maxValue = 99;
   const input = useRef<HTMLInputElement>();
-
-  console.log(quantity, "q");
 
   const increment = useCallback(() => {
     const newValue = currentQuantity + 1;
@@ -39,7 +42,7 @@ const QuantityEditor: FC<quentityEditor> = ({ onChange, quantity }) => {
   }, [currentQuantity, onChange]);
 
   const checkValue = (value: number): boolean => {
-    if (value > 0 && value <= maxValue) {
+    if (value >= 1 && value <= maxValue) {
       return true;
     }
     return false;
@@ -57,15 +60,8 @@ const QuantityEditor: FC<quentityEditor> = ({ onChange, quantity }) => {
     <>
       <div className={styles.QuantityEditor}>
         <div className={styles.ActionsContainer}>
-          <button
-            className={
-              Number(quantity) === 1
-                ? `${styles[`lButton_blue`]}`
-                : `${styles[`lButton`]}`
-            }
-            onClick={decrement}
-          >
-            {Number(quantity) === 1 ? (
+          {Number(currentQuantity) <= 1 ? (
+            <button className={styles.lButton_blue} onClick={onDelete}>
               <Image
                 alt="Product Item Image"
                 src={cart}
@@ -76,10 +72,12 @@ const QuantityEditor: FC<quentityEditor> = ({ onChange, quantity }) => {
                   paddingBottom: "2px",
                 }}
               />
-            ) : (
-              "-"
-            )}
-          </button>
+            </button>
+          ) : (
+            <button className={styles.lButton} onClick={decrement}>
+              -
+            </button>
+          )}
 
           <input
             type="number"

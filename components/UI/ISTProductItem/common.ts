@@ -17,6 +17,7 @@ type callBack_fnc = {
 export type cartAdder_fnc = (...props: any) => any;
 export type quantityEditor_fnc = (id: string | number, newQuantity: number, callBack?: callBack_fnc) => Promise<boolean>
 export type cartItemGetter_fnc = (id: string | number, callBack?: callBack_fnc) => Promise<IProductData>
+export type deleteProduct_fnc = (id : string | number) => Promise<boolean>
 
 export interface IProductData {
     id: number | string;

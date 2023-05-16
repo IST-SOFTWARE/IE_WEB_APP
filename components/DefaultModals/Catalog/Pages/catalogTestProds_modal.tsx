@@ -8,12 +8,15 @@ import {
   IProductData,
   cartItemGetter_fnc,
   quantityEditor_fnc,
+  deleteProduct_fnc,
+  IProductItem,
 } from "../../../UI/ISTProductItem/common";
 import {
   GET_CART_COLLECTION_BY_ID,
   ICartCollection,
   ICartCollectionVariables,
   UPDATE_CART_BY_ID,
+  cart_model,
 } from "../../../../queries/cart/cartActions";
 import { apolloClient } from "../../../../Apollo/apolloClient";
 import {
@@ -63,27 +66,31 @@ const getCartProductDataById: cartItemGetter_fnc = async (
 const CatalogTestProdsModal: FC = () => {
   const [selected, setSelected] = useState<number[]>([]);
 
+
   const { data, loading, error } = useQuery<cartCollection>(
     GET_CART_COLLECTION_BY_ID,
     {
       fetchPolicy: "cache-and-network",
-      variables: { id: "8e52446f-ab77-45b1-8994-a2e2046648f8" },
+      variables: { id: "9f10783f-5bdf-467c-892a-90abaffdf205" },
     }
   );
 
-  const editQuantity = useCallback<quantityEditor_fnc>(
-    async (id, newQuantity, callBack) => {
-      const cart = data.cartCollection_by_id.cart_model;
+  const [products, setProducts] = useState<cart_model[]>(data?.cartCollection_by_id?.cart_model);
 
-      const indexProductInCartCollection =
-        data.cartCollection_by_id.cart_model.findIndex((cartItem) => {
-          return cartItem.product_id === id;
-        });
+  console.log(products)
 
-      const product = { quantity: newQuantity, price: null, product_id: id };
-      const left = cart.slice(0, indexProductInCartCollection);
-      const right = cart.slice(indexProductInCartCollection + 1, cart.length);
-      const newCart = [...left, product, ...right];
+  // useEffect(() => {
+  //   if (data && data.cartCollection_by_id)
+  //     setProducts(data.cartCollection_by_id.cart_model);
+  // }, [data]);
+
+
+  const deleteProduct = useCallback<deleteProduct_fnc>(
+    async (id) => {
+      // const cart = data.cartCollection_by_id.cart_model;
+      const newCart = products.filter((product) => product.product_id !== id);
+
+      setProducts(newCart);
 
       const variables = {
         id: data.cartCollection_by_id.id,
@@ -102,7 +109,46 @@ const CatalogTestProdsModal: FC = () => {
         false;
       });
     },
-    [data]
+    [data, products]
+  );
+
+  const editQuantity = useCallback<quantityEditor_fnc>(
+    async (id, newQuantity, callBack) => {
+      // const produtcs = data.cartCollection_by_id.cart_model;
+
+      const indexProductInCartCollection =
+        data.cartCollection_by_id.cart_model.findIndex((cartItem) => {
+          return cartItem.product_id === id;
+        });
+
+      const product = { product_id: id, quantity: newQuantity, price: null };
+      const left = products.slice(0, indexProductInCartCollection);
+      const right = products.slice(
+        indexProductInCartCollection + 1,
+        products.length
+      );
+      const newCart = [...left, product, ...right];
+
+      setProducts(newCart);
+
+      const variables = {
+        id: data.cartCollection_by_id.id,
+        data: {
+          status: "Draft",
+          cart_model: newCart,
+        },
+      } as ICartCollectionVariables;
+
+      await apolloClient.mutate({
+        mutation: UPDATE_CART_BY_ID,
+        variables: variables,
+      });
+
+      return new Promise<boolean>((resolve) => {
+        false;
+      });
+    },
+    [data, products]
   );
 
   return (
@@ -110,36 +156,32 @@ const CatalogTestProdsModal: FC = () => {
       <div style={{ width: "500зч" }}>
         {!loading &&
           !error &&
-          data?.cartCollection_by_id?.cart_model.map(
-            ({ price, product_id, quantity }, index) => {
-              return (
-                <ISTProductItem
-                  currency="RU"
-                  key={`ISTProductItem_${index}`}
-                  mobileSettings={{ mobileSizeTrigger: "LG_992" }}
-                  style={{ margin: "20px 0 0 0" }}
-                  
-                  cartSelector={{
-                      id: index,
-                      selectedState: selected,
-                      setSelectedState: setSelected,
-                  }}
-                  
-                  itemType={{
-                    productType: "cart",
-                    data: {
-                      amountPrice: price,
-                      productId: product_id,
-                      quantity: quantity,
-                      cartItemGetter: getCartProductDataById,
-                      quantityEditor: editQuantity,
-                    },
-                  }}
-
-                />
-              );
-            }
-          )}
+          products.map(({ price, product_id, quantity }, index) => {
+            return (
+              <ISTProductItem
+                currency="RU"
+                key={`ISTProductItem_${index}`}
+                mobileSettings={{ mobileSizeTrigger: "LG_992" }}
+                style={{ margin: "20px 0 0 0" }}
+                cartSelector={{
+                  id: index,
+                  selectedState: selected,
+                  setSelectedState: setSelected,
+                }}
+                itemType={{
+                  productType: "cart",
+                  data: {
+                    amountPrice: price,
+                    productId: product_id,
+                    quantity: quantity,
+                    cartItemGetter: getCartProductDataById,
+                    quantityEditor: editQuantity,
+                    deleteProduct: deleteProduct,
+                  },
+                }}
+              />
+            );
+          })}
       </div>
     </>
   );

@@ -5,7 +5,7 @@ export interface ICartCollection {
   cart_model: cart_model[];
 }
 
-type cart_model = {
+export type cart_model = {
   product_id: string | number;
   quantity: number;
   price: string;

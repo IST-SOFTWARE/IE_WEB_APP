@@ -12,6 +12,7 @@ const CartDistributer: FC<IProductItem_distributer> = ({
   cartSelector,
 }) => {
 
+
   return (
     <>
       <div
@@ -20,7 +21,7 @@ const CartDistributer: FC<IProductItem_distributer> = ({
       >
 
         <CartFunctional
-            currency="RU"
+            currency={currency}
             data={data}
             style={style}
             cartSelector={cartSelector}
@@ -33,7 +34,7 @@ const CartDistributer: FC<IProductItem_distributer> = ({
       >
 
         <CartFunctional_mobile
-            currency="RU"
+            currency={currency}
             data={data}
             style={style}
             cartSelector={cartSelector}

@@ -1,6 +1,6 @@
 import { Dispatch, ReactNode } from "react";
 import { mobileTrigger_size } from "../common";
-import {cartItemGetter_fnc, IProductData, IProductItem, pit_cart, quantityEditor_fnc} from "./common";
+import {cartItemGetter_fnc, deleteProduct_fnc, IProductData, IProductItem, pit_cart, quantityEditor_fnc} from "./common";
 
 export interface ICartItem_properties {
     productId: number | string,
@@ -9,6 +9,7 @@ export interface ICartItem_properties {
 
     quantityEditor?: quantityEditor_fnc
     cartItemGetter?: cartItemGetter_fnc
+    deleteProduct?: deleteProduct_fnc
 }
 
 export type ICartItem = {

@@ -12,7 +12,7 @@ const IstProductItem: FC<IProductItem> = ({
   style,
   currency,
   mobileSettings,
-  cartSelector
+  cartSelector,
 }) => {
   const [mobileState, setMobileState] = useState<boolean>(false);
 

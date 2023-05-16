@@ -58,6 +58,10 @@ const CartFunctional_mobile: FC<IProductItem_cart> = ({
       : null;
   };
 
+  const deleteProductBilder = () => {
+    data.deleteProduct(data.productId);
+  };
+
   return (
     <>
       <div className={styles.CartItemContainer} style={style}>
@@ -103,6 +107,7 @@ const CartFunctional_mobile: FC<IProductItem_cart> = ({
             <QuantityEditor
               quantity={data?.quantity}
               onChange={quentityEditorBuilder}
+              onDelete={deleteProductBilder}
             />
           </div>
           {cartSelector ? (
