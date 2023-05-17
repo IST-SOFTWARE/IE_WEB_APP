@@ -14,7 +14,10 @@ const CartFunctional_mobile: FC<IProductItem_cart> = ({
   currency,
   cartSelector,
 }) => {
+
   const [productData, setProductData] = useState<IProductData>();
+  const [currentQuantity, setCurrentQuantity] = useState<number>(data?.quantity);
+
   const [checkedState, setCheckedState] = useState<boolean>(false);
 
   useEffect(() => {
@@ -41,25 +44,36 @@ const CartFunctional_mobile: FC<IProductItem_cart> = ({
     let isSub = true;
     if (data.cartItemGetter)
       data
-        .cartItemGetter(data.productId, {
-          sideEffect: setProductData,
-          flag: isSub,
-        })
-        .catch((ex) => console.warn(ex));
+          .cartItemGetter(data.productId, {
+            sideEffect: setProductData,
+            flag: isSub,
+          })
+          .catch((ex) => console.warn(ex));
 
     return () => {
       isSub = false;
     };
   }, [data]);
 
-  const quentityEditorBuilder = (quentity: number) => {
-    data && data.quantityEditor
-      ? data.quantityEditor(data.productId, quentity)
-      : null;
+  const quantityEditorBuilder = (quantity: number) => {
+
+    let isSub = true;
+    if (data.quantityEditor)
+      data
+          .quantityEditor(data.productId, quantity, {
+            sideEffect: setCurrentQuantity,
+            flag: isSub,
+          })
+          .catch((ex) => console.warn(ex));
+
+    return () => {
+      isSub = false;
+    };
+
   };
 
-  const deleteProductBilder = () => {
-    data.deleteProduct(data.productId);
+  const deleteProductBuilder = () => {
+    // data.deleteProduct(data.productId);
   };
 
   return (
@@ -105,9 +119,9 @@ const CartFunctional_mobile: FC<IProductItem_cart> = ({
               <span className={styles.qAndPrice}> ₽</span>
             </div>
             <QuantityEditor
-              quantity={data?.quantity}
-              onChange={quentityEditorBuilder}
-              onDelete={deleteProductBilder}
+              quantity={currentQuantity}
+              onChange={quantityEditorBuilder}
+              onDelete={deleteProductBuilder}
             />
           </div>
           {cartSelector ? (
