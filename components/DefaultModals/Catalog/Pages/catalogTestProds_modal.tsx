@@ -1,21 +1,26 @@
-import React, {FC, useCallback, useEffect, useState} from "react";
+import React, { FC, useCallback, useEffect, useState } from "react";
 import ISTProductItem from "../../../UI/ISTProductItem/ISTProductItem";
-import {useQuery} from "@apollo/client";
+import { useQuery } from "@apollo/client";
 import {
-    cartItemGetter_fnc,
-    deleteProduct_fnc,
-    IProductData,
-    quantityEditor_fnc,
+  cartItemGetter_fnc,
+  deleteProduct_fnc,
+  IProductData,
+  quantityEditor_fnc,
 } from "../../../UI/ISTProductItem/common";
 import {
-    GET_CART_COLLECTION_BY_ID,
-    ICartCollection, ICartCollection_updated,
-    ICartCollectionVariables,
-    UPDATE_CART_BY_ID,
+  GET_CART_COLLECTION_BY_ID,
+  ICartCollection,
+  ICartCollection_updated,
+  ICartCollectionVariables,
+  UPDATE_CART_BY_ID,
 } from "../../../../queries/cart/cartActions";
-import {apolloClient} from "../../../../Apollo/apolloClient";
-import {GET_PRODUCT_BY_ID, IProducts,} from "../../../../queries/products/productActions";
-import {ICartItem_properties_data} from "../../../UI/ISTProductItem/ICartTypes";
+import { apolloClient } from "../../../../Apollo/apolloClient";
+import {
+  GET_PRODUCT_BY_ID,
+  IProducts,
+} from "../../../../queries/products/productActions";
+import { ICartItem_properties_data } from "../../../UI/ISTProductItem/ICartTypes";
+import { ICartItem } from "../../../../queries/cart/cartActions";
 
 interface cartCollection {
   cartCollection_by_id: ICartCollection;
@@ -48,19 +53,15 @@ const getCartProductDataById: cartItemGetter_fnc = async (
         };
       }
 
-        if (callBack?.sideEffect && callBack?.flag === true)
-            callBack.sideEffect(outProduct);
-
+      if (callBack?.sideEffect && callBack?.flag === true)
+        callBack.sideEffect(outProduct);
     });
-
 
   return outProduct;
 };
 
-
 const CatalogTestProdsModal: FC = () => {
   const [selected, setSelected] = useState<number[]>([]);
-
 
   const { data, loading, error } = useQuery<cartCollection>(
     GET_CART_COLLECTION_BY_ID,
@@ -74,88 +75,126 @@ const CatalogTestProdsModal: FC = () => {
 
   // console.log(products)
 
-  useEffect(() => {
-    if (data && data.cartCollection_by_id)
-      setProducts(data.cartCollection_by_id.cart_model);
-  }, [data]);
+  const transformationTypeToICartItemPropertiesData = (
+    data: ICartItem[]
+  ): ICartItem_properties_data[] => {
+    const newTransformType = data.map(({ product_id, quantity, price }) => {
+      return {
+        productId: product_id,
+        quantity: quantity,
+        amountPrice: price,
+      } as ICartItem_properties_data;
+    });
+    return newTransformType;
+  };
 
-
-    const editQuantity = useCallback<quantityEditor_fnc>(
-        async (id, newQuantity, callBack) => {
-
-            const indexProductInCartCollection =
-                products.findIndex((cartItem) => {
-                return cartItem.productId === id;
-              });
-
-            const product = { product_id: id, quantity: newQuantity, price: null };
-            const left = products.slice(0, indexProductInCartCollection);
-            const right = products.slice(
-              indexProductInCartCollection + 1,
-              products.length
-            );
-            const newCart = [...left, product, ...right];
-
-            const variables = {
-              id: data.cartCollection_by_id.id,
-              data: {
-                status: "Draft",
-                cart_model: newCart,
-              },
-            } as ICartCollectionVariables;
-
-            let _newQuantity = 0;
-
-            await apolloClient.mutate<ICartCollection_updated>({
-              mutation: UPDATE_CART_BY_ID,
-              variables: variables,
-            }).then(el => {
-                if(el.data && !el.errors){
-                    _newQuantity = newQuantity;
-
-                    if (callBack?.sideEffect && callBack?.flag === true)
-                        callBack.sideEffect(_newQuantity);
-                }
-
-            });
-
-            return new Promise<boolean>((resolve) => {
-                false;
-            });
-        },
-        [products]
+  const transformationTypeToCartModel = (
+    data: ICartItem_properties_data[]
+  ): ICartItem[] => {
+    const newTransformType = data.map(
+      ({ productId, quantity, amountPrice }) => {
+        return {
+          product_id: productId,
+          quantity: quantity,
+          price: amountPrice,
+        } as ICartItem;
+      }
     );
+    return newTransformType;
+  };
 
+  console.log(
+    "ICartItem_properties_data to CartModel",
+    transformationTypeToICartItemPropertiesData(
+      data.cartCollection_by_id.cart_model
+    )
+  );
 
-    const deleteProduct = useCallback<deleteProduct_fnc>(
-        async (id) => {
-            // const cart = data.cartCollection_by_id.cart_model;
-            const newCart = products.filter((product) => product.productId !== id);
+  console.log(
+    "CartModel to ICartItem_properties_data",
+    transformationTypeToCartModel(transformationTypeToICartItemPropertiesData(
+      data.cartCollection_by_id.cart_model
+    ))
+  );
 
-            const variables = {
-                id: id.toString(),
-                data: {
-                    status: "Draft",
-                    cart_model: ,
-                },
-            } as ICartCollectionVariables;
+  // useEffect(() => {
+  //   if (data && data.cartCollection_by_id)
 
-            await apolloClient.mutate({
-                mutation: UPDATE_CART_BY_ID,
-                variables: variables,
-            });
+  // }, [data]);
 
-            return new Promise<boolean>((resolve) => {
-                false;
-            });
+  const editQuantity = useCallback<quantityEditor_fnc>(
+    async (id, newQuantity, callBack) => {
+      const indexProductInCartCollection = products.findIndex((cartItem) => {
+        return cartItem.productId === id;
+      });
+
+      const product = { product_id: id, quantity: newQuantity, price: null };
+      const left = products.slice(0, indexProductInCartCollection);
+      const right = products.slice(
+        indexProductInCartCollection + 1,
+        products.length
+      );
+      const newCart = [...left, product, ...right];
+
+      const variables = {
+        id: data.cartCollection_by_id.id,
+        data: {
+          status: "Draft",
+          cart_model: newCart,
         },
-        [data, products]
-    );
+      } as ICartCollectionVariables;
 
+      let _newQuantity = 0;
 
-    return (
+      await apolloClient
+        .mutate<ICartCollection_updated>({
+          mutation: UPDATE_CART_BY_ID,
+          variables: variables,
+        })
+        .then((el) => {
+          if (el.data && !el.errors) {
+            _newQuantity = newQuantity;
+
+            if (callBack?.sideEffect && callBack?.flag === true)
+              callBack.sideEffect(_newQuantity);
+          }
+        });
+
+      return new Promise<boolean>((resolve) => {
+        false;
+      });
+    },
+    [products]
+  );
+
+  // const deleteProduct = useCallback<deleteProduct_fnc>(
+  //     async (id) => {
+  //         // const cart = data.cartCollection_by_id.cart_model;
+  //         const newCart = products.filter((product) => product.productId !== id);
+
+  //         const variables = {
+  //             id: id.toString(),
+  //             data: {
+  //                 status: "Draft",
+  //                 cart_model: ,
+  //             },
+  //         } as ICartCollectionVariables;
+
+  //         await apolloClient.mutate({
+  //             mutation: UPDATE_CART_BY_ID,
+  //             variables: variables,
+  //         });
+
+  //         return new Promise<boolean>((resolve) => {
+  //             false;
+  //         });
+  //     },
+  //     [data, products]
+  // );
+
+  return (
     <>
-      <div style={{ width: "500зч" }}>
+      {/* <div style={{ width: "500зч" }}>
         {!loading &&
           !error &&
           products.map(({ price, product_id, quantity }, index) => {
@@ -187,7 +226,7 @@ const CatalogTestProdsModal: FC = () => {
               />
             );
           })}
-      </div>
+      </div> */}
     </>
   );
 };
