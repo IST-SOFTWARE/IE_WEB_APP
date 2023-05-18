@@ -18,7 +18,7 @@ const CartFunctional_mobile: FC<IProductItem_cart> = ({
   const [productData, setProductData] = useState<IProductData>();
   const [currentQuantity, setCurrentQuantity] = useState<number>(data?.quantity);
 
-  const [checkedState, setCheckedState] = useState<boolean>(false);
+  const [checkedState,setCheckedState] = useState<boolean>(false);
 
   useEffect(() => {
     setCheckedState(cartSelector?.selectedState.indexOf(cartSelector.id) > -1);

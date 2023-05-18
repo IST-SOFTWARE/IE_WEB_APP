@@ -22,45 +22,53 @@ const QuantityEditor: FC<quentityEditor> = ({
   quantity,
   onDelete,
 }) => {
-  const [currentQuantity, setCurrentQuantity] = useState<number>(quantity);
+  const [currentQuantity, setCurrentQuantity] = useState<string>(quantity.toString());
 
-  const maxValue = 99;
-  const input = useRef<HTMLInputElement>();
+  const maxValue:number = 99;
+  const minValue: number = 1;
+
+  const inputRef= useRef<HTMLInputElement>(null);
+
+  useEffect(()=>{
+    setCurrentQuantity(quantity.toString());
+  },[quantity])
 
   const increment = useCallback(() => {
-    const newValue = currentQuantity + 1;
+    const newValue = quantity + 1;
     if (!checkValue(newValue)) return null;
-    setCurrentQuantity(newValue);
+
     onChange(newValue);
-  }, [currentQuantity, onChange]);
+
+  }, [quantity, onChange]);
 
   const decrement = useCallback(() => {
-    const newValue = currentQuantity - 1;
+    const newValue = quantity - 1;
     if (!checkValue(newValue)) return null;
-    setCurrentQuantity(newValue);
+
     onChange(newValue);
-  }, [currentQuantity, onChange]);
+
+  }, [quantity, onChange]);
 
   const checkValue = (value: number): boolean => {
-    if (value >= 1 && value <= maxValue) {
-      return true;
-    }
-    return false;
+    return value >= minValue && value <= maxValue;
   };
 
-  const handleValue = (value: number) => {
+  const handleValue = useCallback((value: number | string) => {
     if (value) {
       checkValue(Number(value))
-        ? setCurrentQuantity(Number(value))
-        : setCurrentQuantity(maxValue);
+        ? onChange(Number(value))
+        : onChange(maxValue);
     }
-  };
+    else
+      onChange(minValue);
+
+  },[onChange]);
 
   return (
     <>
       <div className={styles.QuantityEditor}>
         <div className={styles.ActionsContainer}>
-          {Number(currentQuantity) <= 1 ? (
+          {Number(quantity) <= 1 ? (
             <button className={styles.lButton_blue} onClick={onDelete}>
               <Image
                 alt="Product Item Image"
@@ -81,14 +89,16 @@ const QuantityEditor: FC<quentityEditor> = ({
 
           <input
             type="number"
-            onChange={(event) => {
-              handleValue(Number(event.target.value));
+            onChange={(event)=>
+                setCurrentQuantity(event.target?.value)
+            }
+
+            onBlur={(event) => {
+              handleValue(event.target?.value)
             }}
-            onBlur={() => {
-              onChange(currentQuantity);
-            }}
+
             value={currentQuantity}
-            ref={input}
+            ref={inputRef}
           />
 
           <button className={styles.rButton} onClick={increment}>
