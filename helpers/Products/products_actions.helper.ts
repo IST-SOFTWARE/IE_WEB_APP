@@ -24,3 +24,13 @@ export const products_editQuantity_actionsHelper = (
 
      return [...left, updatedProduct, ...right]
 }
+
+export const products_removeItem_actionsHelper = (
+    data:ICartItem_properties_data[],
+    id: string | number
+): ICartItem_properties_data[] => {
+
+    return data.filter((product) =>
+        product.productId !== id.toString()
+    );
+}

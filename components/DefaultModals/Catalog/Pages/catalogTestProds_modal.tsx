@@ -25,7 +25,10 @@ import {
     redefining_to_CartModel,
     redefining_to_ICartItemPropertiesData
 } from "../../../../helpers/Products/products_redefining.helper";
-import {products_editQuantity_actionsHelper} from "../../../../helpers/Products/products_actions.helper";
+import {
+    products_editQuantity_actionsHelper,
+    products_removeItem_actionsHelper
+} from "../../../../helpers/Products/products_actions.helper";
 
 interface cartCollection {
   cartCollection_by_id: ICartCollection;
@@ -134,30 +137,33 @@ const CatalogTestProdsModal: FC = () => {
       return true
     }, [products]);
 
-  // const deleteProduct = useCallback<deleteProduct_fnc>(
-  //     async (id) => {
-  //         // const cart = data.cartCollection_by_id.cart_model;
-  //         const newCart = products.filter((product) => product.productId !== id);
+  const deleteProduct = useCallback<deleteProduct_fnc>(
+      async (id, callBack) => {
 
-  //         const variables = {
-  //             id: id.toString(),
-  //             data: {
-  //                 status: "Draft",
-  //                 cart_model: ,
-  //             },
-  //         } as ICartCollectionVariables;
+          // const newCart =
+          //     products_removeItem_actionsHelper(products, id)
+          //
+          // const variables = {
+          //     id: id.toString(),
+          //     data: {
+          //         status: "Draft",
+          //         cart_model: redefining_to_CartModel(newCart),
+          //     },
+          // } as ICartCollectionVariables;
+          //
+          // await apolloClient.mutate({
+          //     mutation: UPDATE_CART_BY_ID,
+          //     variables: variables,
+          // }).then((el) => {
+          //
+          //     // if (el.data && !el.errors) {
+          //     //     if (callBack?.sideEffect && callBack?.flag === true)
+          //     //         callBack.sideEffect(el.data);
+          //     // }
+          // });
 
-  //         await apolloClient.mutate({
-  //             mutation: UPDATE_CART_BY_ID,
-  //             variables: variables,
-  //         });
-
-  //         return new Promise<boolean>((resolve) => {
-  //             false;
-  //         });
-  //     },
-  //     [data, products]
-  // );
+          return true
+      }, [products]);
 
   return (
     <>
@@ -183,10 +189,10 @@ const CatalogTestProdsModal: FC = () => {
                     quantity: quantity,
                     cartItemGetter: getCartProductDataById,
                     quantityEditor: editQuantity,
-                    // deleteProduct: {
-                    //     onDelete: deleteProduct,
-                    //     productsListSetter: setProducts
-                    // },
+                    deleteProduct: {
+                        onDelete: deleteProduct,
+                        productsListSetter: setProducts
+                    },
                   },
                 }}
               />

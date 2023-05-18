@@ -73,7 +73,18 @@ const CartFunctional_mobile: FC<IProductItem_cart> = ({
   };
 
   const deleteProductBuilder = () => {
-    // data.deleteProduct(data.productId);
+      let isSub = true;
+      if (data.deleteProduct)
+          data
+              .deleteProduct.onDelete(data.productId, {
+                  sideEffect: data.deleteProduct.productsListSetter,
+                  flag: isSub,
+              })
+              .catch((ex) => console.warn(ex));
+
+      return () => {
+          isSub = false;
+      };
   };
 
   return (
