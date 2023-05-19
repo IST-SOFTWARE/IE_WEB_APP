@@ -1,6 +1,6 @@
 import React, { CSSProperties, FC, useEffect, useState } from "react";
 import { maxLengthText } from "../common";
-import CatalogView from "./ProductViews/CatalogView/Index";
+import CatalogView from "./ProductViews/CatalogDefault/Index";
 import CatalogInline from "./ProductViews/CatalogInline";
 import CartInformational from "./ProductViews/CartFunctional_mobile";
 import CartFunctional from "./ProductViews/CartFunctional";
@@ -14,7 +14,6 @@ const IstProductItem: FC<IProductItem> = ({
   mobileSettings,
   cartSelector,
 }) => {
-  const [mobileState, setMobileState] = useState<boolean>(false);
 
   switch (itemType.productType) {
     case "catalog": {

@@ -1,6 +1,6 @@
 import {CSSProperties, Dispatch} from "react";
-import {ICatalogItem} from "./ICatalogTypes";
-import {ICartItem, ICartItem_properties_data} from "./ICartTypes";
+import {ICatalogItem} from "./Abstract/ICatalogTypes";
+import {ICartItem, ICartItem_properties_data} from "./Abstract/ICartTypes";
 import { mobileTrigger_size } from "../common";
 
 export type pit_catalog = "catalog"
@@ -28,6 +28,7 @@ export type deleteProduct_fnc = (id : string | number, callBack?: callBack_fnc<I
 
 export type deleteProduct_props = {
     onDelete: (id : string | number, callBack?: callBack_fnc<ICartItem_properties_data[]>) => Promise<boolean>
+
     productsListSetter: Dispatch<ICartItem_properties_data[]>
 }
 
@@ -49,7 +50,7 @@ export interface IProductItem {
     cartSelector?: ICartSelector;
 }
 
-interface ICartSelector {
+export interface ICartSelector {
     id: number;
     selectedState: number[];
     setSelectedState: Dispatch<number[]>; 

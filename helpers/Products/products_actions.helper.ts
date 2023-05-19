@@ -1,4 +1,4 @@
-import {ICartItem_properties_data} from "../../components/UI/ISTProductItem/ICartTypes";
+import {ICartItem_properties_data} from "../../components/UI/ISTProductItem/Abstract/ICartTypes";
 
 export const products_editQuantity_actionsHelper = (
     data:ICartItem_properties_data[],

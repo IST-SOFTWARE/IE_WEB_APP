@@ -19,12 +19,12 @@
 }
 
 .ActionsContainer button {
-  background: transparent;
+
   border: none;
   cursor: pointer;
   color: #dee6f0;
   background-color: $def_dark;
-  font-family: "Roboto";
+
   font-style: normal;
   font-weight: 500;
   @include font-size(1.5rem);
@@ -50,13 +50,13 @@
 
 .ActionsContainer input {
   color: #dee6f0;
-  font-family: "Roboto";
+
   font-style: normal;
   font-weight: 500;
   @include font-size(1.5rem);
   max-width: 40%;
   text-align: center;
-  background: transparent;
+
   border: none;
   outline: none;
   border-radius: 10px;

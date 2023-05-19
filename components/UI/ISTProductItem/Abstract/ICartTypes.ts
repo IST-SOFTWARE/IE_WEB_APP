@@ -1,5 +1,5 @@
 import { Dispatch, ReactNode } from "react";
-import { mobileTrigger_size } from "../common";
+import { mobileTrigger_size } from "../../common";
 import {
     cartItemGetter_fnc,
     deleteProduct_fnc,
@@ -8,7 +8,7 @@ import {
     IProductItem,
     pit_cart,
     quantityEditor_fnc
-} from "./common";
+} from "../common";
 
 export type ICartItem_properties_data = {
     productId: number | string,

@@ -4,7 +4,7 @@ import QuantityEditor from "./QuantityEditor";
 import emptyProduct from "../src/Empty_Prod_image.svg";
 import Link from "next/link";
 import Image from "next/image";
-import { IProductItem_cart } from "../../ICartTypes";
+import { IProductItem_cart } from "../../Abstract/ICartTypes";
 import { ProductItemSelector } from "./ProductItemSelector";
 import { IProductData } from "../../common";
 

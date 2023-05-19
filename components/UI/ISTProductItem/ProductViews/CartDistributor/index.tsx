@@ -1,5 +1,5 @@
 import React, {FC, useEffect} from "react";
-import { IProductItem_distributer } from "../../ICartTypes";
+import { IProductItem_distributer } from "../../Abstract/ICartTypes";
 import styles from "./index.module.scss";
 import CartFunctional from "../CartFunctional";
 import CartFunctional_mobile from "../CartFunctional_mobile";

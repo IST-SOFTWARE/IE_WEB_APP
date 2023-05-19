@@ -11,13 +11,13 @@ import {
 import cart from "./cart.svg";
 import Image from "next/image";
 
-interface quentityEditor {
+interface quantityEditor {
   quantity: number;
   onChange?: (quantity: number) => void;
   onDelete?: () => void;
 }
 
-const QuantityEditor: FC<quentityEditor> = ({
+const QuantityEditor: FC<quantityEditor> = ({
   onChange,
   quantity,
   onDelete,
@@ -82,7 +82,7 @@ const QuantityEditor: FC<quentityEditor> = ({
               />
             </button>
           ) : (
-            <button className={styles.lButton} onClick={decrement}>
+            <button onClick={decrement}>
               -
             </button>
           )}
@@ -101,7 +101,7 @@ const QuantityEditor: FC<quentityEditor> = ({
             ref={inputRef}
           />
 
-          <button className={styles.rButton} onClick={increment}>
+          <button onClick={increment}>
             +
           </button>
         </div>
