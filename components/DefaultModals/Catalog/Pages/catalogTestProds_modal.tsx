@@ -69,7 +69,9 @@ const getCartProductDataById: cartItemGetter_fnc = async (
 };
 
 const CatalogTestProdsModal: FC = () => {
-    const [selected, setSelected] = useState<number[]>([]);
+
+    const [selected, setSelected] = useState<string[]>([]);
+
 
     const {data, loading, error} = useQuery<cartCollection>(
         GET_CART_COLLECTION_BY_ID,
@@ -88,12 +90,6 @@ const CatalogTestProdsModal: FC = () => {
             )
     }, [data]);
 
-    //
-    // useEffect(()=>{
-    //     if(products)
-    //       console.log("PRODS: ", products)
-    //       console.log("DATA: ", redefining_to_CartModel_redefiningHelper(products));
-    // },[products])
 
     const editQuantity = useCallback<quantityEditor_fnc>(
         async (id,
@@ -176,18 +172,18 @@ const CatalogTestProdsModal: FC = () => {
                                 key={`ISTProductItem_${index}`}
                                 currency="RU"
                                 style={{margin: "20px 0 0 0"}}
+
                                 cartSelector={{
-                                    id: index,
+                                    id: `${productId}_product_selector`,
                                     selectedState: selected,
                                     setSelectedState: setSelected,
                                 }}
+
                                 itemType={{
                                     productType: "cart",
-
                                     mobileSettings: {
                                         mobileSizeTrigger: "LG_992"
                                     },
-
                                     data: {
                                         amountPrice: amountPrice,
                                         productId: productId,
@@ -199,7 +195,6 @@ const CatalogTestProdsModal: FC = () => {
                                             productsListSetter: setProducts
                                         },
                                     },
-
                                 }}
                             />
                         );

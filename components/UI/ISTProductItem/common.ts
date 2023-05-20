@@ -1,4 +1,4 @@
-import {CSSProperties, Dispatch} from "react";
+import {CSSProperties, Dispatch, SetStateAction} from "react";
 import {ICatalogItem} from "./Abstract/ICatalogTypes";
 import {ICartItem, ICartItem_properties_data} from "./Abstract/ICartTypes";
 import { mobileTrigger_size } from "../common";
@@ -49,10 +49,13 @@ export interface IProductItem {
     cartSelector?: ICartSelector;
 }
 
+
+type ICartSelector_dispatch<T> = Dispatch<SetStateAction<T>>
+
 export interface ICartSelector {
-    id: number;
-    selectedState: number[];
-    setSelectedState: Dispatch<number[]>; 
+    id: number | string;
+    selectedState: (number | string)[];
+    setSelectedState: ICartSelector_dispatch<(number | string)[]>;
 }
 
 

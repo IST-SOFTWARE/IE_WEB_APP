@@ -33,11 +33,6 @@ const CartFunctional_mobile: FC = () => {
             setCheckedState(cartSelector?.selectedState.indexOf(cartSelector.id) > -1);
         }, [cartSelector]);
 
-        const switchSelectedState = useCallback(
-            (idx: number) => {
-                switchSelectedState_cartActions(idx, cartSelector);
-            }, [cartSelector]);
-
     //
 
     // Tracking the props of the number of elements
@@ -151,7 +146,7 @@ const CartFunctional_mobile: FC = () => {
                             <ProductItemSelector
                                 state={checkedState}
                                 onSelect={() => {
-                                    switchSelectedState(cartSelector.id);
+                                    switchSelectedState_cartActions(cartSelector.id, cartSelector);
                                 }}
                             />
                         </div>
