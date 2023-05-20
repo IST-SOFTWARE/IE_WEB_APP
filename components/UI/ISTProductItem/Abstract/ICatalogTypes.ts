@@ -1,6 +1,7 @@
-import {cartAdder_fnc, IProductData, IProductItem, pit_catalog} from "../common";
+import {IProductItem, pit_catalog} from "../common";
 import ISTProductItem from "../ISTProductItem";
 import React from "react";
+import {cartAdder_fnc, IProductData} from "../../common";
 
 export type ICatalogItem = {
     productType: pit_catalog;

@@ -2,12 +2,6 @@ import React, {FC, useCallback, useEffect, useState} from "react";
 import ISTProductItem from "../../../UI/ISTProductItem/ISTProductItem";
 import {useQuery} from "@apollo/client";
 import {
-    cartItemGetter_fnc,
-    deleteProduct_fnc,
-    IProductData,
-    quantityEditor_fnc,
-} from "../../../UI/ISTProductItem/common";
-import {
     GET_CART_COLLECTION_BY_ID,
     ICartCollection,
     ICartCollection_updated,
@@ -29,6 +23,7 @@ import {
     products_editQuantity_actionsHelper,
     products_removeItem_actionsHelper
 } from "../../../../helpers/Products/products_actions.helper";
+import {cartItemGetter_fnc, deleteProduct_fnc, IProductData, quantityEditor_fnc} from "../../../UI/common";
 
 interface cartCollection {
     cartCollection_by_id: ICartCollection;

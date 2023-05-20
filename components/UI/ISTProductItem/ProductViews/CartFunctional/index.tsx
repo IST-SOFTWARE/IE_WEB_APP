@@ -6,9 +6,9 @@ import Link from "next/link";
 import Image from "next/image";
 import { IProductItem_cart } from "../../Abstract/ICartTypes";
 import { ProductItemSelector } from "./ProductItemSelector";
-import { IProductData } from "../../common";
 import {ISTProductItemDistributor_Context} from "../../Context";
 import {switchSelectedState_cartActions} from "../../Actions/CartActions";
+import {IProductData} from "../../../common";
 
 const CartFunctional: FC = () => {
 
