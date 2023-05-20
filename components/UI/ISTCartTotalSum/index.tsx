@@ -5,8 +5,10 @@ import IstButtonN from "../ISTButton/ISTButtonN";
 const ISTCartTotalSum = () => {
   return (
     <div className={styles.Cart}>
-      <div className={styles.cartLabel}>Ваша Корзина 4</div>
-      <div className={styles.box}>
+      <div className={styles.cartLabel}>
+        Ваша Корзина <div className={styles.productsQuantity}>4</div>
+      </div>
+      <div className={styles.prodSaleBox}>
         <div className={styles.prod}>
           <div className={styles.title}>Товары (4)</div>
           <div className={styles.total}>1 431 000₽</div>

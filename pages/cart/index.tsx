@@ -1,6 +1,8 @@
 import React from 'react';
 import DefaultLandingPage from "../../components/LandingPages/DefaultLandingPage";
 import HelloPage from "../../components/LandingPages/HelloPage/HelloPage";
+import CatalogTestProdsModal from '../../components/DefaultModals/Catalog/Pages/catalogTestProds_modal';
+import ISTCartTotalSum from '../../components/UI/ISTCartTotalSum';
 
 const CartPage_index = (props) => {
     return (
@@ -17,11 +19,11 @@ const CartPage_index = (props) => {
                     pageId={"CartPage"}
                 >
                     <div className={`col-7`}>
-                        <p>PRODUCTS HERE</p>
+                        <p><CatalogTestProdsModal/></p>
                     </div>
                     <div className={`col-5`}>
                         <p>
-                            TOTAL SUM HERE
+                            <ISTCartTotalSum/>
                         </p>
                     </div>
                 </DefaultLandingPage>

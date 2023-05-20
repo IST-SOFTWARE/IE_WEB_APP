@@ -111,7 +111,7 @@ const CartFunctional: FC = () => {
 
               <p>
                 <span className={styles.priceTag}>Цена: </span>
-
+                  
                 {productData && !isNaN(Number(productData?.price))
                   ? new Intl.NumberFormat(currency).format(
                       Number(productData?.price)
