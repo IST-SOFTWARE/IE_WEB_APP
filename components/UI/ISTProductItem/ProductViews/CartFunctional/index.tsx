@@ -1,5 +1,5 @@
 import styles from "./index.module.scss";
-import { useState, useEffect, useCallback, FC, CSSProperties } from "react";
+import {useState, useEffect, useCallback, FC, CSSProperties, useContext} from "react";
 import QuantityEditor from "./QuantityEditor";
 import emptyProduct from "../src/Empty_Prod_image.svg";
 import Link from "next/link";
@@ -7,15 +7,20 @@ import Image from "next/image";
 import { IProductItem_cart } from "../../Abstract/ICartTypes";
 import { ProductItemSelector } from "./ProductItemSelector";
 import { IProductData } from "../../common";
+import {ISTProductItemDistributor_Context} from "../../Context";
 
-const CartFunctional: FC<IProductItem_cart> = ({
-  style,
-  data,
-  currency,
-  cartSelector,
-}) => {
+const CartFunctional: FC = () => {
+
   const [productData, setProductData] = useState<IProductData>();
   const [checkedState, setCheckedState] = useState<boolean>(false);
+
+  const {
+    data,
+    style,
+    currency,
+    cartSelector
+  } = useContext(ISTProductItemDistributor_Context);
+
 
   useEffect(() => {
       setCheckedState(cartSelector?.selectedState.indexOf(cartSelector.id) > -1);
@@ -52,9 +57,9 @@ const CartFunctional: FC<IProductItem_cart> = ({
   }, [data]);
 
 
-  const quentityEditorBuilder = (quentity: number) => {
+  const quantityEditorBuilder = (quantity: number) => {
     data && data.quantityEditor
-      ? data.quantityEditor(data.productId, quentity)
+      ? data.quantityEditor(data.productId, quantity)
       : null;
   };
 
@@ -101,7 +106,7 @@ const CartFunctional: FC<IProductItem_cart> = ({
             <div className={styles.qAndPrice}>
               <QuantityEditor
                 quantity={data?.quantity}
-                onChange={quentityEditorBuilder}
+                onChange={quantityEditorBuilder}
               />
 
               <p>

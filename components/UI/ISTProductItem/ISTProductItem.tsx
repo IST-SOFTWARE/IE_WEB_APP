@@ -5,13 +5,13 @@ import CatalogInline from "./ProductViews/CatalogInline";
 import CartInformational from "./ProductViews/CartFunctional_mobile";
 import CartFunctional from "./ProductViews/CartFunctional";
 import { IProductItem } from "./common";
-import CartDistributer from "./ProductViews/CartDistributor";
+import CartDistributor from "./ProductViews/CartDistributor";
+import {ISTProductItemDistributor_Context} from "./Context";
 
 const IstProductItem: FC<IProductItem> = ({
   itemType,
   style,
   currency,
-  mobileSettings,
   cartSelector,
 }) => {
 
@@ -38,15 +38,19 @@ const IstProductItem: FC<IProductItem> = ({
       }
     }
     case "cart": {
-      return (
-        <CartDistributer
-          data={itemType.data}
-          currency={currency}
-          style={style}
-          mobileSettings={mobileSettings}
-          cartSelector={cartSelector}
-        />
-      );
+      return(
+          <ISTProductItemDistributor_Context.Provider value={{
+            data: itemType.data,
+            currency: currency,
+            style: style,
+            cartSelector: cartSelector,
+            mobileSettings: itemType.mobileSettings
+          }}>
+
+              <CartDistributor/>
+
+          </ISTProductItemDistributor_Context.Provider>
+      )
     }
   }
 };

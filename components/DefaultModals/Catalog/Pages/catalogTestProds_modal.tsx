@@ -173,9 +173,8 @@ const CatalogTestProdsModal: FC = () => {
                     products.map(({amountPrice, productId, quantity}, index) => {
                         return (
                             <ISTProductItem
-                                currency="RU"
                                 key={`ISTProductItem_${index}`}
-                                mobileSettings={{mobileSizeTrigger: "LG_992"}}
+                                currency="RU"
                                 style={{margin: "20px 0 0 0"}}
                                 cartSelector={{
                                     id: index,
@@ -184,6 +183,11 @@ const CatalogTestProdsModal: FC = () => {
                                 }}
                                 itemType={{
                                     productType: "cart",
+
+                                    mobileSettings: {
+                                        mobileSizeTrigger: "LG_992"
+                                    },
+
                                     data: {
                                         amountPrice: amountPrice,
                                         productId: productId,
@@ -195,6 +199,7 @@ const CatalogTestProdsModal: FC = () => {
                                             productsListSetter: setProducts
                                         },
                                     },
+
                                 }}
                             />
                         );

@@ -46,7 +46,6 @@ export interface IProductItem {
     itemType: productItemType;
     style?: ISTProductItemStyles;
     currency: "RU" | "EN";
-    mobileSettings: mobileSettings;
     cartSelector?: ICartSelector;
 }
 
@@ -56,9 +55,7 @@ export interface ICartSelector {
     setSelectedState: Dispatch<number[]>; 
 }
 
-interface mobileSettings {
-    mobileSizeTrigger: mobileTrigger_size;
-}
+
 
 
 

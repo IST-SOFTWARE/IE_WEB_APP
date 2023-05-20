@@ -14,6 +14,7 @@ export type ICartItem_properties_data = {
     productId: number | string,
     quantity: number,
     amountPrice: number | string,
+
 }
 
 export interface ICartItem_properties extends ICartItem_properties_data{
@@ -24,13 +25,19 @@ export interface ICartItem_properties extends ICartItem_properties_data{
 
 export type ICartItem = {
     productType: pit_cart;
+    mobileSettings?: mobileSettings;
     data: ICartItem_properties;
 }
 
-export interface IProductItem_cart extends Omit<IProductItem, "itemType" | "mobileSettings"> {
+export interface IProductItem_cart extends Omit<IProductItem, "itemType"> {
     data: ICartItem_properties;
 };
 
-export interface IProductItem_distributer extends Omit<IProductItem, "itemType">  {
+export interface IProductItem_distributor extends Omit<IProductItem, "itemType">  {
     data: ICartItem_properties;
+    mobileSettings?: mobileSettings
+}
+
+interface mobileSettings {
+    mobileSizeTrigger: mobileTrigger_size;
 }
