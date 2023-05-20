@@ -1,36 +1,47 @@
-import React from 'react';
+import React, { useState } from "react";
 import DefaultLandingPage from "../../components/LandingPages/DefaultLandingPage";
 import HelloPage from "../../components/LandingPages/HelloPage/HelloPage";
-import CatalogTestProdsModal from '../../components/DefaultModals/Catalog/Pages/catalogTestProds_modal';
-import ISTCartTotalSum from '../../components/UI/ISTCartTotalSum';
+import CatalogTestProdsModal from "../../components/DefaultModals/Catalog/Pages/catalogTestProds_modal";
+import ISTCartTotalSum from "../../components/UI/ISTCartTotalSum";
 
 const CartPage_index = (props) => {
-    return (
-        <>
-            <div className={``} style={{
-                color: "white",
-                marginTop: "100px"
-            }}>
-                <DefaultLandingPage
-                    landingDescription={{
-                        title: "",
-                        titleOffset: 50
-                    }}
-                    pageId={"CartPage"}
-                >
-                    <div className={`col-7`}>
-                        <p><CatalogTestProdsModal/></p>
-                    </div>
-                    <div className={`col-5`}>
-                        <p>
-                            <ISTCartTotalSum/>
-                        </p>
-                    </div>
-                </DefaultLandingPage>
-            </div>
-        </>
-    )
-}
+  const [idPRoducts, setIdProducts] = useState<string[]>([
+    "174",
+    "175",
+    "193",
+    "185",
+  ]);
+  return (
+    <>
+      <div
+        className={``}
+        style={{
+          color: "white",
+          marginTop: "100px",
+        }}
+      >
+        <DefaultLandingPage
+          landingDescription={{
+            title: "",
+            titleOffset: 50,
+          }}
+          pageId={"CartPage"}
+        >
+          <div className={`col-7`}>
+            <p>
+              <CatalogTestProdsModal />
+            </p>
+          </div>
+          <div className={`col-5`}>
+            <p>
+              <ISTCartTotalSum />
+            </p>
+          </div>
+        </DefaultLandingPage>
+      </div>
+    </>
+  );
+};
 
 export default CartPage_index;
 

@@ -30,6 +30,7 @@ const ISTCartTotalSum = () => {
         title={{
           caption: "Оформить заказ",
         }}
+        onClick={()=> {}}
       />
     </div>
   );
