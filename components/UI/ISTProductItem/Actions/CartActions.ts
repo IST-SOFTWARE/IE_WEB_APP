@@ -1,7 +1,7 @@
 import {ICartSelector} from "../common";
 
 export const switchSelectedState_cartActions = (
-    idx: number,
+    idx: number | string,
     data: ICartSelector
 ) => {
     if (!data) return;

@@ -8,6 +8,7 @@ import { IProductItem_cart } from "../../Abstract/ICartTypes";
 import { ProductItemSelector } from "./ProductItemSelector";
 import { IProductData } from "../../common";
 import {ISTProductItemDistributor_Context} from "../../Context";
+import {switchSelectedState_cartActions} from "../../Actions/CartActions";
 
 const CartFunctional: FC = () => {
 
@@ -22,23 +23,13 @@ const CartFunctional: FC = () => {
   } = useContext(ISTProductItemDistributor_Context);
 
 
-  useEffect(() => {
+  // SELECT / DESELECT
+
+    useEffect(() => {
       setCheckedState(cartSelector?.selectedState.indexOf(cartSelector.id) > -1);
-  }, [cartSelector]);
+    }, [cartSelector]);
 
-  const switchSelectedState = useCallback((idx: number)=>{
-    if(!cartSelector) return
-
-      const prevSelectorsList = [...cartSelector.selectedState];
-      const foundIdx = prevSelectorsList.indexOf(idx);
-
-      foundIdx > -1 ?
-          prevSelectorsList.splice(foundIdx, 1) :
-          prevSelectorsList.push(idx);
-
-      cartSelector.setSelectedState(prevSelectorsList);
-
-  },[cartSelector])
+  //
 
 
   useEffect(() => {
@@ -128,7 +119,7 @@ const CartFunctional: FC = () => {
               <ProductItemSelector
                 state={checkedState}
                 onSelect={()=>{
-                  switchSelectedState(cartSelector.id);
+                  switchSelectedState_cartActions(cartSelector.id, cartSelector);
                 }}
               />
             </div>
