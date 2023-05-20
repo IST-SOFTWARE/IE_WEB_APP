@@ -1,5 +1,6 @@
 import {gql} from "@apollo/client";
-import {IProductData} from "../../components/UI/ISTProductItem/common";
+
+import {IProductData} from "../../components/UI/common";
 
 export interface IProducts{
     Products: Array<IProductItem>

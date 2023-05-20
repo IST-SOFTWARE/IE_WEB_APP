@@ -1,13 +1,14 @@
 import { Dispatch, ReactNode } from "react";
-import { mobileTrigger_size } from "../../common";
 import {
     cartItemGetter_fnc,
     deleteProduct_fnc,
     deleteProduct_props,
     IProductData,
+    mobileTrigger_size, quantityEditor_fnc
+} from "../../common";
+import {
     IProductItem,
-    pit_cart,
-    quantityEditor_fnc
+    pit_cart
 } from "../common";
 
 export type ICartItem_properties_data = {

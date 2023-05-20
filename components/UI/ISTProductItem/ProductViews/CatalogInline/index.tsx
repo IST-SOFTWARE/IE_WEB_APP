@@ -4,7 +4,8 @@ import styles from "./index.module.scss";
 import noImg from "../src/Empty_Prod_image.svg";
 import Image from "next/image";
 import {IProductItem_catalog} from "../../Abstract/ICatalogTypes";
-import { IProductData } from "../../common";
+
+import {IProductData} from "../../../common";
 
 
 const CatalogInline: FC<IProductItem_catalog> = ({
