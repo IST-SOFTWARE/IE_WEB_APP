@@ -4,9 +4,9 @@
 
 .CartItemContainer {
   width: 100%;
-  background: $def_page_bg;
-  box-shadow: 0px 4px 22px rgba(0, 0, 0, 0.21);
-  border-radius: 46px;
+  background: #2c3641;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25), -5px -5px 10px #333f4c;
+  border-radius: 20px;
   margin-top: 20px;
   position: relative;
   height: inherit;
@@ -21,21 +21,21 @@
       width: 33%;
       @include ratio-box(1/1);
       overflow: hidden;
-      border-radius: 46px 0px 0px 46px;
+      border-radius: 20px 0px 0px 20px;
       cursor: pointer;
     }
+    
     .ItemDescription {
       display: flex;
       flex-direction: column;
       width: 60%;
-      padding-left: 18px;
-      padding-top: 23px;
+      padding: 8px 13px;
     }
     .ItemDescription p {
       font-family: "Roboto";
       font-style: normal;
       font-weight: 500;
-      @include font-size(1.375rem);
+      @include font-size(1.25rem);
 
       line-height: 21px;
       color: $def_white;
@@ -69,23 +69,20 @@
       top: 0;
       right: 0;
       display: block;
-      transform: translate(20%, -20%);
+      transform: translate(10%, -10%);
     }
     .qAndPrice {
       width: 100%;
-      display: flex;
-      align-items: flex-end;
-      justify-content: space-between;
       height: 100%;
-       padding-bottom: 15px;
-    }
-    .qAndPrice p {
+      padding-bottom: 15px;
       font-family: "Roboto";
-      font-style: normal;
       font-weight: 500;
-      @include font-size(1.375rem);
+      @include font-size(1.188rem);
       color: $def_white;
-      transform: translateY(25%);
+      // transform: translateY(25%);
+      line-height: 122.69%;
+      letter-spacing: 0.03em;
+      color: #99a8ba;
     }
   }
 }

@@ -5,11 +5,22 @@ export interface ICartCollection {
   cart_model: cart_model[];
 }
 
+export interface ICartCollection_updated {
+  update_cartCollection_item: updated_cartCollection_data
+}
+
+export interface ICartItem extends cart_model{};
+
+
+
 type cart_model = {
   product_id: string | number;
   quantity: number;
   price: string;
 };
+
+type updated_cartCollection_data = ICartCollection;
+
 
 export interface ICartCollectionVariables {
   id: string | number;
@@ -35,7 +46,8 @@ mutation updateCartCollectionItem(
   $id: ID!
 ) {
   update_cartCollection_item(data: $data, id: $id) {
-    id
+    id,
+    cart_model
   }
 }
 `;

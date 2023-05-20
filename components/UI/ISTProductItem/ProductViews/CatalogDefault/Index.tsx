@@ -4,7 +4,7 @@ import styles from "./index.module.scss";
 
 import addBasketIcon from "../src/add_to_basket.svg";
 import noImg from "../src/Empty_Prod_image.svg";
-import {IProductItem_catalog} from "../../ICatalogTypes";
+import {IProductItem_catalog} from "../../Abstract/ICatalogTypes";
 
 
 const CatalogView: FC<IProductItem_catalog> = ({

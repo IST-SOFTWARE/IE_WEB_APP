@@ -1,13 +1,19 @@
 import React, { CSSProperties, FC, useEffect, useState } from "react";
 import { maxLengthText } from "../common";
-import CatalogView from "./ProductViews/CatalogView/Index";
+import CatalogView from "./ProductViews/CatalogDefault/Index";
 import CatalogInline from "./ProductViews/CatalogInline";
-import CartInformational from "./ProductViews/CartInformational";
+import CartInformational from "./ProductViews/CartFunctional_mobile";
 import CartFunctional from "./ProductViews/CartFunctional";
 import { IProductItem } from "./common";
+import CartDistributor from "./ProductViews/CartDistributor";
+import {ISTProductItemDistributor_Context} from "./Context";
 
-
-const IstProductItem: FC<IProductItem> = ({ itemType, style, currency }) => {
+const IstProductItem: FC<IProductItem> = ({
+  itemType,
+  style,
+  currency,
+  cartSelector,
+}) => {
 
   switch (itemType.productType) {
     case "catalog": {
@@ -32,24 +38,19 @@ const IstProductItem: FC<IProductItem> = ({ itemType, style, currency }) => {
       }
     }
     case "cart": {
-      if (itemType.displayingOption === "Informational") {
-        return (
-          <CartInformational
-            style={style}
-            currency={currency}
-            data={itemType.data}
-          />
-        );
-      }
-      if (itemType.displayingOption === "Functional") {
-        return (
-          <CartFunctional
-            style={style}
-            currency={currency}
-            data={itemType.data}
-          />
-        );
-      }
+      return(
+          <ISTProductItemDistributor_Context.Provider value={{
+            data: itemType.data,
+            currency: currency,
+            style: style,
+            cartSelector: cartSelector,
+            mobileSettings: itemType.mobileSettings
+          }}>
+
+              <CartDistributor/>
+
+          </ISTProductItemDistributor_Context.Provider>
+      )
     }
   }
 };
