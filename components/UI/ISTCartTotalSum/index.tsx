@@ -2,7 +2,7 @@ import React from "react";
 import styles from "./index.module.scss";
 import IstButtonN from "../ISTButton/ISTButtonN";
 
-const ISTCart = () => {
+const ISTCartTotalSum = () => {
   return (
     <div className={styles.Cart}>
       <div className={styles.cartLabel}>Ваша Корзина 4</div>
@@ -33,4 +33,4 @@ const ISTCart = () => {
   );
 };
 
-export default ISTCart;
+export default ISTCartTotalSum;

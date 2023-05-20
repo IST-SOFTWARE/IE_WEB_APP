@@ -1,9 +1,34 @@
 import React from 'react';
+import DefaultLandingPage from "../../components/LandingPages/DefaultLandingPage";
+import HelloPage from "../../components/LandingPages/HelloPage/HelloPage";
 
-const CartPage_index = (props) => (
-    <>
-    </>
-);
+const CartPage_index = (props) => {
+    return (
+        <>
+            <div className={``} style={{
+                color: "white",
+                marginTop: "100px"
+            }}>
+                <DefaultLandingPage
+                    landingDescription={{
+                        title: "",
+                        titleOffset: 50
+                    }}
+                    pageId={"CartPage"}
+                >
+                    <div className={`col-7`}>
+                        <p>PRODUCTS HERE</p>
+                    </div>
+                    <div className={`col-5`}>
+                        <p>
+                            TOTAL SUM HERE
+                        </p>
+                    </div>
+                </DefaultLandingPage>
+            </div>
+        </>
+    )
+}
 
 export default CartPage_index;
 
