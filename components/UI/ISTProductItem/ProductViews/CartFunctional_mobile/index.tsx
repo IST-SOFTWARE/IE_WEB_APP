@@ -1,11 +1,11 @@
 import styles from "./index.module.scss";
 import {useState, useEffect, useCallback, FC, CSSProperties, useContext} from "react";
-import QuantityEditor from "./QuantityEditor";
+import QuantityEditor from "../../QuantityEditor";
 import emptyProduct from "../src/Empty_Prod_image.svg";
 import Link from "next/link";
 import Image from "next/image";
 import {IProductItem_cart} from "../../Abstract/ICartTypes";
-import {ProductItemSelector} from "./ProductItemSelector";
+import {ProductItemSelector} from "../../ProductItemSelector";
 import {switchSelectedState_cartActions} from "../../Actions/CartActions";
 import {ISTProductItemDistributor_Context} from "../../Context";
 import {IProductData} from "../../../common";

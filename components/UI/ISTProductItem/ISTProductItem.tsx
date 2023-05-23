@@ -5,7 +5,7 @@ import CatalogInline from "./ProductViews/CatalogInline";
 import CartInformational from "./ProductViews/CartFunctional_mobile";
 import CartFunctional from "./ProductViews/CartFunctional";
 import { IProductItem } from "./common";
-import CartDistributor from "./ProductViews/CartDistributor";
+import CartDistributor from "./CartDistributor";
 import {ISTProductItemDistributor_Context} from "./Context";
 
 const IstProductItem: FC<IProductItem> = ({

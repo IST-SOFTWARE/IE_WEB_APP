@@ -72,7 +72,7 @@ const CatalogTestProdsModal: FC = () => {
         GET_CART_COLLECTION_BY_ID,
         {
             fetchPolicy: "cache-and-network",
-            variables: {id: "8d391766-5fea-4da8-ab71-9d7794e692f2"},
+            variables: {id: "e0a9d860-c0f9-4b6a-ace4-04ecf56b0f0c"},
         }
     );
 

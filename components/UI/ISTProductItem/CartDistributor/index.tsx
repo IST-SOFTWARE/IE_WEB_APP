@@ -1,9 +1,9 @@
 import React, {FC, useContext, useEffect} from "react";
-import {IProductItem_distributor} from "../../Abstract/ICartTypes";
+import {IProductItem_distributor} from "../Abstract/ICartTypes";
 import styles from "./index.module.scss";
-import CartFunctional from "../CartFunctional";
-import CartFunctional_mobile from "../CartFunctional_mobile";
-import {ISTProductItemDistributor_Context} from "../../Context";
+import CartFunctional from "../ProductViews/CartFunctional";
+import CartFunctional_mobile from "../ProductViews/CartFunctional_mobile";
+import {ISTProductItemDistributor_Context} from "../Context";
 
 const CartDistributor: FC = () => {
 

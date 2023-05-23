@@ -15,8 +15,6 @@ export const ProductItemSelector:FC<IProductSelector> = ({
 }
 ) => {
 
-
-
     return(
         <>
             <div className={styles.container}>

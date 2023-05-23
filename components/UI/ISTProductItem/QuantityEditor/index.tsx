@@ -66,27 +66,33 @@ const QuantityEditor: FC<quantityEditor> = ({
 
   return (
     <>
-      <div className={styles.QuantityEditor}>
-        <div className={styles.ActionsContainer}>
-          {Number(quantity) <= 1 ? (
-            <button className={styles.lButton_blue} onClick={onDelete}>
-              <Image
-                alt="Product Item Image"
-                src={cart}
-                width={18}
-                style={{
-                  objectFit: "cover",
-                  objectPosition: "center",
-                  paddingBottom: "2px",
-                }}
-              />
-            </button>
-          ) : (
-            <button onClick={decrement}>
-              -
-            </button>
-          )}
+      <div className={styles.ActionsContainer}>
+        {Number(quantity) <= 1 ? (
 
+            <div className={styles.btnContainer}>
+              <button className={styles.lButton_blue} onClick={onDelete}>
+                <Image
+                  alt="Product Item Image"
+                  src={cart}
+                  width={18}
+                  style={{
+                    objectFit: "cover",
+                    objectPosition: "center",
+                    paddingBottom: "2px",
+                  }}
+                />
+              </button>
+            </div>
+
+        ) : (
+            <div className={styles.btnContainer}>
+              <button onClick={decrement}>
+                -
+              </button>
+            </div>
+        )}
+
+        <div className={styles.inputContainer}>
           <input
             type="number"
             onChange={(event)=>
@@ -100,11 +106,14 @@ const QuantityEditor: FC<quantityEditor> = ({
             value={currentQuantity}
             ref={inputRef}
           />
+        </div>
 
+        <div className={styles.btnContainer}>
           <button onClick={increment}>
             +
           </button>
         </div>
+
       </div>
     </>
   );

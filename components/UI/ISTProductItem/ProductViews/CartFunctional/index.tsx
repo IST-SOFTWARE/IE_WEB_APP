@@ -1,14 +1,13 @@
 import styles from "./index.module.scss";
 import {useState, useEffect, useCallback, FC, CSSProperties, useContext} from "react";
-import QuantityEditor from "./QuantityEditor";
 import emptyProduct from "../src/Empty_Prod_image.svg";
 import Link from "next/link";
 import Image from "next/image";
-import { IProductItem_cart } from "../../Abstract/ICartTypes";
-import { ProductItemSelector } from "./ProductItemSelector";
 import {ISTProductItemDistributor_Context} from "../../Context";
 import {switchSelectedState_cartActions} from "../../Actions/CartActions";
 import {IProductData} from "../../../common";
+import {ProductItemSelector} from "../../ProductItemSelector";
+import QuantityEditor from "../../QuantityEditor";
 
 const CartFunctional: FC = () => {
 
@@ -59,60 +58,75 @@ const CartFunctional: FC = () => {
     <>
       <div className={styles.CartItemContainer} style={style}>
         <div className={styles.productContainer}>
-          <div className={styles.ItemImg}>
-            <Link href={`/products/${productData ? productData.slug : null}`}>
-              {productData && productData.image ? (
-                <Image
-                  alt="Product Item Image"
-                  src={productData.image}
-                  fill={true}
-                  style={{
-                    objectFit: "cover",
-                    objectPosition: "center",
-                  }}
-                />
-              ) : (
-                <Image
-                  fill={true}
-                  alt="Product item empty image"
-                  src={emptyProduct}
-                />
-              )}
-            </Link>
-          </div>
+
+              <div className={styles.ItemImg}>
+                <Link href={`/products/${productData ? productData.slug : null}`}>
+                  {productData && productData.image ? (
+                    <Image
+                      alt="Product Item Image"
+                      src={productData.image}
+                      fill={true}
+                      style={{
+                        objectFit: "cover",
+                        objectPosition: "center",
+                      }}
+                    />
+                  ) : (
+                    <Image
+                      alt="Product item empty image"
+                      src={emptyProduct}
+
+                      fill={true}
+                      style={{
+                        objectFit: "cover",
+                        objectPosition: "center",
+                      }}
+                    />
+                  )}
+                </Link>
+              </div>
+
+          {/*</Link>*/}
+
+
           <div className={styles.ItemDescription}>
-            <div>
-              <p>
+            <div className={styles.itemData}>
+              <div className={styles.title}>
                 {productData && productData.title
                   ? productData.title
                   : "No title on this product"}
-              </p>
-            </div>
+              </div>
 
-            <a>
-              Артикул:{" "}
-              {productData && productData.vendCode ? productData.vendCode : ""}
-            </a>
+              <div className={styles.vendCode}>
+                {productData && productData.vendCode ? productData.vendCode : ""}
+              </div>
+            </div>
 
             <div className={styles.qAndPrice}>
-              <QuantityEditor
-                quantity={data?.quantity}
-                onChange={quantityEditorBuilder}
-              />
 
-              <p>
-                <span className={styles.priceTag}>Цена: </span>
+              <div className={styles.qEditor}>
+                <QuantityEditor
+                  quantity={data?.quantity}
+                  onChange={quantityEditorBuilder}
+                />
+              </div>
 
-                {productData && !isNaN(Number(productData?.price))
-                  ? new Intl.NumberFormat(currency).format(
-                      Number(productData?.price)
-                    )
-                  : null}
 
-                <span className={styles.priceTag}> руб</span>
-                <span className={styles.priceLilTag}> ₽</span>
-              </p>
+              <div className={styles.price}>
+                <div className={styles.priceValue}>
+                  {productData && !isNaN(Number(productData?.price))
+                    ? new Intl.NumberFormat(currency).format(
+                        Number(productData?.price)
+                      )
+                    : null}
+                </div>
+
+                <span>
+                  ₽
+                </span>
+              </div>
             </div>
+
           </div>
           {cartSelector ? (
             <div className={styles.CheckBoxBlock}>
