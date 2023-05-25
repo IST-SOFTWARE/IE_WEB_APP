@@ -24,7 +24,7 @@ const CatalogInline: FC<IProductItem_catalog> = ({
       <div
         className={styles.productCardVariant_Inline}
         style={{
-          margin: style?.margin,
+            margin: style?.margin,
         }}
       >
         <div className={styles.cardInline}>

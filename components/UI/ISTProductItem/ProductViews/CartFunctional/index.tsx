@@ -5,58 +5,33 @@ import Link from "next/link";
 import Image from "next/image";
 import {ISTProductItemDistributor_Context} from "../../Context";
 import {switchSelectedState_cartActions} from "../../Actions/CartActions";
-import {IProductData} from "../../../common";
-import {ProductItemSelector} from "../../ProductItemSelector";
+import {ProductItemSelector} from "../../../ISTCheckBox";
 import QuantityEditor from "../../QuantityEditor";
+import {IProductItem_cart} from "../../Abstract/ICartTypes";
 
-const CartFunctional: FC = () => {
+const CartFunctional:FC<IProductItem_cart> = ({
+  onEditQuantity,
+  onRemoveItem,
 
-  const [productData, setProductData] = useState<IProductData>();
-  const [checkedState, setCheckedState] = useState<boolean>(false);
+  productData,
+  currentQuantity,
+  checkedState
+}) => {
 
   const {
-    data,
     style,
     currency,
     cartSelector
   } = useContext(ISTProductItemDistributor_Context);
 
 
-  // SELECT / DESELECT
-
-    useEffect(() => {
-      setCheckedState(cartSelector?.selectedState.indexOf(cartSelector.id) > -1);
-    }, [cartSelector]);
-
-  //
-
-
-  useEffect(() => {
-    let isSub = true;
-    if (data.cartItemGetter)
-      data
-        .cartItemGetter(data.productId, {
-          sideEffect: setProductData,
-          flag: isSub,
-        })
-        .catch((ex) => console.warn(ex));
-
-    return () => {
-      isSub = false;
-    };
-  }, [data]);
-
-
-  const quantityEditorBuilder = (quantity: number) => {
-    data && data.quantityEditor
-      ? data.quantityEditor(data.productId, quantity)
-      : null;
-  };
-
-
   return (
     <>
-      <div className={styles.CartItemContainer} style={style}>
+      <div className={styles.CartItemContainer} style={{
+        margin: style?.margin ? style?.margin : undefined,
+        width: style?.fill ? "100%" : (style?.width ? style?.width : "100%")
+      }}>
+
         <div className={styles.productContainer}>
 
               <div className={styles.ItemImg}>
@@ -105,10 +80,13 @@ const CartFunctional: FC = () => {
             <div className={styles.qAndPrice}>
 
               <div className={styles.qEditor}>
-                <QuantityEditor
-                  quantity={data?.quantity}
-                  onChange={quantityEditorBuilder}
-                />
+                {currentQuantity && onEditQuantity && onRemoveItem ? (
+                    <QuantityEditor
+                        quantity={currentQuantity}
+                        onChange={onEditQuantity}
+                        onDelete={onRemoveItem}
+                    />
+                ): null}
               </div>
 
 
@@ -122,7 +100,7 @@ const CartFunctional: FC = () => {
                 </div>
 
                 <span>
-                  ₽
+                   {currency === "RU" ? "₽" : "$"}
                 </span>
               </div>
             </div>

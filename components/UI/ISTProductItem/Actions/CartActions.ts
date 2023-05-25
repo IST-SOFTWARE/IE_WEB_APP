@@ -1,4 +1,4 @@
-import {ICartSelector} from "../common";
+import {ICartSelector} from "../Abstract/ICartTypes";
 
 export const switchSelectedState_cartActions = (
     idx: number | string,

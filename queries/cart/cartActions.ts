@@ -16,7 +16,6 @@ export interface ICartItem extends cart_model{};
 type cart_model = {
   product_id: string | number;
   quantity: number;
-  price: string;
 };
 
 type updated_cartCollection_data = ICartCollection;
