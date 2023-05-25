@@ -1,44 +1,61 @@
-import { Dispatch, ReactNode } from "react";
+import {Dispatch, ReactNode, SetStateAction} from "react";
 import {
     cartItemGetter_fnc,
+    deleteProduct_fnc_onDelete,
     deleteProduct_fnc,
-    deleteProduct_props,
     IProductData,
     mobileTrigger_size, quantityEditor_fnc
 } from "../../common";
+
 import {
     IProductItem,
     pit_cart
 } from "../common";
+import {quantityEditor_onChange, quantityEditor_onDelete} from "../QuantityEditor/IQuantityEditor";
 
 export type ICartItem_properties_data = {
     productId: number | string,
-    quantity: number,
-    amountPrice: number | string,
-
+    quantity: number
 }
 
 export interface ICartItem_properties extends ICartItem_properties_data{
     quantityEditor?: quantityEditor_fnc
     cartItemGetter?: cartItemGetter_fnc
-    deleteProduct?: deleteProduct_props
+    deleteProduct?: deleteProduct_fnc
 }
 
 export type ICartItem = {
     productType: pit_cart;
     mobileSettings?: mobileSettings;
     data: ICartItem_properties;
+    cartSelector?: ICartSelector;
 }
 
-export interface IProductItem_cart extends Omit<IProductItem, "itemType"> {
-    data: ICartItem_properties;
+export interface IProductItem_cart {
+    productData: IProductData,
+    currentQuantity: number,
+    checkedState?: boolean,
+
+    onEditQuantity: quantityEditor_onChange,
+    onRemoveItem: quantityEditor_onDelete,
+
 };
 
-export interface IProductItem_distributor extends Omit<IProductItem, "itemType">  {
-    data: ICartItem_properties;
-    mobileSettings?: mobileSettings
+type ICartSelector_dispatch<T> = Dispatch<SetStateAction<T>>
+
+export interface ICartSelector {
+    id: number | string;
+    selectedState: (number | string)[];
+    setSelectedState: ICartSelector_dispatch<(number | string)[]>;
 }
 
 interface mobileSettings {
     mobileSizeTrigger: mobileTrigger_size;
 }
+
+export interface IProductItem_distributor extends Omit<IProductItem, "itemType">  {
+    data: ICartItem_properties;
+    mobileSettings?: mobileSettings;
+    cartSelector?: ICartSelector;
+}
+

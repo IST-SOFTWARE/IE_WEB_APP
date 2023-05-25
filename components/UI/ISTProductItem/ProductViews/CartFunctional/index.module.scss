@@ -1,6 +1,7 @@
 @import "../../../scss/variables.scss";
 @import "../../../scss/mixins/rfs_mixins";
 @import "../../../scss/mixins/ratioBox/ratio-box";
+@import "../../../scss/mixins/textEllipsing";
 
 $border_radius: 20px;
 
@@ -48,17 +49,9 @@ $border_radius: 20px;
           max-width: calc(100% - 50px);
 
           word-wrap: break-word;
-          display: -webkit-box;
-          -webkit-box-orient: vertical;
-          -moz-box-orient: vertical;
-          -ms-box-orient: vertical;
-          box-orient: vertical;
-          -webkit-line-clamp: 2;
-          -moz-line-clamp: 2;
-          -ms-line-clamp: 2;
-          line-clamp: 2;
+          @include text-ellipsing(2);
           overflow: hidden;
-          text-overflow: ellipsis;
+
         }
 
 
@@ -77,8 +70,8 @@ $border_radius: 20px;
 
     .CheckBoxBlock {
       position: absolute;
-      top: -1px;
-      right: -1px;
+      top: 7px;
+      right: 7px;
       display: block;
     }
 
@@ -96,29 +89,15 @@ $border_radius: 20px;
 
       .price{
         .priceValue{
-
           text-align: right;
-
-
 
           width: 100%;
           max-width: calc(100% - 30px);
           min-width: 100px;
 
-          height: fit-content;
           word-wrap: anywhere;
-          display: -webkit-box;
-          -webkit-box-orient: vertical;
-          -moz-box-orient: vertical;
-          -ms-box-orient: vertical;
-          box-orient: vertical;
-          -webkit-line-clamp: 1;
-          -moz-line-clamp: 1;
-          -ms-line-clamp: 1;
-          line-clamp: 1;
+          @include text-ellipsing(1);
           overflow: hidden;
-          text-overflow: ellipsis;
-          padding-left: 30px;
         }
 
         span{

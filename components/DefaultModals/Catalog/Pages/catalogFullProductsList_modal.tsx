@@ -117,6 +117,9 @@ const CatalogFullProductsListModal = ({}) => {
             >
                 <ISTProductItem
                     currency={"RU"}
+                    style={{
+                        width: "200px"
+                    }}
                     itemType={{
                      productType: "catalog",
                          parameters: {
@@ -124,8 +127,8 @@ const CatalogFullProductsListModal = ({}) => {
                      },
                      data: {
                         id: i,
-                        title: "Product Item",
-                        price: "200",
+                        title: "Product Item roduct Item roduct Item roduct Item",
+                        price: "23467867242",
                         vendCode: "IST000001"
                      }
                     }}

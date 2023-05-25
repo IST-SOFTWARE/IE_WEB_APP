@@ -32,10 +32,14 @@ export interface IProductData {
     slug?: string
 }
 
-export type deleteProduct_props = {
-    onDelete: (id: string | number, callBack?: callBack_fnc<ICartItem_properties_data[]>) => Promise<boolean>
-
+export type deleteProduct_fnc = {
+    onDelete: deleteProduct_fnc_onDelete;
     productsListSetter: Dispatch<ICartItem_properties_data[]>
+}
+
+export type cartAdder_fnc = {
+    onAdd: cartAdder_fnc_onAdd;
+    productsListSetter: Dispatch<IProductData[]>
 }
 
 /**
@@ -45,10 +49,11 @@ export type deleteProduct_props = {
 export type cartItemGetter_fnc =
     (id: string | number, callBack?: callBack_fnc<IProductData>) => Promise<IProductData>
 
-export type deleteProduct_fnc = (id: string | number, callBack?: callBack_fnc<ICartItem_properties_data[]>) => Promise<boolean>
+export type deleteProduct_fnc_onDelete =
+    (id: string | number, callBack?: callBack_fnc<ICartItem_properties_data[]>) => Promise<boolean>
 
-
-export type cartAdder_fnc = (...props: any) => any;
+export type cartAdder_fnc_onAdd =
+    (id: string | number, callBack?: callBack_fnc<IProductData[]>) => Promise<boolean>;
 
 export type quantityEditor_fnc =
     (id: string | number, newQuantity: number, callBack?: callBack_fnc<number>) => Promise<boolean>

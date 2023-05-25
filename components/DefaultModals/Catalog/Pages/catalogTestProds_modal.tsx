@@ -23,11 +23,13 @@ import {
     products_editQuantity_actionsHelper,
     products_removeItem_actionsHelper
 } from "../../../../helpers/Products/products_actions.helper";
-import {cartItemGetter_fnc, deleteProduct_fnc, IProductData, quantityEditor_fnc} from "../../../UI/common";
+import {cartItemGetter_fnc, deleteProduct_fnc_onDelete, IProductData, quantityEditor_fnc} from "../../../UI/common";
 
 interface cartCollection {
     cartCollection_by_id: ICartCollection;
 }
+
+const cartID = "e0a9d860-c0f9-4b6a-ace4-04ecf56b0f0c"
 
 const getCartProductDataById: cartItemGetter_fnc = async (
     id: number | string,
@@ -72,7 +74,7 @@ const CatalogTestProdsModal: FC = () => {
         GET_CART_COLLECTION_BY_ID,
         {
             fetchPolicy: "cache-and-network",
-            variables: {id: "e0a9d860-c0f9-4b6a-ace4-04ecf56b0f0c"},
+            variables: {id: cartID},
         }
     );
 
@@ -126,7 +128,7 @@ const CatalogTestProdsModal: FC = () => {
             return true
         }, [products, data]);
 
-    const deleteProduct = useCallback<deleteProduct_fnc>(
+    const deleteProduct = useCallback<deleteProduct_fnc_onDelete>(
         async (id, callBack) => {
 
             const newCart =
@@ -159,19 +161,15 @@ const CatalogTestProdsModal: FC = () => {
 
     return (
         <>
-            <div style={{width: "500px", height: "1200px"}}>
+            <div style={{width: "100%", height: "1200px", padding: "10px"}}>
                 {!loading && !error &&
-                    products.map(({amountPrice, productId, quantity}, index) => {
+                    products.map(({productId, quantity}, index) => {
                         return (
                             <ISTProductItem
                                 key={`ISTProductItem_${index}`}
                                 currency="RU"
-                                style={{margin: "20px 0 0 0"}}
-
-                                cartSelector={{
-                                    id: `${productId}_product_selector`,
-                                    selectedState: selected,
-                                    setSelectedState: setSelected,
+                                style={{
+                                    margin: "20px 0 0 0"
                                 }}
 
                                 itemType={{
@@ -179,10 +177,17 @@ const CatalogTestProdsModal: FC = () => {
                                     mobileSettings: {
                                         mobileSizeTrigger: "LG_992"
                                     },
+
+                                    cartSelector: {
+                                        id: `${productId}_product_selector`,
+                                        selectedState: selected,
+                                        setSelectedState: setSelected,
+                                    },
+
                                     data: {
-                                        amountPrice: amountPrice,
                                         productId: productId,
                                         quantity: quantity,
+
                                         cartItemGetter: getCartProductDataById,
                                         quantityEditor: editQuantity,
                                         deleteProduct: {

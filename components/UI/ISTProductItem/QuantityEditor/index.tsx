@@ -2,24 +2,18 @@ import styles from "./index.module.scss";
 import {
   useEffect,
   useState,
-  useReducer,
   FC,
-  Dispatch,
   useCallback,
   useRef,
 } from "react";
 import cart from "./cart.svg";
 import Image from "next/image";
+import {IQuantityEditor, quantityRegex} from "./IQuantityEditor";
 
-interface quantityEditor {
-  quantity: number;
-  onChange?: (quantity: number) => void;
-  onDelete?: () => void;
-}
 
-const QuantityEditor: FC<quantityEditor> = ({
-  onChange,
+const QuantityEditor: FC<IQuantityEditor> = ({
   quantity,
+  onChange,
   onDelete,
 }) => {
   const [currentQuantity, setCurrentQuantity] = useState<string>(quantity.toString());
@@ -31,6 +25,7 @@ const QuantityEditor: FC<quantityEditor> = ({
 
   useEffect(()=>{
     setCurrentQuantity(quantity.toString());
+    console.log("UPDATED: ", quantity);
   },[quantity])
 
   const increment = useCallback(() => {
@@ -53,16 +48,35 @@ const QuantityEditor: FC<quantityEditor> = ({
     return value >= minValue && value <= maxValue;
   };
 
-  const handleValue = useCallback((value: number | string) => {
+  const handleValue = useCallback((value: string) => {
     if (value) {
-      checkValue(Number(value))
-        ? onChange(Number(value))
-        : onChange(maxValue);
+      checkValue(Number(value)) ?
+          onChange(Number(value)) :
+          onChange(maxValue);
     }
-    else
+    else{
+      setCurrentQuantity(minValue.toString());
       onChange(minValue);
+    }
 
   },[onChange]);
+
+
+  const handleInput = (val: string) => {
+    const newValue = val.match(quantityRegex);
+    switch (val){
+      case "":
+        setCurrentQuantity("");
+        break;
+      default:
+        setCurrentQuantity(
+            newValue && newValue[0] ?
+                newValue[0] :
+                maxValue.toString()
+        )
+        break;
+    }
+  }
 
   return (
     <>
@@ -94,9 +108,9 @@ const QuantityEditor: FC<quantityEditor> = ({
 
         <div className={styles.inputContainer}>
           <input
-            type="number"
+            type='text'
             onChange={(event)=>
-                setCurrentQuantity(event.target?.value)
+                handleInput(event.target?.value)
             }
 
             onBlur={(event) => {
@@ -105,6 +119,7 @@ const QuantityEditor: FC<quantityEditor> = ({
 
             value={currentQuantity}
             ref={inputRef}
+
           />
         </div>
 
