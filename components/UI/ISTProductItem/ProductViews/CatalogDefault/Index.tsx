@@ -1,5 +1,5 @@
 import Image from "next/image";
-import React, {FC, CSSProperties} from "react";
+import React, {FC} from "react";
 import styles from "./index.module.scss";
 
 import addBasketIcon from "../src/add_to_basket.svg";
@@ -67,11 +67,10 @@ const CatalogView: FC<IProductItem_catalog> = ({
                             </div>
 
                             <div className={styles.addToBasket}
-                                 onClick={() => {
-                                     cartaAdder ?
-                                         cartaAdder() :
-                                         null
-                                 }}>
+                                 // onClick={cartaAdder ?
+                                 //         cartaAdder.onAdd :
+                                 //         null}
+                            >
 
                                 <div className={styles.addToCart_container}>
                                     <Image
@@ -88,10 +87,6 @@ const CatalogView: FC<IProductItem_catalog> = ({
 
                         </div>
                     </div>
-
-
-
-
                 </div>
             </div>
         </>
