@@ -5,7 +5,6 @@
     }
 //
 
-
 export interface ILangCodeQuery {
     code: string
 }

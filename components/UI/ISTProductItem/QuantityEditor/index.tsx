@@ -25,7 +25,6 @@ const QuantityEditor: FC<IQuantityEditor> = ({
 
   useEffect(()=>{
     setCurrentQuantity(quantity.toString());
-    console.log("UPDATED: ", quantity);
   },[quantity])
 
   const increment = useCallback(() => {

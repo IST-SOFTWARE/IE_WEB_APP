@@ -9,6 +9,7 @@ import {useAppSelector} from "../../../../Hooks/reduxSettings";
 import {useQuery} from "@apollo/client";
 import {GET_MFG_CATEGORY_LIST, ICategoryMFG_Q} from "../../../../queries/categories/MFG/mfgCategoryQuery";
 import {filterSetter_filtersHelper, isActiveNow_filtersHelper} from "../../../../helpers/Catalog/filters";
+import {CartWrapper} from "../../../ProductsWrapper/cartWrapper";
 
 
 const CatalogTestFiltersModal: FC = () => {
@@ -22,6 +23,8 @@ const CatalogTestFiltersModal: FC = () => {
         GET_MFG_CATEGORY_LIST,
     )
 
+
+    const [cartSelector, setCartSelector] = useState<string[]>([])
 
     const switchFilter: onFilterSwitch_t = useCallback((
         idx,
@@ -81,7 +84,32 @@ const CatalogTestFiltersModal: FC = () => {
                     ) : null}
 
                 </ISTFiltersWrapper>
+            </div>
 
+            <div>
+                <CartWrapper
+                    cartID={"e0a9d860-c0f9-4b6a-ace4-04ecf56b0f0c"}
+                    currency={{
+                        currency: "RU"
+                    }}
+                    cartSelector={{
+                        selectedState: cartSelector,
+                        setSelectedState: setCartSelector
+                    }}
+
+                    mobileTriggerSize={"LG_992"}
+                    itemStyles={{
+                        style: {
+                            fill: true,
+                            margin: "10px 0"
+                        }
+                    }}
+
+                    wrapperStyles={{
+                        width: "500px",
+                        height: "1200px"
+                    }}
+                />
             </div>
         </>
 
