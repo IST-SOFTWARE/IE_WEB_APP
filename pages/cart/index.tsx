@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 import DefaultLandingPage from "../../components/LandingPages/DefaultLandingPage";
 import HelloPage from "../../components/LandingPages/HelloPage/HelloPage";
 import CatalogTestProdsModal from "../../components/DefaultModals/Catalog/Pages/catalogTestProds_modal";
 import ISTCartTotalSum from "../../components/UI/ISTCartTotalSum";
 import { useQuery } from "react-query";
 import { GET_PRODUCT_BY_ID } from "../../queries/products/productActions";
+import {CartWrapper} from "../../components/ProductsWrapper/cartWrapper";
 
 const CartPage_index = (props) => {
   const [idPRoducts, setIdProducts] = useState<string[]>([
@@ -13,6 +14,12 @@ const CartPage_index = (props) => {
     "174",
     "175",
   ]);
+
+  const [cartSelector, setCartSelector] = useState<string[]>([])
+
+    useEffect(()=>{
+        console.log(cartSelector);
+    },[cartSelector])
 
   // const getPriceProductById = (idCollection: (number | string)[]) => {
   //   idCollection.map((id) => {
@@ -41,10 +48,38 @@ const CartPage_index = (props) => {
           }}
           pageId={"CartPage"}
         >
-          <div className={`col-7`}>
-            <CatalogTestProdsModal />
+          <div className={`col-12 col-lg-7`}>
+              <div style={{
+                  position: "relative"
+              }}>
+                  <CartWrapper
+                      cartID={"e0a9d860-c0f9-4b6a-ace4-04ecf56b0f0c"}
+                      currency={{
+                          currency: "RU"
+                      }}
+                      cartSelector={{
+                          selectedState: cartSelector,
+                          setSelectedState: setCartSelector
+                      }}
+
+                      itemStyles={{
+                          style: {
+                              margin: "0 0 15px 0",
+                              fill: true
+                          }
+                      }}
+
+                      wrapperStyles={{
+                          width: "100%",
+                          maxWidth: "550px",
+                      }}
+
+                      mobileTriggerSize={"LG_992"}
+                  />
+              </div>
+
           </div>
-          <div className={`col-5`}>
+          <div className={`col-0 d-none d-lg-block col-lg-5`}>
             <ISTCartTotalSum
               id={idPRoducts}
             />
