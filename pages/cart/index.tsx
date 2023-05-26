@@ -3,6 +3,8 @@ import DefaultLandingPage from "../../components/LandingPages/DefaultLandingPage
 import HelloPage from "../../components/LandingPages/HelloPage/HelloPage";
 import CatalogTestProdsModal from "../../components/DefaultModals/Catalog/Pages/catalogTestProds_modal";
 import ISTCartTotalSum from "../../components/UI/ISTCartTotalSum";
+import { useQuery } from "react-query";
+import { GET_PRODUCT_BY_ID } from "../../queries/products/productActions";
 
 const CartPage_index = (props) => {
   const [idPRoducts, setIdProducts] = useState<string[]>([
@@ -11,6 +13,19 @@ const CartPage_index = (props) => {
     "193",
     "185",
   ]);
+
+  const getPriceProductById = (idCollection: (number | string)[]) => {
+    idCollection.map((id) => {
+      const {
+        data,
+        error,
+        loading = useQuery(GET_PRODUCT_BY_ID, {
+          id: id,
+        }),
+      };
+    });
+  };
+
   return (
     <>
       <div
@@ -28,14 +43,13 @@ const CartPage_index = (props) => {
           pageId={"CartPage"}
         >
           <div className={`col-7`}>
-            <p>
-              <CatalogTestProdsModal />
-            </p>
+            <CatalogTestProdsModal />
           </div>
           <div className={`col-5`}>
-            <p>
-              <ISTCartTotalSum />
-            </p>
+            <ISTCartTotalSum
+              id={idPRoducts}
+              getProductByIdQuery_func={getPriceProductById}
+            />
           </div>
         </DefaultLandingPage>
       </div>

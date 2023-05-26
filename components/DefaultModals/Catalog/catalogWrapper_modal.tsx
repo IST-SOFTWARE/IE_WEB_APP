@@ -25,7 +25,6 @@ import { ICatalogFiltersType } from "../../../store/slices/catalogSlice/catalogF
 import ISTProductItem from "../../UI/ISTProductItem/ISTProductItem";
 import ISTFiltersList from "../../UI/ISTFiltersList/components/ISTFiltersList";
 
-import ICatalogHelper from "../../UI/ICatalogHelper/ICatalogHelper";
 
 interface catalogWrapper {
   data?: modalStater;

@@ -1,10 +1,17 @@
-import React from "react";
+import React, { FC } from "react";
 import styles from "./index.module.scss";
 import IstButtonN from "../ISTButton/ISTButtonN";
+import { cartItemGetter_fnc } from "../common";
 
-const ISTCartTotalSum = () => {
+interface ICartTotalSum {
+  id: (number | string)[];
+  getProductByIdQuery_func: cartItemGetter_fnc;
+  acceptOrder_func?: () => any;
+}
+
+const ISTCartTotalSum: FC<ICartTotalSum> = ({ id, getProductByIdQuery_func }) => {
   return (
-    <div className={styles.Cart}>
+    <div className={styles.cart}>
       <div className={styles.cartLabel}>
         Ваша Корзина <div className={styles.productsQuantity}>4</div>
       </div>
@@ -30,7 +37,7 @@ const ISTCartTotalSum = () => {
         title={{
           caption: "Оформить заказ",
         }}
-        onClick={()=> {}}
+        onClick={() => {}}
       />
     </div>
   );
