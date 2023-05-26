@@ -5,7 +5,7 @@ import { cartItemGetter_fnc } from "../common";
 
 interface ICartTotalSum {
   id: (number | string)[];
-  getProductByIdQuery_func: cartItemGetter_fnc;
+  getProductByIdQuery_func?: cartItemGetter_fnc;
   acceptOrder_func?: () => any;
 }
 

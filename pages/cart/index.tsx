@@ -8,23 +8,23 @@ import { GET_PRODUCT_BY_ID } from "../../queries/products/productActions";
 
 const CartPage_index = (props) => {
   const [idPRoducts, setIdProducts] = useState<string[]>([
+    "172",
+    "173",
     "174",
     "175",
-    "193",
-    "185",
   ]);
 
-  const getPriceProductById = (idCollection: (number | string)[]) => {
-    idCollection.map((id) => {
-      const {
-        data,
-        error,
-        loading = useQuery(GET_PRODUCT_BY_ID, {
-          id: id,
-        }),
-      };
-    });
-  };
+  // const getPriceProductById = (idCollection: (number | string)[]) => {
+  //   idCollection.map((id) => {
+  //     const {
+  //       data,
+  //       error,
+  //       loading = useQuery(GET_PRODUCT_BY_ID, {
+  //         id: id,
+  //       }),
+  //     };
+  //   });
+  // };
 
   return (
     <>
@@ -32,13 +32,12 @@ const CartPage_index = (props) => {
         className={``}
         style={{
           color: "white",
-          marginTop: "100px",
         }}
       >
         <DefaultLandingPage
           landingDescription={{
             title: "",
-            titleOffset: 50,
+            titleOffset: 100,
           }}
           pageId={"CartPage"}
         >
@@ -48,7 +47,6 @@ const CartPage_index = (props) => {
           <div className={`col-5`}>
             <ISTCartTotalSum
               id={idPRoducts}
-              getProductByIdQuery_func={getPriceProductById}
             />
           </div>
         </DefaultLandingPage>
