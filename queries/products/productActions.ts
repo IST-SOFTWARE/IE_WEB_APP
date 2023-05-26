@@ -1,6 +1,6 @@
-import {gql} from "@apollo/client";
-
-import {IProductData} from "../../components/UI/common";
+import get_by_id from "./GET_PRODUCT_BY_ID.graphql"
+import get_full_list from "./GET_FULL_PRODUCT_LIST.graphql";
+import get_filtered from "./GET_FILTERED_PRODUCTS_LIST.graphql"
 
 export interface IProducts{
     Products: Array<IProductItem>
@@ -13,23 +13,19 @@ interface IProductItem {
     product_name_ru: string,
     slug: string,
     vend_code: string | number,
-    price: string | number
+    price: string | number,
+
+    weight: string | number,
+    text_description: string,
+
+    form_factor_image: string,
+    sizes: string,
+
+    analogue_text: string,
+    included_text: string,
+    replacement_text: string,
 }
 
-export const GET_PRODUCT_BY_ID = gql`
-query getProductById($id: Float){
-  Products(filter: {
-      id: {
-          _eq: $id
-      }
-  }){
-      id,
-      image_url,
-      product_name,
-      product_name_ru,
-      slug,
-      vend_code,
-      price
-  }
-  }
-`;
+export const GET_PRODUCT_BY_ID = get_by_id;
+export const GET_FULL_PRODUCTS_LIST = get_full_list;
+export const GRT_FILTERED_PRODUCTS_LIST = get_filtered;

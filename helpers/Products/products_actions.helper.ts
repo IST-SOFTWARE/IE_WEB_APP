@@ -13,7 +13,6 @@ export const products_editQuantity_actionsHelper = (
         const updatedProduct = {
             productId: id,
             quantity: newQuantity,
-            amountPrice: null
         } as ICartItem_properties_data;
 
         const left = data.slice(0, indexProductInCartCollection);

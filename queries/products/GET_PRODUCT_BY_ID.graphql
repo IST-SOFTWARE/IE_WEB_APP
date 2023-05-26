@@ -1,0 +1,27 @@
+query getProductById($id: Float){
+    Products(filter: {
+        id: {
+            _eq: $id
+        }
+    }){
+        id,
+
+        product_name_ru,
+        product_name,
+
+        image_url,
+        slug,
+
+        vend_code,
+        weight,
+        text_description,
+
+        form_factor_image,
+        sizes,
+        price,
+
+        analogue_text,
+        included_text,
+        replacement_text,
+    }
+}

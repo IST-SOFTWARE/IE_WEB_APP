@@ -2,14 +2,14 @@ import React, {FC, useCallback, useState} from 'react';
 import ISTFiltersList from "../../../UI/ISTFiltersList/components/ISTFiltersList";
 import ISTFiltersWrapper from "../../../UI/ISTFiltersList/components/ISTFiltersWrapper";
 import useISTFiltersList from "../../../UI/ISTFiltersList/hook/useISTFiltersList";
-import {IST_HookedData, onFilterSwitchCustom_t} from "../../../UI/ISTFiltersList/common";
+import {IST_HookedData, onFilterSwitch_t} from "../../../UI/ISTFiltersList/common";
 import {useDispatch} from "react-redux";
 import {addNewFilter} from "../../../../store/slices/catalogSlice/catalogSlice";
 import {useAppSelector} from "../../../../Hooks/reduxSettings";
 import {useQuery} from "@apollo/client";
 import {GET_MFG_CATEGORY_LIST, ICategoryMFG_Q} from "../../../../queries/categories/MFG/mfgCategoryQuery";
 import {filterSetter_filtersHelper, isActiveNow_filtersHelper} from "../../../../helpers/Catalog/filters";
-import {ICatalogFiltersType} from "../../../../store/slices/catalogSlice/catalogFiltersType";
+import {CartWrapper} from "../../../ProductsWrapper/cartWrapper";
 
 
 const CatalogTestFiltersModal: FC = () => {
@@ -17,36 +17,32 @@ const CatalogTestFiltersModal: FC = () => {
     const dispatch = useDispatch();
     const catalog = useAppSelector(state => state.catalog);
 
+    const [firstFilter, firstActive] = useISTFiltersList();
+
     const {data} = useQuery<ICategoryMFG_Q>(
         GET_MFG_CATEGORY_LIST,
     )
 
-    const [firstFilter, firstActive, designation] =
-        useISTFiltersList<ICatalogFiltersType>(
-        "mfg"
-    );
 
+    const [cartSelector, setCartSelector] = useState<string[]>([])
 
-    const switchFilter: onFilterSwitchCustom_t<keyof ICatalogFiltersType> = useCallback((
+    const switchFilter: onFilterSwitch_t = useCallback((
         idx,
         state,
-        name,
-        options
-    ) => {
+        name) => {
 
-            if(!catalog || !catalog.filters || !options)
+            if(!catalog || !catalog.filters)
                 return
 
             const newFilters =
-                filterSetter_filtersHelper(catalog.filters, options , name);
+                filterSetter_filtersHelper(catalog.filters, "mfg", name);
 
             dispatch(addNewFilter({
-                key: options,
+                key: "mfg",
                 filter: newFilters
             }))
 
     },[dispatch, catalog])
-
 
     return (
         <>
@@ -83,15 +79,37 @@ const CatalogTestFiltersModal: FC = () => {
                             }
 
                             hookedData={firstFilter}
-                            switcherOptions={{
-                                onSwitch: switchFilter,
-                                filterDesignation: designation
-                            }}
+                            onFilterSwitch={switchFilter}
                         />
                     ) : null}
 
                 </ISTFiltersWrapper>
+            </div>
 
+            <div>
+                <CartWrapper
+                    cartID={"e0a9d860-c0f9-4b6a-ace4-04ecf56b0f0c"}
+                    currency={{
+                        currency: "RU"
+                    }}
+                    cartSelector={{
+                        selectedState: cartSelector,
+                        setSelectedState: setCartSelector
+                    }}
+
+                    mobileTriggerSize={"LG_992"}
+                    itemStyles={{
+                        style: {
+                            fill: true,
+                            margin: "10px 0"
+                        }
+                    }}
+
+                    wrapperStyles={{
+                        width: "500px",
+                        height: "1200px"
+                    }}
+                />
             </div>
         </>
 

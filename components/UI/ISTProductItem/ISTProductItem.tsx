@@ -5,14 +5,14 @@ import CatalogInline from "./ProductViews/CatalogInline";
 import CartInformational from "./ProductViews/CartFunctional_mobile";
 import CartFunctional from "./ProductViews/CartFunctional";
 import { IProductItem } from "./common";
-import CartDistributor from "./ProductViews/CartDistributor";
+import CartDistributor from "./CartDistributor";
 import {ISTProductItemDistributor_Context} from "./Context";
 
 const IstProductItem: FC<IProductItem> = ({
   itemType,
   style,
   currency,
-  cartSelector,
+
 }) => {
 
   switch (itemType.productType) {
@@ -43,7 +43,7 @@ const IstProductItem: FC<IProductItem> = ({
             data: itemType.data,
             currency: currency,
             style: style,
-            cartSelector: cartSelector,
+            cartSelector: itemType.cartSelector,
             mobileSettings: itemType.mobileSettings
           }}>
 

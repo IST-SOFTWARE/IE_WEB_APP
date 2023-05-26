@@ -10,7 +10,6 @@ export const redefining_to_CartModel_redefiningHelper = (
         return {
             product_id: el.productId,
             quantity: el.quantity,
-            price: null,
         } as ICartItem;
     });
 
@@ -26,7 +25,6 @@ export const redefining_to_ICartItemPropertiesData_redefiningHelper = (
 
             productId: el.product_id,
             quantity: el.quantity,
-            amountPrice: el.price,
 
         } as ICartItem_properties_data;
     });
