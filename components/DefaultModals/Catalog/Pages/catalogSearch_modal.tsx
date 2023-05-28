@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from "react";
+import React, {useCallback, useEffect, useRef, useState} from "react";
 import ISTProductItem from "../../../UI/ISTProductItem/ISTProductItem";
 import IstInput, { inputTypesVars } from "../../../UI/ISTInput/ISTInput";
 import ISTCategoryHints from "../../../UI/ISTCategoryHints/ISTCategoryHints";
@@ -6,6 +6,13 @@ import Image from "next/image";
 import cloudSearch from "../../../../public/Modals/Catalog/cloudSearch.svg";
 import ISTButtonN from "../../../UI/ISTButton/ISTButtonN";
 import styles from "../../../../styles/Modals/catalog/catalogSearch/catalogSearch.module.scss";
+import useISTFiltersList from "../../../UI/hooks/ISTFiltersHook/useISTFiltersList";
+import {ICatalogFiltersType} from "../../../../store/slices/catalogSlice/catalogFiltersType";
+import {onFilterSwitchCustom_t} from "../../../UI/hooks/ISTFiltersHook/common";
+import {filterSetter_filtersHelper} from "../../../../helpers/Catalog/filters";
+import {addNewFilter} from "../../../../store/slices/catalogSlice/catalogSlice";
+import {useDispatch} from "react-redux";
+import {useAppSelector} from "../../../../Hooks/reduxSettings";
 
 type ICategoryItem = {
   id: number;
@@ -69,6 +76,7 @@ const defCategoryHints: ICategoryCollection[] = [
         ],
     },
 ]
+
 const defProdItems: IProductItem[] = [
     {
         title: "Product Item dsdfsdf sedfsdfs sdfsdfwsfwsdfsad",
@@ -127,6 +135,9 @@ const CatalogSearchModal = ({}) => {
 
   const inputRef = useRef<HTMLInputElement>(null);
 
+    const dispatch = useDispatch();
+    const catalog = useAppSelector(state => state.catalog);
+
   const [searchState, setSearchState] = useState<string>("");
 
   const [searchResults_categories,
@@ -139,11 +150,38 @@ const CatalogSearchModal = ({}) => {
         defProdItems
   )
 
+    const [mfgFilter, hasActive , designation] = useISTFiltersList<ICatalogFiltersType>(
+        "mfg"
+    )
+
     useEffect(()=>{
         if(inputRef && inputRef.current){
             inputRef.current.focus();
         }
     },[inputRef])
+
+
+    const switchFilter: onFilterSwitchCustom_t<keyof ICatalogFiltersType> = useCallback((
+        idx,
+        state,
+        name,
+        options
+    ) => {
+
+        if(!catalog || !catalog.filters || !options)
+            return
+
+        dispatch(addNewFilter({
+            key: options,
+            filter: [name]
+        }));
+
+    },[catalog, dispatch])
+
+
+    useEffect(()=>{
+        console.log(mfgFilter?.fields);
+    },[mfgFilter])
 
   return (
     <>
@@ -175,7 +213,21 @@ const CatalogSearchModal = ({}) => {
             <div className={styles.hints_block}>
                 <ISTCategoryHints
                   hintsLimit={3}
-                  hints={searchResults_categories}
+                  hints={[
+                      {
+                          collectionName: "Производители",
+                          collectionOfItems: [
+                              { fieldName: "Kone" },
+                              { fieldName: "OTIS" },
+                              { fieldName: "ЩЛЗ" },
+                          ],
+                          hookedData: mfgFilter,
+                          switcherOptions: {
+                              onSwitch: switchFilter,
+                              filterDesignation: designation
+                          }
+                      }
+                  ]}
                 />
             </div>
         </div>

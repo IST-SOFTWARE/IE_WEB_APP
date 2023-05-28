@@ -1,8 +1,7 @@
 import React, {FC, useCallback, useState} from 'react';
 import ISTFiltersList from "../../../UI/ISTFiltersList/components/ISTFiltersList";
 import ISTFiltersWrapper from "../../../UI/ISTFiltersList/components/ISTFiltersWrapper";
-import useISTFiltersList from "../../../UI/ISTFiltersList/hook/useISTFiltersList";
-import {IST_HookedData, onFilterSwitchCustom_t} from "../../../UI/ISTFiltersList/common";
+import useISTFiltersList from "../../../UI/hooks/ISTFiltersHook/useISTFiltersList";
 import {useDispatch} from "react-redux";
 import {addNewFilter} from "../../../../store/slices/catalogSlice/catalogSlice";
 import {useAppSelector} from "../../../../Hooks/reduxSettings";
@@ -10,6 +9,8 @@ import {useQuery} from "@apollo/client";
 import {GET_MFG_CATEGORY_LIST, ICategoryMFG_Q} from "../../../../queries/categories/MFG/mfgCategoryQuery";
 import {filterSetter_filtersHelper, isActiveNow_filtersHelper} from "../../../../helpers/Catalog/filters";
 import {ICatalogFiltersType} from "../../../../store/slices/catalogSlice/catalogFiltersType";
+
+import {IST_HookedData, onFilterSwitchCustom_t} from "../../../UI/hooks/ISTFiltersHook/common";
 
 
 const CatalogTestFiltersModal: FC = () => {

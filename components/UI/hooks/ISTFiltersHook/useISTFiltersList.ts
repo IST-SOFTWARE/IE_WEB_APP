@@ -1,5 +1,6 @@
 import {useCallback, useEffect, useState} from "react";
-import {ICheckBoxItem, IST_HookedData} from "../common";
+import {ICheckBoxItem} from "../../ISTFiltersList/common";
+import {IST_HookedData} from "./common";
 
 const useISTFiltersList = <DES_T>(
     designation?: keyof DES_T
