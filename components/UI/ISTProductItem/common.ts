@@ -16,7 +16,7 @@ export interface IProductItem {
     itemType: productItemType;
     style?: ISTProductItemStyles;
     currency: "RU" | "EN";
-
+    forwardingPath?: string
 }
 
 

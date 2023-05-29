@@ -21,7 +21,8 @@ const CartFunctional:FC<IProductItem_cart> = ({
   const {
     style,
     currency,
-    cartSelector
+    cartSelector,
+    forwardingPath
   } = useContext(ISTProductItemDistributor_Context);
 
 
@@ -35,7 +36,7 @@ const CartFunctional:FC<IProductItem_cart> = ({
         <div className={styles.productContainer}>
 
               <div className={styles.ItemImg}>
-                <Link href={`/products/${productData ? productData.slug : null}`}>
+                <Link href={forwardingPath ? forwardingPath : ""}>
                   {productData && productData.image ? (
                     <Image
                       alt="Product Item Image"

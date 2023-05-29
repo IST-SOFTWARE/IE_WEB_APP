@@ -196,7 +196,8 @@ const CatalogFullProductsListModal = ({}) => {
                     itemType={{
                      productType: "catalog",
                          parameters: {
-                         inline: false
+                         inline: false,
+                         cartStatus: true,
                      },
                      data: {
                         id: i,

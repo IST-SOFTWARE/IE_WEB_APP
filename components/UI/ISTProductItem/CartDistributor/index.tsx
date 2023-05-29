@@ -11,6 +11,7 @@ const CartDistributor: FC = () => {
         mobileSettings,
         data,
         cartSelector,
+        forwardingPath
     } = useContext(ISTProductItemDistributor_Context);
 
     const [productData, setProductData] = useState<IProductData>();

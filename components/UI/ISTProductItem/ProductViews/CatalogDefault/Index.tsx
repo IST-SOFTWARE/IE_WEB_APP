@@ -4,14 +4,19 @@ import styles from "./index.module.scss";
 
 import addBasketIcon from "../src/add_to_basket.svg";
 import noImg from "../src/Empty_Prod_image.svg";
+import addedToCart from "../src/added_to_cart.svg"
+
 import {IProductItem_catalog} from "../../Abstract/ICatalogTypes";
+import Link from "next/link";
 
 
 const CatalogView: FC<IProductItem_catalog> = ({
-   style,
-   currency,
-   data,
-   cartaAdder
+    style,
+    currency,
+    data,
+    forwardingPath,
+    cartaAdder,
+    cartStatus
 }) => {
     return (
         <>
@@ -22,31 +27,33 @@ const CatalogView: FC<IProductItem_catalog> = ({
                  }}>
                 <div className={styles.cardData}>
 
-                    <div className={styles.cardImg}>
-                        {data?.image ? (
-                            <Image
-                                alt="Product Item Image"
-                                src={data.image}
-                                fill={true}
+                    <Link href={forwardingPath ? forwardingPath : ""}>
+                        <div className={styles.cardImg}>
+                            {data?.image ? (
+                                <Image
+                                    alt="Product Item Image"
+                                    src={data.image}
+                                    fill={true}
 
-                                style={{
-                                    objectFit: "cover",
-                                    objectPosition: "center"
-                                }}
-                            />
-                        ) : (
-                            <Image
-                                alt="Product Item Image"
-                                src={noImg}
-                                fill={true}
+                                    style={{
+                                        objectFit: "cover",
+                                        objectPosition: "center"
+                                    }}
+                                />
+                            ) : (
+                                <Image
+                                    alt="Product Item Image"
+                                    src={noImg}
+                                    fill={true}
 
-                                style={{
-                                    objectFit: "cover",
-                                    objectPosition: "center"
-                                }}
-                            />
-                        )}
-                    </div>
+                                    style={{
+                                        objectFit: "cover",
+                                        objectPosition: "center"
+                                    }}
+                                />
+                            )}
+                        </div>
+                    </Link>
 
                     <div className={styles.InfBlockContainer}>
                         <div className={styles.productInformation}>
@@ -66,23 +73,32 @@ const CatalogView: FC<IProductItem_catalog> = ({
                                 </span>
                             </div>
 
-                            <div className={styles.addToBasket}
+                            <div className={`${styles.addToBasket} ${cartStatus ? styles.added : ""}`}
                                  // onClick={cartaAdder ?
                                  //         cartaAdder.onAdd :
                                  //         null}
                             >
+                                {
+                                    cartStatus ?
+                                        (
+                                            <div className={styles.cartHasThisProduct}>
 
-                                <div className={styles.addToCart_container}>
-                                    <Image
-                                        fill={true}
-                                        alt="imageBasket"
-                                        src={addBasketIcon}
-                                        style={{
-                                            objectPosition: "center",
-                                            objectFit: "contain"
-                                        }}
-                                    />
-                                </div>
+                                            </div>
+                                        ) : (
+                                        <div className={styles.addToCart_container}>
+                                            <Image
+                                                fill={true}
+                                                alt="imageBasket"
+                                                src={addBasketIcon}
+                                                style={{
+                                                    objectPosition: "center",
+                                                    objectFit: "contain"
+                                                }}
+                                            />
+                                        </div>
+                                    )
+                                }
+
                             </div>
 
                         </div>

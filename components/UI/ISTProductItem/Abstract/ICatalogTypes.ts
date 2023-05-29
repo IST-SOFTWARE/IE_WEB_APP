@@ -9,11 +9,13 @@ export type ICatalogItem = {
 
     parameters: {
         inline: boolean;
-        cartAdder?: cartAdder_fnc
+        cartAdder?: cartAdder_fnc;
+        cartStatus?: boolean;
     };
 };
 
 export interface IProductItem_catalog extends Omit<IProductItem, "itemType" | "mobileSettings" | "cartSelector"> {
     data: IProductData,
-    cartaAdder?: cartAdder_fnc
+    cartaAdder?: cartAdder_fnc,
+    cartStatus?: boolean
 }

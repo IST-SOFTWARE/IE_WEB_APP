@@ -9,10 +9,10 @@ import CartDistributor from "./CartDistributor";
 import {ISTProductItemDistributor_Context} from "./Context";
 
 const IstProductItem: FC<IProductItem> = ({
-  itemType,
-  style,
-  currency,
-
+    itemType,
+    style,
+    currency,
+    forwardingPath
 }) => {
 
   switch (itemType.productType) {
@@ -24,6 +24,7 @@ const IstProductItem: FC<IProductItem> = ({
             style={style}
             currency={currency}
             cartaAdder={itemType.parameters.cartAdder}
+            cartStatus={itemType.parameters.cartStatus}
           />
         );
       } else {
@@ -33,6 +34,7 @@ const IstProductItem: FC<IProductItem> = ({
             style={style}
             currency={currency}
             cartaAdder={itemType.parameters.cartAdder}
+            cartStatus={itemType.parameters.cartStatus}
           />
         );
       }
@@ -44,7 +46,8 @@ const IstProductItem: FC<IProductItem> = ({
             currency: currency,
             style: style,
             cartSelector: itemType.cartSelector,
-            mobileSettings: itemType.mobileSettings
+            mobileSettings: itemType.mobileSettings,
+            forwardingPath: forwardingPath
           }}>
 
               <CartDistributor/>
