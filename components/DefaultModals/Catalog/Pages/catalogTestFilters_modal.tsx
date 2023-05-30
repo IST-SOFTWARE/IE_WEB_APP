@@ -9,7 +9,7 @@ import {useAppSelector} from "../../../../Hooks/reduxSettings";
 import {useQuery} from "@apollo/client";
 import {GET_MFG_CATEGORY_LIST, ICategoryMFG_Q} from "../../../../queries/categories/MFG/mfgCategoryQuery";
 import {filterSetter_filtersHelper, isActiveNow_filtersHelper} from "../../../../helpers/Catalog/filters";
-import {ICatalogFiltersType} from "../../../../store/slices/catalogSlice/catalogFiltersType";
+import {ICatalogFiltersType} from "../../../../store/slices/common/catalogFiltersType";
 
 
 const CatalogTestFiltersModal: FC = () => {

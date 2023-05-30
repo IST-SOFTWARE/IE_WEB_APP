@@ -1,6 +1,6 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {createGenericSlice} from "../GenericSlice";
-import {ICatalogFiltersType} from "./catalogFiltersType";
+import {ICatalogFiltersType} from "../common/catalogFiltersType";
 import {
     ISTCatalogUpdateFilter,
     ISTCatalogCreate,

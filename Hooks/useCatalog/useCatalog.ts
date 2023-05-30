@@ -1,9 +1,7 @@
 import {useRouter} from "next/router";
 import {useCallback, useEffect, useState} from "react";
 import queryString from "query-string";
-import {useAppSelector} from "../reduxSettings";
 import {ICatalogQueries} from "./ICatalogQueries";
-import {ICatalogFiltersType} from "../../store/slices/catalogSlice/catalogFiltersType";
 
 export const useCatalog = <T extends ICatalogQueries<FT>, FT = any>(
     parseOptions?: queryString.StringifyOptions,

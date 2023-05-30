@@ -1,4 +1,4 @@
-import {ICatalogFiltersType} from "../../store/slices/catalogSlice/catalogFiltersType";
+import {ICatalogFiltersType} from "../../store/slices/common/catalogFiltersType";
 
 
 // interface getFiltersDesignationSList_out_t {

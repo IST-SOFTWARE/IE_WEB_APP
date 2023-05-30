@@ -20,7 +20,7 @@ import { useCatalog } from "../../../Hooks/useCatalog/useCatalog";
 import { useDispatch } from "react-redux";
 
 import { ICatalogQueries } from "../../../Hooks/useCatalog/ICatalogQueries";
-import { ICatalogFiltersType } from "../../../store/slices/catalogSlice/catalogFiltersType";
+import { ICatalogFiltersType } from "../../../store/slices/common/catalogFiltersType";
 
 import ISTProductItem from "../../UI/ISTProductItem/ISTProductItem";
 import ISTFiltersList from "../../UI/ISTFiltersList/components/ISTFiltersList";

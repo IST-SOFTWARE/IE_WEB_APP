@@ -9,7 +9,7 @@ import {
 } from "../../store/slices/catalogSlice/catalogSlice";
 import {useCatalog} from "../../Hooks/useCatalog/useCatalog"
 import {ICatalogQueries} from "../../Hooks/useCatalog/ICatalogQueries";
-import {ICatalogFiltersType} from "../../store/slices/catalogSlice/catalogFiltersType";
+import {ICatalogFiltersType} from "../../store/slices/common/catalogFiltersType";
 
 interface Header{
     children?: React.ReactNode,

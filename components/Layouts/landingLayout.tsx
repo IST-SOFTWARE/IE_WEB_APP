@@ -3,7 +3,7 @@ import {useRouter} from "next/router";
 import useBaseModal from "../ISTModals/useBaseModal";
 import {useCatalog} from "../../Hooks/useCatalog/useCatalog";
 import {ICatalogQueries} from "../../Hooks/useCatalog/ICatalogQueries";
-import {ICatalogFiltersType} from "../../store/slices/catalogSlice/catalogFiltersType";
+import {ICatalogFiltersType} from "../../store/slices/common/catalogFiltersType";
 import {toc_catalog_search} from "../DefaultModals/table_of_contents/Catalog/toc_catalog_search";
 import {toc_catalog_full_prod_list} from "../DefaultModals/table_of_contents/Catalog/toc_catalog_full_prod_list";
 import CatalogWrapper_modal from "../DefaultModals/Catalog/catalogWrapper_modal";
@@ -27,10 +27,12 @@ export const LandingLayout:FC<ILandingLayout> = ({
     children
 }) => {
     const router = useRouter();
-    const { modalComponent, ModalView } = useBaseModal("APP_BODY_WRAPPER");
     const dispatch = useDispatch()
 
+    const { modalComponent, ModalView } = useBaseModal("APP_BODY_WRAPPER");
+
     const [st, sSt] = useState<boolean>(false)
+
 
     useEffect(() => {
         if (modalComponent) {

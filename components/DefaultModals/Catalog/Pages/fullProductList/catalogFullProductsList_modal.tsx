@@ -1,8 +1,6 @@
 import React, {useCallback, useState} from "react";
 import styles from "../../../../../styles/Modals/catalog/catalogProducts/catalogFullProductsList.module.scss";
 
-import ISTProductItem from "../../../../UI/ISTProductItem/ISTProductItem";
-
 import ISTFiltersList from "../../../../UI/ISTFiltersList/components/ISTFiltersList";
 import ISTFiltersWrapper from "../../../../UI/ISTFiltersList/components/ISTFiltersWrapper";
 import useISTFiltersList from "../../../../UI/ISTFiltersList/hook/useISTFiltersList";
@@ -13,10 +11,13 @@ import {GET_MFG_CATEGORY_LIST, ICategoryMFG_Q} from "../../../../../queries/cate
 import {onFilterSwitchCustom_t} from "../../../../UI/ISTFiltersList/common";
 import {filterSetter_filtersHelper, isActiveNow_filtersHelper} from "../../../../../helpers/Catalog/filters";
 import {addNewFilter} from "../../../../../store/slices/catalogSlice/catalogSlice";
-import {ICatalogFiltersType} from "../../../../../store/slices/catalogSlice/catalogFiltersType";
+import {ICatalogFiltersType} from "../../../../../store/slices/common/catalogFiltersType";
 import {CatalogWrapper} from "../../../../ProductsWrapper/catalogWrapper";
+import IstInput, {inputTypesVars} from "../../../../UI/ISTInput/ISTInput";
 
 const CatalogFullProductsListModal = ({}) => {
+
+    const [search, setSearch] = useState<string>("");
 
     // Filters state
     const[mfg_filter, mfg_active, mfg_designation] =
@@ -145,32 +146,40 @@ const CatalogFullProductsListModal = ({}) => {
 
         {/*Узлы*/}
 
-            <ISTFiltersWrapper
-                title={"Узлы"}
-                isOpened={false}
-                hasActives={units_active}
-                mobileSettings={{
-                    onTransfer: ()=>{},
-                    type: "transfer",
-                    mobileSizeTrigger: "LG_992"
-                }}
-            >
 
-                <ISTFiltersList fields={[
-                    {isActive: false, fieldName: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. ",
-                        isCheckBox: true},
-                    {isActive: false, fieldName: "Field 2", isCheckBox: true},
-                    {isActive: false, fieldName: "Field 3", isCheckBox: true},
-                    {isActive: false, fieldName: "Field 4", isCheckBox: true},
-                ]}
-                    hookedData={units_filter}
+            <IstInput
+                inputType={inputTypesVars.any_string}
+                placeholder={"search..."}
+                required={false}
+                outDataSetter={setSearch}
+                actualData={search}
+            />
+            {/*<ISTFiltersWrapper*/}
+            {/*    title={"Узлы"}*/}
+            {/*    isOpened={false}*/}
+            {/*    hasActives={units_active}*/}
+            {/*    mobileSettings={{*/}
+            {/*        onTransfer: ()=>{},*/}
+            {/*        type: "transfer",*/}
+            {/*        mobileSizeTrigger: "LG_992"*/}
+            {/*    }}*/}
+            {/*>*/}
 
-                    switcherOptions={{
-                        onSwitch: switchFilter,
-                        filterDesignation: units_designation
-                    }}
-                />
-            </ISTFiltersWrapper>
+            {/*    <ISTFiltersList fields={[*/}
+            {/*        {isActive: false, fieldName: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. ",*/}
+            {/*            isCheckBox: true},*/}
+            {/*        {isActive: false, fieldName: "Field 2", isCheckBox: true},*/}
+            {/*        {isActive: false, fieldName: "Field 3", isCheckBox: true},*/}
+            {/*        {isActive: false, fieldName: "Field 4", isCheckBox: true},*/}
+            {/*    ]}*/}
+            {/*        hookedData={units_filter}*/}
+
+            {/*        switcherOptions={{*/}
+            {/*            onSwitch: switchFilter,*/}
+            {/*            filterDesignation: units_designation*/}
+            {/*        }}*/}
+            {/*    />*/}
+            {/*</ISTFiltersWrapper>*/}
 
 
         </div>
@@ -178,13 +187,21 @@ const CatalogFullProductsListModal = ({}) => {
 
     {/*Products bock*/}
 
+
        <div className={"col-12 col-lg-8 p-0 pl-lg-2 d-flex flex-wrap h-100"}
             style={{
                 border: "solid 1px red",
             }}
        >
-        <CatalogWrapper onFetchMore={()=>{}}/>
-      </div>
+        <CatalogWrapper
+            onFetchMore={()=>{}}
+            itemWrapper_ClassName={styles.productCardVariant_Block}
+            search={search}
+        />
+
+
+
+       </div>
 
     </>
   );

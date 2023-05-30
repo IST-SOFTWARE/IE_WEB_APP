@@ -19,10 +19,8 @@ $productItemSize: 180px;
   width: $productItemSize;
   min-width: $productItemSize;
 
-  //margin: 10px 0px 10px 20px;
-  margin: 10px;
   display: flex;
-  justify-content: center;
+
 }
 
 @media screen and (min-width: 0.98px) {
@@ -30,6 +28,8 @@ $productItemSize: 180px;
     $productItemSize: calc(50% - 20px) !global;
     width: $productItemSize;
     min-width: $productItemSize;
+
+    justify-content: center;
   }
 }
 
@@ -55,6 +55,8 @@ $productItemSize: 180px;
     $productItemSize: calc(33% - 20px) !global;
     width: $productItemSize;
     min-width: $productItemSize;
+
+    justify-content: flex-start;
 
   }
 }
