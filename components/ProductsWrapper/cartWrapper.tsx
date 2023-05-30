@@ -9,7 +9,7 @@ import {
 } from "../UI/common";
 import {IProductItem} from "../UI/ISTProductItem/common";
 import {apolloClient} from "../../Apollo/apolloClient";
-import {GET_PRODUCT_BY_ID, IProducts} from "../../queries/products/productActions";
+import {GET_PRODUCT_BY_ID, IProducts_Q} from "../../queries/products/productActions";
 import {useQuery} from "@apollo/client";
 import {
     GET_CART_COLLECTION_BY_ID,
@@ -86,7 +86,7 @@ export const CartWrapper: FC<ICartWrapper> = ({
         let outProduct = {} as IProductData;
 
         await apolloClient
-            .query<IProducts>({
+            .query<IProducts_Q>({
                 query: GET_PRODUCT_BY_ID,
                 variables: {
                     id: Number(id),

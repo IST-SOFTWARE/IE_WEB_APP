@@ -11,7 +11,7 @@ import {
 import {apolloClient} from "../../../../Apollo/apolloClient";
 import {
     GET_PRODUCT_BY_ID,
-    IProducts,
+    IProducts_Q,
 } from "../../../../queries/products/productActions";
 import {ICartItem_properties_data} from "../../../UI/ISTProductItem/Abstract/ICartTypes";
 
@@ -38,7 +38,7 @@ const getCartProductDataById: cartItemGetter_fnc = async (
     let outProduct = {} as IProductData;
 
     await apolloClient
-        .query<IProducts>({
+        .query<IProducts_Q>({
             query: GET_PRODUCT_BY_ID,
             variables: {
                 id: Number(id),

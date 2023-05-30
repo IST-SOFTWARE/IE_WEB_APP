@@ -17,7 +17,7 @@ query getProducts(
                 product_manufacturer: {
                     manufacturer_category_id: {
                         manufacturer_name: {
-                            _in: $mfg
+                            _nin: $mfg
                         }
                     }
                 }
@@ -26,7 +26,7 @@ query getProducts(
                 product_unit: {
                     Unit_category_id: {
                         unit_name: {
-                            _in: $unit
+                            _nin: $unit
                         }
                     }
                 }
@@ -36,7 +36,7 @@ query getProducts(
                 product_type: {
                     Type_category_id: {
                         type_name: {
-                            _in: $type
+                            _nin: $type
                         }
                     }
                 }

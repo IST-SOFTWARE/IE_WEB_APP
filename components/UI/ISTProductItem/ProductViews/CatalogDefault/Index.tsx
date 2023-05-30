@@ -79,12 +79,20 @@ const CatalogView: FC<IProductItem_catalog> = ({
                                  //         null}
                             >
                                 {
-                                    cartStatus ?
-                                        (
-                                            <div className={styles.cartHasThisProduct}>
-
-                                            </div>
-                                        ) : (
+                                    cartStatus ? (
+                                        <div className={styles.addToCart_container}>
+                                            <Image
+                                                fill={true}
+                                                alt="imageBasket"
+                                                src={addedToCart}
+                                                style={{
+                                                    padding: "6px 2px",
+                                                    objectPosition: "center",
+                                                    objectFit: "contain"
+                                                }}
+                                            />
+                                        </div>
+                                    ) : (
                                         <div className={styles.addToCart_container}>
                                             <Image
                                                 fill={true}
@@ -98,9 +106,7 @@ const CatalogView: FC<IProductItem_catalog> = ({
                                         </div>
                                     )
                                 }
-
                             </div>
-
                         </div>
                     </div>
                 </div>

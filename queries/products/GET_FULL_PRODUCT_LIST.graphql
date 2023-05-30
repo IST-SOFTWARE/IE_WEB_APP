@@ -1,5 +1,8 @@
-query getFullProductList{
-    Products{
+query getFullProductList(
+        $limit: Int = 100,
+        $offset: Int = 0
+    ){
+    Products(offset: $offset, limit: $limit){
         id,
 
         product_name_ru,

@@ -14,6 +14,7 @@ import {onFilterSwitchCustom_t} from "../../../../UI/ISTFiltersList/common";
 import {filterSetter_filtersHelper, isActiveNow_filtersHelper} from "../../../../../helpers/Catalog/filters";
 import {addNewFilter} from "../../../../../store/slices/catalogSlice/catalogSlice";
 import {ICatalogFiltersType} from "../../../../../store/slices/catalogSlice/catalogFiltersType";
+import {CatalogWrapper} from "../../../../ProductsWrapper/catalogWrapper";
 
 const CatalogFullProductsListModal = ({}) => {
 
@@ -182,35 +183,7 @@ const CatalogFullProductsListModal = ({}) => {
                 border: "solid 1px red",
             }}
        >
-        {new Array(10).fill("").map((el, i) => {
-          return (
-            <div
-              className={styles.productCardVariant_Block}
-              key={`productItemCatalog_${i}_key`}
-            >
-                <ISTProductItem
-                    currency={"RU"}
-                    style={{
-                        width: "200px"
-                    }}
-                    itemType={{
-                     productType: "catalog",
-                         parameters: {
-                         inline: false,
-                         cartStatus: true,
-                     },
-                     data: {
-                        id: i,
-                        title: "Product Item roduct Item roduct Item roduct Item",
-                        price: "23467867242",
-                        vendCode: "IST000001"
-                     }
-                    }}
-                />
-
-            </div>
-          );
-        })}
+        <CatalogWrapper onFetchMore={()=>{}}/>
       </div>
 
     </>
