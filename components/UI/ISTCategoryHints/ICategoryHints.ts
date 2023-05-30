@@ -2,35 +2,27 @@ import {IST_HookedData, ISwitcherOptions} from "../hooks/ISTFiltersHook/common";
 
 export interface ICategoryHints {
     hintsLimit: number;
-    hints: Array<ICategoryCollection>;
+    hintsList:Array<ICategoryCollection>;
+    hintsCategoryCollection: Array<ICategory>;
 }
 
-export type ICategoryCollection = {
+export type ICategory = {
     collectionName: string;
-    collectionOfItems: Array<ICategoryItem>;
+    listedHintsId: number;
     switcherOptions: ISwitcherOptions;
-    hookedData: IST_HookedData;
 };
+
+type ICategoryCollection = ICategoryItem[];
 
 type ICategoryItem = {
     fieldName: string;
 };
 
+/**
+ *  -=UI Type=-
+ */
 
-// actiionName: [
-//     {
-//         name: "Manufacturer",
-//         idx: 0 =>
-//                     collectionOfItems[]
-//     },
-//
-//     {
-//         name: "Unit",
-//         idx: 1
-//     },
-//
-//     {
-//         name: "type",
-//         idx: 2
-//     }
-// ]
+export interface ISTHint extends Omit<ICategory, "collectionName"> {
+    hintsList: Array<ICategoryCollection>;
+    hintsLimit: number;
+}

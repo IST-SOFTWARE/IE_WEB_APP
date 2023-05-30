@@ -1,94 +1,85 @@
-import React, {FC, useCallback, useEffect, useState} from "react";
-import {ICategoryCollection} from "./ICategoryHints";
+import React, { FC, useCallback, useEffect, useState } from "react";
+import { ICategory, ISTHint } from "./ICategoryHints";
 import styles from "./categoryHints.module.scss";
-import {IFilterType, onFilterSwitchDefault_t} from "../hooks/ISTFiltersHook/common";
-import {ICheckBoxItem} from "../ISTFiltersList/common";
-
-interface ISTHint extends Omit<ICategoryCollection, "collectionName">{};
+import {
+  IFilterType,
+  onFilterSwitchDefault_t,
+} from "../hooks/ISTFiltersHook/common";
+import { ICheckBoxItem } from "../ISTFiltersList/common";
 
 export const ISTHintCategory: FC<ISTHint> = ({
-    collectionOfItems,
-    hookedData,
-    switcherOptions
+  listedHintsId,
+  switcherOptions,
+  hintsList,
+  hintsLimit,
 }) => {
+  const [filtersFields, setFiltersFields] = useState<IFilterType[]>([]);
 
-    const [filtersFields, setFiltersFields] = useState<IFilterType[]>([]);
+  useEffect(() => {
+    if (!hintsList) return;
 
-    useEffect(()=>{
-        if(!collectionOfItems || !hookedData)
-            return
+    const fieldsArr: IFilterType[] = [];
 
-        const fieldsArr: IFilterType[] = []
+    hintsList[listedHintsId].map((el, i) => {
+      const newEl = {
+        idx: i,
+        fieldName: el.fieldName,
+        isActive: false,
+      } as IFilterType;
 
-        collectionOfItems.map((el, i) => {
-            const newEl = {
-                idx: i,
-                fieldName: el.fieldName,
-                isActive: false,
+      fieldsArr.push(newEl);
+    });
 
-            } as IFilterType;
+    setFiltersFields(fieldsArr.slice(0, hintsLimit));
+  }, [hintsList]);
 
-            fieldsArr.push(newEl)
-        })
+  const switchFilterState: onFilterSwitchDefault_t = useCallback(
+    (idx) => {
+      let filters: IFilterType[] = [];
 
-        setFiltersFields(fieldsArr);
-    },[])
+      let editingFilter = switcherOptions
+        ? ({} as Parameters<typeof switcherOptions.onSwitch>)
+        : null;
 
-    useEffect(()=>{
-        if(hookedData)
-            hookedData.fieldsSetter(filtersFields);
-    },[filtersFields])
+      filters = [...filtersFields];
 
-    const switchFilterState: onFilterSwitchDefault_t = useCallback((idx)=>{
+      filters.map((el) => {
+        if (el.idx === idx) {
+          editingFilter
+            ? (editingFilter = [
+                idx,
+                undefined,
+                el.fieldName,
+                switcherOptions.filterDesignation,
+              ])
+            : null;
+        }
+      });
 
-        let filters: IFilterType[] = [];
+      if (editingFilter) switcherOptions.onSwitch(...editingFilter);
 
-        let editingFilter =
-            switcherOptions ?
-                {} as Parameters<typeof switcherOptions.onSwitch> :
-                null
+      setFiltersFields(filters);
+    },
+    [switcherOptions, filtersFields]
+  );
 
-        filters = [...filtersFields]
-
-
-        filters.map(el => {
-            if(el.idx === idx) {
-                editingFilter ?
-                    editingFilter = [
-                        idx,
-                        undefined,
-                        el.fieldName,
-                        switcherOptions.filterDesignation
-                    ] :
-                    null;
-            }
-        });
-
-        if(editingFilter)
-            switcherOptions.onSwitch(...editingFilter);
-
-        setFiltersFields(filters);
-
-    },[switcherOptions, filtersFields])
-
-
-    return(
-        <>
-            <div className={styles.possible_results}>
-                {filtersFields.map(item => {
-                    return (
-                        <span
-                            key={`item_${item.idx}_${item.fieldName}`}
-                            className={styles.result}
-                            onClick={()=>{
-                                switchFilterState(item.idx);
-                            }}
-                        >
-                            {item.fieldName}
-                        </span>
-                    );
-                })}
-            </div>
-        </>
-    )
-}
+  return (
+    <>
+      <div className={styles.possible_results}>
+        {filtersFields.map((item) => {
+          return (
+            <span
+              key={`item_${item.idx}_${item.fieldName}`}
+              className={styles.result}
+              onClick={() => {
+                switchFilterState(item.idx);
+              }}
+            >
+              {item.fieldName}
+            </span>
+          );
+        })}
+      </div>
+    </>
+  );
+};

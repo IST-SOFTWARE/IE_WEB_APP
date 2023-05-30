@@ -1,43 +1,48 @@
-import React, {FC, useEffect, useState} from "react";
+import React, { FC, useEffect, useState } from "react";
 import styles from "./categoryHints.module.scss";
-import {ICategoryCollection, ICategoryHints} from "./ICategoryHints";
-import {IFilterType} from "../hooks/ISTFiltersHook/common";
-import {ICheckBoxItem} from "../ISTFiltersList/common";
-import {ISTHintCategory} from "./ISTHint";
-
+import { ICategory, ICategoryHints } from "./ICategoryHints";
+import { IFilterType } from "../hooks/ISTFiltersHook/common";
+import { ICheckBoxItem } from "../ISTFiltersList/common";
+import { ISTHintCategory } from "./ISTHint";
 
 const ISTCategoryHints: FC<ICategoryHints> = ({
-    hintsLimit,
-    hints
+  hintsLimit,
+  hintsList: hints,
+  hintsCategoryCollection,
 }) => {
+  const [collectionName, setCollectionName] = useState<ICategory[]>(
+    hintsCategoryCollection
+  );
 
-    const [collection, setCollection] = useState<ICategoryCollection[]>(
-        hints.slice(0, hintsLimit)
-    );
+  const [categoryCollection, setCategoryCollection] = useState(hints);
 
+  useEffect(() => {
+    setCategoryCollection(hints);
+  }, [hints]);
 
-    return (
-        <div className={styles.search_results}>
-            {collection.map((hint) => {
-                return (
-                    <div
-                        key={`results_${hint.collectionName}`}
-                        className={styles.result_container}
-                    >
-                        <div className={styles.result_title_name}>
-                            {hint.collectionName}
-                        </div>
+  return (
+    <div className={styles.search_results}>
+      {collectionName.map((hint) => {
+        return (
+          <div
+            key={`results_${hint.collectionName}`}
+            className={styles.result_container}
+          >
+            <div className={styles.result_title_name}>
+              {hint.collectionName}
+            </div>
 
-                            <ISTHintCategory
-                                collectionOfItems={hint.collectionOfItems}
-                                hookedData={hint.hookedData}
-                                switcherOptions={hint.switcherOptions}
-                            />
-                    </div>
-                );
-            })}
-        </div>
-    );
+            <ISTHintCategory
+              listedHintsId={hint.listedHintsId}
+              switcherOptions={hint.switcherOptions}
+              hintsList={categoryCollection}
+              hintsLimit={hintsLimit}
+            />
+          </div>
+        );
+      })}
+    </div>
+  );
 };
 
 export default ISTCategoryHints;
