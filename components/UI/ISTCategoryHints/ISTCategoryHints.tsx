@@ -1,30 +1,28 @@
-import React, { FC, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import styles from "./categoryHints.module.scss";
+import { ICategory, ICategoryHints } from "./ICategoryHints";
+import { IFilterType } from "../hooks/ISTFiltersHook/common";
+import { ICheckBoxItem } from "../ISTFiltersList/common";
+import { ISTHintCategory } from "./ISTHint";
 
-type ICategoryItem = {
-  id: number;
-  itemName: string;
-};
-
-type ICategoryCollection = {
-  actionName: string;
-  collectionName: string;
-  collectionOfItems: Array<ICategoryItem>;
-};
-
-interface ICategoryHints {
-  hintsLimit: number;
-  hints: Array<ICategoryCollection>;
-}
-
-const ISTCategoryHints: FC<ICategoryHints> = ({ hintsLimit, hints }) => {
-  const [collection, setCollection] = useState<ICategoryCollection[]>(
-    hints.slice(0, hintsLimit)
+const ISTCategoryHints: FC<ICategoryHints> = ({
+  hintsLimit,
+  hintsList: hints,
+  hintsCategoryCollection,
+}) => {
+  const [collectionName, setCollectionName] = useState<ICategory[]>(
+    hintsCategoryCollection
   );
+
+  const [categoryCollection, setCategoryCollection] = useState(hints);
+
+  useEffect(() => {
+    setCategoryCollection(hints);
+  }, [hints]);
 
   return (
     <div className={styles.search_results}>
-      {collection.map((hint) => {
+      {collectionName.map((hint) => {
         return (
           <div
             key={`results_${hint.collectionName}`}
@@ -34,18 +32,12 @@ const ISTCategoryHints: FC<ICategoryHints> = ({ hintsLimit, hints }) => {
               {hint.collectionName}
             </div>
 
-            <div className={styles.possible_results}>
-              {hint.collectionOfItems.map((item) => {
-                return (
-                  <span
-                    key={`item_${item.id}_${item.itemName}`}
-                    className={styles.result}
-                  >
-                    {item.itemName}
-                  </span>
-                );
-              })}
-            </div>
+            <ISTHintCategory
+              listedHintsId={hint.listedHintsId}
+              switcherOptions={hint.switcherOptions}
+              hintsList={categoryCollection}
+              hintsLimit={hintsLimit}
+            />
           </div>
         );
       })}

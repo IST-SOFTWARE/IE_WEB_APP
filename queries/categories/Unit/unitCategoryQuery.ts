@@ -1,8 +1,11 @@
 import UNIT_CATEGORY_Q from "./UNIT_CATEGORY_Q.graphql"
 
-export type Unit_category = Array<category_query_t>
+export interface Unit_category {
+    Unit_category: Array<category_query_t>;
+}
+
 type category_query_t = {
-    Unit_name: string,
+    unit_name: string,
     slug: string
 }
 

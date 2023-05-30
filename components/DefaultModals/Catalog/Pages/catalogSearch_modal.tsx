@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import ISTProductItem from "../../../UI/ISTProductItem/ISTProductItem";
 import IstInput, { inputTypesVars } from "../../../UI/ISTInput/ISTInput";
 import ISTCategoryHints from "../../../UI/ISTCategoryHints/ISTCategoryHints";
@@ -6,6 +6,22 @@ import Image from "next/image";
 import cloudSearch from "../../../../public/Modals/Catalog/cloudSearch.svg";
 import ISTButtonN from "../../../UI/ISTButton/ISTButtonN";
 import styles from "../../../../styles/Modals/catalog/catalogSearch/catalogSearch.module.scss";
+import useISTFiltersList from "../../../UI/hooks/ISTFiltersHook/useISTFiltersList";
+import { ICatalogFiltersType } from "../../../../store/slices/catalogSlice/catalogFiltersType";
+import { onFilterSwitchCustom_t } from "../../../UI/hooks/ISTFiltersHook/common";
+import { filterSetter_filtersHelper } from "../../../../helpers/Catalog/filters";
+import { addNewFilter } from "../../../../store/slices/catalogSlice/catalogSlice";
+import { useDispatch } from "react-redux";
+import { useAppSelector } from "../../../../Hooks/reduxSettings";
+import { useQuery } from "@apollo/client";
+import {
+  GENERAL_CATEGORY_QUERY,
+  IGeneralCategoryQuery,
+} from "../../../../queries/categories/generalCategoryQuery";
+import { IQuerySearchVariables } from "../../../../queries/common";
+import { ICategoryHints } from "../../../UI/ISTCategoryHints/ICategoryHints";
+import { Retryer } from "react-query/types/core/retryer";
+import { change_General_Query_To_ICategory } from "../../../../helpers/Catalog/hints";
 
 type ICategoryItem = {
   id: number;
@@ -19,131 +35,58 @@ type ICategoryCollection = {
 };
 
 type IProductItem = {
-    title: string,
-    price: string,
-    vendCode: string
-}
+  title: string;
+  price: string;
+  vendCode: string;
+};
 
-const defCategoryHints: ICategoryCollection[] = [
-    {
-        actionName: "",
-        collectionName: "Производители",
-        collectionOfItems: [
-            { id: 1, itemName: "Kone" },
-            { id: 2, itemName: "OTIS" },
-            { id: 2, itemName: "ЩЛЗ" },
-        ],
-    },
-    {
-        actionName: "",
-        collectionName: "Узлы",
-        collectionOfItems: [
-            { id: 1, itemName: "Приямок шахты лифта" },
-            {
-                id: 2,
-                itemName:
-                    "Привод ДК, балки ДК и ДШ, двери кабины и шахты, порталы, БУАД, двери боствиг",
-            },
-            {
-                id: 3,
-                itemName:
-                    "Кабина (каркас) и интерьер кабины лифта, крыша кабины, противовес",
-            },
-        ],
-    },
-    {
-        actionName: "",
-        collectionName: "Типы",
-        collectionOfItems: [
-            {
-                id: 1,
-                itemName:
-                    "Резиновая/пластиковая прокладка, буфер, демпфер, вставка, отбойник",
-            },
-            { id: 2, itemName: "Башмак, вкладыш ДК/ДШ" },
-            {
-                id: 3,
-                itemName:
-                    "Башмак, вкладыш башмака направляющих кабины и противовеса",
-            },
-        ],
-    },
-]
-const defProdItems: IProductItem[] = [
-    {
-        title: "Product Item dsdfsdf sedfsdfs sdfsdfwsfwsdfsad",
-        price: "200",
-        vendCode: "IST000001"
-    },
-    {
-        title: "Product Item dsdfsdf sedfsdfs sdfsdfwsfwsdfsad",
-        price: "200",
-        vendCode: "IST000001"
-    },
-    {
-        title: "Product Item dsdfsdf sedfsdfs sdfsdfwsfwsdfsad",
-        price: "200",
-        vendCode: "IST000001"
-    },
-    {
-        title: "Product Item dsdfsdf sedfsdfs sdfsdfwsfwsdfsad",
-        price: "200",
-        vendCode: "IST000001"
-    },
-    {
-        title: "Product Item dsdfsdf sedfsdfs sdfsdfwsfwsdfsad",
-        price: "200",
-        vendCode: "IST000001"
-    },
+const defCategoryHints: ICategoryCollection[] = [];
 
-    {
-        title: "Product Item dsdfsdf sedfsdfs sdfsdfwsfwsdfsad",
-        price: "200",
-        vendCode: "IST000001"
-    },
-    {
-        title: "Product Item dsdfsdf sedfsdfs sdfsdfwsfwsdfsad",
-        price: "200",
-        vendCode: "IST000001"
-    },
-    {
-        title: "Product Item dsdfsdf sedfsdfs sdfsdfwsfwsdfsad",
-        price: "200",
-        vendCode: "IST000001"
-    },
-    {
-        title: "Product Item dsdfsdf sedfsdfs sdfsdfwsfwsdfsad",
-        price: "200",
-        vendCode: "IST000001"
-    },
-    {
-        title: "Product Item dsdfsdf sedfsdfs sdfsdfwsfwsdfsad",
-        price: "200",
-        vendCode: "IST000001"
-    },
-]
+const defProdItems: IProductItem[] = [];
 
 const CatalogSearchModal = ({}) => {
+  const [searchState, setSearchState] = useState<string>("");
+
+  const { data, loading, error } = useQuery<
+    IGeneralCategoryQuery,
+    IQuerySearchVariables
+  >(GENERAL_CATEGORY_QUERY, { variables: { search: searchState } });
 
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const [searchState, setSearchState] = useState<string>("");
+  const dispatch = useDispatch();
+  const catalog = useAppSelector((state) => state.catalog);
 
-  const [searchResults_categories,
-        setSearchResults_categories] = useState<ICategoryCollection[] | null>(
-      defCategoryHints
-  );
+  const [searchResults_categories, setSearchResults_categories] = useState<
+    ICategoryCollection[] | null
+  >(defCategoryHints);
 
-  const [searchResults_products,
-        setSearchResults_products] = useState<IProductItem[]>(
-        defProdItems
-  )
+  const [searchResults_products, setSearchResults_products] =
+    useState<IProductItem[]>(defProdItems);
 
-    useEffect(()=>{
-        if(inputRef && inputRef.current){
-            inputRef.current.focus();
-        }
-    },[inputRef])
+  const [mfgFilter, hasActive, designation] =
+    useISTFiltersList<ICatalogFiltersType>("mfg");
+
+  useEffect(() => {
+    if (inputRef && inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, [inputRef]);
+
+  const switchFilter: onFilterSwitchCustom_t<keyof ICatalogFiltersType> =
+    useCallback(
+      (idx, state, name, options) => {
+        if (!catalog || !catalog.filters || !options) return;
+
+        dispatch(
+          addNewFilter({
+            key: options,
+            filter: [name],
+          })
+        );
+      },
+      [catalog, dispatch]
+    );
 
   return (
     <>
@@ -152,13 +95,10 @@ const CatalogSearchModal = ({}) => {
         className={`d-none d-lg-block col-0 col-lg-6 ${styles.catalogFiltersModal_comp}`}
       >
         <div className={styles.headerContainer}>
-            <header className={styles.header}>
-                Поиск
-            </header>
+          <header className={styles.header}>Поиск</header>
         </div>
 
         <div className={styles.inputAndHints_block}>
-
           <IstInput
             ref={inputRef}
             inputType={inputTypesVars.any_string}
@@ -172,12 +112,38 @@ const CatalogSearchModal = ({}) => {
             }}
           />
 
-            <div className={styles.hints_block}>
-                <ISTCategoryHints
-                  hintsLimit={3}
-                  hints={searchResults_categories}
-                />
-            </div>
+          <div className={styles.hints_block}>
+            <ISTCategoryHints
+              hintsLimit={3}
+              hintsList={change_General_Query_To_ICategory(data)}
+              hintsCategoryCollection={[
+                {
+                  collectionName: "Производители",
+                  listedHintsId: 0,
+                  switcherOptions: {
+                    onSwitch: switchFilter,
+                    filterDesignation: designation,
+                  },
+                },
+                {
+                  collectionName: "Type",
+                  listedHintsId: 1,
+                  switcherOptions: {
+                    onSwitch: switchFilter,
+                    filterDesignation: designation,
+                  },
+                },
+                {
+                  collectionName: "Units",
+                  listedHintsId: 2,
+                  switcherOptions: {
+                    onSwitch: switchFilter,
+                    filterDesignation: designation,
+                  },
+                },
+              ]}
+            />
+          </div>
         </div>
       </div>
 
@@ -185,11 +151,11 @@ const CatalogSearchModal = ({}) => {
       <div
         className={`col-12 col-lg-6 h-100 pl-0 pl-lg-3 pr-0 pr-lg-3 ${styles.catalogFiltersModal_comp}`}
       >
-        <div className={styles.headerContainer} style={{justifyContent: "space-between"}}>
-
-          <header className={styles.header}>
-              Товары
-          </header>
+        <div
+          className={styles.headerContainer}
+          style={{ justifyContent: "space-between" }}
+        >
+          <header className={styles.header}>Товары</header>
 
           {searchResults_products && (
             <div style={{ width: "180px", alignSelf: "center" }}>
@@ -208,42 +174,39 @@ const CatalogSearchModal = ({}) => {
         </div>
 
         {searchResults_products ? (
-
           //PRODUCTS LIST OUT
 
-            <div className={`
+          <div
+            className={`
                 ${styles.catalogItems_block} 
-                ${searchResults_products?.length > 6 ? styles.longList : ''}`}
-            >
-                {searchResults_products.map((el, i) => {
-                    return (
-                        <div
-                            className={styles.productCardVariant_Block}
-                            key={`productItem_${i}_u_key`}
-                        >
-                            <ISTProductItem
-                                currency={"RU"}
-                                itemType={{
-                                    productType: "catalog",
-                                    parameters: {
-                                        inline: false
-                                    },
-                                    data: {
-                                        id: i,
-                                        title: "Product Item",
-                                        price: "200",
-                                        vendCode: "IST000001"
-                                    }
-                                }}
-                            />
-                        </div>
-                    )
-                })}
-            </div>
-
-
+                ${searchResults_products?.length > 6 ? styles.longList : ""}`}
+          >
+            {searchResults_products.map((el, i) => {
+              return (
+                <div
+                  className={styles.productCardVariant_Block}
+                  key={`productItem_${i}_u_key`}
+                >
+                  <ISTProductItem
+                    currency={"RU"}
+                    itemType={{
+                      productType: "catalog",
+                      parameters: {
+                        inline: false,
+                      },
+                      data: {
+                        id: i,
+                        title: "Product Item",
+                        price: "200",
+                        vendCode: "IST000001",
+                      },
+                    }}
+                  />
+                </div>
+              );
+            })}
+          </div>
         ) : (
-
           //EMPTY RESULT
           <div className={styles.noResultsBlock}>
             <Image
@@ -260,7 +223,6 @@ const CatalogSearchModal = ({}) => {
               Start typing a query to search for a product
             </div>
           </div>
-
         )}
       </div>
     </>

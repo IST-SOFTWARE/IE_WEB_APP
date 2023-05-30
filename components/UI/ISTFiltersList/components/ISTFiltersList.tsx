@@ -1,6 +1,7 @@
 import React, {FC, useCallback, useEffect, useState} from "react";
 import Filter from "./Filter";
-import {IST_FilterList, ICheckBoxItem, onFilterSwitchDefault_t} from "../common"
+import {IST_FilterList, ICheckBoxItem} from "../common"
+import {IFilterType, onFilterSwitchDefault_t} from "../../hooks/ISTFiltersHook/common";
 
 const ISTFiltersList:FC<IST_FilterList> = ({
   fields,
@@ -8,17 +9,17 @@ const ISTFiltersList:FC<IST_FilterList> = ({
   switcherOptions
 }) => {
 
-  const [filtersFields, setFiltersFields] = useState<ICheckBoxItem[]>([]);
+  const [filtersFields, setFiltersFields] = useState<IFilterType[]>([]);
 
   useEffect(()=>{
     if(fields){
-      const fieldsArr: ICheckBoxItem[] = []
+      const fieldsArr: IFilterType[] = []
 
       fields.map((el, i) => {
         const newEl = {
           idx: i,
           ...el
-        } as ICheckBoxItem;
+        } as IFilterType;
 
         fieldsArr.push(newEl)
       })
@@ -35,7 +36,7 @@ const ISTFiltersList:FC<IST_FilterList> = ({
 
 
   const switchFilterState: onFilterSwitchDefault_t = useCallback((idx) => {
-    let filters: ICheckBoxItem[] = [];
+    let filters: IFilterType[] = [];
 
     let editingFilter =
         switcherOptions ?
@@ -78,7 +79,7 @@ const ISTFiltersList:FC<IST_FilterList> = ({
 
   },[hookedData, filtersFields, switcherOptions])
 
-  const getFiltersView = (data: ICheckBoxItem[]) => {
+  const getFiltersView = (data: IFilterType[]) => {
     return(
         <>
           {data?.map((filter, i) => (

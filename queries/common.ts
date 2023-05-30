@@ -3,6 +3,11 @@
         limit: number,
         offset: number
     }
+
+    export interface IQuerySearchVariables {
+        search: string
+    }
+    
 //
 
 export interface ILangCodeQuery {
