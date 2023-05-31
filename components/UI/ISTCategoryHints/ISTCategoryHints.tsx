@@ -22,15 +22,17 @@ const ISTCategoryHints: FC<ICategoryHints> = ({
 
   return (
     <div className={styles.search_results}>
-      {collectionName.map((hint) => {
+      {collectionName.map((hint, index) => {
         return (
           <div
             key={`results_${hint.collectionName}`}
             className={styles.result_container}
           >
-            <div className={styles.result_title_name}>
-              {hint.collectionName}
-            </div>
+            {categoryCollection[index].length > 0 ? (
+              <div className={styles.result_title_name}>
+                {hint.collectionName}
+              </div>
+            ) : null}
 
             <ISTHintCategory
               listedHintsId={hint.listedHintsId}
