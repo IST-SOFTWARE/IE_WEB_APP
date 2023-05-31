@@ -17,6 +17,9 @@ import {setCatalogState, updateCatalog} from "../../store/slices/catalogSlice/ca
 import Catalog from "../Catalog/Catalog";
 import CatalogTestProdsModal from "../DefaultModals/Catalog/Pages/catalogTestProds_modal";
 import CatalogTestFiltersModal from "../DefaultModals/Catalog/Pages/catalogTestFilters_modal";
+import {useQuery} from "@apollo/client";
+import {GENERAL_CATEGORY_QUERY, IGeneralCategoryQuery} from "../../queries/categories/generalCategoryQuery";
+import filtersListSlice, {filtersList_update} from "../../store/slices/filtersListSlice/filtersListSlice";
 
 
 interface ILandingLayout{
@@ -33,6 +36,22 @@ export const LandingLayout:FC<ILandingLayout> = ({
 
     const [st, sSt] = useState<boolean>(false)
 
+    const {data, loading, error} = useQuery<IGeneralCategoryQuery>(GENERAL_CATEGORY_QUERY)
+
+    useEffect(()=>{
+        if(!data) return
+
+        dispatch(filtersList_update({
+            mfg: [
+                data.manufacturer_category?.map(el => {
+                    return el.manufacturer_name
+                })
+            ],
+            unit: [""],
+            type: [""],
+        }))
+
+    },[data])
 
     useEffect(() => {
         if (modalComponent) {

@@ -3,17 +3,19 @@ import styles from "../../../../../styles/Modals/catalog/catalogProducts/catalog
 
 import ISTFiltersList from "../../../../UI/ISTFiltersList/components/ISTFiltersList";
 import ISTFiltersWrapper from "../../../../UI/ISTFiltersList/components/ISTFiltersWrapper";
-import useISTFiltersList from "../../../../UI/ISTFiltersList/hook/useISTFiltersList";
+
 import {useDispatch} from "react-redux";
 import {useAppSelector} from "../../../../../Hooks/reduxSettings";
 import {useQuery} from "@apollo/client";
 import {GET_MFG_CATEGORY_LIST, ICategoryMFG_Q} from "../../../../../queries/categories/MFG/mfgCategoryQuery";
-import {onFilterSwitchCustom_t} from "../../../../UI/ISTFiltersList/common";
+
 import {filterSetter_filtersHelper, isActiveNow_filtersHelper} from "../../../../../helpers/Catalog/filters";
 import {addNewFilter} from "../../../../../store/slices/catalogSlice/catalogSlice";
 import {ICatalogFiltersType} from "../../../../../store/slices/common/catalogFiltersType";
 import {CatalogWrapper} from "../../../../ProductsWrapper/catalogWrapper";
 import IstInput, {inputTypesVars} from "../../../../UI/ISTInput/ISTInput";
+import useISTFiltersList from "../../../../UI/hooks/ISTFiltersHook/useISTFiltersList";
+import {onFilterSwitchCustom_t} from "../../../../UI/hooks/ISTFiltersHook/common";
 
 const CatalogFullProductsListModal = ({}) => {
 

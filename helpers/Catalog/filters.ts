@@ -43,3 +43,10 @@ export const isActiveNow_filtersHelper = (filtersList: ICatalogFiltersType, key:
 
     return res
 }
+
+
+const getFiltersItemsAsArray_filtersHelper = (
+
+):string[] => {
+    return []
+}

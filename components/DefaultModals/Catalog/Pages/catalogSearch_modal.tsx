@@ -7,7 +7,7 @@ import cloudSearch from "../../../../public/Modals/Catalog/cloudSearch.svg";
 import ISTButtonN from "../../../UI/ISTButton/ISTButtonN";
 import styles from "../../../../styles/Modals/catalog/catalogSearch/catalogSearch.module.scss";
 import useISTFiltersList from "../../../UI/hooks/ISTFiltersHook/useISTFiltersList";
-import { ICatalogFiltersType } from "../../../../store/slices/catalogSlice/catalogFiltersType";
+
 import { onFilterSwitchCustom_t } from "../../../UI/hooks/ISTFiltersHook/common";
 import { filterSetter_filtersHelper } from "../../../../helpers/Catalog/filters";
 import { addNewFilter } from "../../../../store/slices/catalogSlice/catalogSlice";
@@ -22,6 +22,7 @@ import { IQuerySearchVariables } from "../../../../queries/common";
 import { ICategoryHints } from "../../../UI/ISTCategoryHints/ICategoryHints";
 import { Retryer } from "react-query/types/core/retryer";
 import { change_General_Query_To_ICategory } from "../../../../helpers/Catalog/hints";
+import {ICatalogFiltersType} from "../../../../store/slices/common/catalogFiltersType";
 
 type ICategoryItem = {
   id: number;

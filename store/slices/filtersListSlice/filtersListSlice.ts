@@ -7,7 +7,7 @@ const initialState = {
     mfg: [""],
     unit: [""],
     type: [""],
-} as ICatalogFiltersType
+} as Omit<ICatalogFiltersType, "available">
 
 
 const filtersListSlice = createGenericSlice(
@@ -15,7 +15,7 @@ const filtersListSlice = createGenericSlice(
     initialState,
     {
 
-        updateCatalog(state, action: PayloadAction<typeof initialState>){
+        filtersList_update(state, action: PayloadAction<typeof initialState>){
             for (const [key, value] of Object.entries(action.payload)) {
                 state[key] = action.payload[key];
             }
@@ -25,7 +25,7 @@ const filtersListSlice = createGenericSlice(
 )
 
 export const {
-    updateCatalog
+    filtersList_update
 } = filtersListSlice.actions
 
 export default filtersListSlice.reducer
