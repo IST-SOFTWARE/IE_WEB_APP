@@ -56,6 +56,7 @@ const CatalogSearchModal = ({}) => {
     const catalog = useAppSelector((state) => state.catalog);
     const filters = useAppSelector((state) => state.filtersList);
 
+
     const [searchResults_categories, setSearchResults_categories] = useState<
         ICategoryCollection[] | null
     >(defCategoryHints);
@@ -120,7 +121,7 @@ const CatalogSearchModal = ({}) => {
                             hintsLimit={3}
                             hintsList={getHintsList_hintsHelper([
                                 filters.mfg, filters.type, filters.unit
-                            ])}
+                            ], searchState)}
                             hintsCategoryCollection={[
                                 {
                                     collectionName: "Производители",

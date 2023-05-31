@@ -5,7 +5,8 @@ type hint = {
 };
 
 export const getHintsList_hintsHelper = (
-    values: string[][]
+    values: string[][],
+    searchInput: string,
 ):hint[][] => {
 
   const outArr = new Array<hint[]>();
@@ -15,13 +16,11 @@ export const getHintsList_hintsHelper = (
       outside.map(inside => {
           newHintsList.push({fieldName: inside})
       })
-
-      outArr.push(newHintsList);
+      outArr.push(newHintsList.filter((hint) => hint.fieldName.toLowerCase().includes(searchInput.toLowerCase())));
   })
 
   return outArr
 }
-
 
 // export const change_General_Query_To_ICategory = (
 //     data: IGeneralCategoryQuery

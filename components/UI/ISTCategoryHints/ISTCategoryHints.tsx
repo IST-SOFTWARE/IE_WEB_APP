@@ -15,6 +15,7 @@ const ISTCategoryHints: FC<ICategoryHints> = ({
   );
 
   const [categoryCollection, setCategoryCollection] = useState(hints);
+  
 
   useEffect(() => {
     setCategoryCollection(hints);
