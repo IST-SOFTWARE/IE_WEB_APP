@@ -1,12 +1,12 @@
-import React, {CSSProperties, FC, useCallback, useEffect, useState} from "react";
+import React, {CSSProperties, FC, useEffect, useState} from "react";
 import {IProductData} from "../UI/common";
 import {useLazyQuery, useQuery} from "@apollo/client";
-import {IQueryPaginationVariable} from "../../queries/common";
 import {GRT_FILTERED_PRODUCTS_LIST, IProductFiltersVariables, IProducts_Q} from "../../queries/products/productActions";
 import ISTProductItem from "../UI/ISTProductItem/ISTProductItem";
 import {useAppSelector} from "../../Hooks/reduxSettings";
 import {useDispatch} from "react-redux";
-import catalog from "../Catalog/Catalog";
+import {filterExclude_filtersHelper} from "../../helpers/Catalog/filters";
+import {GET_CART_COLLECTION_BY_ID, ICartCollection} from "../../queries/cart/cartActions";
 
 interface ICatalogWrapper{
     onFetchMore: () => void,
@@ -16,7 +16,13 @@ interface ICatalogWrapper{
     wrapper_ClassName?: string
 
     itemWrapperStyles?: CSSProperties
-    wrapperStyles? :CSSProperties
+    wrapperStyles? :CSSProperties,
+
+    cartID?: string
+}
+
+interface cartCollection {
+    cartCollection_by_id: ICartCollection;
 }
 
 export const CatalogWrapper:FC<ICatalogWrapper> = ({
@@ -26,14 +32,18 @@ export const CatalogWrapper:FC<ICatalogWrapper> = ({
     itemWrapper_ClassName,
     wrapper_ClassName,
     wrapperStyles,
-    itemWrapperStyles
+    itemWrapperStyles,
+    cartID
 }) => {
 
 
-    const filters = useAppSelector(selector => selector.catalog);
+    const catalog = useAppSelector(selector => selector.catalog);
+
+    const filtersList = useAppSelector(selector => selector.filtersList)
+
     const dispatch = useDispatch();
 
-    const [products, setProducts] = useState<IProductData[]>([])
+    const [cartProducts, setCartProducts] = useState<IProductData[]>([])
 
     const [fullProdVars, setFullProdsVars] = useState<IProductFiltersVariables>({
         limit: 20,
@@ -51,9 +61,16 @@ export const CatalogWrapper:FC<ICatalogWrapper> = ({
         }
     );
 
+    const [getCartData, cartData] = useLazyQuery<cartCollection>(
+        GET_CART_COLLECTION_BY_ID,
+        {
+            fetchPolicy: "cache-and-network",
+            variables: {id: cartID},
+        }
+    );
+
     useEffect(()=>{
         setFullProdsVars(prevState =>{
-            console.log(prevState.limit);
             return{
                 ...prevState,
                 search: search
@@ -62,9 +79,42 @@ export const CatalogWrapper:FC<ICatalogWrapper> = ({
     },[search])
 
     useEffect(()=>{
-        console.log("fullProdVars: ", fullProdVars);
-    },[fullProdVars])
+        if(data && !cartData.called)
+            getCartData()
+                .then(el => {
+                    const newCartItems = new Array<IProductData>();
+                    el.data?.cartCollection_by_id.cart_model.map(_el => {
+                        newCartItems.push({
+                            id:  _el.product_id
+                        } as IProductData)
+                    })
+                    setCartProducts(newCartItems);
+                })
+    },[data, cartData])
 
+    useEffect(()=>{
+        if(!catalog.filters || !filtersList)
+            return
+
+        let newState = {
+            mfg: catalog.filters.mfg && catalog.filters.mfg?.length > 0 ?
+                filterExclude_filtersHelper(catalog.filters.mfg, filtersList.mfg) : [""],
+
+            unit: catalog.filters.unit && catalog.filters.unit?.length > 0 ?
+                filterExclude_filtersHelper(catalog.filters.unit, filtersList.unit) : [""],
+
+            type: catalog.filters.type && catalog.filters.type?.length > 0 ?
+                filterExclude_filtersHelper(catalog.filters.type, filtersList.type) : [""],
+        } as Pick<IProductFiltersVariables, "mfg" | "unit" | "type">
+
+
+        setFullProdsVars(prevState =>{
+                return{
+                    ...prevState,
+                    ...newState
+                }
+        });
+    },[filtersList, catalog.filters])
 
     // const deleteProduct = useCallback<deleteProduct_fnc_onDelete>(
     //     async (id,
@@ -112,7 +162,7 @@ export const CatalogWrapper:FC<ICatalogWrapper> = ({
             className={itemWrapper_ClassName}
         >
 
-            {data ? data.Products.map((el, i) => {
+            {data && cartProducts ? data.Products.map((el, i) => {
                     return (
                         <div
                             className={itemWrapper_ClassName}
@@ -130,7 +180,7 @@ export const CatalogWrapper:FC<ICatalogWrapper> = ({
                                     productType: "catalog",
                                     parameters: {
                                         inline: false,
-                                        cartStatus: false
+                                        cartStatus: !!cartProducts.find(el => el.id === el.id),
                                     },
                                     data: {
                                         id: i,

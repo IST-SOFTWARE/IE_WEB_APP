@@ -20,6 +20,7 @@ import {onFilterSwitchCustom_t} from "../../../../UI/hooks/ISTFiltersHook/common
 const CatalogFullProductsListModal = ({}) => {
 
     const [search, setSearch] = useState<string>("");
+    const  filtersList = useAppSelector((state) => state.filtersList);
 
     // Filters state
     const[mfg_filter, mfg_active, mfg_designation] =
@@ -93,14 +94,14 @@ const CatalogFullProductsListModal = ({}) => {
             >
                 <ISTFiltersList
                     fields={
-                        data?.manufacturer_category?.map(el=>{
+                        filtersList?.mfg?.map(el=>{
                             return({
-                                fieldName: el.manufacturer_name,
+                                fieldName: el,
                                 isCheckBox: true,
                                 isActive: isActiveNow_filtersHelper(
                                     catalog?.filters,
                                     "mfg",
-                                    el.manufacturer_name),
+                                    el),
                             })
                         })
                     }
@@ -129,13 +130,20 @@ const CatalogFullProductsListModal = ({}) => {
                 }}
             >
 
-                <ISTFiltersList fields={[
-                    {isActive: false, fieldName: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. ",
-                        isCheckBox: true},
-                    {isActive: false, fieldName: "Field 2", isCheckBox: true},
-                    {isActive: false, fieldName: "Field 3", isCheckBox: true},
-                    {isActive: false, fieldName: "Field 4", isCheckBox: true},
-                ]}
+                <ISTFiltersList
+                    fields={
+                        filtersList?.type?.map(el=>{
+                            return({
+                                fieldName: el,
+                                isCheckBox: true,
+                                isActive: isActiveNow_filtersHelper(
+                                    catalog?.filters,
+                                    "type",
+                                    el),
+                            })
+                        })
+                    }
+
 
                     hookedData={types_filter}
 
@@ -144,6 +152,7 @@ const CatalogFullProductsListModal = ({}) => {
                         filterDesignation: types_designation
                     }}
                 />
+
             </ISTFiltersWrapper>
 
         {/*Узлы*/}
@@ -199,9 +208,8 @@ const CatalogFullProductsListModal = ({}) => {
             onFetchMore={()=>{}}
             itemWrapper_ClassName={styles.productCardVariant_Block}
             search={search}
+            cartID={"9cfa4d6a-f2e9-400c-b0a9-4c85ab777272"}
         />
-
-
 
        </div>
 

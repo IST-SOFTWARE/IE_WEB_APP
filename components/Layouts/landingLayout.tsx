@@ -20,6 +20,8 @@ import CatalogTestFiltersModal from "../DefaultModals/Catalog/Pages/catalogTestF
 import {useQuery} from "@apollo/client";
 import {GENERAL_CATEGORY_QUERY, IGeneralCategoryQuery} from "../../queries/categories/generalCategoryQuery";
 import filtersListSlice, {filtersList_update} from "../../store/slices/filtersListSlice/filtersListSlice";
+import {getFiltersItemsAsArray_filtersHelper} from "../../helpers/Catalog/filters";
+import {ICategoryMFG_Q} from "../../queries/categories/MFG/mfgCategoryQuery";
 
 
 interface ILandingLayout{
@@ -42,13 +44,21 @@ export const LandingLayout:FC<ILandingLayout> = ({
         if(!data) return
 
         dispatch(filtersList_update({
-            mfg: [
-                data.manufacturer_category?.map(el => {
-                    return el.manufacturer_name
-                })
-            ],
-            unit: [""],
-            type: [""],
+            mfg: getFiltersItemsAsArray_filtersHelper(
+                data,
+                "manufacturer_category",
+                "manufacturer_name"
+            ),
+            unit: getFiltersItemsAsArray_filtersHelper(
+                data,
+                "Unit_category",
+                "unit_name"
+            ),
+            type: getFiltersItemsAsArray_filtersHelper(
+                data,
+                "Type_category",
+                "type_name"
+            ),
         }))
 
     },[data])

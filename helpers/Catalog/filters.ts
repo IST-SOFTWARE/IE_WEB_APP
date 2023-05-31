@@ -1,4 +1,5 @@
 import {ICatalogFiltersType} from "../../store/slices/common/catalogFiltersType";
+import {IGeneralCategoryQuery} from "../../queries/categories/generalCategoryQuery";
 
 
 // interface getFiltersDesignationSList_out_t {
@@ -45,8 +46,28 @@ export const isActiveNow_filtersHelper = (filtersList: ICatalogFiltersType, key:
 }
 
 
-const getFiltersItemsAsArray_filtersHelper = (
-
+export const getFiltersItemsAsArray_filtersHelper = (
+    data: IGeneralCategoryQuery,
+    category: keyof IGeneralCategoryQuery,
+    key: string
 ):string[] => {
-    return []
+
+    const ouArr = new Array<string>();
+    const dataOfCategory = data[category];
+
+    dataOfCategory.map(el => {
+        if(el[key])
+            ouArr.push(el[key]);
+    })
+
+    return ouArr;
+}
+
+export const filterExclude_filtersHelper = (
+    excludeValues: string[],
+    targetObj: string[]
+): string[] => {
+    return targetObj.filter( function( el ) {
+        return excludeValues.indexOf( el ) < 0;
+    } );
 }

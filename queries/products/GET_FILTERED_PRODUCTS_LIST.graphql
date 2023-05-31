@@ -9,7 +9,7 @@ query getProducts(
 )
 {
     Products(
-        limit: $limit,
+        limit:  $limit,
         offset: $offset,
         search: $search,
         filter: {
