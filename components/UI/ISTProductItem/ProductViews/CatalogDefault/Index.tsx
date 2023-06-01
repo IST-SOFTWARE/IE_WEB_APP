@@ -1,5 +1,5 @@
 import Image from "next/image";
-import React, {FC} from "react";
+import React, {FC, useCallback} from "react";
 import styles from "./index.module.scss";
 
 import addBasketIcon from "../src/add_to_basket.svg";
@@ -15,9 +15,27 @@ const CatalogView: FC<IProductItem_catalog> = ({
     currency,
     data,
     forwardingPath,
-    cartaAdder,
-    cartStatus
+    cartStatus,
+
+    cartRemover,
+    cartAdder,
 }) => {
+
+    const handleClick = useCallback(()=>{
+
+        if(cartStatus === undefined || !data)
+            return
+
+        if(cartStatus)
+            cartRemover ? cartRemover(data.id) : null
+
+        else if(cartStatus === false)
+            cartAdder ? cartAdder(data.id) : null
+
+    },[cartRemover, cartAdder, cartStatus, data])
+
+
+
     return (
         <>
             <div className={styles.cardContainer}
@@ -74,38 +92,19 @@ const CatalogView: FC<IProductItem_catalog> = ({
                             </div>
 
                             <div className={`${styles.addToBasket} ${cartStatus ? styles.added : ""}`}
-                                 // onClick={cartaAdder ?
-                                 //         cartaAdder.onAdd :
-                                 //         null}
+                                 onClick={()=>handleClick()}
                             >
-                                {
-                                    cartStatus ? (
-                                        <div className={styles.addToCart_container}>
-                                            <Image
-                                                fill={true}
-                                                alt="imageBasket"
-                                                src={addedToCart}
-                                                style={{
-                                                    padding: "6px 2px",
-                                                    objectPosition: "center",
-                                                    objectFit: "contain"
-                                                }}
-                                            />
-                                        </div>
-                                    ) : (
-                                        <div className={styles.addToCart_container}>
-                                            <Image
-                                                fill={true}
-                                                alt="imageBasket"
-                                                src={addBasketIcon}
-                                                style={{
-                                                    objectPosition: "center",
-                                                    objectFit: "contain"
-                                                }}
-                                            />
-                                        </div>
-                                    )
-                                }
+                                <div className={`${styles.addToCart_container} ${cartStatus ? styles.added_ico : ""}`}>
+                                    <Image
+                                        fill={true}
+                                        alt="imageBasket"
+                                        src={cartStatus ? addedToCart : addBasketIcon}
+                                        style={{
+                                            objectPosition: "center",
+                                            objectFit: "contain"
+                                        }}
+                                    />
+                                </div>
                             </div>
                         </div>
                     </div>

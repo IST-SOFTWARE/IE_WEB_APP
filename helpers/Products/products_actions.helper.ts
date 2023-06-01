@@ -33,3 +33,19 @@ export const products_removeItem_actionsHelper = (
         product.productId !== id.toString()
     );
 }
+
+export const products_addItem_actionsHelper = (
+    data:ICartItem_properties_data[],
+    id: string | number,
+    quantity: number
+): ICartItem_properties_data[] => {
+
+    const newItem = {
+        productId: id,
+        quantity: quantity
+    } as ICartItem_properties_data
+
+    const newData = [...data];
+    newData.push(newItem);
+    return newData
+}

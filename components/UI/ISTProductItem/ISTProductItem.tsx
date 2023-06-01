@@ -23,8 +23,10 @@ const IstProductItem: FC<IProductItem> = ({
             data={itemType.data}
             style={style}
             currency={currency}
-            cartaAdder={itemType.parameters.cartAdder}
             cartStatus={itemType.parameters.cartStatus}
+
+            cartRemover={itemType.parameters.cartRemover}
+            cartAdder={itemType.parameters.cartAdder}
           />
         );
       } else {
@@ -33,8 +35,10 @@ const IstProductItem: FC<IProductItem> = ({
             data={itemType.data}
             style={style}
             currency={currency}
-            cartaAdder={itemType.parameters.cartAdder}
             cartStatus={itemType.parameters.cartStatus}
+
+            cartAdder={itemType.parameters.cartAdder}
+            cartRemover={itemType.parameters.cartRemover}
           />
         );
       }

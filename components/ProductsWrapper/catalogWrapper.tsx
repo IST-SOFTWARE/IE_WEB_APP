@@ -1,16 +1,33 @@
-import React, {CSSProperties, FC, useEffect, useState} from "react";
-import {IProductData} from "../UI/common";
-import {useLazyQuery, useQuery} from "@apollo/client";
+import React, {CSSProperties, FC, useCallback, useEffect, useState} from "react";
+import {cartAdder_fnc_onAdd, deleteProduct_fnc_onDelete, IProductData} from "../UI/common";
+import {useLazyQuery, useMutation, useQuery} from "@apollo/client";
 import {GRT_FILTERED_PRODUCTS_LIST, IProductFiltersVariables, IProducts_Q} from "../../queries/products/productActions";
 import ISTProductItem from "../UI/ISTProductItem/ISTProductItem";
 import {useAppSelector} from "../../Hooks/reduxSettings";
 import {useDispatch} from "react-redux";
 import {filterExclude_filtersHelper} from "../../helpers/Catalog/filters";
-import {GET_CART_COLLECTION_BY_ID, ICartCollection} from "../../queries/cart/cartActions";
+import {
+    GET_CART_COLLECTION_BY_ID,
+    ICartCollection,
+    ICartCollection_updated,
+    ICartCollectionVariables, UPDATE_CART_BY_ID
+} from "../../queries/cart/cartActions";
+import {
+    products_addItem_actionsHelper,
+    products_removeItem_actionsHelper
+} from "../../helpers/Products/products_actions.helper";
+import {ICartItem_properties_data} from "../UI/ISTProductItem/Abstract/ICartTypes";
+import {
+    redefining_to_CartModel_redefiningHelper,
+    redefining_to_ICartItemPropertiesData_redefiningHelper
+} from "../../helpers/Products/products_redefining.helper";
 
 interface ICatalogWrapper{
+    additionalForwarding: string
     onFetchMore: () => void,
     search: string;
+
+    cartID?: string;
 
     itemWrapper_ClassName?: string
     wrapper_ClassName?: string
@@ -18,7 +35,6 @@ interface ICatalogWrapper{
     itemWrapperStyles?: CSSProperties
     wrapperStyles? :CSSProperties,
 
-    cartID?: string
 }
 
 interface cartCollection {
@@ -33,20 +49,18 @@ export const CatalogWrapper:FC<ICatalogWrapper> = ({
     wrapper_ClassName,
     wrapperStyles,
     itemWrapperStyles,
-    cartID
+    cartID,
+    additionalForwarding
 }) => {
 
-
     const catalog = useAppSelector(selector => selector.catalog);
-
     const filtersList = useAppSelector(selector => selector.filtersList)
 
     const dispatch = useDispatch();
 
-    const [cartProducts, setCartProducts] = useState<IProductData[]>([])
-
+    const [cartProducts, setCartProducts] = useState<ICartItem_properties_data[]>([]);
     const [fullProdVars, setFullProdsVars] = useState<IProductFiltersVariables>({
-        limit: 20,
+        limit: 12,
         offset: 0,
         mfg: [""],
         unit: [""],
@@ -69,6 +83,9 @@ export const CatalogWrapper:FC<ICatalogWrapper> = ({
         }
     );
 
+    const [onMutateCart, mutatedData] =
+        useMutation<ICartCollection_updated, ICartCollectionVariables>(UPDATE_CART_BY_ID)
+
     useEffect(()=>{
         setFullProdsVars(prevState =>{
             return{
@@ -82,11 +99,12 @@ export const CatalogWrapper:FC<ICatalogWrapper> = ({
         if(data && !cartData.called)
             getCartData()
                 .then(el => {
-                    const newCartItems = new Array<IProductData>();
+                    const newCartItems = new Array<ICartItem_properties_data>();
                     el.data?.cartCollection_by_id.cart_model.map(_el => {
                         newCartItems.push({
-                            id:  _el.product_id
-                        } as IProductData)
+                            productId:  _el.product_id,
+                            quantity: _el.quantity
+                        } as ICartItem_properties_data)
                     })
                     setCartProducts(newCartItems);
                 })
@@ -116,39 +134,65 @@ export const CatalogWrapper:FC<ICatalogWrapper> = ({
         });
     },[filtersList, catalog.filters])
 
-    // const deleteProduct = useCallback<deleteProduct_fnc_onDelete>(
-    //     async (id,
-    //            callBack
-    //     ) => {
-    //
-    //         const newCart =
-    //             products_removeItem_actionsHelper(products, id)
-    //
-    //         if (!products || !data?.cartCollection_by_id)
-    //             return
-    //
-    //         const variables = {
-    //             id: data.cartCollection_by_id.id,
-    //             data: {
-    //                 status: "Draft",
-    //                 cart_model: redefining_to_CartModel_redefiningHelper(newCart),
-    //             },
-    //         } as ICartCollectionVariables;
-    //
-    //         await apolloClient.mutate<ICartCollection_updated>({
-    //             mutation: UPDATE_CART_BY_ID,
-    //             variables: variables,
-    //         }).then((el) => {
-    //
-    //             if (el.data?.update_cartCollection_item && !el.errors) {
-    //                 if (callBack?.sideEffect && callBack?.flag === true)
-    //                     callBack.sideEffect(redefining_to_ICartItemPropertiesData_redefiningHelper(el.data.update_cartCollection_item.cart_model));
-    //             }
-    //         });
-    //
-    //     return true
-    // }, [products, data]);
+    const cartAdder = useCallback<cartAdder_fnc_onAdd>(
+        async (id) => {
 
+            if(!cartProducts || !cartData?.data?.cartCollection_by_id)
+                return
+
+            const newCart =
+                products_addItem_actionsHelper(cartProducts, id, 1);
+
+            const vars = {
+                id: cartID,
+                data: {
+                    status: "Draft",
+                    cart_model: redefining_to_CartModel_redefiningHelper(newCart)
+                }
+            } as ICartCollectionVariables;
+
+                onMutateCart({variables: vars}).then((el) => {
+                    if (el.data?.update_cartCollection_item && !el.errors)
+                        setCartProducts(
+                            redefining_to_ICartItemPropertiesData_redefiningHelper(
+                                el.data.update_cartCollection_item.cart_model
+                            )
+                        )
+                })
+
+        return true
+
+    }, [cartProducts, cartData]);
+
+    const cartRemover = useCallback<deleteProduct_fnc_onDelete>(
+        async (id) => {
+
+            if(!cartProducts || !cartData?.data?.cartCollection_by_id)
+                return
+
+            const newCart =
+                products_removeItem_actionsHelper(cartProducts, id);
+
+            const vars = {
+                id: cartID,
+                data: {
+                    status: "Draft",
+                    cart_model: redefining_to_CartModel_redefiningHelper(newCart)
+                }
+            } as ICartCollectionVariables;
+
+
+            onMutateCart({variables: vars}).then((el) => {
+                if (el.data?.update_cartCollection_item && !el.errors)
+                    setCartProducts(
+                        redefining_to_ICartItemPropertiesData_redefiningHelper(
+                            el.data.update_cartCollection_item.cart_model
+                        )
+                    )
+            })
+
+            return true
+        }, [cartProducts, cartData]);
 
     return(
         <div style={{
@@ -156,6 +200,7 @@ export const CatalogWrapper:FC<ICatalogWrapper> = ({
             width: "100%",
             height: "100%",
             flexWrap: "wrap",
+            opacity: mutatedData?.loading ? 0.5 : 1,
             ...wrapperStyles
             }}
 
@@ -171,7 +216,7 @@ export const CatalogWrapper:FC<ICatalogWrapper> = ({
                         >
                             <ISTProductItem
                                 currency={"RU"}
-                                forwardingPath={`./prods/${el?.slug}`}
+                                forwardingPath={`${additionalForwarding}${el?.slug}`}
                                 style={{
                                     width: "200px",
                                     margin: "0 15px 15px 0"
@@ -180,15 +225,18 @@ export const CatalogWrapper:FC<ICatalogWrapper> = ({
                                     productType: "catalog",
                                     parameters: {
                                         inline: false,
-                                        cartStatus: !!cartProducts.find(el => el.id === el.id),
+                                        cartStatus: !!cartProducts.find(_el => _el.productId === el.id),
+
+                                        cartAdder: cartAdder,
+                                        cartRemover: cartRemover
                                     },
                                     data: {
-                                        id: i,
+                                        id: el?.id,
                                         title: el?.product_name_ru,
                                         price: el?.price.toString(),
                                         vendCode: el?.vend_code.toString(),
                                         image: el?.image_url
-                                    }
+                                    },
                                 }}
                             />
 

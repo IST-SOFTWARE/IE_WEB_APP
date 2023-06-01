@@ -6,8 +6,6 @@ import ISTFiltersWrapper from "../../../../UI/ISTFiltersList/components/ISTFilte
 
 import {useDispatch} from "react-redux";
 import {useAppSelector} from "../../../../../Hooks/reduxSettings";
-import {useQuery} from "@apollo/client";
-import {GET_MFG_CATEGORY_LIST, ICategoryMFG_Q} from "../../../../../queries/categories/MFG/mfgCategoryQuery";
 
 import {filterSetter_filtersHelper, isActiveNow_filtersHelper} from "../../../../../helpers/Catalog/filters";
 import {addNewFilter} from "../../../../../store/slices/catalogSlice/catalogSlice";
@@ -38,10 +36,6 @@ const CatalogFullProductsListModal = ({}) => {
         "unit"
     );
 
-    // Filters query
-    const {data} = useQuery<ICategoryMFG_Q>(
-        GET_MFG_CATEGORY_LIST,
-    )
 
     // Redux catalog state & dispatch
     const dispatch = useDispatch();
@@ -165,6 +159,7 @@ const CatalogFullProductsListModal = ({}) => {
                 outDataSetter={setSearch}
                 actualData={search}
             />
+
             {/*<ISTFiltersWrapper*/}
             {/*    title={"Узлы"}*/}
             {/*    isOpened={false}*/}
@@ -209,6 +204,7 @@ const CatalogFullProductsListModal = ({}) => {
             itemWrapper_ClassName={styles.productCardVariant_Block}
             search={search}
             cartID={"9cfa4d6a-f2e9-400c-b0a9-4c85ab777272"}
+            additionalForwarding={""}
         />
 
        </div>

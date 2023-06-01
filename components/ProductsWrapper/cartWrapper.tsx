@@ -66,6 +66,8 @@ export const CartWrapper: FC<ICartWrapper> = ({
         }
     );
 
+
+
     /**
      *  DATA UPDATER [CART DATA]
     */
@@ -129,7 +131,7 @@ export const CartWrapper: FC<ICartWrapper> = ({
                 products_editQuantity_actionsHelper(products, id, newQuantity)
 
             const variables = {
-                id: data.cartCollection_by_id.id,
+                id: cartID,
                 data: {
                     status: "Draft",
                     cart_model: redefining_to_CartModel_redefiningHelper(newCart),
@@ -162,7 +164,7 @@ export const CartWrapper: FC<ICartWrapper> = ({
     const deleteProduct = useCallback<deleteProduct_fnc_onDelete>(
         async (id,
                callBack
-    ) => {
+        ) => {
 
             const newCart =
                 products_removeItem_actionsHelper(products, id)
@@ -171,7 +173,7 @@ export const CartWrapper: FC<ICartWrapper> = ({
                 return
 
             const variables = {
-                id: data.cartCollection_by_id.id,
+                id: cartID,
                 data: {
                     status: "Draft",
                     cart_model: redefining_to_CartModel_redefiningHelper(newCart),

@@ -37,10 +37,7 @@ export type deleteProduct_fnc = {
     productsListSetter: Dispatch<ICartItem_properties_data[]>
 }
 
-export type cartAdder_fnc = {
-    onAdd: cartAdder_fnc_onAdd;
-    productsListSetter: Dispatch<IProductData[]>
-}
+export type cartAdder_fnc = cartAdder_fnc_onAdd;
 
 /**
  * -= PRODUCT ACTION TYPES =-
@@ -53,7 +50,7 @@ export type deleteProduct_fnc_onDelete =
     (id: string | number, callBack?: callBack_fnc<ICartItem_properties_data[]>) => Promise<boolean>
 
 export type cartAdder_fnc_onAdd =
-    (id: string | number, callBack?: callBack_fnc<IProductData[]>) => Promise<boolean>;
+    (id: string | number, callBack?: callBack_fnc<ICartItem_properties_data[]>) => Promise<boolean>;
 
 export type quantityEditor_fnc =
     (id: string | number, newQuantity: number, callBack?: callBack_fnc<number>) => Promise<boolean>
