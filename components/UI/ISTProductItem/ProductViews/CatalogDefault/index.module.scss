@@ -129,15 +129,21 @@
             -webkit-filter: grayscale(100%);
             filter: grayscale(100%);
 
-            max-width: 28px;
+            background-image: url("../src/add_to_basket.svg");
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: 26px;
           }
 
           .added_ico{
 
+            background-image: url("../src/added_to_cart.svg");
+            background-size: contain;
+
             -webkit-filter: none;
             filter: none;
 
-            padding: 6px 2px;
+
             scale: 0.7;
             transition: 0.3s;
           }

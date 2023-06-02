@@ -21,6 +21,8 @@ import {
     redefining_to_CartModel_redefiningHelper,
     redefining_to_ICartItemPropertiesData_redefiningHelper
 } from "../../helpers/Products/products_redefining.helper";
+import {ImageLoader} from "next/image";
+
 
 interface ICatalogWrapper{
     additionalForwarding: string
@@ -194,6 +196,17 @@ export const CatalogWrapper:FC<ICatalogWrapper> = ({
             return true
         }, [cartProducts, cartData]);
 
+        const catalogGetPath = (src: string, separator: string, startProperty: string):string => {
+
+
+            return ""
+        }
+
+        const catalogImageLoader: ImageLoader = ({src, width, quality}) => {
+
+            return ""
+        }
+
     return(
         <div style={{
             display: "flex",
@@ -214,12 +227,17 @@ export const CatalogWrapper:FC<ICatalogWrapper> = ({
                             style={itemWrapperStyles}
                             key={`productItemCatalog_${i}_key`}
                         >
+
+                            <button onClick={()=>catalogImageLoader({
+                                src: el.image_url,
+                                width: 30
+                            })}>Test</button>
+
                             <ISTProductItem
                                 currency={"RU"}
                                 forwardingPath={`${additionalForwarding}${el?.slug}`}
                                 style={{
-                                    width: "200px",
-                                    margin: "0 15px 15px 0"
+                                    fill: true,
                                 }}
                                 itemType={{
                                     productType: "catalog",

@@ -152,40 +152,32 @@ const CatalogFullProductsListModal = ({}) => {
         {/*Узлы*/}
 
 
-            <IstInput
-                inputType={inputTypesVars.any_string}
-                placeholder={"search..."}
-                required={false}
-                outDataSetter={setSearch}
-                actualData={search}
-            />
+            <ISTFiltersWrapper
+                title={"Узлы"}
+                isOpened={false}
+                hasActives={units_active}
+                mobileSettings={{
+                    onTransfer: ()=>{},
+                    type: "transfer",
+                    mobileSizeTrigger: "LG_992"
+                }}
+            >
 
-            {/*<ISTFiltersWrapper*/}
-            {/*    title={"Узлы"}*/}
-            {/*    isOpened={false}*/}
-            {/*    hasActives={units_active}*/}
-            {/*    mobileSettings={{*/}
-            {/*        onTransfer: ()=>{},*/}
-            {/*        type: "transfer",*/}
-            {/*        mobileSizeTrigger: "LG_992"*/}
-            {/*    }}*/}
-            {/*>*/}
+                <ISTFiltersList fields={[
+                    {isActive: false, fieldName: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. ",
+                        isCheckBox: true},
+                    {isActive: false, fieldName: "Field 2", isCheckBox: true},
+                    {isActive: false, fieldName: "Field 3", isCheckBox: true},
+                    {isActive: false, fieldName: "Field 4", isCheckBox: true},
+                ]}
+                    hookedData={units_filter}
 
-            {/*    <ISTFiltersList fields={[*/}
-            {/*        {isActive: false, fieldName: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. ",*/}
-            {/*            isCheckBox: true},*/}
-            {/*        {isActive: false, fieldName: "Field 2", isCheckBox: true},*/}
-            {/*        {isActive: false, fieldName: "Field 3", isCheckBox: true},*/}
-            {/*        {isActive: false, fieldName: "Field 4", isCheckBox: true},*/}
-            {/*    ]}*/}
-            {/*        hookedData={units_filter}*/}
-
-            {/*        switcherOptions={{*/}
-            {/*            onSwitch: switchFilter,*/}
-            {/*            filterDesignation: units_designation*/}
-            {/*        }}*/}
-            {/*    />*/}
-            {/*</ISTFiltersWrapper>*/}
+                    switcherOptions={{
+                        onSwitch: switchFilter,
+                        filterDesignation: units_designation
+                    }}
+                />
+            </ISTFiltersWrapper>
 
 
         </div>

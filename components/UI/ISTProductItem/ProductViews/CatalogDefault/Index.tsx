@@ -14,11 +14,13 @@ const CatalogView: FC<IProductItem_catalog> = ({
     style,
     currency,
     data,
-    forwardingPath,
     cartStatus,
 
     cartRemover,
     cartAdder,
+
+    forwardingPath,
+    imgLoaderFnc
 }) => {
 
     const handleClick = useCallback(()=>{
@@ -49,9 +51,14 @@ const CatalogView: FC<IProductItem_catalog> = ({
                         <div className={styles.cardImg}>
                             {data?.image ? (
                                 <Image
-                                    alt="Product Item Image"
+                                    alt={`${data.title}_Catalog_image`}
                                     src={data.image}
                                     fill={true}
+                                    sizes={"100%"}
+
+
+                                    placeholder={"blur"}
+                                    blurDataURL={"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAIGNIUk0AAHolAACAgwAA+f8AAIDpAAB1MAAA6mAAADqYAAAXb5JfxUYAAAGqSURBVHgBAJoBZf4BLDZB/wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAABmbHEABwYGAAAAAAD29vUA/v7+ANzb2QDDv70ABAAAAAAAAAAAbnR5APPy8QDDv7wA////AB4gIQBaXmIAFBUWAMO/vQAEAAAAAFVZXQAyNDYAvbq3AD1AQwAAAP8AGxweAKijnwAQERIAAAAAAAQAAAAAHyEiAI6JhADj4eAAAAAAAAUFBQBYXWEAxsTBAF1hZgAAAAAABAAAAAD5+fgA/Pv7AO/u7QAAAAAAAAAAAAEBAAACAgMA////AAAAAAACAAAAAAEAAQD8/PsAAAAAAAAAAAAAAAAA7u3tAEhNTwD///8AAAAAAAQAAAAADxARADQ3OgANDg8AAAAAAAEBAQBDR0kA4t/eAH54cwAAAAAAASw2Qf85PD4ALjAzAAEBAQAAAAAAAAAAAPj49wCgm5cAAAAAAAAAAAABLDZB/wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAP//UD9QyWTN6H8AAAAASUVORK5CYII="}
 
                                     style={{
                                         objectFit: "cover",
@@ -63,6 +70,10 @@ const CatalogView: FC<IProductItem_catalog> = ({
                                     alt="Product Item Image"
                                     src={noImg}
                                     fill={true}
+                                    sizes={"inherit"}
+
+                                    placeholder={"empty"}
+                                    blurDataURL={"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAIGNIUk0AAHolAACAgwAA+f8AAIDpAAB1MAAA6mAAADqYAAAXb5JfxUYAAAGqSURBVHgBAJoBZf4BLDZB/wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAABmbHEABwYGAAAAAAD29vUA/v7+ANzb2QDDv70ABAAAAAAAAAAAbnR5APPy8QDDv7wA////AB4gIQBaXmIAFBUWAMO/vQAEAAAAAFVZXQAyNDYAvbq3AD1AQwAAAP8AGxweAKijnwAQERIAAAAAAAQAAAAAHyEiAI6JhADj4eAAAAAAAAUFBQBYXWEAxsTBAF1hZgAAAAAABAAAAAD5+fgA/Pv7AO/u7QAAAAAAAAAAAAEBAAACAgMA////AAAAAAACAAAAAAEAAQD8/PsAAAAAAAAAAAAAAAAA7u3tAEhNTwD///8AAAAAAAQAAAAADxARADQ3OgANDg8AAAAAAAEBAQBDR0kA4t/eAH54cwAAAAAAASw2Qf85PD4ALjAzAAEBAQAAAAAAAAAAAPj49wCgm5cAAAAAAAAAAAABLDZB/wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAP//UD9QyWTN6H8AAAAASUVORK5CYII="}
 
                                     style={{
                                         objectFit: "cover",
@@ -94,17 +105,8 @@ const CatalogView: FC<IProductItem_catalog> = ({
                             <div className={`${styles.addToBasket} ${cartStatus ? styles.added : ""}`}
                                  onClick={()=>handleClick()}
                             >
-                                <div className={`${styles.addToCart_container} ${cartStatus ? styles.added_ico : ""}`}>
-                                    <Image
-                                        fill={true}
-                                        alt="imageBasket"
-                                        src={cartStatus ? addedToCart : addBasketIcon}
-                                        style={{
-                                            objectPosition: "center",
-                                            objectFit: "contain"
-                                        }}
-                                    />
-                                </div>
+                                <div className={`${styles.addToCart_container} ${cartStatus ? styles.added_ico : ""}`}/>
+
                             </div>
                         </div>
                     </div>
