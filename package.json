@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@apollo/client": "^3.7.1",
+    "@cloudinary/url-gen": "^1.10.1",
     "@pbe/react-yandex-maps": "^1.2.2",
     "@reduxjs/toolkit": "^1.9.1",
     "cloudinary-build-url": "^0.2.4",

@@ -10,9 +10,11 @@ import {ISTProductItemDistributor_Context} from "./Context";
 
 const IstProductItem: FC<IProductItem> = ({
     itemType,
-    style,
     currency,
-    forwardingPath
+
+    style,
+    forwardingPath,
+    imageOptimization
 }) => {
 
   switch (itemType.productType) {
@@ -27,6 +29,9 @@ const IstProductItem: FC<IProductItem> = ({
 
             cartRemover={itemType.parameters.cartRemover}
             cartAdder={itemType.parameters.cartAdder}
+
+            forwardingPath={forwardingPath}
+            imageOptimization={imageOptimization}
           />
         );
       } else {
@@ -39,6 +44,9 @@ const IstProductItem: FC<IProductItem> = ({
 
             cartAdder={itemType.parameters.cartAdder}
             cartRemover={itemType.parameters.cartRemover}
+
+            forwardingPath={forwardingPath}
+            imageOptimization={imageOptimization}
           />
         );
       }

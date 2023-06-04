@@ -1,14 +1,10 @@
 import Image from "next/image";
-import React, {FC, useCallback} from "react";
+import React, {FC, useCallback, useEffect} from "react";
 import styles from "./index.module.scss";
-
-import addBasketIcon from "../src/add_to_basket.svg";
 import noImg from "../src/Empty_Prod_image.svg";
-import addedToCart from "../src/added_to_cart.svg"
-
 import {IProductItem_catalog} from "../../Abstract/ICatalogTypes";
 import Link from "next/link";
-
+import {base64_empty_product} from "../src/base64_empty_product";
 
 const CatalogView: FC<IProductItem_catalog> = ({
     style,
@@ -20,7 +16,7 @@ const CatalogView: FC<IProductItem_catalog> = ({
     cartAdder,
 
     forwardingPath,
-    imgLoaderFnc
+    imageOptimization
 }) => {
 
     const handleClick = useCallback(()=>{
@@ -37,7 +33,6 @@ const CatalogView: FC<IProductItem_catalog> = ({
     },[cartRemover, cartAdder, cartStatus, data])
 
 
-
     return (
         <>
             <div className={styles.cardContainer}
@@ -45,35 +40,55 @@ const CatalogView: FC<IProductItem_catalog> = ({
                      margin: style?.margin,
                      width: style?.fill ? "100%" : (style?.width ? style?.width : "100%")
                  }}>
-                <div className={styles.cardData}>
 
+                <div className={styles.cardData}>
                     <Link href={forwardingPath ? forwardingPath : ""}>
                         <div className={styles.cardImg}>
                             {data?.image ? (
                                 <Image
                                     alt={`${data.title}_Catalog_image`}
                                     src={data.image}
-                                    fill={true}
-                                    sizes={"100%"}
 
+                                    fill={true}
+                                    sizes={
+                                        imageOptimization?.sizes ?
+                                            imageOptimization?.sizes :
+                                            undefined
+                                    }
+
+                                    loader={
+                                        imageOptimization?.loader ? imageOptimization?.loader : undefined
+                                    }
 
                                     placeholder={"blur"}
-                                    blurDataURL={"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAIGNIUk0AAHolAACAgwAA+f8AAIDpAAB1MAAA6mAAADqYAAAXb5JfxUYAAAGqSURBVHgBAJoBZf4BLDZB/wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAABmbHEABwYGAAAAAAD29vUA/v7+ANzb2QDDv70ABAAAAAAAAAAAbnR5APPy8QDDv7wA////AB4gIQBaXmIAFBUWAMO/vQAEAAAAAFVZXQAyNDYAvbq3AD1AQwAAAP8AGxweAKijnwAQERIAAAAAAAQAAAAAHyEiAI6JhADj4eAAAAAAAAUFBQBYXWEAxsTBAF1hZgAAAAAABAAAAAD5+fgA/Pv7AO/u7QAAAAAAAAAAAAEBAAACAgMA////AAAAAAACAAAAAAEAAQD8/PsAAAAAAAAAAAAAAAAA7u3tAEhNTwD///8AAAAAAAQAAAAADxARADQ3OgANDg8AAAAAAAEBAQBDR0kA4t/eAH54cwAAAAAAASw2Qf85PD4ALjAzAAEBAQAAAAAAAAAAAPj49wCgm5cAAAAAAAAAAAABLDZB/wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAP//UD9QyWTN6H8AAAAASUVORK5CYII="}
+
+                                    blurDataURL={
+                                        imageOptimization?.placeholderData ?
+                                            imageOptimization?.placeholderData :
+                                            base64_empty_product
+                                    }
 
                                     style={{
                                         objectFit: "cover",
                                         objectPosition: "center"
                                     }}
+
+                                    loading={"lazy"}
                                 />
                             ) : (
                                 <Image
                                     alt="Product Item Image"
                                     src={noImg}
                                     fill={true}
-                                    sizes={"inherit"}
 
-                                    placeholder={"empty"}
-                                    blurDataURL={"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAIGNIUk0AAHolAACAgwAA+f8AAIDpAAB1MAAA6mAAADqYAAAXb5JfxUYAAAGqSURBVHgBAJoBZf4BLDZB/wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAABmbHEABwYGAAAAAAD29vUA/v7+ANzb2QDDv70ABAAAAAAAAAAAbnR5APPy8QDDv7wA////AB4gIQBaXmIAFBUWAMO/vQAEAAAAAFVZXQAyNDYAvbq3AD1AQwAAAP8AGxweAKijnwAQERIAAAAAAAQAAAAAHyEiAI6JhADj4eAAAAAAAAUFBQBYXWEAxsTBAF1hZgAAAAAABAAAAAD5+fgA/Pv7AO/u7QAAAAAAAAAAAAEBAAACAgMA////AAAAAAACAAAAAAEAAQD8/PsAAAAAAAAAAAAAAAAA7u3tAEhNTwD///8AAAAAAAQAAAAADxARADQ3OgANDg8AAAAAAAEBAQBDR0kA4t/eAH54cwAAAAAAASw2Qf85PD4ALjAzAAEBAQAAAAAAAAAAAPj49wCgm5cAAAAAAAAAAAABLDZB/wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAP//UD9QyWTN6H8AAAAASUVORK5CYII="}
+                                    sizes={
+                                        imageOptimization?.sizes ?
+                                            imageOptimization?.sizes :
+                                            undefined
+                                    }
+
+                                    placeholder={"blur"}
+                                    blurDataURL={base64_empty_product}
 
                                     style={{
                                         objectFit: "cover",

@@ -14,11 +14,17 @@ import {CatalogWrapper} from "../../../../ProductsWrapper/catalogWrapper";
 import IstInput, {inputTypesVars} from "../../../../UI/ISTInput/ISTInput";
 import useISTFiltersList from "../../../../UI/hooks/ISTFiltersHook/useISTFiltersList";
 import {onFilterSwitchCustom_t} from "../../../../UI/hooks/ISTFiltersHook/common";
+import {IQueryPaginationVariable} from "../../../../../queries/common";
 
 const CatalogFullProductsListModal = ({}) => {
 
     const [search, setSearch] = useState<string>("");
-    const  filtersList = useAppSelector((state) => state.filtersList);
+    const filtersList = useAppSelector((state) => state.filtersList);
+
+    const [paginationOptions, setPaginationOptions] = useState<IQueryPaginationVariable>({
+        limit: 20,
+        offset: 0,
+    })
 
     // Filters state
     const[mfg_filter, mfg_active, mfg_designation] =
@@ -192,7 +198,7 @@ const CatalogFullProductsListModal = ({}) => {
             }}
        >
         <CatalogWrapper
-            onFetchMore={()=>{}}
+            paginationOptions={paginationOptions}
             itemWrapper_ClassName={styles.productCardVariant_Block}
             search={search}
             cartID={"9cfa4d6a-f2e9-400c-b0a9-4c85ab777272"}

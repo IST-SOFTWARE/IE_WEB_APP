@@ -4,7 +4,7 @@ import {useLazyQuery, useMutation, useQuery} from "@apollo/client";
 import {GRT_FILTERED_PRODUCTS_LIST, IProductFiltersVariables, IProducts_Q} from "../../queries/products/productActions";
 import ISTProductItem from "../UI/ISTProductItem/ISTProductItem";
 import {useAppSelector} from "../../Hooks/reduxSettings";
-import {useDispatch} from "react-redux";
+
 import {filterExclude_filtersHelper} from "../../helpers/Catalog/filters";
 import {
     GET_CART_COLLECTION_BY_ID,
@@ -22,12 +22,14 @@ import {
     redefining_to_ICartItemPropertiesData_redefiningHelper
 } from "../../helpers/Products/products_redefining.helper";
 import {ImageLoader} from "next/image";
+import {imageLoader_imagesHelper} from "../../helpers/Images/customImageLoader";
+import {IQueryPaginationVariable} from "../../queries/common";
 
 
 interface ICatalogWrapper{
     additionalForwarding: string
-    onFetchMore: () => void,
     search: string;
+    paginationOptions: IQueryPaginationVariable
 
     cartID?: string;
 
@@ -44,7 +46,7 @@ interface cartCollection {
 }
 
 export const CatalogWrapper:FC<ICatalogWrapper> = ({
-    onFetchMore,
+    paginationOptions,
     search = "",
 
     itemWrapper_ClassName,
@@ -58,12 +60,9 @@ export const CatalogWrapper:FC<ICatalogWrapper> = ({
     const catalog = useAppSelector(selector => selector.catalog);
     const filtersList = useAppSelector(selector => selector.filtersList)
 
-    const dispatch = useDispatch();
-
     const [cartProducts, setCartProducts] = useState<ICartItem_properties_data[]>([]);
     const [fullProdVars, setFullProdsVars] = useState<IProductFiltersVariables>({
-        limit: 12,
-        offset: 0,
+        ...paginationOptions,
         mfg: [""],
         unit: [""],
         type: [""],
@@ -166,6 +165,7 @@ export const CatalogWrapper:FC<ICatalogWrapper> = ({
 
     }, [cartProducts, cartData]);
 
+
     const cartRemover = useCallback<deleteProduct_fnc_onDelete>(
         async (id) => {
 
@@ -196,16 +196,23 @@ export const CatalogWrapper:FC<ICatalogWrapper> = ({
             return true
         }, [cartProducts, cartData]);
 
-        const catalogGetPath = (src: string, separator: string, startProperty: string):string => {
+    const getImageLoader = useCallback<ImageLoader>(({src, width, quality}) => {
 
+        let cloudinary_acc = process.env.NEXT_PUBLIC_CLOUDINARY_ACC
+        const imageHelper = new imageLoader_imagesHelper(cloudinary_acc);
+        const newUrl = imageHelper.customImageLoader({src, width, quality});
 
-            return ""
-        }
+        return newUrl ? newUrl : src
 
-        const catalogImageLoader: ImageLoader = ({src, width, quality}) => {
+    }, [])
 
-            return ""
-        }
+    const getImageSrc = useCallback((src: string, v_code: string):string => {
+
+        const cloudinary_acc = process.env.NEXT_PUBLIC_CLOUDINARY_ACC;
+        const imageHelper = new imageLoader_imagesHelper(cloudinary_acc);
+        return imageHelper.getCloudinaryImageByUrl(src, v_code, "ProductsImages")
+
+    }, [])
 
     return(
         <div style={{
@@ -213,11 +220,12 @@ export const CatalogWrapper:FC<ICatalogWrapper> = ({
             width: "100%",
             height: "100%",
             flexWrap: "wrap",
+            alignContent: "flex-start",
             opacity: mutatedData?.loading ? 0.5 : 1,
             ...wrapperStyles
             }}
 
-            className={itemWrapper_ClassName}
+            className={wrapper_ClassName}
         >
 
             {data && cartProducts ? data.Products.map((el, i) => {
@@ -227,18 +235,18 @@ export const CatalogWrapper:FC<ICatalogWrapper> = ({
                             style={itemWrapperStyles}
                             key={`productItemCatalog_${i}_key`}
                         >
-
-                            <button onClick={()=>catalogImageLoader({
-                                src: el.image_url,
-                                width: 30
-                            })}>Test</button>
-
                             <ISTProductItem
                                 currency={"RU"}
                                 forwardingPath={`${additionalForwarding}${el?.slug}`}
                                 style={{
                                     fill: true,
                                 }}
+
+                                imageOptimization={{
+                                    loader: getImageLoader,
+                                    sizes: "(min-width: 0) 256px, 256px",
+                                }}
+
                                 itemType={{
                                     productType: "catalog",
                                     parameters: {
@@ -253,11 +261,10 @@ export const CatalogWrapper:FC<ICatalogWrapper> = ({
                                         title: el?.product_name_ru,
                                         price: el?.price.toString(),
                                         vendCode: el?.vend_code.toString(),
-                                        image: el?.image_url
+                                        image: getImageSrc(el?.image_url, el?.vend_code.toString())
                                     },
                                 }}
                             />
-
                         </div>
                     )}) : ("NULL")
             }

@@ -1,15 +1,12 @@
 import React, {FC, useEffect} from 'react';
 import styles from "../../styles/Header/Header.module.scss"
 import Image from "next/image";
-import {useAppDispatch, useAppSelector} from "../../Hooks/reduxSettings";
-import {useDispatch} from "react-redux";
-import {
-    setCatalogState,
-    updateCatalog
-} from "../../store/slices/catalogSlice/catalogSlice";
+import { useAppSelector} from "../../Hooks/reduxSettings";
 import {useCatalog} from "../../Hooks/useCatalog/useCatalog"
 import {ICatalogQueries} from "../../Hooks/useCatalog/ICatalogQueries";
 import {ICatalogFiltersType} from "../../store/slices/common/catalogFiltersType";
+
+
 
 interface Header{
     children?: React.ReactNode,
@@ -54,6 +51,7 @@ const Header:FC<Header> = ({
                                 src={'/Logo/w_logo_svg.svg'}
                                 alt={"Logo"}
                                 fill={true}
+
                                 style={{
                                     objectFit: "contain",
                                     objectPosition: "left"

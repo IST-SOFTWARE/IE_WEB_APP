@@ -1,5 +1,6 @@
 import {CSSProperties, Dispatch} from "react";
 import {ICartItem_properties_data} from "./ISTProductItem/Abstract/ICartTypes";
+import {ImageLoader} from "next/image";
 
 export type mobileTrigger_size = "XXL_1400" | "XL_1200" | "LG_992" | "MD_768" | "SM_576"
 
@@ -55,3 +56,9 @@ export type cartAdder_fnc_onAdd =
 export type quantityEditor_fnc =
     (id: string | number, newQuantity: number, callBack?: callBack_fnc<number>) => Promise<boolean>
 
+
+export interface imageOptimization{
+    loader: ImageLoader,
+    sizes: string,
+    placeholderData?: string
+}

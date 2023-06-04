@@ -198,6 +198,7 @@ export const CartWrapper: FC<ICartWrapper> = ({
     /**
      *  CART WRAPPER VIEW
     */
+
     return data && products ? (
         <div style={wrapperStyles}>
             {products.map(({productId, quantity}, index) => {
