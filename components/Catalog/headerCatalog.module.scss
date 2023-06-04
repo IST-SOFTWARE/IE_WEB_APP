@@ -1,0 +1,124 @@
+@import "../../styles/variables.scss";
+@import "../../styles/mixins/rfs_mixins.scss";
+@import "../../styles/mixins/background_mixin.scss";
+@import "../../styles/mixins/ratioBox/ratio-box";
+
+.header {
+  width: 100%;
+  height: 80px;
+  padding: 10px 0 0 0;
+
+  .logoBlock {
+    min-width: 150px;
+    max-width: 170px;
+  }
+
+  .logoContainer {
+    position: relative;
+    height: 100%;
+  }
+
+  .searchBlock {
+    padding: 0 0 0 50px;
+  }
+
+  .closeBlock {
+    position: absolute;
+    right: 15px;
+    top: 10px;
+    .closeContainer {
+      position: relative;
+      width: 14px;
+      height: 14px;
+    }
+  }
+}
+
+@media screen and (min-width: 1399.98px) {
+  .header_XXL_1400 {    
+
+    .logoBlock {
+      min-width: 170px;
+      max-width: 200px;
+    }
+
+    .searchBlock {
+      display: block !important;
+    }
+
+    .closeBlock {
+      position: unset;
+      .closeContainer {
+        position: relative;
+        width: 17px;
+        height: 17px;
+      }
+    }
+  }
+}
+
+@media screen and (min-width: 1199.98px) {
+  .header_XL_1200 {
+    .logoBlock {
+      min-width: 170px;
+      max-width: 200px;
+    }
+
+    .searchBlock {
+      display: block !important;
+    }
+
+    .closeBlock {
+      position: unset;
+      .closeContainer {
+        position: relative;
+        width: 17px;
+        height: 17px;
+      }
+    }
+  }
+}
+
+@media screen and (min-width: 991.98px) {
+  .header_LG_992 {
+    .logoBlock {
+      min-width: 170px;
+      max-width: 200px;
+    }
+
+    .searchBlock {
+      display: block !important;
+    }
+
+    .closeBlock {
+      position: unset;
+      .closeContainer {
+        position: relative;
+        width: 17px;
+        height: 17px;
+      }
+    }
+  }
+}
+
+@media screen and (min-width: 767.98px) {
+  .header_MD_768 {
+    .logoBlock {
+      min-width: 170px;
+      max-width: 200px;
+    }
+
+    .searchBlock {
+      display: block !important;
+    }
+
+    .closeBlock {
+      position: unset;
+      .closeContainer {
+        position: relative;
+        width: 17px;
+        height: 17px;
+      }
+    }
+  }
+}

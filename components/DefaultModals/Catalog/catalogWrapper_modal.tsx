@@ -24,7 +24,8 @@ import { ICatalogFiltersType } from "../../../store/slices/common/catalogFilters
 
 import ISTProductItem from "../../UI/ISTProductItem/ISTProductItem";
 import ISTFiltersList from "../../UI/ISTFiltersList/components/ISTFiltersList";
-
+import HeaderCatalog from "../../Catalog/HeaderCatalog";
+import { setSearch } from "../../../store/slices/catalogSlice/catalogSlice";
 
 interface catalogWrapper {
   data?: modalStater;
@@ -44,6 +45,12 @@ const CatalogWrapperModal: FC<catalogWrapper> = ({
   const reduxCatalogState = useAppSelector((state) => state.catalog);
   const { currentState } = useCatalog<ICatalogQueries<ICatalogFiltersType>>();
 
+  const [searching, setSearching] = useState<string>("");
+
+  useEffect(() => {
+    dispatch(setSearch(searching));
+  }, [searching]);
+
   return (
     <>
       <div className={styles.catalog_wrapper}>
@@ -53,38 +60,34 @@ const CatalogWrapperModal: FC<catalogWrapper> = ({
             maxWidth: "1430px",
           }}
         >
+          <HeaderCatalog
+            logo={{ logoSrc: "/Logo/w_logo_svg.svg", forwardingPath: "Logo" }}
+            onClose={() => {
+              dispatch(setCatalogState(false));
+            }}
+            searchingElement={{
+              searchField: true,
+              searchSetter: setSearching,
+              searchValue: searching,
+            }}
+            mobileTriggerSize={"XL_1200"}
+          />
           <div
-            className={`row sticky-top ${styles.catalogHeader}`}
+            style={{
+              color: "#fff",
+              position: "absolute",
+              top: "70px",
+              left: "5px",
+              background: "black",
+            }}
           >
-            <button
-              onClick={() => {
-                dispatch(setCatalogState(false));
-              }}
-            >
-              Close
-            </button>
-
-            {/*Current state*/}
-            <div
-              style={{
-                color: "#fff",
-              }}
-            >
-              REDUX:
-              {JSON.stringify(reduxCatalogState)}
-              <br />
-              OUT FROM LINK:
-              {/*{JSON.stringify(currentState)}*/}
-            </div>
+            REDUX:
+            {JSON.stringify(reduxCatalogState)}
+            <br />
+            OUT FROM LINK:
+            {/*{JSON.stringify(currentState)}*/}
           </div>
-
-          <div
-            className={`row ${styles.catalogContent}`}
-          >
-            {children}
-
-          </div>
-
+          <div className={`row ${styles.catalogContent}`}>{children}</div>
         </div>
       </div>
     </>
