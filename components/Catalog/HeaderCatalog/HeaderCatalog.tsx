@@ -1,11 +1,9 @@
 import React, { Dispatch, FC, useEffect, useState } from "react";
 import styles from "./headerCatalog.module.scss";
-import { mobileTrigger_size } from "../UI/common";
+import { mobileTrigger_size } from "../../UI/common";
 import Image from "next/image";
-import IstInput, { inputTypesVars } from "../UI/ISTInput/ISTInput";
-import closeBtnImage from "./close_btn.svg";
+import IstInput, { inputTypesVars } from "../../UI/ISTInput/ISTInput";
 import Link from "next/link";
-import { truncate } from "fs";
 
 interface IHeader {
   onClose: (...props: any) => any;
@@ -65,7 +63,7 @@ const HeaderCatalog: FC<IHeader> = ({
             <div
               className={`col-8 d-none col-lg-6 mr-auto ${styles.searchBlock}`}
             >
-              <div className={styles.searchContainer}>
+              <div>
                 <IstInput
                   inputType={inputTypesVars.any_string}
                   placeholder={"Request message"}

@@ -23,13 +23,13 @@ const ISTCategoryHints: FC<ICategoryHints> = ({
 
   return (
     <div className={styles.search_results}>
-      {collectionName.map((hint, index) => {
+      {collectionName.map((hint) => {
         return (
           <div
             key={`results_${hint.collectionName}`}
             className={styles.result_container}
           >
-            {categoryCollection[index].length > 0 ? (
+            {categoryCollection[hint?.listedHintsId].length > 0 ? (
               <div className={styles.result_title_name}>
                 {hint.collectionName}
               </div>

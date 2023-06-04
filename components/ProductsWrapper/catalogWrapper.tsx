@@ -61,18 +61,30 @@ export const CatalogWrapper:FC<ICatalogWrapper> = ({
     const filtersList = useAppSelector(selector => selector.filtersList)
 
     const [cartProducts, setCartProducts] = useState<ICartItem_properties_data[]>([]);
+
+    const [productsList, setProductsList] = useState<IProducts_Q>(undefined);
+
+    const [pagOp, setPagOp] = useState<IQueryPaginationVariable>({
+        limit: 20,
+        offset: 0,
+    })
+
     const [fullProdVars, setFullProdsVars] = useState<IProductFiltersVariables>({
-        ...paginationOptions,
+        ...pagOp,
         mfg: [""],
         unit: [""],
         type: [""],
+        available: [""],
         search: search
     })
 
-    const {data, loading, error} = useQuery<IProducts_Q, IProductFiltersVariables>(
+
+
+    const {data, loading, error, fetchMore} = useQuery<IProducts_Q, IProductFiltersVariables>(
         GRT_FILTERED_PRODUCTS_LIST, {
             variables: fullProdVars,
-            fetchPolicy: "cache-and-network"
+            fetchPolicy: "cache-and-network",
+            
         }
     );
 
@@ -95,6 +107,30 @@ export const CatalogWrapper:FC<ICatalogWrapper> = ({
             }
         })
     },[search])
+
+
+
+    const handleClick = useCallback(() =>{
+
+        const newPagination: IQueryPaginationVariable = {
+            limit: pagOp?.limit,
+            offset: pagOp?.offset + pagOp?.limit
+        }
+
+        fetchMore<IProducts_Q, IProductFiltersVariables>({
+            variables: {
+                ...fullProdVars,
+                limit: newPagination?.limit,
+                offset: newPagination?.offset,
+            }
+        }).then(el=> {
+                setPagOp(newPagination)
+                console.log("finaly: ", el);
+                console.log("np: ", newPagination);
+            }
+        ).catch(ex => console.error(ex));
+    },[pagOp, fullProdVars]);
+
 
     useEffect(()=>{
         if(data && !cartData.called)
@@ -244,7 +280,7 @@ export const CatalogWrapper:FC<ICatalogWrapper> = ({
 
                                 imageOptimization={{
                                     loader: getImageLoader,
-                                    sizes: "(min-width: 0) 256px, 256px",
+                                    sizes: "350px",
                                 }}
 
                                 itemType={{
@@ -268,6 +304,15 @@ export const CatalogWrapper:FC<ICatalogWrapper> = ({
                         </div>
                     )}) : ("NULL")
             }
+
+            <button
+                onClick={()=>{
+                    handleClick()
+                }}
+            >
+                Fetch more
+            </button>
+
         </div>
     )
 }

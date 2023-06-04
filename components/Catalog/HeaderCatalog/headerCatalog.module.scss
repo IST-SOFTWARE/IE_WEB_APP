@@ -1,7 +1,7 @@
-@import "../../styles/variables.scss";
-@import "../../styles/mixins/rfs_mixins.scss";
-@import "../../styles/mixins/background_mixin.scss";
-@import "../../styles/mixins/ratioBox/ratio-box";
+@import "../../../styles/variables";
+@import "../../../styles/mixins/rfs_mixins";
+@import "../../../styles/mixins/background_mixin";
+@import "../../../styles/mixins/ratioBox/ratio-box";
 
 .header {
   width: 100%;

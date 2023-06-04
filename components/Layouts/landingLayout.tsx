@@ -1,4 +1,4 @@
-import React, {FC, ReactNode, useEffect, useState} from 'react';
+import React, {FC, ReactNode, useCallback, useEffect, useState} from 'react';
 import {useRouter} from "next/router";
 import useBaseModal from "../ISTModals/useBaseModal";
 import {useCatalog} from "../../Hooks/useCatalog/useCatalog";
@@ -13,7 +13,7 @@ import Header from "../Header/Header";
 import Footer from "../Footer/Footer";
 import {useAppSelector} from "../../Hooks/reduxSettings";
 import {useDispatch} from "react-redux";
-import {setCatalogState, updateCatalog} from "../../store/slices/catalogSlice/catalogSlice";
+import {setCatalogState, updateCatalog} from "../../store/slices/catalogSlices/catalogSlice";
 import Catalog from "../Catalog/Catalog";
 import CatalogTestProdsModal from "../DefaultModals/Catalog/Pages/catalogTestProds_modal";
 import CatalogTestFiltersModal from "../DefaultModals/Catalog/Pages/catalogTestFilters_modal";

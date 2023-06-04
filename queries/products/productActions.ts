@@ -2,6 +2,7 @@ import get_by_id from "./GET_PRODUCT_BY_ID.graphql"
 import get_full_list from "./GET_FULL_PRODUCT_LIST.graphql";
 import get_filtered from "./GET_FILTERED_PRODUCTS_LIST.graphql"
 import {IQueryPaginationVariable} from "../common";
+import {ICatalogFiltersType} from "../../store/slices/common/catalogFiltersType";
 
 export interface IProducts_Q {
     Products: Array<IProductItem>
@@ -9,11 +10,7 @@ export interface IProducts_Q {
 
 export interface IProductFiltersVariables extends IQueryPaginationVariable, IFiltersVars{};
 
-interface IFiltersVars {
-    mfg: string[]
-    unit: string[]
-    type: string[]
-
+interface IFiltersVars extends ICatalogFiltersType{
     search: string;
 }
 

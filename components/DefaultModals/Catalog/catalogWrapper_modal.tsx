@@ -14,7 +14,7 @@ import { useAppSelector } from "../../../Hooks/reduxSettings";
 import {
   setCatalogState,
   switchCatalog,
-} from "../../../store/slices/catalogSlice/catalogSlice";
+} from "../../../store/slices/catalogSlices/catalogSlice";
 
 import { useCatalog } from "../../../Hooks/useCatalog/useCatalog";
 import { useDispatch } from "react-redux";
@@ -24,8 +24,8 @@ import { ICatalogFiltersType } from "../../../store/slices/common/catalogFilters
 
 import ISTProductItem from "../../UI/ISTProductItem/ISTProductItem";
 import ISTFiltersList from "../../UI/ISTFiltersList/components/ISTFiltersList";
-import HeaderCatalog from "../../Catalog/HeaderCatalog";
-import { setSearch } from "../../../store/slices/catalogSlice/catalogSlice";
+import HeaderCatalog from "../../Catalog/HeaderCatalog/HeaderCatalog";
+import { setSearch } from "../../../store/slices/catalogSlices/catalogSlice";
 
 interface catalogWrapper {
   data?: modalStater;
@@ -50,6 +50,10 @@ const CatalogWrapperModal: FC<catalogWrapper> = ({
   useEffect(() => {
     dispatch(setSearch(searching));
   }, [searching]);
+
+  useEffect(()=>{
+
+  },[reduxCatalogState.catalog])
 
   return (
     <>

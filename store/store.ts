@@ -1,7 +1,7 @@
 import {configureStore} from "@reduxjs/toolkit";
 import scrollSpyReducer from "./slices/pageTrackerSlice";
 import regionReducer from "./slices/regionSlice"
-import catalogReducer from "./slices/catalogSlice/catalogSlice"
+import catalogReducer from "./slices/catalogSlices/catalogSlice"
 import filtersReducer from "./slices/filtersListSlice/filtersListSlice"
 
 const store = configureStore({

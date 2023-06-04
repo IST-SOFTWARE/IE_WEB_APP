@@ -10,8 +10,7 @@ import { useCatalog } from "../../Hooks/useCatalog/useCatalog";
 import { ICatalogQueries } from "../../Hooks/useCatalog/ICatalogQueries";
 import { ICatalogFiltersType } from "../../store/slices/common/catalogFiltersType";
 import { useAppSelector } from "../../Hooks/reduxSettings";
-import { modalStater } from "./ISTModals/modalSetter";
-import { toc_catalog_full_prod_list } from "../DefaultModals/table_of_contents/Catalog/toc_catalog_full_prod_list";
+import {modalStater} from "../ISTModals/modalSetter";
 
 interface ICatalog {
   children: ReactNode;

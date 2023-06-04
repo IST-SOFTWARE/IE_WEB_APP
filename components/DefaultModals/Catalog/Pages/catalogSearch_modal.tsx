@@ -9,7 +9,7 @@ import styles from "../../../../styles/Modals/catalog/catalogSearch/catalogSearc
 import useISTFiltersList from "../../../UI/hooks/ISTFiltersHook/useISTFiltersList";
 
 import { onFilterSwitchCustom_t } from "../../../UI/hooks/ISTFiltersHook/common";
-import { addNewFilter } from "../../../../store/slices/catalogSlice/catalogSlice";
+import { addNewFilter } from "../../../../store/slices/catalogSlices/catalogSlice";
 import { useDispatch } from "react-redux";
 import { useAppSelector } from "../../../../Hooks/reduxSettings";
 import { useQuery } from "@apollo/client";
@@ -20,7 +20,7 @@ import {
 import { IQuerySearchVariables } from "../../../../queries/common";
 import { getHintsList_hintsHelper } from "../../../../helpers/Catalog/hints";
 import { ICatalogFiltersType } from "../../../../store/slices/common/catalogFiltersType";
-import HeaderCatalog from "../../../Catalog/HeaderCatalog";
+import HeaderCatalog from "../../../Catalog/HeaderCatalog/HeaderCatalog";
 
 
 type ICategoryItem = {
@@ -141,7 +141,7 @@ const CatalogSearchModal = ({}) => {
                   listedHintsId: 2,
                   switcherOptions: {
                     onSwitch: switchFilter,
-                    filterDesignation: unit_designation,
+                    filterDesignation: type_designation,
                   },
                 },
                 {
@@ -149,7 +149,7 @@ const CatalogSearchModal = ({}) => {
                   listedHintsId: 1,
                   switcherOptions: {
                     onSwitch: switchFilter,
-                    filterDesignation: type_designation,
+                    filterDesignation: unit_designation,
                   },
                 },
               ]}

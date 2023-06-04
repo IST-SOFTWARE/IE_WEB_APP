@@ -5,7 +5,8 @@ query getProducts(
 
     $mfg: [String] = [""],
     $unit: [String] = [""],
-    $type: [String] = [""]
+    $type: [String] = [""],
+    $available: [String] = [""],
 )
 {
     Products(
@@ -41,6 +42,12 @@ query getProducts(
                     }
                 }
 
+            },{
+
+                available_status: {
+                    _nin: $available
+                }
+
             }]
         }
     ){
@@ -64,5 +71,7 @@ query getProducts(
         analogue_text,
         included_text,
         replacement_text,
+
+        available_status
     }
 }
