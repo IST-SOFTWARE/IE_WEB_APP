@@ -61,8 +61,7 @@ export const CatalogWrapper:FC<ICatalogWrapper> = ({
     const filtersList = useAppSelector(selector => selector.filtersList)
 
     const [cartProducts, setCartProducts] = useState<ICartItem_properties_data[]>([]);
-
-    const [productsList, setProductsList] = useState<IProducts_Q>(undefined);
+    const [fetchedAll, setFetchedAll] = useState<boolean>(false);
 
     const [pagOp, setPagOp] = useState<IQueryPaginationVariable>({
         limit: 20,
@@ -84,7 +83,6 @@ export const CatalogWrapper:FC<ICatalogWrapper> = ({
         GRT_FILTERED_PRODUCTS_LIST, {
             variables: fullProdVars,
             fetchPolicy: "cache-and-network",
-            
         }
     );
 
@@ -109,27 +107,35 @@ export const CatalogWrapper:FC<ICatalogWrapper> = ({
     },[search])
 
 
-
     const handleClick = useCallback(() =>{
 
-        const newPagination: IQueryPaginationVariable = {
+        let newPagination: IQueryPaginationVariable = {
             limit: pagOp?.limit,
-            offset: pagOp?.offset + pagOp?.limit
+            offset: !fetchedAll ? pagOp?.offset + pagOp?.limit : pagOp?.offset
         }
 
-        fetchMore<IProducts_Q, IProductFiltersVariables>({
-            variables: {
-                ...fullProdVars,
-                limit: newPagination?.limit,
-                offset: newPagination?.offset,
-            }
-        }).then(el=> {
-                setPagOp(newPagination)
-                console.log("finaly: ", el);
-                console.log("np: ", newPagination);
-            }
-        ).catch(ex => console.error(ex));
-    },[pagOp, fullProdVars]);
+        if(!fetchedAll)
+            fetchMore<IProducts_Q, IProductFiltersVariables>({
+                variables: {
+                    ...fullProdVars,
+                    limit: newPagination?.limit,
+                    offset: newPagination?.offset,
+                },
+                updateQuery: (prev, {fetchMoreResult}) => {
+                    if(!fetchMoreResult) return prev
+                    return Object.assign({}, prev, {
+                        Products: [...prev.Products, ...fetchMoreResult.Products]
+                    })
+                }
+            }).then(el=> {
+                    if(!(el?.data?.Products?.length > 0))
+                        setFetchedAll(true);
+
+                    setPagOp(newPagination);
+                }
+            ).catch(ex => console.error(ex));
+
+    },[pagOp, fullProdVars, fetchedAll]);
 
 
     useEffect(()=>{
@@ -160,15 +166,28 @@ export const CatalogWrapper:FC<ICatalogWrapper> = ({
 
             type: catalog.filters.type && catalog.filters.type?.length > 0 ?
                 filterExclude_filtersHelper(catalog.filters.type, filtersList.type) : [""],
-        } as Pick<IProductFiltersVariables, "mfg" | "unit" | "type">
 
+            available: catalog.filters.type && catalog.filters.type?.length > 0 ?
+                filterExclude_filtersHelper(catalog.filters.available, filtersList.available) : [""],
+
+        } as Pick<IProductFiltersVariables, "mfg" | "unit" | "type" | "available">
+
+        setFetchedAll(false);
 
         setFullProdsVars(prevState =>{
                 return{
                     ...prevState,
-                    ...newState
+                    ...newState,
+                    offset: 0,
                 }
         });
+
+        setPagOp(prevState => {
+            return{
+                ...prevState,
+                offset: 0
+            }
+        })
     },[filtersList, catalog.filters])
 
     const cartAdder = useCallback<cartAdder_fnc_onAdd>(

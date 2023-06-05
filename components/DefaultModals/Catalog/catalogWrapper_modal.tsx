@@ -62,6 +62,7 @@ const CatalogWrapperModal: FC<catalogWrapper> = ({
           className={"container-fluid h-100"}
           style={{
             maxWidth: "1430px",
+              border: "solid 1px blue"
           }}
         >
           <HeaderCatalog
@@ -76,21 +77,21 @@ const CatalogWrapperModal: FC<catalogWrapper> = ({
             }}
             mobileTriggerSize={"XL_1200"}
           />
-          <div
-            style={{
-              color: "#fff",
-              position: "absolute",
-              top: "70px",
-              left: "5px",
-              background: "black",
-            }}
-          >
-            REDUX:
-            {JSON.stringify(reduxCatalogState)}
-            <br />
-            OUT FROM LINK:
-            {/*{JSON.stringify(currentState)}*/}
-          </div>
+          {/*<div*/}
+          {/*  style={{*/}
+          {/*    color: "#fff",*/}
+          {/*    position: "absolute",*/}
+          {/*    top: "10px",*/}
+          {/*    right: "25px",*/}
+          {/*    background: "black",*/}
+          {/*  }}*/}
+          {/*>*/}
+          {/*  REDUX:*/}
+          {/*  {JSON.stringify(reduxCatalogState)}*/}
+          {/*  <br />*/}
+          {/*  OUT FROM LINK:*/}
+          {/*  /!*{JSON.stringify(currentState)}*!/*/}
+          {/*</div>*/}
           <div className={`row ${styles.catalogContent}`}>{children}</div>
         </div>
       </div>

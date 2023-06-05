@@ -59,6 +59,8 @@ export const LandingLayout:FC<ILandingLayout> = ({
                 "Type_category",
                 "type_name"
             ),
+
+            available: ["-1", "0", "1"]
         }))
 
     },[data])

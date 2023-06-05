@@ -7,7 +7,8 @@ const initialState = {
     mfg: [""],
     unit: [""],
     type: [""],
-} as Omit<ICatalogFiltersType, "available">
+    available: [""]
+} as ICatalogFiltersType
 
 
 const filtersListSlice = createGenericSlice(

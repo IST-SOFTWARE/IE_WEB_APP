@@ -4,9 +4,10 @@
 @import "../../../styles/mixins/ratioBox/ratio-box";
 
 .header {
-  width: 100%;
+  width: inherit;
   height: 80px;
-  padding: 10px 0 0 0;
+  padding: 3px 0 0 0;
+  background: $def_dark;
 
   .logoBlock {
     min-width: 150px;

@@ -32,14 +32,11 @@ const HeaderCatalog: FC<IHeader> = ({
 
   return (
     <>
-      <div
-        className={`${
-          mobileTriggerSize ? styles[`header_${mobileTriggerSize}`] : styles[`header_MD_768`]
-        } ${styles[`header`]}`}
-      >
         <div
           className={
-            "h-100 row pr-3 pl-3 justify-content-center position-sticky fixed-top"
+            `row pr-3 pl-3 justify-content-center position-sticky fixed-top ${
+                mobileTriggerSize ? styles[`header_${mobileTriggerSize}`] : styles[`header_MD_768`]
+            } ${styles[`header`]}`
           }
         >
           <div
@@ -96,7 +93,7 @@ const HeaderCatalog: FC<IHeader> = ({
             </div>
           </div>
         </div>
-      </div>
+
     </>
   );
 };
