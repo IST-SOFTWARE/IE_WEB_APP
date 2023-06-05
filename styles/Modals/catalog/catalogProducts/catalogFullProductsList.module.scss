@@ -6,12 +6,17 @@ $productItemSize: 180px;
 
 
 .catalogFilter_Block{
-  min-height: 50px;
-  margin-top: 10px;
-  position: fixed;
-  max-width: 320px;
+  padding-right: 15px;
+  width: 100%;
+  max-width: 400px;
 
-  width: 100%
+  bottom: 0px;
+
+  align-self: flex-end;
+  position: sticky;
+
+  height: fit-content;
+  min-height: calc(100vh - 80px);
 }
 
 .productCardVariant_Block {
@@ -80,13 +85,7 @@ $productItemSize: 180px;
     width: $productItemSize;
     min-width: $productItemSize;
   }
-
-  .catalogFilter_Block{
-    max-width: 370px;
-  }
 }
-
-
 
 @keyframes openModileFilters {
   0% {

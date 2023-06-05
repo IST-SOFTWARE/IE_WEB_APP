@@ -18,4 +18,6 @@ $headerSize: 110px;
 
 .catalogContent{
   height: calc(100% - $headerSize);
+  margin-top: 15px;
+  padding: 0 25px;
 }

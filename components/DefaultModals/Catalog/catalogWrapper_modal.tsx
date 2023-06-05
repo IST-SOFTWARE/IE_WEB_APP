@@ -59,10 +59,9 @@ const CatalogWrapperModal: FC<catalogWrapper> = ({
     <>
       <div className={styles.catalog_wrapper}>
         <div
-          className={"container-fluid h-100"}
+          className={"container-fluid"}
           style={{
-            maxWidth: "1430px",
-              border: "solid 1px blue"
+            maxWidth: "1480px"
           }}
         >
           <HeaderCatalog
@@ -75,24 +74,31 @@ const CatalogWrapperModal: FC<catalogWrapper> = ({
               searchSetter: setSearching,
               searchValue: searching,
             }}
-            mobileTriggerSize={"XL_1200"}
           />
-          {/*<div*/}
-          {/*  style={{*/}
-          {/*    color: "#fff",*/}
-          {/*    position: "absolute",*/}
-          {/*    top: "10px",*/}
-          {/*    right: "25px",*/}
-          {/*    background: "black",*/}
-          {/*  }}*/}
-          {/*>*/}
-          {/*  REDUX:*/}
-          {/*  {JSON.stringify(reduxCatalogState)}*/}
-          {/*  <br />*/}
-          {/*  OUT FROM LINK:*/}
-          {/*  /!*{JSON.stringify(currentState)}*!/*/}
-          {/*</div>*/}
-          <div className={`row ${styles.catalogContent}`}>{children}</div>
+
+          <div
+            style={{
+              color: "#fff",
+              position: "absolute",
+              top: "50px",
+              maxWidth: "350px",
+              left: "5%",
+              background: "black",
+              zIndex: "2000",
+              opacity: "0.5"
+            }}
+          >
+            REDUX:
+            {JSON.stringify(reduxCatalogState)}
+            <br />
+            OUT FROM LINK:
+            {/*{JSON.stringify(currentState)}*/}
+          </div>
+
+          <div className={`row ${styles.catalogContent}`}>
+            {children}
+          </div>
+
         </div>
       </div>
     </>

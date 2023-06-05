@@ -90,7 +90,7 @@ export const LandingLayout:FC<ILandingLayout> = ({
                     <div style={{
                         position: "absolute",
                         bottom: "20px",
-                        left: "20px",
+                        right: "20px",
                         display: "flex",
                         zIndex: "1000"
                     }}>
