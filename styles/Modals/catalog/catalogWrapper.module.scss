@@ -19,5 +19,18 @@ $headerSize: 110px;
 .catalogContent{
   height: calc(100% - $headerSize);
   margin-top: 15px;
-  padding: 0 25px;
+  padding: 0px 5px;
 }
+
+@media screen and (min-width: 575.98px){
+  .catalogContent{
+    padding: 0px 15px;
+  }
+}
+
+@media screen and (min-width: 991.98px){
+  .catalogContent{
+    padding: 0px 25px;
+  }
+}
+

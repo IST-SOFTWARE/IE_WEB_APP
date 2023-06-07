@@ -3,7 +3,7 @@ import React, {
   ReactNode,
   useCallback,
   useEffect,
-  useMemo,
+  useMemo, useRef,
   useState,
 } from "react";
 import { modalStater } from "../../ISTModals/modalSetter";
@@ -26,10 +26,12 @@ import ISTProductItem from "../../UI/ISTProductItem/ISTProductItem";
 import ISTFiltersList from "../../UI/ISTFiltersList/components/ISTFiltersList";
 import HeaderCatalog from "../../Catalog/HeaderCatalog/HeaderCatalog";
 import { setSearch } from "../../../store/slices/catalogSlices/catalogSlice";
+import {incOffset} from "../../../store/slices/catalogSlices/catalogPaginationSlice";
 
 interface catalogWrapper {
   data?: modalStater;
   children: ReactNode;
+
   stateSetter?: (...props: any) => any;
   stateSetterFilterPage?: (...props: any) => any;
   stateSetterCartPage?: (...props: any) => any;
@@ -41,23 +43,46 @@ const CatalogWrapperModal: FC<catalogWrapper> = ({
   stateSetterFilterPage,
   stateSetterCartPage,
 }) => {
+
   const dispatch = useDispatch();
   const reduxCatalogState = useAppSelector((state) => state.catalog);
-  const { currentState } = useCatalog<ICatalogQueries<ICatalogFiltersType>>();
 
   const [searching, setSearching] = useState<string>("");
+  const childrenRef = useRef<HTMLDivElement>(null);
+
+  //
+  // const { currentState } = useCatalog<ICatalogQueries<ICatalogFiltersType>>();
+  //
+  // useEffect(()=>{
+  // },[reduxCatalogState.catalog])
+  //
 
   useEffect(() => {
     dispatch(setSearch(searching));
   }, [searching]);
 
-  useEffect(()=>{
+  const onReviewsWrapperScroll = useCallback(()=>{
+    if(childrenRef.current) {
+      const win = childrenRef.current;
+      if (win.scrollHeight - win.clientHeight < win.scrollTop + 1)
+        dispatch(incOffset());
+    }
+  },[childrenRef])
 
-  },[reduxCatalogState.catalog])
+  useEffect(()=>{
+    if(childrenRef && childrenRef.current) {
+      const win = childrenRef.current;
+
+      win.addEventListener("scroll", onReviewsWrapperScroll)
+      return () => {
+        win.removeEventListener("scroll", onReviewsWrapperScroll)
+      }
+    }
+  },[onReviewsWrapperScroll, childrenRef])
 
   return (
     <>
-      <div className={styles.catalog_wrapper}>
+      <div className={styles.catalog_wrapper} ref={childrenRef}>
         <div
           className={"container-fluid"}
           style={{
@@ -71,6 +96,7 @@ const CatalogWrapperModal: FC<catalogWrapper> = ({
             }}
             searchingElement={{
               searchField: true,
+
               searchSetter: setSearching,
               searchValue: searching,
             }}

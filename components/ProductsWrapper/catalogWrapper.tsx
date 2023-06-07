@@ -24,12 +24,13 @@ import {
 import {ImageLoader} from "next/image";
 import {imageLoader_imagesHelper} from "../../helpers/Images/customImageLoader";
 import {IQueryPaginationVariable} from "../../queries/common";
+import {useDispatch} from "react-redux";
+import {incOffset, setOffset} from "../../store/slices/catalogSlices/catalogPaginationSlice";
 
 
 interface ICatalogWrapper{
     additionalForwarding: string
     search: string;
-    paginationOptions: IQueryPaginationVariable
 
     cartID?: string;
 
@@ -46,9 +47,7 @@ interface cartCollection {
 }
 
 export const CatalogWrapper:FC<ICatalogWrapper> = ({
-    paginationOptions,
     search = "",
-
     itemWrapper_ClassName,
     wrapper_ClassName,
     wrapperStyles,
@@ -58,18 +57,15 @@ export const CatalogWrapper:FC<ICatalogWrapper> = ({
 }) => {
 
     const catalog = useAppSelector(selector => selector.catalog);
-    const filtersList = useAppSelector(selector => selector.filtersList)
+    const filtersList = useAppSelector(selector => selector.filtersList);
+    const pagination = useAppSelector(selector => selector.pagination);
+    const dispatch = useDispatch();
 
     const [cartProducts, setCartProducts] = useState<ICartItem_properties_data[]>([]);
     const [fetchedAll, setFetchedAll] = useState<boolean>(false);
 
-    const [pagOp, setPagOp] = useState<IQueryPaginationVariable>({
-        limit: 20,
-        offset: 0,
-    })
-
     const [fullProdVars, setFullProdsVars] = useState<IProductFiltersVariables>({
-        ...pagOp,
+        ...pagination,
         mfg: [""],
         unit: [""],
         type: [""],
@@ -78,6 +74,7 @@ export const CatalogWrapper:FC<ICatalogWrapper> = ({
     })
 
 
+    // QUERIES BLOCK
 
     const {data, loading, error, fetchMore} = useQuery<IProducts_Q, IProductFiltersVariables>(
         GRT_FILTERED_PRODUCTS_LIST, {
@@ -107,35 +104,29 @@ export const CatalogWrapper:FC<ICatalogWrapper> = ({
     },[search])
 
 
-    const handleClick = useCallback(() =>{
+    useEffect(()=>{
 
-        let newPagination: IQueryPaginationVariable = {
-            limit: pagOp?.limit,
-            offset: !fetchedAll ? pagOp?.offset + pagOp?.limit : pagOp?.offset
-        }
-
-        if(!fetchedAll)
+        if(!fetchedAll && pagination.offset > 0)
             fetchMore<IProducts_Q, IProductFiltersVariables>({
                 variables: {
                     ...fullProdVars,
-                    limit: newPagination?.limit,
-                    offset: newPagination?.offset,
+                    limit: pagination?.limit,
+                    offset: pagination?.offset,
                 },
                 updateQuery: (prev, {fetchMoreResult}) => {
-                    if(!fetchMoreResult) return prev
+                    if (!fetchMoreResult) return prev
                     return Object.assign({}, prev, {
                         Products: [...prev.Products, ...fetchMoreResult.Products]
                     })
                 }
-            }).then(el=> {
-                    if(!(el?.data?.Products?.length > 0))
-                        setFetchedAll(true);
 
-                    setPagOp(newPagination);
+            }).then(el => {
+                    if (!(el?.data?.Products?.length > 0))
+                        setFetchedAll(true);
                 }
             ).catch(ex => console.error(ex));
 
-    },[pagOp, fullProdVars, fetchedAll]);
+    },[pagination, fetchedAll])
 
 
     useEffect(()=>{
@@ -167,7 +158,7 @@ export const CatalogWrapper:FC<ICatalogWrapper> = ({
             type: catalog.filters.type && catalog.filters.type?.length > 0 ?
                 filterExclude_filtersHelper(catalog.filters.type, filtersList.type) : [""],
 
-            available: catalog.filters.type && catalog.filters.type?.length > 0 ?
+            available: catalog.filters.available && catalog.filters.available?.length > 0 ?
                 filterExclude_filtersHelper(catalog.filters.available, filtersList.available) : [""],
 
         } as Pick<IProductFiltersVariables, "mfg" | "unit" | "type" | "available">
@@ -182,12 +173,8 @@ export const CatalogWrapper:FC<ICatalogWrapper> = ({
                 }
         });
 
-        setPagOp(prevState => {
-            return{
-                ...prevState,
-                offset: 0
-            }
-        })
+        dispatch(setOffset(0));
+
     },[filtersList, catalog.filters])
 
     const cartAdder = useCallback<cartAdder_fnc_onAdd>(
@@ -325,9 +312,9 @@ export const CatalogWrapper:FC<ICatalogWrapper> = ({
             }
 
             <button
-                onClick={()=>{
-                    handleClick()
-                }}
+                // onClick={()=>{
+                //     handleClick()
+                // }}
             >
                 Fetch more
             </button>
