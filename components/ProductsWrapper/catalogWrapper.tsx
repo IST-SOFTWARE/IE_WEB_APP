@@ -1,5 +1,5 @@
 import React, {CSSProperties, FC, useCallback, useEffect, useState} from "react";
-import {cartAdder_fnc_onAdd, deleteProduct_fnc_onDelete, IProductData} from "../UI/common";
+import {cartAdder_fnc_onAdd, deleteProduct_fnc_onDelete} from "../UI/common";
 import {useLazyQuery, useMutation, useQuery} from "@apollo/client";
 import {GRT_FILTERED_PRODUCTS_LIST, IProductFiltersVariables, IProducts_Q} from "../../queries/products/productActions";
 import ISTProductItem from "../UI/ISTProductItem/ISTProductItem";
