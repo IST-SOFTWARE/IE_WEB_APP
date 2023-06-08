@@ -79,7 +79,7 @@ export const CatalogWrapper:FC<ICatalogWrapper> = ({
     const {data, loading, error, fetchMore} = useQuery<IProducts_Q, IProductFiltersVariables>(
         GRT_FILTERED_PRODUCTS_LIST, {
             variables: fullProdVars,
-            fetchPolicy: "cache-and-network",
+            fetchPolicy: "network-only",
         }
     );
 
@@ -310,15 +310,6 @@ export const CatalogWrapper:FC<ICatalogWrapper> = ({
                         </div>
                     )}) : ("NULL")
             }
-
-            <button
-                // onClick={()=>{
-                //     handleClick()
-                // }}
-            >
-                Fetch more
-            </button>
-
         </div>
     )
 }
