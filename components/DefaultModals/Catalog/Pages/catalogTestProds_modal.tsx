@@ -29,23 +29,6 @@ import {
   IProductData,
   quantityEditor_fnc,
 } from "../../../UI/common";
-import { useAppSelector } from "../../../../Hooks/reduxSettings";
-import ISTFiltersList from "../../../UI/ISTFiltersList/components/ISTFiltersList";
-import {
-  filterSetter_filtersHelper,
-  isActiveNow_filtersHelper,
-} from "../../../../helpers/Catalog/filters";
-import useISTFiltersList from "../../../UI/hooks/ISTFiltersHook/useISTFiltersList";
-import { ICatalogFiltersType } from "../../../../store/slices/common/catalogFiltersType";
-import { useDispatch } from "react-redux";
-import { onFilterSwitchCustom_t } from "../../../UI/hooks/ISTFiltersHook/common";
-import { addNewFilter } from "../../../../store/slices/catalogSlices/catalogSlice";
-
-
-interface mobileFIlterModal {
-   pageDesignation: keyof ICatalogFiltersType;
-
-}
 
 interface cartCollection {
   cartCollection_by_id: ICartCollection;
@@ -87,41 +70,108 @@ const getCartProductDataById: cartItemGetter_fnc = async (
   return outProduct;
 };
 
-const CatalogTestProdsModal: FC<mobileFIlterModal> = ({pageDesignation}) => {
-  const catalogFilter = useAppSelector((selector) => selector.filtersList);
-  const catalog = useAppSelector((state) => state.catalog);
 
-  const [firstFilter, firstActive, designation] =
-    useISTFiltersList<ICatalogFiltersType>(pageDesignation);
+const CatalogTestProdsModal: FC = ({}) => {
 
-  const dispatch = useDispatch();
+ const [selected, setSelected] = useState<string[]>([]);
 
+  const { data, loading, error } = useQuery<cartCollection>(
+    GET_CART_COLLECTION_BY_ID,
+    {
+      fetchPolicy: "cache-and-network",
+      variables: { id: cartID },
+    }
+  );
 
+  const [products, setProducts] = useState<ICartItem_properties_data[]>([]);
 
-  const switchFilter: onFilterSwitchCustom_t<keyof ICatalogFiltersType> =
-    useCallback(
-      (idx, state, name, options) => {
-        if (!catalog || !catalog.filters || !options) return;
+  useEffect(() => {
+    if (data && data.cartCollection_by_id)
+      setProducts(
+        redefining_to_ICartItemPropertiesData_redefiningHelper(
+          data.cartCollection_by_id.cart_model
+        )
+      );
+  }, [data]);
 
-        const newFilters = filterSetter_filtersHelper(
-          catalog.filters,
-          options,
-          name
-        );
+  const editQuantity = useCallback<quantityEditor_fnc>(
+    async (id, newQuantity, callBack) => {
+      if (!products || !data?.cartCollection_by_id) return;
 
-        dispatch(
-          addNewFilter({
-            key: options,
-            filter: newFilters,
-          })
-        );
-      },
-      [dispatch, catalog]
-    );
+      const newCart = products_editQuantity_actionsHelper(
+        products,
+        id,
+        newQuantity
+      );
+
+      const variables = {
+        id: data.cartCollection_by_id.id,
+        data: {
+          status: "Draft",
+          cart_model: redefining_to_CartModel_redefiningHelper(newCart),
+        },
+      } as ICartCollectionVariables;
+
+      let _newQuantity = 0;
+
+      await apolloClient
+        .mutate<ICartCollection_updated>({
+          mutation: UPDATE_CART_BY_ID,
+          variables: variables,
+        })
+        .then((el) => {
+          if (el.data && !el.errors) {
+            _newQuantity = newQuantity;
+
+            if (callBack?.sideEffect && callBack?.flag === true)
+              callBack.sideEffect(_newQuantity);
+          }
+        });
+
+      return true;
+    },
+    [products, data]
+  );
+
+  const deleteProduct = useCallback<deleteProduct_fnc_onDelete>(
+    async (id, callBack) => {
+      const newCart = products_removeItem_actionsHelper(products, id);
+
+      if (!products || !data?.cartCollection_by_id) return;
+
+      const variables = {
+        id: data.cartCollection_by_id.id,
+        data: {
+          status: "Draft",
+          cart_model: redefining_to_CartModel_redefiningHelper(newCart),
+        },
+      } as ICartCollectionVariables;
+
+      await apolloClient
+        .mutate<ICartCollection_updated>({
+          mutation: UPDATE_CART_BY_ID,
+          variables: variables,
+        })
+        .then((el) => {
+          if (el.data?.update_cartCollection_item && !el.errors) {
+            if (callBack?.sideEffect && callBack?.flag === true)
+              callBack.sideEffect(
+                redefining_to_ICartItemPropertiesData_redefiningHelper(
+                  el.data.update_cartCollection_item.cart_model
+                )
+              );
+          }
+        });
+
+      return true;
+    },
+    [products, data]
+  );
+
 
   return (
     <>
-      {/* <div style={{width: "100%", height: "1200px", padding: "10px"}}>
+      <div style={{width: "100%", height: "1200px", padding: "10px"}}>
                 {!loading && !error &&
                     products.map(({productId, quantity}, index) => {
                         return (
@@ -159,122 +209,9 @@ const CatalogTestProdsModal: FC<mobileFIlterModal> = ({pageDesignation}) => {
                             />
                         );
                     })}
-            </div> */}
-
-      {catalogFilter && catalogFilter[pageDesignation] ? (
-        <ISTFiltersList
-          fields={catalogFilter[pageDesignation].map((el) => {
-            return {
-              fieldName: el,
-              isCheckBox: true,
-              isActive: isActiveNow_filtersHelper(catalog?.filters, pageDesignation, el),
-            };
-          })}
-          hookedData={firstFilter}
-          switcherOptions={{
-            onSwitch: switchFilter,
-            filterDesignation: designation,
-          }}
-        />
-      ) : null}
+            </div>
     </>
   );
 };
 
 export default CatalogTestProdsModal;
-
-
-  //   const [selected, setSelected] = useState<string[]>([]);
-
-  //   const { data, loading, error } = useQuery<cartCollection>(
-  //     GET_CART_COLLECTION_BY_ID,
-  //     {
-  //       fetchPolicy: "cache-and-network",
-  //       variables: { id: cartID },
-  //     }
-  //   );
-
-  //   const [products, setProducts] = useState<ICartItem_properties_data[]>([]);
-
-  //   useEffect(() => {
-  //     if (data && data.cartCollection_by_id)
-  //       setProducts(
-  //         redefining_to_ICartItemPropertiesData_redefiningHelper(
-  //           data.cartCollection_by_id.cart_model
-  //         )
-  //       );
-  //   }, [data]);
-
-  //   const editQuantity = useCallback<quantityEditor_fnc>(
-  //     async (id, newQuantity, callBack) => {
-  //       if (!products || !data?.cartCollection_by_id) return;
-
-  //       const newCart = products_editQuantity_actionsHelper(
-  //         products,
-  //         id,
-  //         newQuantity
-  //       );
-
-  //       const variables = {
-  //         id: data.cartCollection_by_id.id,
-  //         data: {
-  //           status: "Draft",
-  //           cart_model: redefining_to_CartModel_redefiningHelper(newCart),
-  //         },
-  //       } as ICartCollectionVariables;
-
-  //       let _newQuantity = 0;
-
-  //       await apolloClient
-  //         .mutate<ICartCollection_updated>({
-  //           mutation: UPDATE_CART_BY_ID,
-  //           variables: variables,
-  //         })
-  //         .then((el) => {
-  //           if (el.data && !el.errors) {
-  //             _newQuantity = newQuantity;
-
-  //             if (callBack?.sideEffect && callBack?.flag === true)
-  //               callBack.sideEffect(_newQuantity);
-  //           }
-  //         });
-
-  //       return true;
-  //     },
-  //     [products, data]
-  //   );
-
-  //   const deleteProduct = useCallback<deleteProduct_fnc_onDelete>(
-  //     async (id, callBack) => {
-  //       const newCart = products_removeItem_actionsHelper(products, id);
-
-  //       if (!products || !data?.cartCollection_by_id) return;
-
-  //       const variables = {
-  //         id: data.cartCollection_by_id.id,
-  //         data: {
-  //           status: "Draft",
-  //           cart_model: redefining_to_CartModel_redefiningHelper(newCart),
-  //         },
-  //       } as ICartCollectionVariables;
-
-  //       await apolloClient
-  //         .mutate<ICartCollection_updated>({
-  //           mutation: UPDATE_CART_BY_ID,
-  //           variables: variables,
-  //         })
-  //         .then((el) => {
-  //           if (el.data?.update_cartCollection_item && !el.errors) {
-  //             if (callBack?.sideEffect && callBack?.flag === true)
-  //               callBack.sideEffect(
-  //                 redefining_to_ICartItemPropertiesData_redefiningHelper(
-  //                   el.data.update_cartCollection_item.cart_model
-  //                 )
-  //               );
-  //           }
-  //         });
-
-  //       return true;
-  //     },
-  //     [products, data]
-  //   );

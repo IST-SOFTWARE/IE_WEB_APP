@@ -3,69 +3,41 @@ import React, {
   ReactNode,
   useCallback,
   useEffect,
-  useMemo,
   useRef,
   useState,
 } from "react";
-import { modalStater } from "../../ISTModals/modalSetter";
-import styles from "../../../styles/Modals/catalog/catalogWrapper.module.scss";
-import { useRouter } from "next/router";
 
-import { useAppSelector } from "../../../Hooks/reduxSettings";
+import styles from "../../../styles/Modals/catalog/catalogWrapper.module.scss";
 import {
   setCatalogState,
-  switchCatalog,
+
 } from "../../../store/slices/catalogSlices/catalogSlice";
-
-import { useCatalog } from "../../../Hooks/useCatalog/useCatalog";
 import { useDispatch } from "react-redux";
-
-import { ICatalogQueries } from "../../../Hooks/useCatalog/ICatalogQueries";
-import { ICatalogFiltersType } from "../../../store/slices/common/catalogFiltersType";
-
-import ISTProductItem from "../../UI/ISTProductItem/ISTProductItem";
-import ISTFiltersList from "../../UI/ISTFiltersList/components/ISTFiltersList";
 import HeaderCatalog from "../../Catalog/HeaderCatalog/HeaderCatalog";
 import { setSearch } from "../../../store/slices/catalogSlices/catalogSlice";
 import { incOffset } from "../../../store/slices/catalogSlices/catalogPaginationSlice";
 import useBaseModal from "../../ISTModals/useBaseModal";
 import { toc_filter_page_mobile } from "../table_of_contents/Catalog/mobile/toc_filter_page_mobile";
-import CatalogTestProdsModal from "./Pages/catalogTestProds_modal";
+
+import CatalogWrapperMobileModal from "./Pages/mobile/catalogWrapperMobile_modal";
+import {CatalogFilterPageMobileModal} from "./Pages/mobile/catalogFilterPageMobile_modal";
 
 interface catalogWrapper {
-  data?: modalStater;
   children: ReactNode;
-
-  stateSetter?: (...props: any) => any;
-  stateSetterFilterPage?: (...props: any) => any;
-  stateSetterCartPage?: (...props: any) => any;
 }
 
 const CatalogWrapperModal: FC<catalogWrapper> = ({
   children,
-  stateSetter,
-  stateSetterFilterPage,
-  stateSetterCartPage,
 }) => {
-  const dispatch = useDispatch();
-  const reduxCatalogState = useAppSelector((state) => state.catalog);
 
+  const dispatch = useDispatch();
   const [searching, setSearching] = useState<string>("");
-  const [st, sSt] = useState<boolean>(false);
+  const { modalComponent, ModalView } = useBaseModal(
+      "Catalog_Modal_wrapper",
+      "CatalogSpace_mobile_modal"
+  );
 
   const childrenRef = useRef<HTMLDivElement>(null);
-
-  //
-  // const { currentState } = useCatalog<ICatalogQueries<ICatalogFiltersType>>();
-  //
-  // useEffect(()=>{
-  // },[reduxCatalogState.catalog])
-  //
-
-  const { modalComponent, ModalView } = useBaseModal(
-    "APP_BODY_WRAPPER",
-    "CatalogSpace_modal"
-  );
 
   useEffect(() => {
     if (modalComponent) {
@@ -85,6 +57,7 @@ const CatalogWrapperModal: FC<catalogWrapper> = ({
     }
   }, [childrenRef]);
 
+
   useEffect(() => {
     if (childrenRef && childrenRef.current) {
       const win = childrenRef.current;
@@ -96,9 +69,13 @@ const CatalogWrapperModal: FC<catalogWrapper> = ({
     }
   }, [onReviewsWrapperScroll, childrenRef]);
 
+
   return (
     <>
-      <div className={styles.catalog_wrapper} ref={childrenRef}>
+      <div className={styles.catalog_wrapper}
+           ref={childrenRef}
+           id={"Catalog_Modal_wrapper"}
+      >
         <div
           className={"container-fluid"}
           style={{
@@ -117,45 +94,82 @@ const CatalogWrapperModal: FC<catalogWrapper> = ({
               searchValue: searching,
             }}
           />
-          <button
-            onClick={() => {
-              modalComponent
-                .applyModalByName(toc_filter_page_mobile.typeName)
-                .then(() => sSt(!st));
-            }}
-          >
-            testpage_mobile
-          </button>
-          <div
+
+          <button onClick={()=>{
+            modalComponent.applyModalByName(toc_filter_page_mobile.typeName).then(()=>
+                    modalComponent.switch(!modalComponent.getState)
+
+                )
+          }}
             style={{
-              color: "#fff",
               position: "absolute",
-              top: "50px",
-              maxWidth: "350px",
-              left: "5%",
-              background: "black",
-              zIndex: "2000",
-              opacity: "0.5",
+              left: "20px",
+              bottom: "20px",
+              zIndex: "1000"
             }}
           >
-            REDUX:
-            {JSON.stringify(reduxCatalogState)}
-            <br />
-            OUT FROM LINK:
+            switch modal
+          </button>
+
+          <div
+              id={"CatalogSpace_mobile_modal"}
+              className={`${styles.catalogContent_wrapper} ${modalComponent.getState ? styles.modal : ""}`}
+          >
+
+            <div className={`row ${styles.catalogContent} ${modalComponent.getState ? styles.hidden : ""}`}>
+              {children}
+            </div>
+
           </div>
 
-          <div className={`row ${styles.catalogContent}`}>
-            {children}
-            <ModalView>
-              {modalComponent.isCurrentModal(
-                toc_filter_page_mobile.typeName
-              ) ? (
-                <CatalogTestProdsModal pageDesignation="type" />
-              ) : null}
-            </ModalView>
-          </div>
+
+          {/*<div*/}
+          {/*  style={{*/}
+          {/*    color: "#fff",*/}
+          {/*    position: "absolute",*/}
+          {/*    top: "50px",*/}
+          {/*    maxWidth: "350px",*/}
+          {/*    left: "5%",*/}
+          {/*    background: "black",*/}
+          {/*    zIndex: "2000",*/}
+          {/*    opacity: "0.5",*/}
+          {/*  }}*/}
+          {/*>*/}
+          {/*  REDUX:*/}
+          {/*  {JSON.stringify(reduxCatalogState)}*/}
+          {/*  <br />*/}
+          {/*  OUT FROM LINK:*/}
+          {/*</div>*/}
+
         </div>
       </div>
+
+        {/*     Modals       */}
+
+        <ModalView
+            style={{
+                minWidth: "unset",
+                minHeight: "unset",
+
+                height: "100%",
+
+                width: "100%",
+                position: "absolute",
+
+                top: 0,
+                left: 0,
+            }}
+        >
+
+            <CatalogWrapperMobileModal>
+                {modalComponent.isCurrentModal(
+                    toc_filter_page_mobile.typeName
+                ) ? (
+                    <CatalogFilterPageMobileModal pageDesignation="type" />
+                ) : null}
+            </CatalogWrapperMobileModal>
+        </ModalView>
+
     </>
   );
 };
