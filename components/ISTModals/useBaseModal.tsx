@@ -32,6 +32,7 @@ export interface IBaseModalFC
 
 const useBaseModal = (
     ContainerIdForScrollBlocking?: string,
+    TransferBlockId?: string,
 ) => {
 
     const[currentData, dataUpdate] =
@@ -61,8 +62,10 @@ const useBaseModal = (
 
     const portalSender = useCallback((modal: React.ReactNode)=>{
         if(currentData)
+        console.log("portal")
             return createPortal(currentData.getState ? modal : null,
-                document.getElementById("PopUpBase"))
+                document.getElementById(TransferBlockId ? TransferBlockId : "PopUpBase"))
+                
     },[currentData])
 
     const ModalView:FC<IBaseModalFC> = ({

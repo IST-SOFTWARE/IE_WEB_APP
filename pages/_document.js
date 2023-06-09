@@ -20,6 +20,7 @@ export default function Document() {
       </Head>
           <body id={"APP_BODY_WRAPPER"}>
                 <div id="PopUpBase"/>
+                <div id="CatalogSpace_modal"/>
                 <div id="CatalogSpace"/>
                 <div id="FeedBackList"/>
                 <Main />

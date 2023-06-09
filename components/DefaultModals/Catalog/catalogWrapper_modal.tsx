@@ -3,7 +3,8 @@ import React, {
   ReactNode,
   useCallback,
   useEffect,
-  useMemo, useRef,
+  useMemo,
+  useRef,
   useState,
 } from "react";
 import { modalStater } from "../../ISTModals/modalSetter";
@@ -26,7 +27,10 @@ import ISTProductItem from "../../UI/ISTProductItem/ISTProductItem";
 import ISTFiltersList from "../../UI/ISTFiltersList/components/ISTFiltersList";
 import HeaderCatalog from "../../Catalog/HeaderCatalog/HeaderCatalog";
 import { setSearch } from "../../../store/slices/catalogSlices/catalogSlice";
-import {incOffset} from "../../../store/slices/catalogSlices/catalogPaginationSlice";
+import { incOffset } from "../../../store/slices/catalogSlices/catalogPaginationSlice";
+import useBaseModal from "../../ISTModals/useBaseModal";
+import { toc_filter_page_mobile } from "../table_of_contents/Catalog/mobile/toc_filter_page_mobile";
+import CatalogTestProdsModal from "./Pages/catalogTestProds_modal";
 
 interface catalogWrapper {
   data?: modalStater;
@@ -43,11 +47,12 @@ const CatalogWrapperModal: FC<catalogWrapper> = ({
   stateSetterFilterPage,
   stateSetterCartPage,
 }) => {
-
   const dispatch = useDispatch();
   const reduxCatalogState = useAppSelector((state) => state.catalog);
 
   const [searching, setSearching] = useState<string>("");
+  const [st, sSt] = useState<boolean>(false);
+
   const childrenRef = useRef<HTMLDivElement>(null);
 
   //
@@ -57,28 +62,39 @@ const CatalogWrapperModal: FC<catalogWrapper> = ({
   // },[reduxCatalogState.catalog])
   //
 
+  const { modalComponent, ModalView } = useBaseModal(
+    "APP_BODY_WRAPPER",
+    "CatalogSpace_modal"
+  );
+
+  useEffect(() => {
+    if (modalComponent) {
+      modalComponent.editModals([toc_filter_page_mobile], 0);
+    }
+  }, [modalComponent]);
+
   useEffect(() => {
     dispatch(setSearch(searching));
   }, [searching]);
 
-  const onReviewsWrapperScroll = useCallback(()=>{
-    if(childrenRef.current) {
+  const onReviewsWrapperScroll = useCallback(() => {
+    if (childrenRef.current) {
       const win = childrenRef.current;
       if (win.scrollHeight - win.clientHeight < win.scrollTop + 1)
         dispatch(incOffset());
     }
-  },[childrenRef])
+  }, [childrenRef]);
 
-  useEffect(()=>{
-    if(childrenRef && childrenRef.current) {
+  useEffect(() => {
+    if (childrenRef && childrenRef.current) {
       const win = childrenRef.current;
 
-      win.addEventListener("scroll", onReviewsWrapperScroll)
+      win.addEventListener("scroll", onReviewsWrapperScroll);
       return () => {
-        win.removeEventListener("scroll", onReviewsWrapperScroll)
-      }
+        win.removeEventListener("scroll", onReviewsWrapperScroll);
+      };
     }
-  },[onReviewsWrapperScroll, childrenRef])
+  }, [onReviewsWrapperScroll, childrenRef]);
 
   return (
     <>
@@ -86,7 +102,7 @@ const CatalogWrapperModal: FC<catalogWrapper> = ({
         <div
           className={"container-fluid"}
           style={{
-            maxWidth: "1480px"
+            maxWidth: "1480px",
           }}
         >
           <HeaderCatalog
@@ -101,8 +117,16 @@ const CatalogWrapperModal: FC<catalogWrapper> = ({
               searchValue: searching,
             }}
           />
-
-          {/* <div
+          <button
+            onClick={() => {
+              modalComponent
+                .applyModalByName(toc_filter_page_mobile.typeName)
+                .then(() => sSt(!st));
+            }}
+          >
+            testpage_mobile
+          </button>
+          <div
             style={{
               color: "#fff",
               position: "absolute",
@@ -111,19 +135,25 @@ const CatalogWrapperModal: FC<catalogWrapper> = ({
               left: "5%",
               background: "black",
               zIndex: "2000",
-              opacity: "0.5"
+              opacity: "0.5",
             }}
           >
             REDUX:
             {JSON.stringify(reduxCatalogState)}
             <br />
             OUT FROM LINK:
-          </div> */}
+          </div>
 
           <div className={`row ${styles.catalogContent}`}>
             {children}
+            <ModalView>
+              {modalComponent.isCurrentModal(
+                toc_filter_page_mobile.typeName
+              ) ? (
+                <CatalogTestProdsModal pageDesignation="type" />
+              ) : null}
+            </ModalView>
           </div>
-
         </div>
       </div>
     </>

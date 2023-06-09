@@ -22,6 +22,8 @@ const CatalogTestFiltersModal: FC = () => {
         GET_MFG_CATEGORY_LIST,
     )
 
+    const catalogFilter = useAppSelector(selector => selector.filtersList)
+
     const [firstFilter, firstActive, designation] =
         useISTFiltersList<ICatalogFiltersType>(
             "mfg"
@@ -49,6 +51,8 @@ const CatalogTestFiltersModal: FC = () => {
     },[dispatch, catalog])
 
 
+
+
     return (
         <>
             <div
@@ -64,24 +68,24 @@ const CatalogTestFiltersModal: FC = () => {
                     mobileSettings={{
                         type: "transfer",
                         onTransfer(...props) {
-                            
+
                         },
                         mobileSizeTrigger: "MD_768",
                     }}
 
                     isOpened={true}
                 >
-                    {data && data?.manufacturer_category ? (
+                    {catalogFilter && catalogFilter?.mfg ? (
                         <ISTFiltersList
                             fields={
-                                data?.manufacturer_category?.map(el=>{
+                                catalogFilter.mfg.map(el=>{
                                     return({
-                                        fieldName: el.manufacturer_name,
+                                        fieldName: el,
                                         isCheckBox: true,
                                         isActive: isActiveNow_filtersHelper(
                                             catalog?.filters,
                                             "mfg",
-                                            el.manufacturer_name),
+                                            el),
                                     })
                                 })
                             }
@@ -93,6 +97,7 @@ const CatalogTestFiltersModal: FC = () => {
                             }}
                         />
                     ) : null}
+                    
 
                 </ISTFiltersWrapper>
 

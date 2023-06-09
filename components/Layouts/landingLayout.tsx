@@ -34,7 +34,7 @@ export const LandingLayout:FC<ILandingLayout> = ({
     const router = useRouter();
     const dispatch = useDispatch()
 
-    const { modalComponent, ModalView } = useBaseModal("APP_BODY_WRAPPER");
+    const { modalComponent, ModalView } = useBaseModal("APP_BODY_WRAPPER", "CatalogSpace");
 
     const [st, sSt] = useState<boolean>(false)
 
@@ -116,12 +116,12 @@ export const LandingLayout:FC<ILandingLayout> = ({
                             Test filters
                         </button>
 
-                        <button onClick={()=> {
+                        {/* <button onClick={()=> {
                             modalComponent.applyModalByName("testProd")
                                 .then(()=>sSt(!st))
                         }}>
                             Test prods
-                        </button>
+                        </button> */}
 
                     </div>
 
@@ -136,10 +136,11 @@ export const LandingLayout:FC<ILandingLayout> = ({
                         ) ? (
                             <CatalogFullProductsListModal />
                         ) : null}
-
+{/* 
                         {modalComponent.isCurrentModal("testProd") ? (
-                            <CatalogTestProdsModal/>
-                        ) : null}
+                            <CatalogTestProdsModal pageDesignation='type'/>
+                            
+                        ) : null} */}
 
                         {modalComponent.isCurrentModal("testFilters") ? (
                             <CatalogTestFiltersModal/>
