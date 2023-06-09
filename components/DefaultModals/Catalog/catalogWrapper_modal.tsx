@@ -102,7 +102,7 @@ const CatalogWrapperModal: FC<catalogWrapper> = ({
             }}
           />
 
-          <div
+          {/* <div
             style={{
               color: "#fff",
               position: "absolute",
@@ -118,8 +118,7 @@ const CatalogWrapperModal: FC<catalogWrapper> = ({
             {JSON.stringify(reduxCatalogState)}
             <br />
             OUT FROM LINK:
-            {/*{JSON.stringify(currentState)}*/}
-          </div>
+          </div> */}
 
           <div className={`row ${styles.catalogContent}`}>
             {children}

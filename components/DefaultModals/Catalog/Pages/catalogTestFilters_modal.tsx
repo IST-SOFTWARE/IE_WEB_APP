@@ -62,8 +62,11 @@ const CatalogTestFiltersModal: FC = () => {
                     title={"FILTER TEST"}
                     hasActives={firstActive}
                     mobileSettings={{
-                        type: "dropdown",
-                        mobileSizeTrigger: "LG_992",
+                        type: "transfer",
+                        onTransfer(...props) {
+                            
+                        },
+                        mobileSizeTrigger: "MD_768",
                     }}
 
                     isOpened={true}

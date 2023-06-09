@@ -85,12 +85,12 @@ const ISTFiltersList:FC<IST_FilterList> = ({
           {data?.map((filter, i) => (
               <Filter
                   idx={filter.idx}
-
                   fieldName={filter.fieldName}
                   isCheckBox={true}
                   isActive={filter.isActive}
                   key={`filterItem_${i}_key`}
                   onFilterSwitch={switchFilterState}
+
               />
           ))}
         </>

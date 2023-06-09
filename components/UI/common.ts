@@ -17,7 +17,8 @@ export type callBack_fnc<T> = {
 }
 
 export const maxLengthText = (text: string, length: number): string => {
-   return text.length >= length ? `${text.slice(0, length)}...` : text;
+
+   return text.length >= length && length > 0 ? `${text.slice(0, length)}...` : text;
 }
 
 
