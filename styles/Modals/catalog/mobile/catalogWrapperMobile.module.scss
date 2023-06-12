@@ -1,0 +1,15 @@
+@import "../../../variables";
+@import "../../../mixins/scroll_mixin";
+
+.catalogWrapperMobile{
+  width: 100%;
+  height: 100%;
+  background: $def_page_bg;
+  border-radius: 10px;
+  margin-top: 25px;
+  //overflow-x: hidden !important;
+  //overflow: auto;
+  //
+  //@include scroll($size: 1px, $direction: rtl)
+
+}

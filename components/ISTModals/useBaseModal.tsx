@@ -9,10 +9,10 @@ import React, {
 import {modalStater} from "./modalSetter";
 import {createPortal} from "react-dom";
 
-interface modalView{
+interface modalView {
     children?: ReactNode,
     data?: modalStater,
-    currentData? :any
+    currentData?: any
 }
 
 type alignStyle = {
@@ -20,82 +20,92 @@ type alignStyle = {
     horizontal?: "end" | "start" | "center",
 }
 
-type styles = Pick<CSSProperties, "zIndex">
+type styles = Pick<CSSProperties, "zIndex" | "height" | "width" | "minHeight" | "minWidth" | "position" | "top" | "left" | "bottom" | "right">
 
-interface IAlignStyle{
+interface IAlignStyle {
     alignStyle?: alignStyle,
     style?: styles,
 }
 
 export interface IBaseModalFC
-    extends modalView, IAlignStyle{};
+    extends modalView, IAlignStyle {
+};
 
 const useBaseModal = (
     ContainerIdForScrollBlocking?: string,
+    TransferBlockId?: string,
 ) => {
 
-    const[currentData, dataUpdate] =
+    const [currentData, dataUpdate] =
         useState<modalStater>(null);
 
-    const modalComponent = useMemo(()=>{
+    const modalComponent = useMemo(() => {
         const newModal = new modalStater();
         newModal.setDataUpdater(dataUpdate);
         return newModal;
-    },[]);
+    }, []);
 
 
-    useEffect(()=>{
-        if(currentData){
+    useEffect(() => {
+        if (currentData) {
             const pageBody = document.getElementById(ContainerIdForScrollBlocking);
-            if(pageBody && ContainerIdForScrollBlocking)
-                if(currentData.getState)
+            if (pageBody && ContainerIdForScrollBlocking)
+                if (currentData.getState)
                     pageBody.style.overflow = "hidden"
                 else
                     pageBody.style.overflow = "auto"
 
-            else if(ContainerIdForScrollBlocking && pageBody === undefined)
+            else if (ContainerIdForScrollBlocking && pageBody === undefined)
                 console.warn("Base modal component:\n" +
                     "The container with the ID you provided was not found")
         }
-    },[currentData])
+    }, [currentData])
 
-    const portalSender = useCallback((modal: React.ReactNode)=>{
-        if(currentData)
+    const portalSender = useCallback((modal: React.ReactNode) => {
+        if (currentData)
             return createPortal(currentData.getState ? modal : null,
-                document.getElementById("PopUpBase"))
-    },[currentData])
+                document.getElementById(TransferBlockId ? TransferBlockId : "PopUpBase"))
 
-    const ModalView:FC<IBaseModalFC> = ({
-        children,
-        data,
-        alignStyle,
-        style
-     }) => {
+    }, [currentData])
 
-        const modal = useMemo(()=>{
-             return(
+    const ModalView: FC<IBaseModalFC> = ({
+     children,
+     data,
+     alignStyle,
+     style
+ }) => {
+
+        const modal = useMemo(() => {
+            return (
                 <>
-                    <div className={`container-fluid
-                    d-flex justify-content-${alignStyle?.horizontal ?? "center"} align-items-${alignStyle?.vertical ?? "center"}
-                `}
-                         style={{
-                             minHeight: "100%",
-                             height: "100%",
-                             minWidth: "100vw",
-                             position: "fixed",
-                             zIndex: style?.zIndex ? style.zIndex : 10
-                         }}
+                    <div style={{
+                        minWidth: style?.minWidth ? style?.minWidth : "100vw",
+                        width: style?.width ? style?.width : "unset",
+
+                        minHeight: style?.minHeight ? style?.minHeight : "100%",
+                        height: style?.height ? style?.height : "100%",
+
+                        position: style?.position ? style?.position : "fixed",
+                        zIndex: style?.zIndex ? style.zIndex : 10,
+
+                        justifyContent: alignStyle?.horizontal ? alignStyle?.horizontal : "center",
+
+                        alignItems: alignStyle?.vertical ? alignStyle?.vertical : "center",
+
+                        display: "flex",
+                        ...style
+                    }}
                     >
                         {children}
                     </div>
                 </>
             )
-        },[currentData])
+        }, [currentData])
 
         return currentData?.getState ? portalSender(modal) : null
     }
 
-    return{
+    return {
         modalComponent,
         ModalView,
     }

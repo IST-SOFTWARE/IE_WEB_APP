@@ -33,10 +33,10 @@ export const LandingLayout:FC<ILandingLayout> = ({
 }) => {
     const router = useRouter();
 
-    const { modalComponent, ModalView } = useBaseModal("APP_BODY_WRAPPER");
+    const { modalComponent, ModalView } = useBaseModal("APP_BODY_WRAPPER", "CatalogSpace");
     const [st, sSt] = useState<boolean>(false)
 
-    const dispatch = useDispatch();
+    const dispatch = useDispatch()
     const {data, error} = useQuery<IGeneralCategoryQuery>(GENERAL_CATEGORY_QUERY)
 
     useEffect(()=>{
@@ -108,6 +108,20 @@ export const LandingLayout:FC<ILandingLayout> = ({
                             Search
                         </button>
 
+                        <button onClick={()=> {
+                            modalComponent.applyModalByName("testFilters")
+                                .then(()=>sSt(!st))
+                        }}>
+                            Test filters
+                        </button>
+
+                        <button onClick={()=> {
+                            modalComponent.applyModalByName("testProd")
+                                .then(()=>sSt(!st))
+                        }}>
+                            Test prods
+                        </button>
+
                     </div>
 
                     <CatalogWrapper_modal
@@ -122,6 +136,14 @@ export const LandingLayout:FC<ILandingLayout> = ({
                             toc_catalog_full_prod_list.typeName
                         ) ? (
                             <CatalogFullProductsListModal />
+                        ) : null}
+
+                        {modalComponent.isCurrentModal("testProd") ? (
+                            <CatalogTestProdsModal/>
+                        ) : null}
+
+                        {modalComponent.isCurrentModal("testFilters") ? (
+                            <CatalogTestFiltersModal/>
                         ) : null}
 
                     </CatalogWrapper_modal>

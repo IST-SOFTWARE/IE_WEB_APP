@@ -67,8 +67,13 @@ export const filterExclude_filtersHelper = (
     excludeValues: string[],
     targetObj: string[]
 ): string[] => {
-    // console.log(excludeValues, targetObj);
-    return targetObj.filter( function( el ) {
-        return excludeValues.indexOf( el ) < 0;
-    } );
+
+    if(!(excludeValues?.length === targetObj?.length))
+        return targetObj.filter( function( el ) {
+            return excludeValues.indexOf( el ) < 0;
+        } );
+
+    return [""];
 }
+
+

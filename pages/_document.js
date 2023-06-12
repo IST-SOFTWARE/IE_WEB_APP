@@ -19,7 +19,7 @@ export default function Document() {
         <meta name="theme-color" content="#ffffff"/>
       </Head>
           <body id={"APP_BODY_WRAPPER"}>
-                <div id="PopUpBase"/>
+                <div id="PopUpBase" />
                 <div id="CatalogSpace"/>
                 <div id="FeedBackList"/>
                 <Main />

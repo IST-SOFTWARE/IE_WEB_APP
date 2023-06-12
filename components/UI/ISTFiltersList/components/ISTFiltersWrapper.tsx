@@ -48,6 +48,7 @@ const ISTFiltersWrapper:FC<IST_IFiltersWrapper> = ({
                         styles.titleTransition
                         : ""}`}
                 >
+                    
 
                     <div className={`${adaptiveStyles.titleHandlerBlock} 
                         ${adaptiveStyles.default_handler} 
@@ -66,7 +67,7 @@ const ISTFiltersWrapper:FC<IST_IFiltersWrapper> = ({
                             getMobileSettings_triggerSize(mobileSettings)
                         }`]: ""}
                     `}
-                        onClick={()=>transferHandler()}
+                        onClick={transferHandler}
                     />
 
                         {title}

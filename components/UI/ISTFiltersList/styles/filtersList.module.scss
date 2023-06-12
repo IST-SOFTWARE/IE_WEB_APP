@@ -39,7 +39,7 @@ $hasDescribing: 0;
       background: $def_page_bg;
       box-sizing: border-box;
       position: absolute;
-      width: 75%;
+      width: 100%;
 
       left: 18px;
       transform: translateY(15px);
@@ -60,11 +60,10 @@ $hasDescribing: 0;
   }
 
   .fieldName {
-
     width: 100%;
     box-sizing: border-box;
     transition: color 0.1s ease-in-out;
-
+    word-wrap: break-word;
   }
 
   .activeText {
@@ -72,36 +71,24 @@ $hasDescribing: 0;
     transition: color 0.1s ease-in-out;
   }
 
-
+  .activeCheckBoxPoint {
+    border: 2px solid $def_light_blue !important;
+  }
 
   .checkPoint {
-    position: relative;
-    width: 20px;
+    margin: 0 0 0 20px;
+    width: 21px;
+    min-width: 21px;
     height: 20px;
-    border: 2px solid $def_light_blue;
+    border: 2px solid $def_blue_gray;
     border-radius: 5px;
     cursor: pointer;
     transition: all 0.1s ease-in-out;
-
-    &::after {
-      position: absolute;
-      content: "-";
-      @include font-size(1.5rem);
-      color: $def_light_blue;
-      font-weight: 400;
-
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-    }
-  }
-
-  .active {
-    border: 2px solid $def_blue_gray;
-    &::after {
-      content: "+";
-      @include font-size(1rem);
-      color: $def_blue_gray;
-    }
+    @include font-size(1.24rem);
+    color: $def_blue_gray;
+    font-weight: 400;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 }
