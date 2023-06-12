@@ -8,10 +8,7 @@ import React, {
 } from "react";
 
 import styles from "../../../styles/Modals/catalog/catalogWrapper.module.scss";
-import {
-  setCatalogState,
-
-} from "../../../store/slices/catalogSlices/catalogSlice";
+import { setCatalogState } from "../../../store/slices/catalogSlices/catalogSlice";
 import { useDispatch } from "react-redux";
 import HeaderCatalog from "../../Catalog/HeaderCatalog/HeaderCatalog";
 import { setSearch } from "../../../store/slices/catalogSlices/catalogSlice";
@@ -20,21 +17,18 @@ import useBaseModal from "../../ISTModals/useBaseModal";
 import { toc_filter_page_mobile } from "../table_of_contents/Catalog/mobile/toc_filter_page_mobile";
 
 import CatalogWrapperMobileModal from "./Pages/mobile/catalogWrapperMobile_modal";
-import {CatalogFilterPageMobileModal} from "./Pages/mobile/catalogFilterPageMobile_modal";
+import { CatalogFilterPageMobileModal } from "./Pages/mobile/catalogFilterPageMobile_modal";
 
 interface catalogWrapper {
   children: ReactNode;
 }
 
-const CatalogWrapperModal: FC<catalogWrapper> = ({
-  children,
-}) => {
-
+const CatalogWrapperModal: FC<catalogWrapper> = ({ children }) => {
   const dispatch = useDispatch();
   const [searching, setSearching] = useState<string>("");
   const { modalComponent, ModalView } = useBaseModal(
-      "Catalog_Modal_wrapper",
-      "CatalogSpace_mobile_modal"
+    "Catalog_Modal_wrapper",
+    "CatalogSpace_mobile_modal"
   );
 
   const childrenRef = useRef<HTMLDivElement>(null);
@@ -57,7 +51,6 @@ const CatalogWrapperModal: FC<catalogWrapper> = ({
     }
   }, [childrenRef]);
 
-
   useEffect(() => {
     if (childrenRef && childrenRef.current) {
       const win = childrenRef.current;
@@ -69,12 +62,12 @@ const CatalogWrapperModal: FC<catalogWrapper> = ({
     }
   }, [onReviewsWrapperScroll, childrenRef]);
 
-
   return (
     <>
-      <div className={styles.catalog_wrapper}
-           ref={childrenRef}
-           id={"Catalog_Modal_wrapper"}
+      <div
+        className={styles.catalog_wrapper}
+        ref={childrenRef}
+        id={"Catalog_Modal_wrapper"}
       >
         <div
           className={"container-fluid"}
@@ -95,33 +88,36 @@ const CatalogWrapperModal: FC<catalogWrapper> = ({
             }}
           />
 
-          <button onClick={()=>{
-            modalComponent.applyModalByName(toc_filter_page_mobile.typeName).then(()=>
-                    modalComponent.switch(!modalComponent.getState)
-
-                )
-          }}
+          <button
+            onClick={() => {
+              modalComponent
+                .applyModalByName(toc_filter_page_mobile.typeName)
+                .then(() => modalComponent.switch(!modalComponent.getState));
+            }}
             style={{
               position: "absolute",
               left: "20px",
               bottom: "20px",
-              zIndex: "1000"
+              zIndex: "1000",
             }}
           >
             switch modal
           </button>
 
           <div
-              id={"CatalogSpace_mobile_modal"}
-              className={`${styles.catalogContent_wrapper} ${modalComponent.getState ? styles.modal : ""}`}
+            id={"CatalogSpace_mobile_modal"}
+            className={`${styles.catalogContent_wrapper} ${
+              modalComponent.getState ? styles.modal : ""
+            }`}
           >
-
-            <div className={`row ${styles.catalogContent} ${modalComponent.getState ? styles.hidden : ""}`}>
+            <div
+              className={`row ${styles.catalogContent} ${
+                modalComponent.getState ? styles.hidden : ""
+              }`}
+            >
               {children}
             </div>
-
           </div>
-
 
           {/*<div*/}
           {/*  style={{*/}
@@ -140,36 +136,31 @@ const CatalogWrapperModal: FC<catalogWrapper> = ({
           {/*  <br />*/}
           {/*  OUT FROM LINK:*/}
           {/*</div>*/}
-
         </div>
       </div>
 
-        {/*     Modals       */}
+      {/*     Modals       */}
 
-        <ModalView
-            style={{
-                minWidth: "unset",
-                minHeight: "unset",
+      <ModalView
+        style={{
+          minWidth: "unset",
+          minHeight: "unset",
 
-                height: "100%",
+          height: "100%",
 
-                width: "100%",
-                position: "absolute",
+          width: "100%",
+          position: "absolute",
 
-                top: 0,
-                left: 0,
-            }}
-        >
-
-            <CatalogWrapperMobileModal>
-                {modalComponent.isCurrentModal(
-                    toc_filter_page_mobile.typeName
-                ) ? (
-                    <CatalogFilterPageMobileModal pageDesignation="type" />
-                ) : null}
-            </CatalogWrapperMobileModal>
-        </ModalView>
-
+          top: 0,
+          left: 0,
+        }}
+      >
+        <CatalogWrapperMobileModal>
+          {modalComponent.isCurrentModal(toc_filter_page_mobile.typeName) ? (
+            <CatalogFilterPageMobileModal pageDesignation="type" />
+          ) : null}
+        </CatalogWrapperMobileModal>
+      </ModalView>
     </>
   );
 };

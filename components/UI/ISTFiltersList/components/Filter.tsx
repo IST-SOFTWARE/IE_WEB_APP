@@ -64,7 +64,17 @@ const Filter: FC<IST_FilterItem> = ({
       </div>
 
       {isCheckBox ? (
-        <div className={`${styles.checkPoint}`}>{isActive ? "-" : "+"}</div>
+        <div
+          className={`${styles.checkPoint} ${
+            isActive ? styles.activeCheckBoxPoint : ""
+          }`}
+        >
+          {isActive ? (
+            <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTEiIGhlaWdodD0iMTIiIHZpZXdCb3g9IjAgMCAxMSAxMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3QgeD0iMC40MjI4NTIiIHk9IjAuOTQ3MjY2IiB3aWR0aD0iMTAuMTU0OCIgaGVpZ2h0PSIxMC4xNTQ4IiByeD0iMyIgZmlsbD0iIzhCQzJGRiIvPgo8L3N2Zz4K" />
+          ) : (
+            ""
+          )}
+        </div>
       ) : null}
     </div>
   );
