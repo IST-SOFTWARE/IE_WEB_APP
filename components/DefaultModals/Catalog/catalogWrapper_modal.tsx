@@ -16,17 +16,13 @@ import {
   switchCatalog,
 } from "../../../store/slices/catalogSlices/catalogSlice";
 
-import { useCatalog } from "../../../Hooks/useCatalog/useCatalog";
 import { useDispatch } from "react-redux";
-
-import { ICatalogQueries } from "../../../Hooks/useCatalog/ICatalogQueries";
-import { ICatalogFiltersType } from "../../../store/slices/common/catalogFiltersType";
-
-import ISTProductItem from "../../UI/ISTProductItem/ISTProductItem";
-import ISTFiltersList from "../../UI/ISTFiltersList/components/ISTFiltersList";
 import HeaderCatalog from "../../Catalog/HeaderCatalog/HeaderCatalog";
 import { setSearch } from "../../../store/slices/catalogSlices/catalogSlice";
 import {incOffset} from "../../../store/slices/catalogSlices/catalogPaginationSlice";
+import useBaseModal from "../../ISTModals/useBaseModal";
+import {toc_filter_page_mobile} from "../table_of_contents/Catalog/mobile/toc_filter_page_mobile";
+import {toc_catalog_search} from "../table_of_contents/Catalog/toc_catalog_search";
 
 interface catalogWrapper {
   data?: modalStater;

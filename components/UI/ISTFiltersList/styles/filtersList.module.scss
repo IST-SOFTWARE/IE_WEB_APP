@@ -63,7 +63,9 @@ $hasDescribing: 0;
     width: 100%;
     box-sizing: border-box;
     transition: color 0.1s ease-in-out;
-    word-wrap: break-word;
+
+    word-break: break-all;
+    border: solid 1px red;
   }
 
   .activeText {
@@ -79,7 +81,7 @@ $hasDescribing: 0;
     margin: 0 0 0 20px;
     width: 21px;
     min-width: 21px;
-    height: 20px;
+    height: 21px;
     border: 2px solid $def_blue_gray;
     border-radius: 5px;
     cursor: pointer;

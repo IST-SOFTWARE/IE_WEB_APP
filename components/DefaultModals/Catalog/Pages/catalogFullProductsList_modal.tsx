@@ -1,19 +1,17 @@
 import React, {useCallback, useState} from "react";
-import styles from "../../../../../styles/Modals/catalog/catalogProducts/catalogFullProductsList.module.scss";
-
-import ISTFiltersList from "../../../../UI/ISTFiltersList/components/ISTFiltersList";
-import ISTFiltersWrapper from "../../../../UI/ISTFiltersList/components/ISTFiltersWrapper";
-
+import styles from "../../../../styles/Modals/catalog/catalogProducts/catalogFullProductsList.module.scss";
+import {useAppSelector} from "../../../../Hooks/reduxSettings";
+import useISTFiltersList from "../../../UI/hooks/ISTFiltersHook/useISTFiltersList";
+import {ICatalogFiltersType} from "../../../../store/slices/common/catalogFiltersType";
 import {useDispatch} from "react-redux";
-import {useAppSelector} from "../../../../../Hooks/reduxSettings";
+import {onFilterSwitchCustom_t} from "../../../UI/hooks/ISTFiltersHook/common";
+import {filterSetter_filtersHelper, isActiveNow_filtersHelper} from "../../../../helpers/Catalog/filters";
+import {addNewFilter} from "../../../../store/slices/catalogSlices/catalogSlice";
+import ISTFiltersWrapper from "../../../UI/ISTFiltersList/components/ISTFiltersWrapper";
+import ISTFiltersList from "../../../UI/ISTFiltersList/components/ISTFiltersList";
+import {CatalogWrapper} from "../../../ProductsWrapper/catalogWrapper/catalogWrapper";
 
-import {filterSetter_filtersHelper, isActiveNow_filtersHelper} from "../../../../../helpers/Catalog/filters";
-import {addNewFilter} from "../../../../../store/slices/catalogSlices/catalogSlice";
-import {ICatalogFiltersType} from "../../../../../store/slices/common/catalogFiltersType";
-import {CatalogWrapper} from "../../../../ProductsWrapper/catalogWrapper";
-import useISTFiltersList from "../../../../UI/hooks/ISTFiltersHook/useISTFiltersList";
-import {onFilterSwitchCustom_t} from "../../../../UI/hooks/ISTFiltersHook/common";
-import {IQueryPaginationVariable} from "../../../../../queries/common";
+
 
 const CatalogFullProductsListModal = ({}) => {
 

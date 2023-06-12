@@ -8,7 +8,7 @@ import {toc_catalog_search} from "../DefaultModals/table_of_contents/Catalog/toc
 import {toc_catalog_full_prod_list} from "../DefaultModals/table_of_contents/Catalog/toc_catalog_full_prod_list";
 import CatalogWrapper_modal from "../DefaultModals/Catalog/catalogWrapper_modal";
 import CatalogSearchModal from "../DefaultModals/Catalog/Pages/catalogSearch_modal";
-import CatalogFullProductsListModal from "../DefaultModals/Catalog/Pages/fullProductList/catalogFullProductsList_modal";
+
 import Header from "../Header/Header";
 import Footer from "../Footer/Footer";
 import {useAppSelector} from "../../Hooks/reduxSettings";
@@ -22,6 +22,7 @@ import {GENERAL_CATEGORY_QUERY, IGeneralCategoryQuery} from "../../queries/categ
 import filtersListSlice, {filtersList_update} from "../../store/slices/filtersListSlice/filtersListSlice";
 import {getFiltersItemsAsArray_filtersHelper} from "../../helpers/Catalog/filters";
 import {ICategoryMFG_Q} from "../../queries/categories/MFG/mfgCategoryQuery";
+import CatalogFullProductsListModal from "../DefaultModals/Catalog/Pages/catalogFullProductsList_modal";
 
 
 interface ILandingLayout{
