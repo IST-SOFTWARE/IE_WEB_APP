@@ -35,7 +35,6 @@ const CatalogWrapperModal: FC<catalogWrapper> = ({
 }) => {
 
   const dispatch = useDispatch();
-  // const reduxCatalogState = useAppSelector((state) => state.catalog);
 
   const [searching, setSearching] = useState<string>("");
   const { modalComponent, ModalView } = useBaseModal(

@@ -15,9 +15,7 @@ import {CatalogWrapper} from "../../../ProductsWrapper/catalogWrapper/catalogWra
 
 const CatalogFullProductsListModal = ({}) => {
 
-    const [search, setSearch] = useState<string>("");
     const filtersList = useAppSelector((state) => state.filtersList);
-
 
     // Filters state
     const [mfg_filter, mfg_active, mfg_designation] =
@@ -187,7 +185,6 @@ const CatalogFullProductsListModal = ({}) => {
             <div className={"col-12 col-lg-8 p-0 pl-lg-2 d-flex flex-wrap"}>
                 <CatalogWrapper
                     itemWrapper_ClassName={styles.productCardVariant_Block}
-                    search={search}
                     cartID={"9cfa4d6a-f2e9-400c-b0a9-4c85ab777272"}
                     additionalForwarding={""}
                 />

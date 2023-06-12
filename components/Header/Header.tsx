@@ -5,6 +5,7 @@ import { useAppSelector} from "../../Hooks/reduxSettings";
 import {useCatalog} from "../../Hooks/useCatalog/useCatalog"
 import {ICatalogQueries} from "../../Hooks/useCatalog/ICatalogQueries";
 import {ICatalogFiltersType} from "../../store/slices/common/catalogFiltersType";
+import {catalogHasFilters_modalsHelper} from "../../helpers/Catalog/modals";
 
 interface Header{
     children?: React.ReactNode,
@@ -27,14 +28,9 @@ const Header:FC<Header> = ({
     )
 
     useEffect(()=>{
-        let _hasFilters:boolean = false;
-
-        for(const [key, value] of Object.entries(reduxCatalogState?.filters))
-            if(value && value.length > 0)
-                _hasFilters = true;
-
-        setHasFilters(_hasFilters);
-
+        setHasFilters(
+            catalogHasFilters_modalsHelper(reduxCatalogState?.filters)
+        );
     },[reduxCatalogState.filters]);
 
     // useEffect(()=>{

@@ -30,7 +30,6 @@ import {setOffset} from "../../../store/slices/catalogSlices/catalogPaginationSl
 
 interface ICatalogWrapper{
     additionalForwarding: string
-    search: string;
 
     cartID?: string;
 
@@ -46,7 +45,6 @@ interface cartCollection {
 }
 
 export const CatalogWrapper:FC<ICatalogWrapper> = ({
-    search = "",
     itemWrapper_ClassName,
     wrapper_ClassName,
     wrapperStyles,
@@ -69,7 +67,7 @@ export const CatalogWrapper:FC<ICatalogWrapper> = ({
         unit: [""],
         type: [""],
         available: [""],
-        search: search
+        search: ""
     })
 
     // QUERIES BLOCK
@@ -90,16 +88,6 @@ export const CatalogWrapper:FC<ICatalogWrapper> = ({
 
     const [onMutateCart, mutatedData] =
         useMutation<ICartCollection_updated, ICartCollectionVariables>(UPDATE_CART_BY_ID)
-
-
-    useEffect(()=>{
-        setFullProdsVars(prevState =>{
-            return{
-                ...prevState,
-                search: search
-            }
-        })
-    },[search])
 
 
     useEffect(()=>{
@@ -139,20 +127,14 @@ export const CatalogWrapper:FC<ICatalogWrapper> = ({
 
         const timeOutId = setTimeout(() =>{
 
-            // if(catalog?.search){
-            //
-            // }
             setFetchedAll(false);
 
             setFullProdsVars(prevState =>{
-                return{
+                return prevState.search || catalog?.search ? {
                     ...prevState,
                     offset: 0,
-                    search:
-                        catalog?.search ?
-                            catalog?.search :
-                            undefined,
-                }
+                    search: catalog.search
+                } : prevState
             });
 
             dispatch(setOffset(0));
