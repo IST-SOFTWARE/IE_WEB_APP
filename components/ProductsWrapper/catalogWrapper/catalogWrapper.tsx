@@ -1,32 +1,32 @@
 import React, {CSSProperties, FC, useCallback, useEffect, useState} from "react";
-import {cartAdder_fnc_onAdd, deleteProduct_fnc_onDelete} from "../UI/common";
+import {cartAdder_fnc_onAdd, deleteProduct_fnc_onDelete} from "../../UI/common";
 import {useLazyQuery, useMutation, useQuery} from "@apollo/client";
-import {GRT_FILTERED_PRODUCTS_LIST, IProductFiltersVariables, IProducts_Q} from "../../queries/products/productActions";
-import ISTProductItem from "../UI/ISTProductItem/ISTProductItem";
-import {useAppSelector} from "../../Hooks/reduxSettings";
+import {GRT_FILTERED_PRODUCTS_LIST, IProductFiltersVariables, IProducts_Q} from "../../../queries/products/productActions";
+import ISTProductItem from "../../UI/ISTProductItem/ISTProductItem";
+import {useAppSelector} from "../../../Hooks/reduxSettings";
 
-import {filterExclude_filtersHelper} from "../../helpers/Catalog/filters";
+import styles from "./catalogWrapper.module.scss";
+
+import {filterExclude_filtersHelper} from "../../../helpers/Catalog/filters";
 import {
     GET_CART_COLLECTION_BY_ID,
     ICartCollection,
     ICartCollection_updated,
     ICartCollectionVariables, UPDATE_CART_BY_ID
-} from "../../queries/cart/cartActions";
+} from "../../../queries/cart/cartActions";
 import {
     products_addItem_actionsHelper,
     products_removeItem_actionsHelper
-} from "../../helpers/Products/products_actions.helper";
-import {ICartItem_properties_data} from "../UI/ISTProductItem/Abstract/ICartTypes";
+} from "../../../helpers/Products/products_actions.helper";
+import {ICartItem_properties_data} from "../../UI/ISTProductItem/Abstract/ICartTypes";
 import {
     redefining_to_CartModel_redefiningHelper,
     redefining_to_ICartItemPropertiesData_redefiningHelper
-} from "../../helpers/Products/products_redefining.helper";
+} from "../../../helpers/Products/products_redefining.helper";
 import {ImageLoader} from "next/image";
-import {imageLoader_imagesHelper} from "../../helpers/Images/customImageLoader";
-import {IQueryPaginationVariable} from "../../queries/common";
+import {imageLoader_imagesHelper} from "../../../helpers/Images/customImageLoader";
 import {useDispatch} from "react-redux";
-import {incOffset, setOffset} from "../../store/slices/catalogSlices/catalogPaginationSlice";
-
+import {setOffset} from "../../../store/slices/catalogSlices/catalogPaginationSlice";
 
 interface ICatalogWrapper{
     additionalForwarding: string
@@ -39,7 +39,6 @@ interface ICatalogWrapper{
 
     itemWrapperStyles?: CSSProperties
     wrapperStyles? :CSSProperties,
-
 }
 
 interface cartCollection {
@@ -73,13 +72,11 @@ export const CatalogWrapper:FC<ICatalogWrapper> = ({
         search: search
     })
 
-
     // QUERIES BLOCK
-
-    const {data, loading, error, fetchMore} = useQuery<IProducts_Q, IProductFiltersVariables>(
+    const {data, error, fetchMore} = useQuery<IProducts_Q, IProductFiltersVariables>(
         GRT_FILTERED_PRODUCTS_LIST, {
             variables: fullProdVars,
-            fetchPolicy: "network-only",
+            fetchPolicy: "network-only"
         }
     );
 
@@ -94,6 +91,7 @@ export const CatalogWrapper:FC<ICatalogWrapper> = ({
     const [onMutateCart, mutatedData] =
         useMutation<ICartCollection_updated, ICartCollectionVariables>(UPDATE_CART_BY_ID)
 
+
     useEffect(()=>{
         setFullProdsVars(prevState =>{
             return{
@@ -105,21 +103,13 @@ export const CatalogWrapper:FC<ICatalogWrapper> = ({
 
 
     useEffect(()=>{
-
         if(!fetchedAll && pagination.offset > 0)
             fetchMore<IProducts_Q, IProductFiltersVariables>({
                 variables: {
                     ...fullProdVars,
                     limit: pagination?.limit,
                     offset: pagination?.offset,
-                },
-                updateQuery: (prev, {fetchMoreResult}) => {
-                    if (!fetchMoreResult) return prev
-                    return Object.assign({}, prev, {
-                        Products: [...prev.Products, ...fetchMoreResult.Products]
-                    })
                 }
-
             }).then(el => {
                     if (!(el?.data?.Products?.length > 0))
                         setFetchedAll(true);
@@ -143,6 +133,34 @@ export const CatalogWrapper:FC<ICatalogWrapper> = ({
                     setCartProducts(newCartItems);
                 })
     },[data, cartData])
+
+
+    useEffect(() => {
+
+        const timeOutId = setTimeout(() =>{
+
+            // if(catalog?.search){
+            //
+            // }
+            setFetchedAll(false);
+
+            setFullProdsVars(prevState =>{
+                return{
+                    ...prevState,
+                    offset: 0,
+                    search:
+                        catalog?.search ?
+                            catalog?.search :
+                            undefined,
+                }
+            });
+
+            dispatch(setOffset(0));
+        }, 1000);
+
+        return () => clearTimeout(timeOutId);
+    }, [catalog?.search]);
+
 
     useEffect(()=>{
         if(!catalog.filters || !filtersList)
@@ -207,7 +225,6 @@ export const CatalogWrapper:FC<ICatalogWrapper> = ({
 
     }, [cartProducts, cartData]);
 
-
     const cartRemover = useCallback<deleteProduct_fnc_onDelete>(
         async (id) => {
 
@@ -257,19 +274,9 @@ export const CatalogWrapper:FC<ICatalogWrapper> = ({
     }, [])
 
     return(
-        <div style={{
-            display: "flex",
-            width: "100%",
-            height: "100%",
-            flexWrap: "wrap",
-            alignContent: "flex-start",
-            opacity: mutatedData?.loading ? 0.5 : 1,
-            ...wrapperStyles
-            }}
-
-            className={wrapper_ClassName}
+        <div style={{...wrapperStyles}}
+            className={`${wrapper_ClassName} ${styles.wrapper} ${mutatedData?.loading ? styles.isLoading : ""}`}
         >
-
             {data && cartProducts ? data.Products.map((el, i) => {
                     return (
                         <div
@@ -308,7 +315,11 @@ export const CatalogWrapper:FC<ICatalogWrapper> = ({
                                 }}
                             />
                         </div>
-                    )}) : ("NULL")
+                    )}) : (
+                      <>
+                          <div className={styles.loadingWrapper}/>
+                      </>
+                    )
             }
         </div>
     )

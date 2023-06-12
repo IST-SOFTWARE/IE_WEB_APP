@@ -10,7 +10,7 @@ import {useAppSelector} from "../../../../../Hooks/reduxSettings";
 import {filterSetter_filtersHelper, isActiveNow_filtersHelper} from "../../../../../helpers/Catalog/filters";
 import {addNewFilter} from "../../../../../store/slices/catalogSlices/catalogSlice";
 import {ICatalogFiltersType} from "../../../../../store/slices/common/catalogFiltersType";
-import {CatalogWrapper} from "../../../../ProductsWrapper/catalogWrapper";
+import {CatalogWrapper} from "../../../../ProductsWrapper/catalogWrapper/catalogWrapper";
 import useISTFiltersList from "../../../../UI/hooks/ISTFiltersHook/useISTFiltersList";
 import {onFilterSwitchCustom_t} from "../../../../UI/hooks/ISTFiltersHook/common";
 import {IQueryPaginationVariable} from "../../../../../queries/common";

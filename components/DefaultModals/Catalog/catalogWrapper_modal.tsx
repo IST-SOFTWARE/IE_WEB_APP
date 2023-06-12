@@ -3,59 +3,35 @@ import React, {
   ReactNode,
   useCallback,
   useEffect,
-  useMemo, useRef,
+  useRef,
   useState,
 } from "react";
 import { modalStater } from "../../ISTModals/modalSetter";
 import styles from "../../../styles/Modals/catalog/catalogWrapper.module.scss";
-import { useRouter } from "next/router";
 
-import { useAppSelector } from "../../../Hooks/reduxSettings";
-import {
-  setCatalogState,
-  switchCatalog,
-} from "../../../store/slices/catalogSlices/catalogSlice";
-
-import { useCatalog } from "../../../Hooks/useCatalog/useCatalog";
-import { useDispatch } from "react-redux";
-
-import { ICatalogQueries } from "../../../Hooks/useCatalog/ICatalogQueries";
-import { ICatalogFiltersType } from "../../../store/slices/common/catalogFiltersType";
-
-import ISTProductItem from "../../UI/ISTProductItem/ISTProductItem";
-import ISTFiltersList from "../../UI/ISTFiltersList/components/ISTFiltersList";
+import {useAppSelector} from "../../../Hooks/reduxSettings";
+import {setCatalogState} from "../../../store/slices/catalogSlices/catalogSlice";
+import {useDispatch} from "react-redux";
 import HeaderCatalog from "../../Catalog/HeaderCatalog/HeaderCatalog";
-import { setSearch } from "../../../store/slices/catalogSlices/catalogSlice";
+import {setSearch} from "../../../store/slices/catalogSlices/catalogSlice";
 import {incOffset} from "../../../store/slices/catalogSlices/catalogPaginationSlice";
+import {toc_catalog_search} from "../table_of_contents/Catalog/toc_catalog_search";
 
 interface catalogWrapper {
   data?: modalStater;
   children: ReactNode;
-
-  stateSetter?: (...props: any) => any;
-  stateSetterFilterPage?: (...props: any) => any;
-  stateSetterCartPage?: (...props: any) => any;
 }
 
 const CatalogWrapperModal: FC<catalogWrapper> = ({
-  children,
-  stateSetter,
-  stateSetterFilterPage,
-  stateSetterCartPage,
+    children,
+    data
 }) => {
 
   const dispatch = useDispatch();
-  const reduxCatalogState = useAppSelector((state) => state.catalog);
 
   const [searching, setSearching] = useState<string>("");
   const childrenRef = useRef<HTMLDivElement>(null);
 
-  //
-  // const { currentState } = useCatalog<ICatalogQueries<ICatalogFiltersType>>();
-  //
-  // useEffect(()=>{
-  // },[reduxCatalogState.catalog])
-  //
 
   useEffect(() => {
     dispatch(setSearch(searching));
@@ -95,31 +71,31 @@ const CatalogWrapperModal: FC<catalogWrapper> = ({
               dispatch(setCatalogState(false));
             }}
             searchingElement={{
-              searchField: true,
+              searchField: !data?.isCurrentModal(toc_catalog_search.typeName),
 
               searchSetter: setSearching,
               searchValue: searching,
             }}
           />
 
-          <div
-            style={{
-              color: "#fff",
-              position: "absolute",
-              top: "50px",
-              maxWidth: "350px",
-              left: "5%",
-              background: "black",
-              zIndex: "2000",
-              opacity: "0.5"
-            }}
-          >
-            REDUX:
-            {JSON.stringify(reduxCatalogState)}
-            <br />
-            OUT FROM LINK:
-            {/*{JSON.stringify(currentState)}*/}
-          </div>
+          {/*<div*/}
+          {/*  style={{*/}
+          {/*    color: "#fff",*/}
+          {/*    position: "absolute",*/}
+          {/*    top: "50px",*/}
+          {/*    maxWidth: "350px",*/}
+          {/*    left: "5%",*/}
+          {/*    background: "black",*/}
+          {/*    zIndex: "2000",*/}
+          {/*    opacity: "0.5"*/}
+          {/*  }}*/}
+          {/*>*/}
+          {/*  REDUX:*/}
+          {/*  {JSON.stringify(reduxCatalogState)}*/}
+          {/*  <br />*/}
+          {/*  OUT FROM LINK:*/}
+          {/*  /!*{JSON.stringify(currentState)}*!/*/}
+          {/*</div>*/}
 
           <div className={`row ${styles.catalogContent}`}>
             {children}

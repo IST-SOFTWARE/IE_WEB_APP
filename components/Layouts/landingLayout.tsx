@@ -32,13 +32,12 @@ export const LandingLayout:FC<ILandingLayout> = ({
     children
 }) => {
     const router = useRouter();
-    const dispatch = useDispatch()
 
     const { modalComponent, ModalView } = useBaseModal("APP_BODY_WRAPPER");
-
     const [st, sSt] = useState<boolean>(false)
 
-    const {data, loading, error} = useQuery<IGeneralCategoryQuery>(GENERAL_CATEGORY_QUERY)
+    const dispatch = useDispatch();
+    const {data, error} = useQuery<IGeneralCategoryQuery>(GENERAL_CATEGORY_QUERY)
 
     useEffect(()=>{
         if(!data) return
@@ -109,23 +108,11 @@ export const LandingLayout:FC<ILandingLayout> = ({
                             Search
                         </button>
 
-                        <button onClick={()=> {
-                            modalComponent.applyModalByName("testFilters")
-                                .then(()=>sSt(!st))
-                        }}>
-                            Test filters
-                        </button>
-
-                        <button onClick={()=> {
-                            modalComponent.applyModalByName("testProd")
-                                .then(()=>sSt(!st))
-                        }}>
-                            Test prods
-                        </button>
-
                     </div>
 
-                    <CatalogWrapper_modal>
+                    <CatalogWrapper_modal
+                        data={modalComponent}
+                    >
 
                         {modalComponent.isCurrentModal(toc_catalog_search.typeName) ? (
                             <CatalogSearchModal />
@@ -137,28 +124,23 @@ export const LandingLayout:FC<ILandingLayout> = ({
                             <CatalogFullProductsListModal />
                         ) : null}
 
-                        {modalComponent.isCurrentModal("testProd") ? (
-                            <CatalogTestProdsModal/>
-                        ) : null}
-
-                        {modalComponent.isCurrentModal("testFilters") ? (
-                            <CatalogTestFiltersModal/>
-                        ) : null}
-
                     </CatalogWrapper_modal>
                 </ModalView>
             </Catalog>
 
             <Header
               catalogOpener={()=>{
-                dispatch(setCatalogState(true));
+                    modalComponent.applyModalByName(toc_catalog_full_prod_list.typeName);
+                    dispatch(setCatalogState(true));
               }}
               searchOpener={()=>{
-                  modalComponent.applyModalByName(toc_catalog_search.typeName)
-                  dispatch(setCatalogState(true));
+                    modalComponent.applyModalByName(toc_catalog_search.typeName)
+                    dispatch(setCatalogState(true));
               }}
             />
+
                 {children}
+
             <Footer route={router.locale} />
 
         </>

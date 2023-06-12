@@ -1,12 +1,10 @@
-import React, {FC, useEffect} from 'react';
+import React, {FC, useEffect, useState} from 'react';
 import styles from "../../styles/Header/Header.module.scss"
 import Image from "next/image";
 import { useAppSelector} from "../../Hooks/reduxSettings";
 import {useCatalog} from "../../Hooks/useCatalog/useCatalog"
 import {ICatalogQueries} from "../../Hooks/useCatalog/ICatalogQueries";
 import {ICatalogFiltersType} from "../../store/slices/common/catalogFiltersType";
-
-
 
 interface Header{
     children?: React.ReactNode,
@@ -21,13 +19,23 @@ const Header:FC<Header> = ({
     searchOpener
     }) => {
 
-    const reduxCatalogState = useAppSelector(state => state.catalog)
-
+    const reduxCatalogState = useAppSelector(state => state.catalog);
+    const [hasFilters, setHasFilters] = useState<boolean>(false);
 
     const {pushQuery, currentState} = useCatalog<ICatalogQueries<ICatalogFiltersType>,
         ICatalogFiltersType>(
-
     )
+
+    useEffect(()=>{
+        let _hasFilters:boolean = false;
+
+        for(const [key, value] of Object.entries(reduxCatalogState?.filters))
+            if(value && value.length > 0)
+                _hasFilters = true;
+
+        setHasFilters(_hasFilters);
+
+    },[reduxCatalogState.filters]);
 
     // useEffect(()=>{
     //     if(currentState && reduxCatalogState && reduxCatalogState.catalog === undefined)
@@ -106,8 +114,8 @@ const Header:FC<Header> = ({
                                    name={"search"}
 
                                    onClick={()=> {
-                                       searchOpener ? searchOpener() : null
-
+                                       if(searchOpener)
+                                         !hasFilters ? searchOpener() : catalogOpener();
                                    }}
                             />
                         </div>
@@ -144,9 +152,7 @@ const Header:FC<Header> = ({
                                 <span>Контакты</span>
                             </button>
 
-                            <div
-                                // className={styles.children_block}
-                                style={{
+                            <div style={{
                                     position: "absolute",
                                     display: "none"
                                 }}
@@ -155,7 +161,6 @@ const Header:FC<Header> = ({
                             </div>
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>
