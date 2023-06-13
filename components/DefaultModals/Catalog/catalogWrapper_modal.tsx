@@ -93,6 +93,7 @@ const CatalogWrapperModal: FC<catalogWrapper> = ({
             onClose={() => {
               dispatch(setCatalogState(false));
             }}
+            // mobileTriggerSize={"XL_1200"}
             searchingElement={{
               searchField: !data?.isCurrentModal(toc_catalog_search.typeName),
 

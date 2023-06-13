@@ -34,7 +34,7 @@ const HeaderCatalog: FC<IHeader> = ({
     <>
         <div
           className={
-            `row pr-3 pl-3 justify-content-between position-sticky fixed-top ${
+            `row pr-3 pl-3 position-sticky fixed-top ${
                 mobileTriggerSize ? styles[`header_${mobileTriggerSize}`] : styles[`header_MD_768`]
             } ${styles[`header`]}`
           }
