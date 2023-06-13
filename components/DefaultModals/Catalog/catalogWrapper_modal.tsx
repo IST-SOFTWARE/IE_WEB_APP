@@ -24,7 +24,7 @@ import useBaseModal from "../../ISTModals/useBaseModal";
 import {toc_filter_page_mobile} from "../table_of_contents/Catalog/mobile/toc_filter_page_mobile";
 import {toc_catalog_search} from "../table_of_contents/Catalog/toc_catalog_search";
 import {CatalogFilterPageMobileModal} from "./Pages/mobile/catalogFilterPageMobile_modal";
-import CatalogWrapperMobileModal from "./Pages/mobile/catalogWrapperMobile_modal";
+import CatalogWrapperMobileModal from "./catalogWrapperMobile_modal";
 
 interface catalogWrapper {
   data?: modalStater;
@@ -174,6 +174,9 @@ const CatalogWrapperModal: FC<catalogWrapper> = ({
           {modalComponent.isCurrentModal(toc_filter_page_mobile.typeName) ? (
               <CatalogFilterPageMobileModal pageDesignation="type" />
           ) : null}
+
+        {/*Тут определяем modalMobilePage, передаем ему необходимые пропсы, прокидываем чайлдов и тд*/}
+
         </CatalogWrapperMobileModal>
       </ModalView>
 
