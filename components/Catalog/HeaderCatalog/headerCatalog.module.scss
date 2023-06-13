@@ -6,6 +6,8 @@
 .header {
   width: calc(100% + 30px);
   transform: translateX(-15px);
+  display: flex;
+  justify-content: center;
 
   height: 80px;
   padding: 3px 0 0 0;
@@ -109,9 +111,13 @@
 
 @media screen and (min-width: 767.98px) {
   .header_MD_768 {
+    display: flex;
+    justify-content: center !important;
+
     .logoBlock {
       min-width: 170px;
       max-width: 200px;
+      align-self: center;
     }
 
     .searchBlock {
