@@ -32,10 +32,10 @@ interface ILandingLayout{
 export const LandingLayout:FC<ILandingLayout> = ({
     children
 }) => {
+
     const router = useRouter();
 
     const { modalComponent, ModalView } = useBaseModal("APP_BODY_WRAPPER", "CatalogSpace");
-    const [st, sSt] = useState<boolean>(false)
 
     const dispatch = useDispatch()
     const {data, error} = useQuery<IGeneralCategoryQuery>(GENERAL_CATEGORY_QUERY)
@@ -97,28 +97,28 @@ export const LandingLayout:FC<ILandingLayout> = ({
 
                         <button onClick={()=> {
                             modalComponent.applyModalByName(toc_catalog_full_prod_list.typeName)
-                                .then(()=>sSt(!st))
+                                .then(()=>router.push("", undefined, {shallow: true}))
                         }}>
                             Full prod list
                         </button>
 
                         <button onClick={()=> {
                             modalComponent.applyModalByName(toc_catalog_search.typeName)
-                                .then(()=>sSt(!st))
+                                .then(()=>router.push("", undefined, {shallow: true}))
                         }}>
                             Search
                         </button>
 
                         <button onClick={()=> {
                             modalComponent.applyModalByName("testFilters")
-                                .then(()=>sSt(!st))
+                                .then(()=>router.push("", undefined, {shallow: true}))
                         }}>
                             Test filters
                         </button>
 
                         <button onClick={()=> {
                             modalComponent.applyModalByName("testProd")
-                                .then(()=>sSt(!st))
+                                .then(()=>router.push("", undefined, {shallow: true}))
                         }}>
                             Test prods
                         </button>
