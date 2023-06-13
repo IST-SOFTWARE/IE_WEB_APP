@@ -23,6 +23,8 @@ import {incOffset} from "../../../store/slices/catalogSlices/catalogPaginationSl
 import useBaseModal from "../../ISTModals/useBaseModal";
 import {toc_filter_page_mobile} from "../table_of_contents/Catalog/mobile/toc_filter_page_mobile";
 import {toc_catalog_search} from "../table_of_contents/Catalog/toc_catalog_search";
+import {CatalogFilterPageMobileModal} from "./Pages/mobile/catalogFilterPageMobile_modal";
+import CatalogWrapperMobileModal from "./Pages/mobile/catalogWrapperMobile_modal";
 
 interface catalogWrapper {
   data?: modalStater;
@@ -119,6 +121,22 @@ const CatalogWrapperModal: FC<catalogWrapper> = ({
           {/*  /!*{JSON.stringify(currentState)}*!/*/}
           {/*</div>*/}
 
+            <button
+                onClick={() => {
+                    modalComponent
+                        .applyModalByName(toc_filter_page_mobile.typeName)
+                        .then(() => modalComponent.switch(!modalComponent.getState));
+                }}
+                style={{
+                    position: "absolute",
+                    left: "20px",
+                    bottom: "20px",
+                    zIndex: "1000",
+                }}
+            >
+                switch modal
+            </button>
+
           <div
             id={"CatalogSpace_mobile_modal"}
             className={`${styles.catalogContent_wrapper} ${
@@ -136,6 +154,30 @@ const CatalogWrapperModal: FC<catalogWrapper> = ({
 
         </div>
       </div>
+
+      {/*     Modals       */}
+
+      <ModalView
+          style={{
+            minWidth: "unset",
+            minHeight: "unset",
+
+            height: "100%",
+
+            width: "100%",
+            position: "absolute",
+
+            top: 0,
+            left: 0,
+          }}
+      >
+        <CatalogWrapperMobileModal>
+          {modalComponent.isCurrentModal(toc_filter_page_mobile.typeName) ? (
+              <CatalogFilterPageMobileModal pageDesignation="type" />
+          ) : null}
+        </CatalogWrapperMobileModal>
+      </ModalView>
+
     </>
   );
 };
