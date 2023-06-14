@@ -1,16 +1,7 @@
-import React, {
-  FC,
-  ReactNode,
-  useCallback,
-  useEffect,
-  useMemo, useRef,
-  useState,
-} from "react";
+import React, {FC, ReactNode, useCallback, useEffect, useRef, useState} from "react";
 import { modalStater } from "../../ISTModals/modalSetter";
 import styles from "../../../styles/Modals/catalog/catalogWrapper.module.scss";
-import { useRouter } from "next/router";
 
-import { useAppSelector } from "../../../Hooks/reduxSettings";
 import {
   setCatalogState,
   switchCatalog,
@@ -172,9 +163,11 @@ const CatalogWrapperModal: FC<catalogWrapper> = ({
           }}
       >
         <CatalogWrapperMobileModal>
+
           {modalComponent.isCurrentModal(toc_filter_page_mobile.typeName) ? (
               <CatalogFilterPageMobileModal pageDesignation="type" />
           ) : null}
+
 
         {/*Тут определяем modalMobilePage, передаем ему необходимые пропсы, прокидываем чайлдов и тд*/}
 
