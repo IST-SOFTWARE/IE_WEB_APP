@@ -1,15 +1,7 @@
 import {ICatalogFiltersType} from "../../store/slices/common/catalogFiltersType";
 import {IGeneralCategoryQuery} from "../../queries/categories/generalCategoryQuery";
+import {setSearch} from "../../store/slices/catalogSlices/catalogSlice";
 
-
-// interface getFiltersDesignationSList_out_t {
-//     designations: string[],
-// }
-
-export const getFiltersDesignationSList_filtersHelper =
-    (selectedTypes: keyof ICatalogFiltersType): string=> {
-    return selectedTypes
-}
 
 export const filterSetter_filtersHelper = (
     filtersList: ICatalogFiltersType,
@@ -75,5 +67,4 @@ export const filterExclude_filtersHelper = (
 
     return [""];
 }
-
 

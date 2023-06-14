@@ -1,7 +1,11 @@
 import React, {CSSProperties, FC, useCallback, useEffect, useState} from "react";
 import {cartAdder_fnc_onAdd, deleteProduct_fnc_onDelete} from "../../UI/common";
 import {useLazyQuery, useMutation, useQuery} from "@apollo/client";
-import {GRT_FILTERED_PRODUCTS_LIST, IProductFiltersVariables, IProducts_Q} from "../../../queries/products/productActions";
+import {
+    GRT_FILTERED_PRODUCTS_LIST,
+    IProductFiltersVariables,
+    IProducts_Q
+} from "../../../queries/products/productActions";
 import ISTProductItem from "../../UI/ISTProductItem/ISTProductItem";
 import {useAppSelector} from "../../../Hooks/reduxSettings";
 
@@ -28,7 +32,7 @@ import {imageLoader_imagesHelper} from "../../../helpers/Images/customImageLoade
 import {useDispatch} from "react-redux";
 import {setOffset} from "../../../store/slices/catalogSlices/catalogPaginationSlice";
 
-interface ICatalogWrapper{
+interface ICatalogWrapper {
     additionalForwarding: string
 
     cartID?: string;
@@ -37,14 +41,14 @@ interface ICatalogWrapper{
     wrapper_ClassName?: string
 
     itemWrapperStyles?: CSSProperties
-    wrapperStyles? :CSSProperties,
+    wrapperStyles?: CSSProperties,
 }
 
 interface cartCollection {
     cartCollection_by_id: ICartCollection;
 }
 
-export const CatalogWrapper:FC<ICatalogWrapper> = ({
+export const CatalogWrapper: FC<ICatalogWrapper> = ({
     itemWrapper_ClassName,
     wrapper_ClassName,
     wrapperStyles,
@@ -90,8 +94,8 @@ export const CatalogWrapper:FC<ICatalogWrapper> = ({
         useMutation<ICartCollection_updated, ICartCollectionVariables>(UPDATE_CART_BY_ID)
 
 
-    useEffect(()=>{
-        if(!fetchedAll && pagination.offset > 0)
+    useEffect(() => {
+        if (!fetchedAll && pagination.offset > 0)
             fetchMore<IProducts_Q, IProductFiltersVariables>({
                 variables: {
                     ...fullProdVars,
@@ -104,32 +108,32 @@ export const CatalogWrapper:FC<ICatalogWrapper> = ({
                 }
             ).catch(ex => console.error(ex));
 
-    },[pagination, fetchedAll])
+    }, [pagination, fetchedAll])
 
 
-    useEffect(()=>{
-        if(data && !cartData.called)
+    useEffect(() => {
+        if (data && !cartData.called)
             getCartData()
                 .then(el => {
                     const newCartItems = new Array<ICartItem_properties_data>();
                     el.data?.cartCollection_by_id.cart_model.map(_el => {
                         newCartItems.push({
-                            productId:  _el.product_id,
+                            productId: _el.product_id,
                             quantity: _el.quantity
                         } as ICartItem_properties_data)
                     })
                     setCartProducts(newCartItems);
                 })
-    },[data, cartData])
+    }, [data, cartData])
 
 
     useEffect(() => {
 
-        const timeOutId = setTimeout(() =>{
+        const timeOutId = setTimeout(() => {
 
             setFetchedAll(false);
 
-            setFullProdsVars(prevState =>{
+            setFullProdsVars(prevState => {
                 return prevState.search || catalog?.search ? {
                     ...prevState,
                     offset: 0,
@@ -144,8 +148,8 @@ export const CatalogWrapper:FC<ICatalogWrapper> = ({
     }, [catalog?.search]);
 
 
-    useEffect(()=>{
-        if(!catalog.filters || !filtersList)
+    useEffect(() => {
+        if (!catalog.filters || !filtersList)
             return
 
         let newState = {
@@ -165,22 +169,22 @@ export const CatalogWrapper:FC<ICatalogWrapper> = ({
 
         setFetchedAll(false);
 
-        setFullProdsVars(prevState =>{
-                return{
-                    ...prevState,
-                    ...newState,
-                    offset: 0,
-                }
+        setFullProdsVars(prevState => {
+            return {
+                ...prevState,
+                ...newState,
+                offset: 0,
+            }
         });
 
         dispatch(setOffset(0));
 
-    },[filtersList, catalog.filters])
+    }, [filtersList, catalog.filters])
 
     const cartAdder = useCallback<cartAdder_fnc_onAdd>(
         async (id) => {
 
-            if(!cartProducts || !cartData?.data?.cartCollection_by_id)
+            if (!cartProducts || !cartData?.data?.cartCollection_by_id)
                 return
 
             const newCart =
@@ -194,23 +198,23 @@ export const CatalogWrapper:FC<ICatalogWrapper> = ({
                 }
             } as ICartCollectionVariables;
 
-                onMutateCart({variables: vars}).then((el) => {
-                    if (el.data?.update_cartCollection_item && !el.errors)
-                        setCartProducts(
-                            redefining_to_ICartItemPropertiesData_redefiningHelper(
-                                el.data.update_cartCollection_item.cart_model
-                            )
+            onMutateCart({variables: vars}).then((el) => {
+                if (el.data?.update_cartCollection_item && !el.errors)
+                    setCartProducts(
+                        redefining_to_ICartItemPropertiesData_redefiningHelper(
+                            el.data.update_cartCollection_item.cart_model
                         )
-                })
+                    )
+            })
 
-        return true
+            return true
 
-    }, [cartProducts, cartData]);
+        }, [cartProducts, cartData]);
 
     const cartRemover = useCallback<deleteProduct_fnc_onDelete>(
         async (id) => {
 
-            if(!cartProducts || !cartData?.data?.cartCollection_by_id)
+            if (!cartProducts || !cartData?.data?.cartCollection_by_id)
                 return
 
             const newCart =
@@ -247,7 +251,7 @@ export const CatalogWrapper:FC<ICatalogWrapper> = ({
 
     }, [])
 
-    const getImageSrc = useCallback((src: string, v_code: string):string => {
+    const getImageSrc = useCallback((src: string, v_code: string): string => {
 
         const cloudinary_acc = process.env.NEXT_PUBLIC_CLOUDINARY_ACC;
         const imageHelper = new imageLoader_imagesHelper(cloudinary_acc);
@@ -255,53 +259,54 @@ export const CatalogWrapper:FC<ICatalogWrapper> = ({
 
     }, [])
 
-    return(
+    return (
         <div style={{...wrapperStyles}}
-            className={`${wrapper_ClassName} ${styles.wrapper} ${mutatedData?.loading ? styles.isLoading : ""}`}
+             className={`${wrapper_ClassName} ${styles.wrapper} ${mutatedData?.loading ? styles.isLoading : ""}`}
         >
             {data && cartProducts ? data.Products.map((el, i) => {
-                    return (
-                        <div
-                            className={itemWrapper_ClassName}
-                            style={itemWrapperStyles}
-                            key={`productItemCatalog_${i}_key`}
-                        >
-                            <ISTProductItem
-                                currency={"RU"}
-                                forwardingPath={`${additionalForwarding}${el?.slug}`}
-                                style={{
-                                    fill: true,
-                                }}
+                return (
+                    <div
+                        className={itemWrapper_ClassName}
+                        style={itemWrapperStyles}
+                        key={`productItemCatalog_${i}_key`}
+                    >
+                        <ISTProductItem
+                            currency={"RU"}
+                            forwardingPath={`${additionalForwarding}${el?.slug}`}
+                            style={{
+                                fill: true,
+                            }}
 
-                                imageOptimization={{
-                                    loader: getImageLoader,
-                                    sizes: "350px",
-                                }}
+                            imageOptimization={{
+                                loader: getImageLoader,
+                                sizes: "350px",
+                            }}
 
-                                itemType={{
-                                    productType: "catalog",
-                                    parameters: {
-                                        inline: false,
-                                        cartStatus: !!cartProducts.find(_el => _el.productId === el.id),
+                            itemType={{
+                                productType: "catalog",
+                                parameters: {
+                                    inline: false,
+                                    cartStatus: !!cartProducts.find(_el => _el.productId === el.id),
 
-                                        cartAdder: cartAdder,
-                                        cartRemover: cartRemover
-                                    },
-                                    data: {
-                                        id: el?.id,
-                                        title: el?.product_name_ru,
-                                        price: el?.price.toString(),
-                                        vendCode: el?.vend_code.toString(),
-                                        image: getImageSrc(el?.image_url, el?.vend_code.toString())
-                                    },
-                                }}
-                            />
-                        </div>
-                    )}) : (
-                      <>
-                          <div className={styles.loadingWrapper}/>
-                      </>
-                    )
+                                    cartAdder: cartAdder,
+                                    cartRemover: cartRemover
+                                },
+                                data: {
+                                    id: el?.id,
+                                    title: el?.product_name_ru,
+                                    price: el?.price.toString(),
+                                    vendCode: el?.vend_code.toString(),
+                                    image: getImageSrc(el?.image_url, el?.vend_code.toString())
+                                },
+                            }}
+                        />
+                    </div>
+                )
+            }) : (
+                <>
+                    <div className={styles.loadingWrapper}/>
+                </>
+            )
             }
         </div>
     )

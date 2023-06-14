@@ -2,7 +2,7 @@ import React, {CSSProperties, FC, Ref, useCallback, useEffect, useRef} from 'rea
 import PhoneInput from "react-phone-number-input/input";
 import styles from "./input.module.scss"
 import common_styles from "../scss/common.module.scss"
-import {commonStyles} from "../common";
+import {commonStyles, IInputDataSetter} from "../common";
 
 export enum inputTypesVars {
     any_string = "any_string",
@@ -20,7 +20,7 @@ interface IIstInput{
     inputType: inputTypesVars,
     placeholder: string,
     required: boolean,
-    outDataSetter: React.Dispatch<string>,
+    outDataSetter: IInputDataSetter
     actualData: string,
 
     style?: commonStyles

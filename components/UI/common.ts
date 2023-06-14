@@ -17,13 +17,11 @@ export type callBack_fnc<T> = {
 }
 
 export const maxLengthText = (text: string, length: number): string => {
-
    return text.length >= length && length > 0 ? `${text.slice(0, length)}...` : text;
 }
 
-
 /**
- *  -= PRODUCTS TYPES =-
+ *  PRODUCTS TYPES
  */
 export interface IProductData {
     id: number | string;
@@ -42,9 +40,8 @@ export type deleteProduct_fnc = {
 export type cartAdder_fnc = cartAdder_fnc_onAdd;
 
 /**
- * -= PRODUCT ACTION TYPES =-
+ * PRODUCT ACTION TYPES
  */
-
 export type cartItemGetter_fnc =
     (id: string | number, callBack?: callBack_fnc<IProductData>) => Promise<IProductData>
 
@@ -58,8 +55,17 @@ export type quantityEditor_fnc =
     (id: string | number, newQuantity: number, callBack?: callBack_fnc<number>) => Promise<boolean>
 
 
-export interface imageOptimization{
+/**
+ *  Image optimization options
+ */
+export interface IImageOptimizationOptions {
     loader: ImageLoader,
     sizes: string,
     placeholderData?: string
 }
+
+/**
+ *  Common data setter option for Input elements
+ */
+type fnc_inputDataSetter = (val: string) => void
+export type IInputDataSetter = Dispatch<string> | fnc_inputDataSetter
