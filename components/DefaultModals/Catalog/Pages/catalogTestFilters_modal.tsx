@@ -22,6 +22,7 @@ import {
 } from "../../../UI/hooks/ISTFiltersHook/common";
 import useBaseModal from "../../../ISTModals/useBaseModal";
 import { toc_filter_page_mobile } from "../../table_of_contents/Catalog/mobile/toc_filter_page_mobile";
+import ModalMobilePage from "./mobile/ModalMobilePage";
 
 const CatalogTestFiltersModal: FC = () => {
   const dispatch = useDispatch();
@@ -109,6 +110,43 @@ const CatalogTestFiltersModal: FC = () => {
             />
           ) : null}
         </ISTFiltersWrapper>
+
+
+        <ModalMobilePage
+          header={{
+            title: "Производители",
+            type: "hiding_MMHeader_type",
+            arrowHandler: () => {
+              console.log("Arrow handler trigger");
+            },
+          }}
+        >
+
+          {/* CHILDREN  закинул для примера */}
+
+          {catalogFilter && catalogFilter?.mfg ? (
+            <ISTFiltersList
+              fields={catalogFilter.mfg.map((el) => {
+                return {
+                  fieldName: el,
+                  isCheckBox: true,
+                  isActive: isActiveNow_filtersHelper(
+                    catalog?.filters,
+                    "mfg",
+                    el
+                  ),
+                };
+              })}
+              hookedData={firstFilter}
+              switcherOptions={{
+                onSwitch: switchFilter,
+                filterDesignation: designation,
+              }}
+            />
+          ) : null}
+        </ModalMobilePage>
+
+
       </div>
     </>
   );
