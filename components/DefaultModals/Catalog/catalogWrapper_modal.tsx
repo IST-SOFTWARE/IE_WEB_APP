@@ -8,9 +8,7 @@ import React, {
 } from "react";
 import { modalStater } from "../../ISTModals/modalSetter";
 import styles from "../../../styles/Modals/catalog/catalogWrapper.module.scss";
-import { useRouter } from "next/router";
 
-import { useAppSelector } from "../../../Hooks/reduxSettings";
 import {
   setCatalogState,
   switchCatalog,
@@ -21,10 +19,14 @@ import HeaderCatalog from "../../Catalog/HeaderCatalog/HeaderCatalog";
 import { setSearch } from "../../../store/slices/catalogSlices/catalogSlice";
 import {incOffset} from "../../../store/slices/catalogSlices/catalogPaginationSlice";
 import useBaseModal from "../../ISTModals/useBaseModal";
-import {toc_filter_page_mobile} from "../table_of_contents/Catalog/mobile/toc_filter_page_mobile";
+import {toc_filtersList_page_mobile} from "../table_of_contents/Catalog/mobile/toc_filtersList_page_mobile";
 import {toc_catalog_search} from "../table_of_contents/Catalog/toc_catalog_search";
-import {CatalogFilterPageMobileModal} from "./Pages/mobile/catalogFilterPageMobile_modal";
+import {CatalogFilterPageMobileModal} from "./Pages/mobile/Pages/catalogFilterPageMobile_modal";
 import CatalogWrapperMobileModal from "./catalogWrapperMobile_modal";
+import ModalMobilePage from "./Pages/mobile/modalMobilePage";
+import {toc_filter_page_mobile} from "../table_of_contents/Catalog/mobile/toc_filter_page_mobile";
+import {ICatalogFiltersType} from "../../../store/slices/common/catalogFiltersType";
+import CatalogFiltersListPageMobileModal from "./Pages/mobile/Pages/catalogFiltersListPageMobile_modal";
 
 interface catalogWrapper {
   data?: modalStater;
@@ -37,18 +39,22 @@ const CatalogWrapperModal: FC<catalogWrapper> = ({
 }) => {
 
   const dispatch = useDispatch();
-
   const [searching, setSearching] = useState<string>("");
+  const childrenRef = useRef<HTMLDivElement>(null);
+
   const { modalComponent, ModalView } = useBaseModal(
     "Catalog_Modal_wrapper",
     "CatalogSpace_mobile_modal"
   );
 
-  const childrenRef = useRef<HTMLDivElement>(null);
+    const [currentFilterPage, setCurrentFilterPage] = useState<keyof ICatalogFiltersType>();
 
   useEffect(() => {
     if (modalComponent) {
-      modalComponent.editModals([toc_filter_page_mobile], 0);
+      modalComponent.editModals([
+          toc_filtersList_page_mobile,
+          toc_filter_page_mobile
+      ], 0);
     }
   }, [modalComponent]);
 
@@ -74,6 +80,23 @@ const CatalogWrapperModal: FC<catalogWrapper> = ({
       }
     }
   },[onReviewsWrapperScroll, childrenRef])
+
+    const handleHideMobileModal = useCallback(()=>{
+        modalComponent.switch(false);
+    },[modalComponent])
+
+    const handleRouteBackMobileModal = useCallback(()=>{
+        modalComponent.applyModalByName(toc_filtersList_page_mobile.typeName).then(()=>{
+            setCurrentFilterPage(undefined)
+        })
+    },[modalComponent])
+
+    const setCatalogFilterMobileModal = useCallback((designation: keyof ICatalogFiltersType)=>{
+        modalComponent.applyModalByName(toc_filter_page_mobile.typeName).then(()=>{
+            modalComponent.getModalByName(toc_filter_page_mobile.typeName).modal._header = designation.toString();
+            setCurrentFilterPage(designation)
+        })
+    },[modalComponent])
 
   return (
     <>
@@ -124,7 +147,7 @@ const CatalogWrapperModal: FC<catalogWrapper> = ({
             <button
                 onClick={() => {
                     modalComponent
-                        .applyModalByName(toc_filter_page_mobile.typeName)
+                        .applyModalByName(toc_filtersList_page_mobile.typeName)
                         .then(() => modalComponent.switch(!modalComponent.getState));
                 }}
                 style={{
@@ -172,11 +195,26 @@ const CatalogWrapperModal: FC<catalogWrapper> = ({
           }}
       >
         <CatalogWrapperMobileModal>
-          {modalComponent.isCurrentModal(toc_filter_page_mobile.typeName) ? (
-              <CatalogFilterPageMobileModal pageDesignation="type" />
-          ) : null}
 
-        {/*Тут определяем modalMobilePage, передаем ему необходимые пропсы, прокидываем чайлдов и тд*/}
+            <ModalMobilePage header={{
+                type: modalComponent.isCurrentModal(toc_filtersList_page_mobile.typeName) ? "hiding_MMHeader_type" : "routingBack_MMHeaderType",
+                title: modalComponent.getHeader,
+                arrowHandler: ()=>{
+                    modalComponent.isCurrentModal(toc_filtersList_page_mobile.typeName) ?
+                    handleHideMobileModal():
+                    handleRouteBackMobileModal();
+                }
+            }}>
+
+                {modalComponent.isCurrentModal(toc_filtersList_page_mobile.typeName) ? (
+                    <CatalogFiltersListPageMobileModal onTransfer={setCatalogFilterMobileModal}/>
+                ) : null}
+
+                {modalComponent.isCurrentModal(toc_filter_page_mobile.typeName) ? (
+                    <CatalogFilterPageMobileModal pageDesignation={currentFilterPage ? currentFilterPage : "mfg"} />
+                ) : null}
+
+            </ModalMobilePage>
 
         </CatalogWrapperMobileModal>
       </ModalView>

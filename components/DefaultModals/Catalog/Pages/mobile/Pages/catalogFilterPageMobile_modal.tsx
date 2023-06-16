@@ -1,16 +1,15 @@
 import React, {FC, useCallback} from "react";
-import {ICatalogFiltersType} from "../../../../../store/slices/common/catalogFiltersType";
-import {useAppSelector} from "../../../../../Hooks/reduxSettings";
-import useISTFiltersList from "../../../../UI/hooks/ISTFiltersHook/useISTFiltersList";
+import {ICatalogFiltersType} from "../../../../../../store/slices/common/catalogFiltersType";
+import {useAppSelector} from "../../../../../../Hooks/reduxSettings";
+import useISTFiltersList from "../../../../../UI/hooks/ISTFiltersHook/useISTFiltersList";
 import {useDispatch} from "react-redux";
-import {onFilterSwitchCustom_t} from "../../../../UI/hooks/ISTFiltersHook/common";
-import {filterSetter_filtersHelper, isActiveNow_filtersHelper} from "../../../../../helpers/Catalog/filters";
-import {addNewFilter} from "../../../../../store/slices/catalogSlices/catalogSlice";
-import ISTFiltersList from "../../../../UI/ISTFiltersList/components/ISTFiltersList";
+import {onFilterSwitchCustom_t} from "../../../../../UI/hooks/ISTFiltersHook/common";
+import {filterSetter_filtersHelper, isActiveNow_filtersHelper} from "../../../../../../helpers/Catalog/filters";
+import {addNewFilter} from "../../../../../../store/slices/catalogSlices/catalogSlice";
+import ISTFiltersList from "../../../../../UI/ISTFiltersList/components/ISTFiltersList";
 
 interface mobileFilterModal {
     pageDesignation: keyof ICatalogFiltersType;
-
 }
 
 export const CatalogFilterPageMobileModal: FC<mobileFilterModal> = ({

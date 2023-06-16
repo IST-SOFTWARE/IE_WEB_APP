@@ -42,7 +42,7 @@ export interface mobileSettings_dropdown{
 
 
 export interface IST_IFiltersWrapper{
-    children: ReactNode,
+    children?: ReactNode,
     title: string
     mobileSettings?: mobileSettings,
     hasActives?: boolean,
