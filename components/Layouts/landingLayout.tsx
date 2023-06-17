@@ -70,9 +70,7 @@ export const LandingLayout:FC<ILandingLayout> = ({
             modalComponent.editModals(
                 [
                     toc_catalog_search,
-                    toc_catalog_full_prod_list,
-                    {typeName: "testProd", _header: "", _paragraph: ""},
-                    {typeName: "testFilters", _header: "", _paragraph: ""}
+                    toc_catalog_full_prod_list
                 ],
                 0
             );
@@ -108,21 +106,6 @@ export const LandingLayout:FC<ILandingLayout> = ({
                         }}>
                             Search
                         </button>
-
-                        <button onClick={()=> {
-                            modalComponent.applyModalByName("testFilters")
-                                .then(()=>router.push("", undefined, {shallow: true}))
-                        }}>
-                            Test filters
-                        </button>
-
-                        <button onClick={()=> {
-                            modalComponent.applyModalByName("testProd")
-                                .then(()=>router.push("", undefined, {shallow: true}))
-                        }}>
-                            Test prods
-                        </button>
-
                     </div>
 
                     <CatalogWrapper_modal
@@ -137,14 +120,6 @@ export const LandingLayout:FC<ILandingLayout> = ({
                             toc_catalog_full_prod_list.typeName
                         ) ? (
                             <CatalogFullProductsListModal />
-                        ) : null}
-
-                        {modalComponent.isCurrentModal("testProd") ? (
-                            <CatalogTestProdsModal/>
-                        ) : null}
-
-                        {modalComponent.isCurrentModal("testFilters") ? (
-                            <CatalogTestFiltersModal/>
                         ) : null}
 
                     </CatalogWrapper_modal>

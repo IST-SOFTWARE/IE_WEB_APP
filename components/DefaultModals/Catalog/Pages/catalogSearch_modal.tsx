@@ -1,56 +1,19 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import ISTProductItem from "../../../UI/ISTProductItem/ISTProductItem";
+import Image from "next/image";
 import IstInput, { inputTypesVars } from "../../../UI/ISTInput/ISTInput";
 import ISTCategoryHints from "../../../UI/ISTCategoryHints/ISTCategoryHints";
-import Image from "next/image";
-import cloudSearch from "../../../../public/Modals/Catalog/cloudSearch.svg";
-import ISTButtonN from "../../../UI/ISTButton/ISTButtonN";
 import styles from "../../../../styles/Modals/catalog/catalogSearch/catalogSearch.module.scss";
 import useISTFiltersList from "../../../UI/hooks/ISTFiltersHook/useISTFiltersList";
-
 import { onFilterSwitchCustom_t } from "../../../UI/hooks/ISTFiltersHook/common";
-import { addNewFilter } from "../../../../store/slices/catalogSlices/catalogSlice";
+import {addNewFilter, setSearch} from "../../../../store/slices/catalogSlices/catalogSlice";
 import { useDispatch } from "react-redux";
 import { useAppSelector } from "../../../../Hooks/reduxSettings";
-import { useQuery } from "@apollo/client";
-import {
-  GENERAL_CATEGORY_QUERY,
-  IGeneralCategoryQuery,
-} from "../../../../queries/categories/generalCategoryQuery";
-import { IQuerySearchVariables } from "../../../../queries/common";
 import { getHintsList_hintsHelper } from "../../../../helpers/Catalog/hints";
 import { ICatalogFiltersType } from "../../../../store/slices/common/catalogFiltersType";
-import HeaderCatalog from "../../../Catalog/HeaderCatalog/HeaderCatalog";
+import {CatalogWrapper} from "../../../ProductsWrapper/catalogWrapper/catalogWrapper";
+import cloudSearch from "../../../../public/Modals/Catalog/cloudSearch.svg";
 
-
-type ICategoryItem = {
-  id: number;
-  itemName: string;
-};
-
-type ICategoryCollection = {
-  actionName: string;
-  collectionName: string;
-  collectionOfItems: Array<ICategoryItem>;
-};
-
-type IProductItem = {
-  title: string;
-  price: string;
-  vendCode: string;
-};
-
-const defCategoryHints: ICategoryCollection[] = [];
-
-const defProdItems: IProductItem[] = [];
-
-const CatalogSearchModal = ({}) => {
-  const [searchState, setSearchState] = useState<string>("");
-
-  const { data, loading, error } = useQuery<
-    IGeneralCategoryQuery,
-    IQuerySearchVariables
-  >(GENERAL_CATEGORY_QUERY, { variables: { search: searchState } });
+const CatalogSearchModal = () => {
 
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -58,12 +21,6 @@ const CatalogSearchModal = ({}) => {
   const catalog = useAppSelector((state) => state.catalog);
   const filters = useAppSelector((state) => state.filtersList);
 
-  const [searchResults_categories, setSearchResults_categories] = useState<
-    ICategoryCollection[] | null
-  >(defCategoryHints);
-
-  const [searchResults_products, setSearchResults_products] =
-    useState<IProductItem[]>(defProdItems);
 
   const [mfgFilter, ha_mfg, mfg_designation] =
     useISTFiltersList<ICatalogFiltersType>("mfg");
@@ -80,6 +37,7 @@ const CatalogSearchModal = ({}) => {
     }
   }, [inputRef]);
 
+
   const switchFilter: onFilterSwitchCustom_t<keyof ICatalogFiltersType> =
     useCallback(
       (idx, state, name, options) => {
@@ -94,6 +52,10 @@ const CatalogSearchModal = ({}) => {
       },
       [catalog, dispatch]
     );
+
+  const setSearch_helper = (val: string) => {
+    dispatch(setSearch(val));
+  }
 
   return (
     <>
@@ -112,8 +74,8 @@ const CatalogSearchModal = ({}) => {
             inputType={inputTypesVars.any_string}
             placeholder={"Enter your request"}
             required={true}
-            outDataSetter={setSearchState}
-            actualData={searchState}
+            outDataSetter={setSearch_helper}
+            actualData={catalog?.search}
             style={{
               height: "50px",
               borderRadius: "15px",
@@ -125,8 +87,9 @@ const CatalogSearchModal = ({}) => {
               hintsLimit={3}
               hintsList={getHintsList_hintsHelper(
                 [filters.mfg, filters.type, filters.unit],
-                searchState
+                !catalog?.search ? "" : catalog?.search
               )}
+
               hintsCategoryCollection={[
                 {
                   collectionName: "Производители",
@@ -168,73 +131,58 @@ const CatalogSearchModal = ({}) => {
         >
           <header className={styles.header}>Товары</header>
 
-          {searchResults_products && (
-            <div style={{ width: "180px", alignSelf: "center" }}>
-              <ISTButtonN
-                title={{ caption: "Все результаты" }}
-                dark={{
-                  solid: false,
-                  style: {
-                    borderRadius: "15px",
-                    fillContainer: true,
-                  },
-                }}
-              />
-            </div>
-          )}
+          {/*{searchResults_products && (*/}
+          {/*  <div style={{ width: "180px", alignSelf: "center" }}>*/}
+          {/*    <ISTButtonN*/}
+          {/*      title={{ caption: "Все результаты" }}*/}
+          {/*      dark={{*/}
+          {/*        solid: false,*/}
+          {/*        style: {*/}
+          {/*          borderRadius: "15px",*/}
+          {/*          fillContainer: true,*/}
+          {/*        },*/}
+          {/*      }}*/}
+          {/*    />*/}
+          {/*  </div>*/}
+          {/*)}*/}
+
         </div>
 
-        {searchResults_products ? (
-          //PRODUCTS LIST OUT
+          {/*PRODUCTS LIST OUT*/}
 
           <div
-            className={`
-                ${styles.catalogItems_block} 
-                ${searchResults_products?.length > 6 ? styles.longList : ""}`}
+            className={`${
+              styles.catalogItems_block} ${
+              catalog?.search ? styles.longList : ""}`}
           >
-            {searchResults_products.map((el, i) => {
-              return (
-                <div
-                  className={styles.productCardVariant_Block}
-                  key={`productItem_${i}_u_key`}
-                >
-                  <ISTProductItem
-                    currency={"RU"}
-                    itemType={{
-                      productType: "catalog",
-                      parameters: {
-                        inline: false,
-                      },
-                      data: {
-                        id: i,
-                        title: "Product Item",
-                        price: "200",
-                        vendCode: "IST000001",
-                      },
-                    }}
+
+            {catalog?.search ? (
+                <CatalogWrapper
+                    itemWrapper_ClassName={styles.productCardVariant_Block}
+                    cartID={"9cfa4d6a-f2e9-400c-b0a9-4c85ab777272"}
+                    additionalForwarding={""}
+                />
+            ) : (
+                <div className={styles.noResultsBlock}>
+                  <Image
+                      src={cloudSearch}
+                      alt={"not result"}
+                      width={176}
+                      height={176}
+                      fill={false}
+                      sizes={"186px"}
+                      style={{
+                        objectFit: "contain",
+                      }}
                   />
+                  <div className={styles.noResultsText}>
+                    Start typing a query to search for a product
+                  </div>
                 </div>
-              );
-            })}
+            )}
+
           </div>
-        ) : (
-          //EMPTY RESULT
-          <div className={styles.noResultsBlock}>
-            <Image
-              src={cloudSearch}
-              alt={"not result"}
-              width={176}
-              height={176}
-              fill={false}
-              style={{
-                objectFit: "contain",
-              }}
-            />
-            <div className={styles.noResultsText}>
-              Start typing a query to search for a product
-            </div>
-          </div>
-        )}
+
       </div>
     </>
   );

@@ -1,27 +1,29 @@
 import React, {
-    FC,
-    ReactNode,
-    useCallback,
-    useEffect,
-    useMemo, useRef,
-    useState,
+  FC,
+  ReactNode,
+  useCallback,
+  useEffect,
+  useMemo, useRef,
+  useState,
 } from "react";
-import {modalStater} from "../../ISTModals/modalSetter";
+import { modalStater } from "../../ISTModals/modalSetter";
 import styles from "../../../styles/Modals/catalog/catalogWrapper.module.scss";
+import { useRouter } from "next/router";
 
+import { useAppSelector } from "../../../Hooks/reduxSettings";
 import {
-    setCatalogState,
-    switchCatalog,
+  setCatalogState,
+  switchCatalog,
 } from "../../../store/slices/catalogSlices/catalogSlice";
 
-import {useDispatch} from "react-redux";
+import { useDispatch } from "react-redux";
 import HeaderCatalog from "../../Catalog/HeaderCatalog/HeaderCatalog";
-import {setSearch} from "../../../store/slices/catalogSlices/catalogSlice";
+import { setSearch } from "../../../store/slices/catalogSlices/catalogSlice";
 import {incOffset} from "../../../store/slices/catalogSlices/catalogPaginationSlice";
 import useBaseModal from "../../ISTModals/useBaseModal";
-import {toc_filtersList_page_mobile} from "../table_of_contents/Catalog/mobile/toc_filtersList_page_mobile";
+import {toc_filter_page_mobile} from "../table_of_contents/Catalog/mobile/toc_filter_page_mobile";
 import {toc_catalog_search} from "../table_of_contents/Catalog/toc_catalog_search";
-import {CatalogFilterPageMobileModal} from "./Pages/mobile/Pages/catalogFilterPageMobile_modal";
+import {CatalogFilterPageMobileModal} from "./Pages/mobile/catalogFilterPageMobile_modal";
 import CatalogWrapperMobileModal from "./catalogWrapperMobile_modal";
 import ModalMobilePage from "./Pages/mobile/modalMobilePage";
 import {toc_filter_page_mobile} from "../table_of_contents/Catalog/mobile/toc_filter_page_mobile";
@@ -29,13 +31,13 @@ import {ICatalogFiltersType} from "../../../store/slices/common/catalogFiltersTy
 import CatalogFiltersListPageMobileModal from "./Pages/mobile/Pages/catalogFiltersListPageMobile_modal";
 
 interface catalogWrapper {
-    data?: modalStater;
-    children: ReactNode;
+  data?: modalStater;
+  children: ReactNode;
 }
 
 const CatalogWrapperModal: FC<catalogWrapper> = ({
-     children,
-     data
+    children,
+    data
 }) => {
 
     const dispatch = useDispatch();
@@ -58,28 +60,28 @@ const CatalogWrapperModal: FC<catalogWrapper> = ({
         }
     }, [modalComponent]);
 
-    useEffect(() => {
-        dispatch(setSearch(searching));
-    }, [searching]);
+  useEffect(() => {
+    dispatch(setSearch(searching));
+  }, [searching]);
 
-    const onReviewsWrapperScroll = useCallback(() => {
-        if (childrenRef.current) {
-            const win = childrenRef.current;
-            if (win.scrollHeight - win.clientHeight < win.scrollTop + 1)
-                dispatch(incOffset());
-        }
-    }, [childrenRef]);
+  const onReviewsWrapperScroll = useCallback(()=>{
+    if(childrenRef.current) {
+      const win = childrenRef.current;
+      if (win.scrollHeight - win.clientHeight < win.scrollTop + 1)
+        dispatch(incOffset());
+    }
+  }, [childrenRef]);
 
-    useEffect(() => {
-        if (childrenRef && childrenRef.current) {
-            const win = childrenRef.current;
+  useEffect(()=>{
+    if(childrenRef && childrenRef.current) {
+      const win = childrenRef.current;
 
-            win.addEventListener("scroll", onReviewsWrapperScroll)
-            return () => {
-                win.removeEventListener("scroll", onReviewsWrapperScroll)
-            }
-        }
-    }, [onReviewsWrapperScroll, childrenRef])
+      win.addEventListener("scroll", onReviewsWrapperScroll)
+      return () => {
+        win.removeEventListener("scroll", onReviewsWrapperScroll)
+      }
+    }
+  },[onReviewsWrapperScroll, childrenRef])
 
     const handleHideMobileModal = useCallback(() => {
         modalComponent.switch(false);
@@ -120,46 +122,46 @@ const CatalogWrapperModal: FC<catalogWrapper> = ({
                         searchingElement={{
                             searchField: !data?.isCurrentModal(toc_catalog_search.typeName),
 
-                            searchSetter: setSearching,
-                            searchValue: searching,
-                        }}
-                    />
+              searchSetter: setSearching,
+              searchValue: searching,
+            }}
+          />
 
-                    <button
-                        onClick={() => {
-                            modalComponent
-                                .applyModalByName(toc_filtersList_page_mobile.typeName)
-                                .then(() => modalComponent.switch(!modalComponent.getState));
-                        }}
-                        style={{
-                            position: "absolute",
-                            left: "20px",
-                            bottom: "20px",
-                            zIndex: "1000",
-                        }}
-                    >
-                        switch modal
-                    </button>
+            <button
+                onClick={() => {
+                    modalComponent
+                        .applyModalByName(toc_filter_page_mobile.typeName)
+                        .then(() => modalComponent.switch(!modalComponent.getState));
+                }}
+                style={{
+                    position: "absolute",
+                    left: "20px",
+                    bottom: "20px",
+                    zIndex: "1000",
+                }}
+            >
+                switch modal
+            </button>
 
-                    <div
-                        id={"CatalogSpace_mobile_modal"}
-                        className={`${styles.catalogContent_wrapper} ${
-                            modalComponent.getState ? styles.modal : ""
-                        }`}
-                    >
-                        <div
-                            className={`row ${styles.catalogContent} ${
-                                modalComponent.getState ? styles.hidden : ""
-                            }`}
-                        >
-                            {children}
-                        </div>
-                    </div>
-
-                </div>
+          <div
+            id={"CatalogSpace_mobile_modal"}
+            className={`${styles.catalogContent_wrapper} ${
+              modalComponent.getState ? styles.modal : ""
+            }`}
+          >
+            <div
+              className={`row ${styles.catalogContent} ${
+                modalComponent.getState ? styles.hidden : ""
+              }`}
+            >
+              {children}
             </div>
+          </div>
 
-            {/*     Modals       */}
+        </div>
+      </div>
+
+      {/*     Modals       */}
 
             <ModalView
                 alignStyle={{
@@ -205,8 +207,8 @@ const CatalogWrapperModal: FC<catalogWrapper> = ({
                 </CatalogWrapperMobileModal>
             </ModalView>
 
-        </>
-    );
+    </>
+  );
 };
 
 export default CatalogWrapperModal;

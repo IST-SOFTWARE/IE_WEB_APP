@@ -13,7 +13,7 @@ const initialState =
     ISTCatalogCreate<ICatalogFiltersType>({
         catalog: false,
         filters: <ICatalogFiltersType>{},
-        search: undefined
+        search: ""
     })
 
 

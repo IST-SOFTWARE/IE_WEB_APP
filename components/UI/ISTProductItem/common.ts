@@ -2,7 +2,7 @@ import {CSSProperties, Dispatch, SetStateAction} from "react";
 import {ICatalogItem} from "./Abstract/ICatalogTypes";
 import {ICartItem} from "./Abstract/ICartTypes";
 import {ImageLoader} from "next/image";
-import {imageOptimization} from "../common";
+import {IImageOptimizationOptions} from "../common";
 
 export type pit_catalog = "catalog"
 export type pit_cart = "cart"
@@ -21,7 +21,7 @@ export interface IProductItem {
 
     style?: ISTProductItemStyles;
     forwardingPath?: string
-    imageOptimization?: imageOptimization;
+    imageOptimization?: IImageOptimizationOptions;
 
 }
 
