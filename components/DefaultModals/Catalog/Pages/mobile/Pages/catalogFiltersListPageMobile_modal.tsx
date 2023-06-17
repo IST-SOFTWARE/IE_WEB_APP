@@ -1,14 +1,9 @@
 import React, {FC, useCallback} from 'react';
 import ISTFiltersWrapper from "../../../../../UI/ISTFiltersList/components/ISTFiltersWrapper";
-import {toc_filtersList_page_mobile} from "../../../../table_of_contents/Catalog/mobile/toc_filtersList_page_mobile";
-import ISTFiltersList from "../../../../../UI/ISTFiltersList/components/ISTFiltersList";
-import {filterSetter_filtersHelper, isActiveNow_filtersHelper} from "../../../../../../helpers/Catalog/filters";
-import {onFilterSwitchCustom_t} from "../../../../../UI/hooks/ISTFiltersHook/common";
 import {ICatalogFiltersType} from "../../../../../../store/slices/common/catalogFiltersType";
-import {addNewFilter} from "../../../../../../store/slices/catalogSlices/catalogSlice";
-import {useAppSelector} from "../../../../../../Hooks/reduxSettings";
 import useISTFiltersList from "../../../../../UI/hooks/ISTFiltersHook/useISTFiltersList";
-import {useDispatch} from "react-redux";
+import {useAppSelector} from "../../../../../../Hooks/reduxSettings";
+import {listHasActives_filtersHelper} from "../../../../../../helpers/Catalog/filters";
 
 interface ICatalogFiltersListPageMobileModal{
     onTransfer: (designation: keyof ICatalogFiltersType) => void;
@@ -18,14 +13,27 @@ const CatalogFiltersListPageMobileModal:FC<ICatalogFiltersListPageMobileModal>= 
     onTransfer
 }) => {
 
+    const catalog = useAppSelector(selector => selector.catalog);
+
     const [mfg, mfg_active, mfg_des] =
         useISTFiltersList<ICatalogFiltersType>("mfg");
+    const [units, units_active, units_des] =
+        useISTFiltersList<ICatalogFiltersType>("unit");
+    const [types, types_active, types_des] =
+        useISTFiltersList<ICatalogFiltersType>("type");
+    const [av, av_active, av_des] =
+        useISTFiltersList<ICatalogFiltersType>("available");
+    // const [eq_type, eq_type_active, eq_type_des] =
+    //     useISTFiltersList<ICatalogFiltersType>("mfg");
+
 
     return(
-        <>
+        <div style={{
+            paddingTop: "15px"
+        }}>
             <ISTFiltersWrapper
-                title={"FILTER TEST"}
-                hasActives={mfg_active}
+                title={"Производители"}
+                hasActives={listHasActives_filtersHelper(catalog, "mfg")}
                 mobileSettings={{
                     type: "transfer",
                     onTransfer: ()=>{onTransfer(mfg_des)},
@@ -33,7 +41,52 @@ const CatalogFiltersListPageMobileModal:FC<ICatalogFiltersListPageMobileModal>= 
                 }}
                 isOpened={false}
             />
-        </>
+
+            <ISTFiltersWrapper
+                title={"Узлы"}
+                hasActives={listHasActives_filtersHelper(catalog, "unit")}
+                mobileSettings={{
+                    type: "transfer",
+                    onTransfer: ()=>{onTransfer(units_des)},
+                    mobileSizeTrigger: "XXL_1400",
+                }}
+                isOpened={false}
+            />
+
+            <ISTFiltersWrapper
+                title={"Типы"}
+                hasActives={listHasActives_filtersHelper(catalog, "type")}
+                mobileSettings={{
+                    type: "transfer",
+                    onTransfer: ()=>{onTransfer(types_des)},
+                    mobileSizeTrigger: "XXL_1400",
+                }}
+                isOpened={false}
+            />
+
+            <ISTFiltersWrapper
+                title={"Наличие"}
+                hasActives={listHasActives_filtersHelper(catalog, "available")}
+                mobileSettings={{
+                    type: "transfer",
+                    onTransfer: ()=>{onTransfer(av_des)},
+                    mobileSizeTrigger: "XXL_1400",
+                }}
+                isOpened={false}
+            />
+
+            {/*<ISTFiltersWrapper*/}
+            {/*    title={"Наличие"}*/}
+            {/*    hasActives={mfg_active}*/}
+            {/*    mobileSettings={{*/}
+            {/*        type: "transfer",*/}
+            {/*        onTransfer: ()=>{onTransfer(mfg_des)},*/}
+            {/*        mobileSizeTrigger: "XXL_1400",*/}
+            {/*    }}*/}
+            {/*    isOpened={false}*/}
+            {/*/>*/}
+
+        </div>
     )
 }
 

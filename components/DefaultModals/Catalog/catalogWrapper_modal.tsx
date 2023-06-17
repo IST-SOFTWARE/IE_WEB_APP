@@ -1,22 +1,22 @@
 import React, {
-  FC,
-  ReactNode,
-  useCallback,
-  useEffect,
-  useMemo, useRef,
-  useState,
+    FC,
+    ReactNode,
+    useCallback,
+    useEffect,
+    useMemo, useRef,
+    useState,
 } from "react";
-import { modalStater } from "../../ISTModals/modalSetter";
+import {modalStater} from "../../ISTModals/modalSetter";
 import styles from "../../../styles/Modals/catalog/catalogWrapper.module.scss";
 
 import {
-  setCatalogState,
-  switchCatalog,
+    setCatalogState,
+    switchCatalog,
 } from "../../../store/slices/catalogSlices/catalogSlice";
 
-import { useDispatch } from "react-redux";
+import {useDispatch} from "react-redux";
 import HeaderCatalog from "../../Catalog/HeaderCatalog/HeaderCatalog";
-import { setSearch } from "../../../store/slices/catalogSlices/catalogSlice";
+import {setSearch} from "../../../store/slices/catalogSlices/catalogSlice";
 import {incOffset} from "../../../store/slices/catalogSlices/catalogPaginationSlice";
 import useBaseModal from "../../ISTModals/useBaseModal";
 import {toc_filtersList_page_mobile} from "../table_of_contents/Catalog/mobile/toc_filtersList_page_mobile";
@@ -29,198 +29,184 @@ import {ICatalogFiltersType} from "../../../store/slices/common/catalogFiltersTy
 import CatalogFiltersListPageMobileModal from "./Pages/mobile/Pages/catalogFiltersListPageMobile_modal";
 
 interface catalogWrapper {
-  data?: modalStater;
-  children: ReactNode;
+    data?: modalStater;
+    children: ReactNode;
 }
 
 const CatalogWrapperModal: FC<catalogWrapper> = ({
-    children,
-    data
+     children,
+     data
 }) => {
 
-  const dispatch = useDispatch();
-  const [searching, setSearching] = useState<string>("");
-  const childrenRef = useRef<HTMLDivElement>(null);
+    const dispatch = useDispatch();
+    const [searching, setSearching] = useState<string>("");
+    const childrenRef = useRef<HTMLDivElement>(null);
 
-  const { modalComponent, ModalView } = useBaseModal(
-    "Catalog_Modal_wrapper",
-    "CatalogSpace_mobile_modal"
-  );
+    const {modalComponent, ModalView} = useBaseModal(
+        "Catalog_Modal_wrapper",
+        "CatalogSpace_mobile_modal"
+    );
 
     const [currentFilterPage, setCurrentFilterPage] = useState<keyof ICatalogFiltersType>();
 
-  useEffect(() => {
-    if (modalComponent) {
-      modalComponent.editModals([
-          toc_filtersList_page_mobile,
-          toc_filter_page_mobile
-      ], 0);
-    }
-  }, [modalComponent]);
+    useEffect(() => {
+        if (modalComponent) {
+            modalComponent.editModals([
+                toc_filtersList_page_mobile,
+                toc_filter_page_mobile
+            ], 0);
+        }
+    }, [modalComponent]);
 
-  useEffect(() => {
-    dispatch(setSearch(searching));
-  }, [searching]);
+    useEffect(() => {
+        dispatch(setSearch(searching));
+    }, [searching]);
 
-  const onReviewsWrapperScroll = useCallback(()=>{
-    if(childrenRef.current) {
-      const win = childrenRef.current;
-      if (win.scrollHeight - win.clientHeight < win.scrollTop + 1)
-        dispatch(incOffset());
-    }
-  }, [childrenRef]);
+    const onReviewsWrapperScroll = useCallback(() => {
+        if (childrenRef.current) {
+            const win = childrenRef.current;
+            if (win.scrollHeight - win.clientHeight < win.scrollTop + 1)
+                dispatch(incOffset());
+        }
+    }, [childrenRef]);
 
-  useEffect(()=>{
-    if(childrenRef && childrenRef.current) {
-      const win = childrenRef.current;
+    useEffect(() => {
+        if (childrenRef && childrenRef.current) {
+            const win = childrenRef.current;
 
-      win.addEventListener("scroll", onReviewsWrapperScroll)
-      return () => {
-        win.removeEventListener("scroll", onReviewsWrapperScroll)
-      }
-    }
-  },[onReviewsWrapperScroll, childrenRef])
+            win.addEventListener("scroll", onReviewsWrapperScroll)
+            return () => {
+                win.removeEventListener("scroll", onReviewsWrapperScroll)
+            }
+        }
+    }, [onReviewsWrapperScroll, childrenRef])
 
-    const handleHideMobileModal = useCallback(()=>{
+    const handleHideMobileModal = useCallback(() => {
         modalComponent.switch(false);
-    },[modalComponent])
+    }, [modalComponent])
 
-    const handleRouteBackMobileModal = useCallback(()=>{
-        modalComponent.applyModalByName(toc_filtersList_page_mobile.typeName).then(()=>{
+    const handleRouteBackMobileModal = useCallback(() => {
+        modalComponent.applyModalByName(toc_filtersList_page_mobile.typeName).then(() => {
             setCurrentFilterPage(undefined)
         })
-    },[modalComponent])
+    }, [modalComponent])
 
-    const setCatalogFilterMobileModal = useCallback((designation: keyof ICatalogFiltersType)=>{
-        modalComponent.applyModalByName(toc_filter_page_mobile.typeName).then(()=>{
-            modalComponent.getModalByName(toc_filter_page_mobile.typeName).modal._header = designation.toString();
+    const setCatalogFilterMobileModal = useCallback((designation: keyof ICatalogFiltersType) => {
+        modalComponent.getModalByName(toc_filter_page_mobile.typeName).modal._header = designation.toString();
+        modalComponent.applyModalByName(toc_filter_page_mobile.typeName).then(() => {
             setCurrentFilterPage(designation)
         })
-    },[modalComponent])
+    }, [modalComponent])
 
-  return (
-    <>
-      <div
-        className={styles.catalog_wrapper}
-        ref={childrenRef}
-        id={"Catalog_Modal_wrapper"}
-      >
-        <div
-          className={"container-fluid"}
-          style={{
-            maxWidth: "1480px"
-          }}
-        >
-          <HeaderCatalog
-            logo={{ logoSrc: "/Logo/w_logo_svg.svg", forwardingPath: "Logo" }}
-            onClose={() => {
-              dispatch(setCatalogState(false));
-            }}
-            // mobileTriggerSize={"XL_1200"}
-            searchingElement={{
-              searchField: !data?.isCurrentModal(toc_catalog_search.typeName),
+    return (
+        <>
+            <div
+                className={styles.catalog_wrapper}
+                ref={childrenRef}
+                id={"Catalog_Modal_wrapper"}
+            >
+                <div
+                    className={"container-fluid"}
+                    style={{
+                        maxWidth: "1480px"
+                    }}
+                >
+                    <HeaderCatalog
+                        logo={{logoSrc: "/Logo/w_logo_svg.svg", forwardingPath: "Logo"}}
+                        onClose={() => {
+                            dispatch(setCatalogState(false));
+                        }}
+                        // mobileTriggerSize={"XL_1200"}
+                        searchingElement={{
+                            searchField: !data?.isCurrentModal(toc_catalog_search.typeName),
 
-              searchSetter: setSearching,
-              searchValue: searching,
-            }}
-          />
+                            searchSetter: setSearching,
+                            searchValue: searching,
+                        }}
+                    />
 
-          {/*<div*/}
-          {/*  style={{*/}
-          {/*    color: "#fff",*/}
-          {/*    position: "absolute",*/}
-          {/*    top: "50px",*/}
-          {/*    maxWidth: "350px",*/}
-          {/*    left: "5%",*/}
-          {/*    background: "black",*/}
-          {/*    zIndex: "2000",*/}
-          {/*    opacity: "0.5"*/}
-          {/*  }}*/}
-          {/*>*/}
-          {/*  REDUX:*/}
-          {/*  {JSON.stringify(reduxCatalogState)}*/}
-          {/*  <br />*/}
-          {/*  OUT FROM LINK:*/}
-          {/*  /!*{JSON.stringify(currentState)}*!/*/}
-          {/*</div>*/}
+                    <button
+                        onClick={() => {
+                            modalComponent
+                                .applyModalByName(toc_filtersList_page_mobile.typeName)
+                                .then(() => modalComponent.switch(!modalComponent.getState));
+                        }}
+                        style={{
+                            position: "absolute",
+                            left: "20px",
+                            bottom: "20px",
+                            zIndex: "1000",
+                        }}
+                    >
+                        switch modal
+                    </button>
 
-            <button
-                onClick={() => {
-                    modalComponent
-                        .applyModalByName(toc_filtersList_page_mobile.typeName)
-                        .then(() => modalComponent.switch(!modalComponent.getState));
+                    <div
+                        id={"CatalogSpace_mobile_modal"}
+                        className={`${styles.catalogContent_wrapper} ${
+                            modalComponent.getState ? styles.modal : ""
+                        }`}
+                    >
+                        <div
+                            className={`row ${styles.catalogContent} ${
+                                modalComponent.getState ? styles.hidden : ""
+                            }`}
+                        >
+                            {children}
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            {/*     Modals       */}
+
+            <ModalView
+                alignStyle={{
+                    horizontal:"center",
+                    vertical: "start"
                 }}
                 style={{
+                    minWidth: "unset",
+                    minHeight: "unset",
+
+                    height: "100%",
+
+                    width: "100%",
                     position: "absolute",
-                    left: "20px",
-                    bottom: "20px",
-                    zIndex: "1000",
+
+                    top: 0,
+                    left: 0,
                 }}
             >
-                switch modal
-            </button>
+                <CatalogWrapperMobileModal>
 
-          <div
-            id={"CatalogSpace_mobile_modal"}
-            className={`${styles.catalogContent_wrapper} ${
-              modalComponent.getState ? styles.modal : ""
-            }`}
-          >
-            <div
-              className={`row ${styles.catalogContent} ${
-                modalComponent.getState ? styles.hidden : ""
-              }`}
-            >
-              {children}
-            </div>
-          </div>
+                    <ModalMobilePage header={{
+                        type: modalComponent.isCurrentModal(toc_filtersList_page_mobile.typeName) ? "hiding_MMHeader_type" : "routingBack_MMHeaderType",
+                        title: modalComponent.getHeader,
+                        arrowHandler: () => {
+                            modalComponent.isCurrentModal(toc_filtersList_page_mobile.typeName) ?
+                                handleHideMobileModal() :
+                                handleRouteBackMobileModal();
+                        }
+                    }}>
 
-        </div>
-      </div>
+                        {modalComponent.isCurrentModal(toc_filtersList_page_mobile.typeName) ? (
+                            <CatalogFiltersListPageMobileModal onTransfer={setCatalogFilterMobileModal}/>
+                        ) : null}
 
-      {/*     Modals       */}
+                        {modalComponent.isCurrentModal(toc_filter_page_mobile.typeName) ? (
+                            <CatalogFilterPageMobileModal
+                                pageDesignation={currentFilterPage ? currentFilterPage : "mfg"}/>
+                        ) : null}
 
-      <ModalView
-          style={{
-            minWidth: "unset",
-            minHeight: "unset",
+                    </ModalMobilePage>
 
-            height: "100%",
+                </CatalogWrapperMobileModal>
+            </ModalView>
 
-            width: "100%",
-            position: "absolute",
-
-            top: 0,
-            left: 0,
-          }}
-      >
-        <CatalogWrapperMobileModal>
-
-            <ModalMobilePage header={{
-                type: modalComponent.isCurrentModal(toc_filtersList_page_mobile.typeName) ? "hiding_MMHeader_type" : "routingBack_MMHeaderType",
-                title: modalComponent.getHeader,
-                arrowHandler: ()=>{
-                    modalComponent.isCurrentModal(toc_filtersList_page_mobile.typeName) ?
-                    handleHideMobileModal():
-                    handleRouteBackMobileModal();
-                }
-            }}>
-
-                {modalComponent.isCurrentModal(toc_filtersList_page_mobile.typeName) ? (
-                    <CatalogFiltersListPageMobileModal onTransfer={setCatalogFilterMobileModal}/>
-                ) : null}
-
-                {modalComponent.isCurrentModal(toc_filter_page_mobile.typeName) ? (
-                    <CatalogFilterPageMobileModal pageDesignation={currentFilterPage ? currentFilterPage : "mfg"} />
-                ) : null}
-
-            </ModalMobilePage>
-
-        </CatalogWrapperMobileModal>
-      </ModalView>
-
-    </>
-  );
+        </>
+    );
 };
 
 export default CatalogWrapperModal;

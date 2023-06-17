@@ -1,10 +1,6 @@
 import {ICatalogFiltersType} from "../../store/slices/common/catalogFiltersType";
 import {IGeneralCategoryQuery} from "../../queries/categories/generalCategoryQuery";
-
-
-// interface getFiltersDesignationSList_out_t {
-//     designations: string[],
-// }
+import {ICatalogQueries} from "../../Hooks/useCatalog/ICatalogQueries";
 
 export const getFiltersDesignationSList_filtersHelper =
     (selectedTypes: keyof ICatalogFiltersType): string=> {
@@ -76,4 +72,12 @@ export const filterExclude_filtersHelper = (
     return [""];
 }
 
+export const listHasActives_filtersHelper = (
+    catalog:  ICatalogQueries<ICatalogFiltersType>,
+    filter: keyof ICatalogFiltersType
+): boolean => {
+    if(catalog?.filters)
+        return catalog.filters[filter] && catalog.filters[filter]?.length > 0
 
+    return false
+}
