@@ -2,6 +2,7 @@
 @import "../../mixins/scroll_mixin";
 
 $headerSize: 110px;
+$mobile_bar: 95px;
 
 .catalog_wrapper{
   min-width: 100vw;
@@ -20,16 +21,14 @@ $headerSize: 110px;
   position: relative;
 
   &.modal{
-    height: 75vh;
+    height: calc(100vh - $headerSize - $mobile_bar);
   }
 }
-
-
 
 .catalogContent{
   height: calc(100% - $headerSize);
   margin-top: 15px !important;
-  margin: 0px auto;
+  margin: 0 auto;
 
   padding: 0 5px;
 
@@ -40,6 +39,27 @@ $headerSize: 110px;
   }
 }
 
+.mobileCatalogBar{
+  height: $mobile_bar;
+  width: calc(100% - 30px);
+
+  position: absolute;
+  bottom: 15px;
+  left: 50%;
+  transform: translateX(-50%);
+
+  &:after{
+
+    content: "";
+
+    position: absolute;
+    bottom: -2;
+    height: $mobile_bar / 2;
+    background: $def_dark;
+    width: 100%;
+  }
+
+}
 
 @media screen and (min-width: 575.98px){
   .catalogContent{

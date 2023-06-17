@@ -16,9 +16,9 @@ interface ISTBottomMenu{
 }
 
 const ICatalogHelper:FC<ISTBottomMenu> = ({
-                                            items,
-                                            style
-                                          }) => {
+    items,
+    style
+}) => {
 
   const [currentHelper, setCurrentHelper] = useState<number>(null);
 

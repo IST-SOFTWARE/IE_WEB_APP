@@ -93,19 +93,20 @@ export const LandingLayout:FC<ILandingLayout> = ({
                         zIndex: "1000"
                     }}>
 
-                        <button onClick={()=> {
-                            modalComponent.applyModalByName(toc_catalog_full_prod_list.typeName)
-                                .then(()=>router.push("", undefined, {shallow: true}))
-                        }}>
-                            Full prod list
-                        </button>
+                    {/*    <button onClick={()=> {*/}
+                    {/*        modalComponent.applyModalByName(toc_catalog_full_prod_list.typeName)*/}
+                    {/*            .then(()=>router.push("", undefined, {shallow: true}))*/}
+                    {/*    }}>*/}
+                    {/*        Full prod list*/}
+                    {/*    </button>*/}
 
-                        <button onClick={()=> {
-                            modalComponent.applyModalByName(toc_catalog_search.typeName)
-                                .then(()=>router.push("", undefined, {shallow: true}))
-                        }}>
-                            Search
-                        </button>
+                    {/*    <button onClick={()=> {*/}
+                    {/*        modalComponent.applyModalByName(toc_catalog_search.typeName)*/}
+                    {/*            .then(()=>router.push("", undefined, {shallow: true}))*/}
+                    {/*    }}>*/}
+                    {/*        Search*/}
+                    {/*    </button>*/}
+
                     </div>
 
                     <CatalogWrapper_modal

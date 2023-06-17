@@ -3,32 +3,32 @@ import React, {
   ReactNode,
   useCallback,
   useEffect,
-  useMemo, useRef,
+    useRef,
   useState,
 } from "react";
 import { modalStater } from "../../ISTModals/modalSetter";
 import styles from "../../../styles/Modals/catalog/catalogWrapper.module.scss";
-import { useRouter } from "next/router";
-
-import { useAppSelector } from "../../../Hooks/reduxSettings";
-import {
-  setCatalogState,
-  switchCatalog,
-} from "../../../store/slices/catalogSlices/catalogSlice";
-
+import {setCatalogState} from "../../../store/slices/catalogSlices/catalogSlice";
 import { useDispatch } from "react-redux";
 import HeaderCatalog from "../../Catalog/HeaderCatalog/HeaderCatalog";
 import { setSearch } from "../../../store/slices/catalogSlices/catalogSlice";
 import {incOffset} from "../../../store/slices/catalogSlices/catalogPaginationSlice";
 import useBaseModal from "../../ISTModals/useBaseModal";
-import {toc_filter_page_mobile} from "../table_of_contents/Catalog/mobile/toc_filter_page_mobile";
 import {toc_catalog_search} from "../table_of_contents/Catalog/toc_catalog_search";
-import {CatalogFilterPageMobileModal} from "./Pages/mobile/catalogFilterPageMobile_modal";
 import CatalogWrapperMobileModal from "./catalogWrapperMobile_modal";
 import ModalMobilePage from "./Pages/mobile/modalMobilePage";
 import {toc_filter_page_mobile} from "../table_of_contents/Catalog/mobile/toc_filter_page_mobile";
 import {ICatalogFiltersType} from "../../../store/slices/common/catalogFiltersType";
 import CatalogFiltersListPageMobileModal from "./Pages/mobile/Pages/catalogFiltersListPageMobile_modal";
+import {toc_filtersList_page_mobile} from "../table_of_contents/Catalog/mobile/toc_filtersList_page_mobile";
+import {CatalogFilterPageMobileModal} from "./Pages/mobile/Pages/catalogFilterPageMobile_modal";
+import ISTMobileBar from "../../UI/ISTMobileBar/ISTMobileBar";
+import search_ico from "../../../public/MobileHelperIcons/search_icon.svg";
+import filters_ico from "../../../public/MobileHelperIcons/filter_icon.svg";
+import cart_ico from "../../../public/MobileHelperIcons/cart_icon.svg";
+import currency_ico from "../../../public/MobileHelperIcons/currency_icon.svg";
+
+
 
 interface catalogWrapper {
   data?: modalStater;
@@ -83,22 +83,40 @@ const CatalogWrapperModal: FC<catalogWrapper> = ({
     }
   },[onReviewsWrapperScroll, childrenRef])
 
-    const handleHideMobileModal = useCallback(() => {
-        modalComponent.switch(false);
-    }, [modalComponent])
 
-    const handleRouteBackMobileModal = useCallback(() => {
-        modalComponent.applyModalByName(toc_filtersList_page_mobile.typeName).then(() => {
-            setCurrentFilterPage(undefined)
-        })
-    }, [modalComponent])
+    // MOBILE MENU ACTIONS:
 
-    const setCatalogFilterMobileModal = useCallback((designation: keyof ICatalogFiltersType) => {
-        modalComponent.getModalByName(toc_filter_page_mobile.typeName).modal._header = designation.toString();
-        modalComponent.applyModalByName(toc_filter_page_mobile.typeName).then(() => {
-            setCurrentFilterPage(designation)
-        })
-    }, [modalComponent])
+        const handleHideMobileModal = useCallback(() => {
+            modalComponent.switch(false);
+        }, [modalComponent])
+
+        const handleRouteBackMobileModal = useCallback(() => {
+            modalComponent.applyModalByName(toc_filtersList_page_mobile.typeName).then(() => {
+                setCurrentFilterPage(undefined)
+            })
+        }, [modalComponent])
+
+        const setCatalogFilterMobileModal = useCallback((designation: keyof ICatalogFiltersType) => {
+            modalComponent.getModalByName(toc_filter_page_mobile.typeName).modal._header = designation.toString();
+            modalComponent.applyModalByName(toc_filter_page_mobile.typeName).then(() => {
+                setCurrentFilterPage(designation)
+            })
+        }, [modalComponent])
+
+        const handleOpenMobileModal = useCallback(()=>{
+            modalComponent
+                .applyModalByName(toc_filtersList_page_mobile.typeName)
+                .then(() => modalComponent.switch(true));
+        },[modalComponent])
+
+        // DETECTING MOBILE MODAL PAGES
+
+            const isActive_FiltersMobilePage = useCallback(():boolean => {
+                if(modalComponent.getState)
+                   return modalComponent.isCurrentModal(toc_filtersList_page_mobile.typeName) ||
+                    modalComponent.isCurrentModal(toc_filter_page_mobile.typeName)
+                return false
+            },[modalComponent])
 
     return (
         <>
@@ -127,22 +145,6 @@ const CatalogWrapperModal: FC<catalogWrapper> = ({
             }}
           />
 
-            <button
-                onClick={() => {
-                    modalComponent
-                        .applyModalByName(toc_filter_page_mobile.typeName)
-                        .then(() => modalComponent.switch(!modalComponent.getState));
-                }}
-                style={{
-                    position: "absolute",
-                    left: "20px",
-                    bottom: "20px",
-                    zIndex: "1000",
-                }}
-            >
-                switch modal
-            </button>
-
           <div
             id={"CatalogSpace_mobile_modal"}
             className={`${styles.catalogContent_wrapper} ${
@@ -157,6 +159,42 @@ const CatalogWrapperModal: FC<catalogWrapper> = ({
               {children}
             </div>
           </div>
+
+            <div className={styles.mobileCatalogBar}>
+                <ISTMobileBar
+                    buttons={[
+                        {
+                            title: "Поиск",
+                            image: search_ico,
+                            action: ()=>{},
+                            isActive: false
+                        },
+                        {
+                            title: "Фильтры",
+                            image: filters_ico,
+                            action: handleOpenMobileModal,
+                            isActive: isActive_FiltersMobilePage()
+                        },
+                        {
+                            title: "Корзина",
+                            image: cart_ico,
+                            action: ()=>{},
+                            isActive: false
+                        },
+                        {
+                            title: "USD",
+                            image: currency_ico,
+                            action: ()=>{},
+                            isActive: false
+                        }
+                    ]}
+                    style={{
+                        height: "100%",
+                        borderRadius: "10px"
+                    }}
+                    mobileTriggerSize={"LG_992"}
+                />
+            </div>
 
         </div>
       </div>
