@@ -2,7 +2,7 @@
 @import "../../mixins/scroll_mixin";
 
 $headerSize: 110px;
-$mobile_bar: 95px;
+$mobile_bar: 90px;
 
 .catalog_wrapper{
   min-width: 100vw;
@@ -21,7 +21,7 @@ $mobile_bar: 95px;
   position: relative;
 
   &.modal{
-    height: calc(100vh - $headerSize - $mobile_bar);
+    height: calc(100vh - (100vh - 100%) - $headerSize - $mobile_bar);
   }
 }
 
@@ -47,6 +47,7 @@ $mobile_bar: 95px;
   bottom: 15px;
   left: 50%;
   transform: translateX(-50%);
+  z-index: 10;
 
   &:after{
 

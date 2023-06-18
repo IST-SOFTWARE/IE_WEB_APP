@@ -126,9 +126,10 @@ const CatalogWrapperModal: FC<catalogWrapper> = ({
                 id={"Catalog_Modal_wrapper"}
             >
                 <div
-                    className={"container-fluid"}
+                    className={"container-fluid h-100"}
                     style={{
                         maxWidth: "1480px"
+
                     }}
                 >
                     <HeaderCatalog

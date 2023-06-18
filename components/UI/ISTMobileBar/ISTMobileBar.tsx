@@ -13,7 +13,7 @@ const ISTMobileBar:FC<IISTMobileBar> = ({
         <div
             className={`${styles.mobileBar} ${styles[mobileTriggerSize]}`}
             style={{
-                minHeight: "95px",
+                minHeight: "90px",
                 ...style
             }}
         >
@@ -22,7 +22,9 @@ const ISTMobileBar:FC<IISTMobileBar> = ({
                     <div
                         className={`${styles.mobileBtn} ${el.isActive ? styles.active : ""}`}
                         style={{
-                            width: `calc((100% / ${buttons.length}) + 14px)`,
+                            width: `calc((100% - 14px - (${(buttons.length * 2 - 2) * 5}px)) / ${buttons.length})`,
+                            maxWidth: `calc((100% - 14px - (${(buttons.length * 2 - 2) * 5}px)) / ${buttons.length})`,
+                            minWidth: `calc((100% - 14px - (${(buttons.length * 2 - 2) * 5}px)) / ${buttons.length})`
                         }}
                         onClick={el.action}
                     >
