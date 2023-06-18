@@ -47,7 +47,9 @@ export const CatalogFilterPageMobileModal: FC<mobileFilterModal> = ({
         );
 
     return(
-        <>
+        <div style={{
+            marginTop: "-8px"
+        }}>
             {catalogFilter && catalogFilter[pageDesignation] ? (
                 <ISTFiltersList
                     fields={catalogFilter[pageDesignation].map((el) => {
@@ -65,6 +67,6 @@ export const CatalogFilterPageMobileModal: FC<mobileFilterModal> = ({
                 />
             ) : null}
 
-        </>
+        </div>
     )
 }

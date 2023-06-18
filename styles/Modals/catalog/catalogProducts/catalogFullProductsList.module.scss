@@ -20,14 +20,27 @@ $productItemSize: 180px;
 }
 
 .productCardVariant_Block {
-  $productItemSize: calc(50% - 14px) !global;
+  $productItemSize: calc(50% - 5px) !global;
   width: $productItemSize;
   min-width: $productItemSize;
 
+  &:nth-child(odd){
+    margin-right: 10px;
+    margin-bottom: 10px;
+  }
+
   display: flex;
-  margin: 7px;
+  margin: 0;
 }
 
+
+@media screen and (max-width: 991.98px){
+  .productCardVariant_Block {
+    &  * {
+      box-shadow: none !important;
+    }
+  }
+}
 
 @media screen and (min-width: 575.98px) {
   .productCardVariant_Block {

@@ -50,6 +50,7 @@ const CatalogWrapperModal: FC<catalogWrapper> = ({
     );
 
     const [currentFilterPage, setCurrentFilterPage] = useState<keyof ICatalogFiltersType>();
+    const [mobileSearchingState, setMobileSearchingState] = useState<boolean>(false);
 
     useEffect(() => {
         if (modalComponent) {
@@ -109,6 +110,12 @@ const CatalogWrapperModal: FC<catalogWrapper> = ({
                 .then(() => modalComponent.switch(true));
         },[modalComponent])
 
+
+        const switchMobileSearching = useCallback((st: boolean)=>{
+            modalComponent.switch(false);
+            setMobileSearchingState(st);
+        },[modalComponent])
+
         // DETECTING MOBILE MODAL PAGES
 
             const isActive_FiltersMobilePage = useCallback(():boolean => {
@@ -117,6 +124,7 @@ const CatalogWrapperModal: FC<catalogWrapper> = ({
                     modalComponent.isCurrentModal(toc_filter_page_mobile.typeName)
                 return false
             },[modalComponent])
+
 
     return (
         <>
@@ -128,8 +136,7 @@ const CatalogWrapperModal: FC<catalogWrapper> = ({
                 <div
                     className={"container-fluid h-100"}
                     style={{
-                        maxWidth: "1480px"
-
+                        maxWidth: "1480px",
                     }}
                 >
                     <HeaderCatalog
@@ -161,13 +168,13 @@ const CatalogWrapperModal: FC<catalogWrapper> = ({
             </div>
           </div>
 
-            <div className={styles.mobileCatalogBar}>
+            <div className={`${styles.mobileCatalogBar} ${mobileSearchingState ? styles.searching : ""}`}>
                 <ISTMobileBar
                     buttons={[
                         {
                             title: "Поиск",
                             image: search_ico,
-                            action: ()=>{},
+                            action: ()=>{switchMobileSearching(true)},
                             isActive: false
                         },
                         {
@@ -193,6 +200,13 @@ const CatalogWrapperModal: FC<catalogWrapper> = ({
                         height: "100%",
                         borderRadius: "10px"
                     }}
+
+                    inputOptions={{
+                        placeholder: "Search...",
+                        state: mobileSearchingState,
+                        onBlur: ()=>{switchMobileSearching(false)}
+                    }}
+
                     mobileTriggerSize={"LG_992"}
                 />
             </div>
