@@ -27,6 +27,7 @@ import search_ico from "../../../public/MobileHelperIcons/search_icon.svg";
 import filters_ico from "../../../public/MobileHelperIcons/filter_icon.svg";
 import cart_ico from "../../../public/MobileHelperIcons/cart_icon.svg";
 import currency_ico from "../../../public/MobileHelperIcons/currency_icon.svg";
+import {useAppSelector} from "../../../Hooks/reduxSettings";
 
 
 
@@ -41,7 +42,7 @@ const CatalogWrapperModal: FC<catalogWrapper> = ({
 }) => {
 
     const dispatch = useDispatch();
-    const [searching, setSearching] = useState<string>("");
+    const catalog = useAppSelector(selector => selector.catalog);
     const childrenRef = useRef<HTMLDivElement>(null);
 
     const {modalComponent, ModalView} = useBaseModal(
@@ -60,10 +61,6 @@ const CatalogWrapperModal: FC<catalogWrapper> = ({
             ], 0);
         }
     }, [modalComponent]);
-
-  useEffect(() => {
-    dispatch(setSearch(searching));
-  }, [searching]);
 
   const onReviewsWrapperScroll = useCallback(()=>{
     if(childrenRef.current) {
@@ -84,6 +81,9 @@ const CatalogWrapperModal: FC<catalogWrapper> = ({
     }
   },[onReviewsWrapperScroll, childrenRef])
 
+    const setSearch_helper = (val: string) => {
+        dispatch(setSearch(val));
+    }
 
     // MOBILE MENU ACTIONS:
 
@@ -148,10 +148,10 @@ const CatalogWrapperModal: FC<catalogWrapper> = ({
                         searchingElement={{
                             searchField: !data?.isCurrentModal(toc_catalog_search.typeName),
 
-              searchSetter: setSearching,
-              searchValue: searching,
-            }}
-          />
+                              searchSetter: setSearch_helper,
+                              searchValue: catalog?.search,
+                        }}
+                    />
 
           <div
             id={"CatalogSpace_mobile_modal"}
@@ -204,7 +204,10 @@ const CatalogWrapperModal: FC<catalogWrapper> = ({
                     inputOptions={{
                         placeholder: "Search...",
                         state: mobileSearchingState,
-                        onBlur: ()=>{switchMobileSearching(false)}
+                        onBlur: ()=>{switchMobileSearching(false)},
+
+                        currentDataSetter: setSearch_helper,
+                        currentData: catalog?.search,
                     }}
 
                     mobileTriggerSize={"LG_992"}

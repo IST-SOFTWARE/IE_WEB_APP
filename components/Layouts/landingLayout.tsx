@@ -1,27 +1,19 @@
 import React, {FC, ReactNode, useCallback, useEffect, useState} from 'react';
 import {useRouter} from "next/router";
 import useBaseModal from "../ISTModals/useBaseModal";
-import {useCatalog} from "../../Hooks/useCatalog/useCatalog";
-import {ICatalogQueries} from "../../Hooks/useCatalog/ICatalogQueries";
-import {ICatalogFiltersType} from "../../store/slices/common/catalogFiltersType";
 import {toc_catalog_search} from "../DefaultModals/table_of_contents/Catalog/toc_catalog_search";
 import {toc_catalog_full_prod_list} from "../DefaultModals/table_of_contents/Catalog/toc_catalog_full_prod_list";
 import CatalogWrapper_modal from "../DefaultModals/Catalog/catalogWrapper_modal";
 import CatalogSearchModal from "../DefaultModals/Catalog/Pages/catalogSearch_modal";
-
 import Header from "../Header/Header";
 import Footer from "../Footer/Footer";
-import {useAppSelector} from "../../Hooks/reduxSettings";
 import {useDispatch} from "react-redux";
 import {setCatalogState, updateCatalog} from "../../store/slices/catalogSlices/catalogSlice";
 import Catalog from "../Catalog/Catalog";
-import CatalogTestProdsModal from "../DefaultModals/Catalog/Pages/catalogTestProds_modal";
-import CatalogTestFiltersModal from "../DefaultModals/Catalog/Pages/catalogTestFilters_modal";
 import {useQuery} from "@apollo/client";
 import {GENERAL_CATEGORY_QUERY, IGeneralCategoryQuery} from "../../queries/categories/generalCategoryQuery";
-import filtersListSlice, {filtersList_update} from "../../store/slices/filtersListSlice/filtersListSlice";
+import {filtersList_update} from "../../store/slices/filtersListSlice/filtersListSlice";
 import {getFiltersItemsAsArray_filtersHelper} from "../../helpers/Catalog/filters";
-import {ICategoryMFG_Q} from "../../queries/categories/MFG/mfgCategoryQuery";
 import CatalogFullProductsListModal from "../DefaultModals/Catalog/Pages/catalogFullProductsList_modal";
 
 
@@ -92,20 +84,6 @@ export const LandingLayout:FC<ILandingLayout> = ({
                         display: "flex",
                         zIndex: "1000"
                     }}>
-
-                    {/*    <button onClick={()=> {*/}
-                    {/*        modalComponent.applyModalByName(toc_catalog_full_prod_list.typeName)*/}
-                    {/*            .then(()=>router.push("", undefined, {shallow: true}))*/}
-                    {/*    }}>*/}
-                    {/*        Full prod list*/}
-                    {/*    </button>*/}
-
-                    {/*    <button onClick={()=> {*/}
-                    {/*        modalComponent.applyModalByName(toc_catalog_search.typeName)*/}
-                    {/*            .then(()=>router.push("", undefined, {shallow: true}))*/}
-                    {/*    }}>*/}
-                    {/*        Search*/}
-                    {/*    </button>*/}
 
                     </div>
 

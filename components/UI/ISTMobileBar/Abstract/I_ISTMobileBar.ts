@@ -1,4 +1,4 @@
-import {commonStyles, mobileTrigger_size} from "../../common";
+import {commonStyles, IInputDataSetter, mobileTrigger_size} from "../../common";
 import {Dispatch} from "react";
 
 type IISTMobileBar_button = {
@@ -12,6 +12,9 @@ type IISTMobileBar_inputOptions = {
     placeholder: string,
     state: boolean,
     onBlur: (...props: any) => any;
+
+    currentData: string,
+    currentDataSetter: IInputDataSetter
 }
 
 export interface IISTMobileBar{

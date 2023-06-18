@@ -11,7 +11,6 @@ const ISTMobileBar:FC<IISTMobileBar> = ({
     inputOptions
 }) => {
 
-    const [inputState, setInputState] = useState<string>("")
     const inputRef = useRef<HTMLInputElement>(null);
 
     const handleOnBlur = useCallback(() => {
@@ -40,8 +39,8 @@ const ISTMobileBar:FC<IISTMobileBar> = ({
                         placeholder={inputOptions?.placeholder}
                         required={false}
                         ref={inputRef}
-                        outDataSetter={setInputState}
-                        actualData={inputState}
+                        outDataSetter={inputOptions?.currentDataSetter}
+                        actualData={inputOptions?.currentData}
                         style={{
                             borderRadius: "15px",
                             height: "52px"

@@ -1,10 +1,6 @@
 import React, {useEffect, useState} from "react";
 import DefaultLandingPage from "../../components/LandingPages/DefaultLandingPage";
-import HelloPage from "../../components/LandingPages/HelloPage/HelloPage";
-import CatalogTestProdsModal from "../../components/DefaultModals/Catalog/Pages/catalogTestProds_modal";
 import ISTCartTotalSum from "../../components/UI/ISTCartTotalSum";
-import { useQuery } from "react-query";
-import { GET_PRODUCT_BY_ID } from "../../queries/products/productActions";
 import {CartWrapper} from "../../components/ProductsWrapper/cartWrapper";
 
 const CartPage_index = (props) => {
