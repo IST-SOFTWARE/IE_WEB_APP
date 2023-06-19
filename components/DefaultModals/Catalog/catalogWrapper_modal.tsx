@@ -31,11 +31,124 @@ import {useAppSelector} from "../../../Hooks/reduxSettings";
 import {toc_cart_page_mobile} from "../table_of_contents/Catalog/mobile/toc_cart_page_mobile";
 import CatalogCartPageMobileModal from "./Pages/mobile/Pages/catalogCartPageMobile_modal";
 
-
-
 interface catalogWrapper {
   data?: modalStater;
   children: ReactNode;
+}
+
+interface mobileBar {
+    search: {
+        action: (...props:any) => any
+    },
+    filters: {
+        action: (...props:any) => any,
+        state: boolean
+    },
+    cart: {
+        action: (...props:any) => any,
+        state: boolean
+    }
+    inputOptions: {
+        state: boolean,
+        onBlur: (...props:any) => any
+    }
+}
+
+const CatalogWrapperModal_headerWrapper:FC<Omit<catalogWrapper, "children">> = ({
+    data
+}) => {
+
+    const dispatch = useDispatch();
+    const catalog = useAppSelector(selector => selector.catalog);
+
+
+    const setSearch_helper = (val: string) => {
+        dispatch(setSearch(val));
+    }
+
+
+    return(
+        <>
+            <HeaderCatalog
+                logo={{logoSrc: "/Logo/w_logo_svg.svg", forwardingPath: "Logo"}}
+                onClose={() => {
+                    dispatch(setCatalogState(false));
+                }}
+                // mobileTriggerSize={"XL_1200"}
+                searchingElement={{
+                    searchField: !data?.isCurrentModal(toc_catalog_search.typeName),
+
+                    searchSetter: setSearch_helper,
+                    searchValue: catalog?.search,
+                }}
+            />
+        </>
+    )
+
+}
+
+const CatalogWrapperModal_mobileBar:FC<mobileBar> = ({
+    search,
+    filters,
+    cart,
+    inputOptions,
+}) => {
+
+    const dispatch = useDispatch();
+    const catalog = useAppSelector(selector => selector.catalog);
+
+    const setSearch_helper = (val: string) => {
+        dispatch(setSearch(val));
+    }
+
+    return(
+
+        <>
+            <ISTMobileBar
+                buttons={[
+                    {
+                        title: "Поиск",
+                        image: search_ico,
+                        action: ()=>{search.action(true)},
+                        isActive: false
+                    },
+                    {
+                        title: "Фильтры",
+                        image: filters_ico,
+                        action: filters.action,
+                        isActive: filters.state
+                    },
+                    {
+                        title: "Корзина",
+                        image: cart_ico,
+                        action: cart.action,
+                        isActive: cart.state
+                    },
+                    {
+                        title: "USD",
+                        image: currency_ico,
+                        action: ()=>{},
+                        isActive: false
+                    }
+                ]}
+                style={{
+                    height: "100%",
+                    borderRadius: "10px"
+                }}
+
+                inputOptions={{
+                    placeholder: "Search...",
+                    state: inputOptions.state,
+                    onBlur: ()=>{inputOptions.onBlur(false)},
+
+                    currentDataSetter: setSearch_helper,
+                    currentData: catalog?.search,
+                }}
+
+                mobileTriggerSize={"LG_992"}
+            />
+        </>
+    )
 }
 
 const CatalogWrapperModal: FC<catalogWrapper> = ({
@@ -44,7 +157,6 @@ const CatalogWrapperModal: FC<catalogWrapper> = ({
 }) => {
 
     const dispatch = useDispatch();
-    const catalog = useAppSelector(selector => selector.catalog);
     const childrenRef = useRef<HTMLDivElement>(null);
 
     const {modalComponent, ModalView} = useBaseModal(
@@ -83,10 +195,6 @@ const CatalogWrapperModal: FC<catalogWrapper> = ({
       }
     }
   },[onReviewsWrapperScroll, childrenRef])
-
-    const setSearch_helper = (val: string) => {
-        dispatch(setSearch(val));
-    }
 
     // MOBILE MENU ACTIONS:
 
@@ -153,19 +261,11 @@ const CatalogWrapperModal: FC<catalogWrapper> = ({
                         maxWidth: "1480px",
                     }}
                 >
-                    <HeaderCatalog
-                        logo={{logoSrc: "/Logo/w_logo_svg.svg", forwardingPath: "Logo"}}
-                        onClose={() => {
-                            dispatch(setCatalogState(false));
-                        }}
-                        // mobileTriggerSize={"XL_1200"}
-                        searchingElement={{
-                            searchField: !data?.isCurrentModal(toc_catalog_search.typeName),
 
-                              searchSetter: setSearch_helper,
-                              searchValue: catalog?.search,
-                        }}
-                    />
+                {/*   HEADER  */}
+                <CatalogWrapperModal_headerWrapper
+                    data={data}
+                />
 
           <div
             id={"CatalogSpace_mobile_modal"}
@@ -183,49 +283,30 @@ const CatalogWrapperModal: FC<catalogWrapper> = ({
           </div>
 
             <div className={`${styles.mobileCatalogBar} ${mobileSearchingState ? styles.searching : ""}`}>
-                <ISTMobileBar
-                    buttons={[
-                        {
-                            title: "Поиск",
-                            image: search_ico,
-                            action: ()=>{switchMobileSearching(true)},
-                            isActive: false
-                        },
-                        {
-                            title: "Фильтры",
-                            image: filters_ico,
-                            action: handleOpenMobileModal_filtersList,
-                            isActive: isActive_FiltersMobilePage()
-                        },
-                        {
-                            title: "Корзина",
-                            image: cart_ico,
-                            action: handleOpenMobileModal_myCart,
-                            isActive: isActive_CartMobilePage()
-                        },
-                        {
-                            title: "USD",
-                            image: currency_ico,
-                            action: ()=>{},
-                            isActive: false
-                        }
-                    ]}
-                    style={{
-                        height: "100%",
-                        borderRadius: "10px"
+
+                {/*    MOBILE BAR    */}
+
+                <CatalogWrapperModal_mobileBar
+                    search={{
+                        action: switchMobileSearching
+                    }}
+
+                    filters={{
+                        action: handleOpenMobileModal_filtersList,
+                        state: isActive_FiltersMobilePage()
+                    }}
+
+                    cart={{
+                        action: handleOpenMobileModal_myCart,
+                        state: isActive_CartMobilePage()
                     }}
 
                     inputOptions={{
-                        placeholder: "Search...",
                         state: mobileSearchingState,
-                        onBlur: ()=>{switchMobileSearching(false)},
-
-                        currentDataSetter: setSearch_helper,
-                        currentData: catalog?.search,
+                        onBlur: switchMobileSearching
                     }}
-
-                    mobileTriggerSize={"LG_992"}
                 />
+
             </div>
 
         </div>

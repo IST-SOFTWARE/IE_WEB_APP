@@ -17,7 +17,6 @@ export const CatalogFilterPageMobileModal: FC<mobileFilterModal> = ({
 }) => {
 
     const catalogFilter = useAppSelector((selector) => selector.filtersList);
-
     const catalog = useAppSelector((state) => state.catalog);
 
     const [firstFilter, firstActive, designation] =

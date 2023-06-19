@@ -29,7 +29,8 @@ const CatalogCartPageMobileModal:FC<ICatalogCartPageMobileModal> = ({
 
                     wrapperStyles={{
                         width: "100%",
-                        maxWidth: "100%"
+                        maxWidth: "100%",
+                        padding: "0px 5px"
                     }}
 
                     itemStyles={{
@@ -61,7 +62,7 @@ const CatalogCartPageMobileModal:FC<ICatalogCartPageMobileModal> = ({
                             Сумм аыв фывод лфофыфыолдфы
                         </div>
                         <div className={styles.selected_num}>
-                            {12} Р
+                            {12} ₽
                         </div>
                     </div>
 

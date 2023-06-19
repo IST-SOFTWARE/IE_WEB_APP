@@ -1,6 +1,7 @@
 @import "../../../mixins/textEllipsing";
 @import "../../../variables";
 @import "../../../mixins/rfs_mixins";
+@import "../../../mixins/scroll_mixin";
 
 $totalSum_h: 100px;
 
@@ -11,7 +12,6 @@ $totalSum_h: 100px;
 .cartWrapper{
   width: 100%;
   height: calc(100% - $totalSum_h);
-
 }
 
 .cartTotalSum_and_order{
