@@ -8,7 +8,7 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 
 import { ApolloProvider } from "@apollo/client";
-import { apolloClient } from "../Apollo/apolloClient";
+import { catalogClient } from "../Apollo/catalogClient";
 
 import { Provider } from "react-redux";
 import store from "../store/store";
@@ -35,7 +35,7 @@ export default function MyApp({ Component, pageProps }) {
         />
       </Head>
 
-      <ApolloProvider client={apolloClient}>
+      <ApolloProvider client={catalogClient}>
         <Provider store={store}>
             <LandingLayout>
                 <Component {...pageProps}/>

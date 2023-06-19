@@ -48,11 +48,11 @@ $totalSum_h: 100px;
       display: flex;
 
         &:nth-child(odd){
-          padding-right: 7.5px;
+          padding-right: 15px;
         }
 
         &:nth-child(even){
-          padding-left: 7.5px;
+          padding-left: 15px;
         }
 
         & .selected_txt{

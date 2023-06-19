@@ -8,7 +8,6 @@ import {
     quantityEditor_fnc
 } from "../UI/common";
 import {IProductItem} from "../UI/ISTProductItem/common";
-import {apolloClient} from "../../Apollo/apolloClient";
 import {GET_PRODUCT_BY_ID, IProducts_Q} from "../../queries/products/productActions";
 import {useQuery} from "@apollo/client";
 import {
@@ -25,8 +24,8 @@ import {
     products_editQuantity_actionsHelper,
     products_removeItem_actionsHelper
 } from "../../helpers/Products/products_actions.helper";
-import {data} from "yandex-maps";
 import ISTProductItem from "../UI/ISTProductItem/ISTProductItem";
+import {cartClient} from "../../Apollo/cartClient";
 
 
 interface cartCollection {
@@ -67,16 +66,16 @@ export const CartWrapper: FC<ICartWrapper> = ({
     );
 
 
-
     /**
      *  DATA UPDATER [CART DATA]
     */
     useEffect(() => {
         if (data && data.cartCollection_by_id)
             setProducts(redefining_to_ICartItemPropertiesData_redefiningHelper(
-                data.cartCollection_by_id.cart_model)
-            )
+                data.cartCollection_by_id.cart_model))
+
     }, [data]);
+
 
     /**
      *  DATA GETTER [PRODUCT DATA]
@@ -87,7 +86,7 @@ export const CartWrapper: FC<ICartWrapper> = ({
     ): Promise<IProductData> => {
         let outProduct = {} as IProductData;
 
-        await apolloClient
+        await cartClient
             .query<IProducts_Q>({
                 query: GET_PRODUCT_BY_ID,
                 variables: {
@@ -112,6 +111,7 @@ export const CartWrapper: FC<ICartWrapper> = ({
                     callBack.sideEffect(outProduct);
             });
 
+        // console.log("out prods: ", outProduct, id);
         return outProduct;
     };
 
@@ -141,7 +141,7 @@ export const CartWrapper: FC<ICartWrapper> = ({
             let _newQuantity = 0;
 
 
-            await apolloClient
+            await cartClient
                 .mutate<ICartCollection_updated>({
                     mutation: UPDATE_CART_BY_ID,
                     variables: variables,
@@ -180,7 +180,7 @@ export const CartWrapper: FC<ICartWrapper> = ({
                 },
             } as ICartCollectionVariables;
 
-            await apolloClient.mutate<ICartCollection_updated>({
+            await cartClient.mutate<ICartCollection_updated>({
                 mutation: UPDATE_CART_BY_ID,
                 variables: variables,
             }).then((el) => {
@@ -202,6 +202,9 @@ export const CartWrapper: FC<ICartWrapper> = ({
     return data && products ? (
         <div style={wrapperStyles}>
             {products.map(({productId, quantity}, index) => {
+
+                // console.log("_Prods: ", productId);
+
                 return (
                     <ISTProductItem
                         key={`ISTProductItem_${index}`}

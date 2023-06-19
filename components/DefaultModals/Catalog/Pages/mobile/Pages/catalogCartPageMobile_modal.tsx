@@ -50,7 +50,7 @@ const CatalogCartPageMobileModal:FC<ICatalogCartPageMobileModal> = ({
 
                     <div className={styles.selected}>
                         <div className={styles.selected_txt}>
-                            Выбр аноas asdasdasd ass
+                            Выбрано
                         </div>
                         <div className={styles.selected_num}>
                             {12}
@@ -59,10 +59,10 @@ const CatalogCartPageMobileModal:FC<ICatalogCartPageMobileModal> = ({
 
                     <div className={styles.selected}>
                         <div className={styles.selected_txt}>
-                            Сумм аыв фывод лфофыфыолдфы
+                            Сумма
                         </div>
                         <div className={styles.selected_num}>
-                            {12} ₽
+                            {1223211} ₽
                         </div>
                     </div>
 

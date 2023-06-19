@@ -30,6 +30,7 @@ import currency_ico from "../../../public/MobileHelperIcons/currency_icon.svg";
 import {useAppSelector} from "../../../Hooks/reduxSettings";
 import {toc_cart_page_mobile} from "../table_of_contents/Catalog/mobile/toc_cart_page_mobile";
 import CatalogCartPageMobileModal from "./Pages/mobile/Pages/catalogCartPageMobile_modal";
+import {useRouter} from "next/router";
 
 interface catalogWrapper {
   data?: modalStater;
@@ -167,6 +168,8 @@ const CatalogWrapperModal: FC<catalogWrapper> = ({
     const [currentFilterPage, setCurrentFilterPage] = useState<keyof ICatalogFiltersType>();
     const [mobileSearchingState, setMobileSearchingState] = useState<boolean>(false);
 
+    const router = useRouter();
+
     useEffect(() => {
         if (modalComponent) {
             modalComponent.editModals([
@@ -199,7 +202,9 @@ const CatalogWrapperModal: FC<catalogWrapper> = ({
     // MOBILE MENU ACTIONS:
 
         const handleHideMobileModal = useCallback(() => {
-            modalComponent.switch(false);
+            router.push("", undefined, {shallow: true}).then(()=>{
+                modalComponent.switch(false);
+            });
         }, [modalComponent])
 
         const handleRouteBackMobileModal = useCallback(() => {

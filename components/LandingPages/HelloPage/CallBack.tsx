@@ -9,7 +9,7 @@ import getOurContactsData, {
     IOurContacts
 } from "../../../queries/landingFeatures/ourContactsQuery";
 import {useQuery} from "@apollo/client";
-import {apolloClient} from "../../../Apollo/apolloClient";
+import {catalogClient} from "../../../Apollo/catalogClient";
 import useCallRequest from "../../../Hooks/useCallRequest/useCallRequest";
 import useBaseModal from "../../ISTModals/useBaseModal";
 import {useISTInputFelt} from "../../UI/ISTInput/useISTInputFelt";
@@ -41,7 +41,7 @@ const CallBack:FC<CallBack> = ({
 
     const {checkFields} = useISTInputFelt();
     // const{errors, newData, send} = useCallRequest(
-    //     apolloClient,
+    //     catalogClient,
     //     client_name,
     //     client_phone,
     // )

@@ -1,6 +1,6 @@
 import React, {FC, useEffect, useState} from 'react';
 
-import {apolloClient} from "../../Apollo/apolloClient";
+import {catalogClient} from "../../Apollo/catalogClient";
 import DefaultLandingPage, {inputData, pageBackground} from "../../components/LandingPages/DefaultLandingPage";
 import {GET_LANDING_PAGE_CONTENT, ILandingPage, IPageOfLanding} from "../../queries/landingPage";
 import HelloPage from "../../components/LandingPages/HelloPage/HelloPage";
@@ -220,7 +220,7 @@ export default Index;
 export async function getServerSideProps(context){
 
     const locale = context?.locale;
-    const {data, loading, error} = await apolloClient.query<ILandingPageCont>(
+    const {data, loading, error} = await catalogClient.query<ILandingPageCont>(
         {
             query: GET_LANDING_PAGE_CONTENT,
             variables: {

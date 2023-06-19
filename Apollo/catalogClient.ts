@@ -2,7 +2,7 @@ import {ApolloClient, InMemoryCache} from "@apollo/client";
 import {IProductItem} from "../components/UI/ISTProductItem/common";
 const graphQLAPI  = process.env.NEXT_PUBLIC_GRAPHQL
 
-export const apolloClient = new ApolloClient({
+export const catalogClient = new ApolloClient({
     uri: graphQLAPI,
     cache: new InMemoryCache({
         typePolicies: {
