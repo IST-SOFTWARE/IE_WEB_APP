@@ -28,6 +28,8 @@ import filters_ico from "../../../public/MobileHelperIcons/filter_icon.svg";
 import cart_ico from "../../../public/MobileHelperIcons/cart_icon.svg";
 import currency_ico from "../../../public/MobileHelperIcons/currency_icon.svg";
 import {useAppSelector} from "../../../Hooks/reduxSettings";
+import {toc_cart_page_mobile} from "../table_of_contents/Catalog/mobile/toc_cart_page_mobile";
+import CatalogCartPageMobileModal from "./Pages/mobile/Pages/catalogCartPageMobile_modal";
 
 
 
@@ -57,7 +59,8 @@ const CatalogWrapperModal: FC<catalogWrapper> = ({
         if (modalComponent) {
             modalComponent.editModals([
                 toc_filtersList_page_mobile,
-                toc_filter_page_mobile
+                toc_filter_page_mobile,
+                toc_cart_page_mobile
             ], 0);
         }
     }, [modalComponent]);
@@ -104,12 +107,17 @@ const CatalogWrapperModal: FC<catalogWrapper> = ({
             })
         }, [modalComponent])
 
-        const handleOpenMobileModal = useCallback(()=>{
+        const handleOpenMobileModal_filtersList = useCallback(()=>{
             modalComponent
                 .applyModalByName(toc_filtersList_page_mobile.typeName)
                 .then(() => modalComponent.switch(true));
         },[modalComponent])
 
+        const handleOpenMobileModal_myCart = useCallback(()=>{
+            modalComponent
+                .applyModalByName(toc_cart_page_mobile.typeName)
+                .then(() => modalComponent.switch(true));
+        },[modalComponent])
 
         const switchMobileSearching = useCallback((st: boolean)=>{
             modalComponent.switch(false);
@@ -122,6 +130,12 @@ const CatalogWrapperModal: FC<catalogWrapper> = ({
                 if(modalComponent.getState)
                    return modalComponent.isCurrentModal(toc_filtersList_page_mobile.typeName) ||
                     modalComponent.isCurrentModal(toc_filter_page_mobile.typeName)
+                return false
+            },[modalComponent])
+
+            const isActive_CartMobilePage = useCallback(():boolean => {
+                if(modalComponent.getState)
+                    return modalComponent.isCurrentModal(toc_cart_page_mobile.typeName)
                 return false
             },[modalComponent])
 
@@ -180,14 +194,14 @@ const CatalogWrapperModal: FC<catalogWrapper> = ({
                         {
                             title: "Фильтры",
                             image: filters_ico,
-                            action: handleOpenMobileModal,
+                            action: handleOpenMobileModal_filtersList,
                             isActive: isActive_FiltersMobilePage()
                         },
                         {
                             title: "Корзина",
                             image: cart_ico,
-                            action: ()=>{},
-                            isActive: false
+                            action: handleOpenMobileModal_myCart,
+                            isActive: isActive_CartMobilePage()
                         },
                         {
                             title: "USD",
@@ -240,10 +254,13 @@ const CatalogWrapperModal: FC<catalogWrapper> = ({
                 <CatalogWrapperMobileModal>
 
                     <ModalMobilePage header={{
-                        type: modalComponent.isCurrentModal(toc_filtersList_page_mobile.typeName) ? "hiding_MMHeader_type" : "routingBack_MMHeaderType",
+                        type:   modalComponent.isCurrentModal(toc_filtersList_page_mobile.typeName) ||
+                                modalComponent.isCurrentModal(toc_cart_page_mobile.typeName) ?
+                                "hiding_MMHeader_type" : "routingBack_MMHeaderType",
                         title: modalComponent.getHeader,
                         arrowHandler: () => {
-                            modalComponent.isCurrentModal(toc_filtersList_page_mobile.typeName) ?
+                            modalComponent.isCurrentModal(toc_filtersList_page_mobile.typeName) ||
+                            modalComponent.isCurrentModal(toc_cart_page_mobile.typeName) ?
                                 handleHideMobileModal() :
                                 handleRouteBackMobileModal();
                         }
@@ -257,6 +274,10 @@ const CatalogWrapperModal: FC<catalogWrapper> = ({
                             <CatalogFilterPageMobileModal
                                 pageDesignation={currentFilterPage ? currentFilterPage : "mfg"}/>
                         ) : null}
+
+                        {modalComponent.isCurrentModal(toc_cart_page_mobile.typeName) ? (
+                            <CatalogCartPageMobileModal/>
+                        ): null}
 
                     </ModalMobilePage>
 
