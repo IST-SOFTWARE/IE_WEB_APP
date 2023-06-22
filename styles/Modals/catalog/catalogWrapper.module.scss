@@ -10,6 +10,8 @@ $mobile_bar: 90px;
   background: $def_dark;
   @include scroll($size: 3px);
   overflow: auto;
+
+  padding-top: calc($mobile_bar - 15px);
 }
 
 .catalogHeader{
@@ -27,10 +29,12 @@ $mobile_bar: 90px;
 
 .catalogContent{
   height: calc(100% - $headerSize);
-  margin-top: 15px !important;
   margin: 0 auto;
 
+  margin-top: 15px !important;
   padding: 0 5px;
+
+  padding-bottom: calc($mobile_bar + 30px) !important;
 
   width: 100%;
 
