@@ -28,7 +28,7 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx"
-  ],
+, "locales/en.js"  ],
   "exclude": [
     "node_modules"
   ]

@@ -10,12 +10,18 @@ import {addNewFilter} from "../../../../store/slices/catalogSlices/catalogSlice"
 import ISTFiltersWrapper from "../../../UI/ISTFiltersList/components/ISTFiltersWrapper";
 import ISTFiltersList from "../../../UI/ISTFiltersList/components/ISTFiltersList";
 import {CatalogWrapper} from "../../../ProductsWrapper/catalogWrapper/catalogWrapper";
+import { useRouter } from "next/router";
+import ru from "../../../../locales/ru";
+import en from "../../../../locales/en";
 
 
 
 const CatalogFullProductsListModal = ({}) => {
 
     const filtersList = useAppSelector((state) => state.filtersList);
+
+    const router = useRouter();
+    const t = router.locale === "ru-RU" ? ru : en;
 
     // Filters state
     const [mfg_filter, mfg_active, mfg_designation] =
@@ -69,7 +75,7 @@ const CatalogFullProductsListModal = ({}) => {
                     {/*Производители*/}
 
                     <ISTFiltersWrapper
-                        title={"Производители"}
+                        title={t.hintsCatalogSearchCollectionName.manufacturer}
                         isOpened={true}
                         hasActives={mfg_active}
                         mobileSettings={{
@@ -105,7 +111,7 @@ const CatalogFullProductsListModal = ({}) => {
                     {/*Типы*/}
 
                     <ISTFiltersWrapper
-                        title={"Типы"}
+                        title={t.hintsCatalogSearchCollectionName.type}
                         isOpened={false}
                         hasActives={types_active}
                         mobileSettings={{
@@ -145,7 +151,7 @@ const CatalogFullProductsListModal = ({}) => {
 
 
                     <ISTFiltersWrapper
-                        title={"Узлы"}
+                        title={t.hintsCatalogSearchCollectionName.unit}
                         isOpened={false}
                         hasActives={units_active}
                         mobileSettings={{

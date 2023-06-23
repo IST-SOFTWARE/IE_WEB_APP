@@ -12,10 +12,16 @@ import { getHintsList_hintsHelper } from "../../../../helpers/Catalog/hints";
 import { ICatalogFiltersType } from "../../../../store/slices/common/catalogFiltersType";
 import {CatalogWrapper} from "../../../ProductsWrapper/catalogWrapper/catalogWrapper";
 import cloudSearch from "../../../../public/Modals/Catalog/cloudSearch.svg";
+import { useRouter } from "next/router";
+import en from "../../../../locales/en";
+import ru from "../../../../locales/ru";
 
 const CatalogSearchModal = () => {
 
   const inputRef = useRef<HTMLInputElement>(null);
+
+  const router = useRouter();
+  const t = router.locale === "ru-RU" ? ru : en;
 
   const dispatch = useDispatch();
   const catalog = useAppSelector((state) => state.catalog);
@@ -65,14 +71,14 @@ const CatalogSearchModal = () => {
         className={`d-none d-lg-block col-0 col-lg-6 ${styles.catalogFiltersModal_comp}`}
       >
         <div className={styles.headerContainer}>
-          <header className={styles.header}>Поиск</header>
+          <header className={styles.header}>{t.catalogSearchModal.search}</header>
         </div>
 
         <div className={styles.inputAndHints_block}>
           <IstInput
             ref={inputRef}
             inputType={inputTypesVars.any_string}
-            placeholder={"Enter your request"}
+            placeholder={t.catalogSearchModal.request}
             required={true}
             outDataSetter={setSearch_helper}
             actualData={catalog?.search}
@@ -92,7 +98,7 @@ const CatalogSearchModal = () => {
 
               hintsCategoryCollection={[
                 {
-                  collectionName: "Производители",
+                  collectionName: t.hintsCatalogSearchCollectionName.manufacturer,
                   listedHintsId: 0,
                   switcherOptions: {
                     onSwitch: switchFilter,
@@ -100,7 +106,7 @@ const CatalogSearchModal = () => {
                   },
                 },
                 {
-                  collectionName: "Узлы",
+                  collectionName: t.hintsCatalogSearchCollectionName.unit,
                   listedHintsId: 2,
                   switcherOptions: {
                     onSwitch: switchFilter,
@@ -108,7 +114,7 @@ const CatalogSearchModal = () => {
                   },
                 },
                 {
-                  collectionName: "Типы",
+                  collectionName: t.hintsCatalogSearchCollectionName.type,
                   listedHintsId: 1,
                   switcherOptions: {
                     onSwitch: switchFilter,
@@ -129,7 +135,7 @@ const CatalogSearchModal = () => {
           className={styles.headerContainer}
           style={{ justifyContent: "space-between" }}
         >
-          <header className={styles.header}>Товары</header>
+          <header className={styles.header}>{t.catalogSearchModal.product}</header>
 
           {/*{searchResults_products && (*/}
           {/*  <div style={{ width: "180px", alignSelf: "center" }}>*/}
@@ -176,7 +182,7 @@ const CatalogSearchModal = () => {
                       }}
                   />
                   <div className={styles.noResultsText}>
-                    Start typing a query to search for a product
+                    {t.catalogSearchModal.searchProduct}
                   </div>
                 </div>
             )}

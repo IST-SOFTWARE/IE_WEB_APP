@@ -1,0 +1,76 @@
+// eslint-disable-next-line import/no-anonymous-default-export
+export default {
+  //header FC
+  header: {
+    catalog: "Каталог",
+    search: "Поиск",
+    contacts: "Контакты",
+  },
+
+  //callBack FC
+  callBack: {
+    call: "Заказать звонок",
+    name: "Имя",
+    phone: "Телефон",
+    send: "Отправить заявку",
+    ourPhone: "Наш телефон",
+  },
+
+  //callBack modal FC
+  CallBackRequest_modal: {
+    name: "Имя",
+    firstName: "Максим",
+    phone: "Телефон",
+    send: "Отправить",
+    close: "Закрыть",
+    contacts: "Контакты",
+    placeholderPhone: "+7(000)000-00-00",
+  },
+
+  //OurPartnersPage FC
+  ourPartnersPage: {
+    joinUs: "Присоединяйся и ты!",
+    send: "Отправь заявку на звонок и мы перезвоним! Или можешь связаться с нами самостоятельно",
+    orderCall: "Заказать звонок",
+    contact: "Свяжусь самостоятельно",
+  },
+
+  //productDemo FC
+  productDemo: {
+    more: "Подробнее",
+    openCatalog: "Открыть каталог",
+    questions: "Возникли вопросы",
+    leave: "Оставь ",
+    request: "заявку ",
+    call: "и мы перезвоним!",
+    headerReq: "Заказать звонок",
+    paragraphReq: "Есть вопросы? Оставь заявку, а мы перезвоним!",
+    headerRes: "Спасибо за сотрудничество!",
+    paragraphRes: "Мы получили ваши данные и скоро свяжемся с вами",
+  },
+
+  // footer FC
+  footer: {
+    contacts: "Контакты",
+    phone: "Наш телефон",
+    email: "Наш Email",
+    address: "Наш Адрес",
+  },
+
+  //pages
+
+  catalogSearchModal: {
+    search: "Поиск",
+    request: "Введите свой запрос",
+
+    //product block
+    product: "Товары",
+    searchProduct: "Начните вводить запрос для поиска товара",
+  },
+
+  hintsCatalogSearchCollectionName: {
+    manufacturer: "Производители",
+    unit: "Узлы",
+    type: "Типы",
+  },
+};

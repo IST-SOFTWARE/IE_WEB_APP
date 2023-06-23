@@ -6,6 +6,9 @@ import {useCatalog} from "../../Hooks/useCatalog/useCatalog"
 import {ICatalogQueries} from "../../Hooks/useCatalog/ICatalogQueries";
 import {ICatalogFiltersType} from "../../store/slices/common/catalogFiltersType";
 import {catalogHasFilters_modalsHelper} from "../../helpers/Catalog/modals";
+import en from '../../locales/en';
+import ru from '../../locales/ru';
+import { useRouter } from 'next/router';
 
 interface Header{
     children?: React.ReactNode,
@@ -22,6 +25,9 @@ const Header:FC<Header> = ({
 
     const reduxCatalogState = useAppSelector(state => state.catalog);
     const [hasFilters, setHasFilters] = useState<boolean>(false);
+
+    const router = useRouter();
+    const t = router.locale === 'ru-RU' ? ru : en;
 
     const {pushQuery, currentState} = useCatalog<ICatalogQueries<ICatalogFiltersType>,
         ICatalogFiltersType>(
@@ -101,12 +107,12 @@ const Header:FC<Header> = ({
                                         }}
                                     />
                                 </div>
-                                    <span>Каталог</span>
+                                    <span>{t.header.catalog}</span>
                             </button>
 
                             <input type={"button"}
                                    className={`text-left ${styles.searchBtn}`}
-                                   value={"Поиск"}
+                                   value={t.header.search}
                                    name={"search"}
 
                                    onClick={()=> {
@@ -145,7 +151,7 @@ const Header:FC<Header> = ({
                                         }}
                                     />
                                 </div>
-                                <span>Контакты</span>
+                                <span>{t.header.contacts}</span>
                             </button>
 
                             <div style={{

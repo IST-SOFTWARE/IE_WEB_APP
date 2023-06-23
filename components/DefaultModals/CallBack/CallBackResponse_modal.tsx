@@ -5,7 +5,6 @@ const CallBackResponseModal:FC = ({
 }) => {
     return(
         <>
-            Call back response
         </>
     )
 }
