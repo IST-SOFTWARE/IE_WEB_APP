@@ -4,18 +4,18 @@ import ISTCartTotalSum from "../../components/UI/ISTCartTotalSum";
 import {CartWrapper} from "../../components/ProductsWrapper/cartWrapper";
 
 const CartPage_index = (props) => {
-  const [idPRoducts, setIdProducts] = useState<string[]>([
-    "172",
-    "173",
-    "174",
-    "175",
-  ]);
-
-  const [cartSelector, setCartSelector] = useState<string[]>([])
-
-    useEffect(()=>{
-        console.log(cartSelector);
-    },[cartSelector])
+  // const [idPRoducts, setIdProducts] = useState<string[]>([
+  //   "172",
+  //   "173",
+  //   "174",
+  //   "175",
+  // ]);
+  //
+  // const [cartSelector, setCartSelector] = useState<string[]>([])
+  //
+  //   useEffect(()=>{
+  //       console.log(cartSelector);
+  //   },[cartSelector])
 
   // const getPriceProductById = (idCollection: (number | string)[]) => {
   //   idCollection.map((id) => {
@@ -31,57 +31,57 @@ const CartPage_index = (props) => {
 
   return (
     <>
-      <div
-        className={``}
-        style={{
-          color: "white",
-        }}
-      >
-        <DefaultLandingPage
-          landingDescription={{
-            title: "",
-            titleOffset: 100,
-          }}
-          pageId={"CartPage"}
-        >
-          <div className={`col-12 col-lg-7`}>
-              <div style={{
-                  position: "relative"
-              }}>
-                  <CartWrapper
-                      cartID={"e0a9d860-c0f9-4b6a-ace4-04ecf56b0f0c"}
-                      currency={{
-                          currency: "RU"
-                      }}
-                      cartSelector={{
-                          selectedState: cartSelector,
-                          setSelectedState: setCartSelector
-                      }}
+      {/*<div*/}
+      {/*  className={``}*/}
+      {/*  style={{*/}
+      {/*    color: "white",*/}
+      {/*  }}*/}
+      {/*>*/}
+      {/*  <DefaultLandingPage*/}
+      {/*    landingDescription={{*/}
+      {/*      title: "",*/}
+      {/*      titleOffset: 100,*/}
+      {/*    }}*/}
+      {/*    pageId={"CartPage"}*/}
+      {/*  >*/}
+      {/*    <div className={`col-12 col-lg-7`}>*/}
+      {/*        <div style={{*/}
+      {/*            position: "relative"*/}
+      {/*        }}>*/}
+      {/*            <CartWrapper*/}
+      {/*                cartID={"e0a9d860-c0f9-4b6a-ace4-04ecf56b0f0c"}*/}
+      {/*                currency={{*/}
+      {/*                    currency: "RU"*/}
+      {/*                }}*/}
+      {/*                cartSelector={{*/}
+      {/*                    selectedState: cartSelector,*/}
+      {/*                    setSelectedState: setCartSelector*/}
+      {/*                }}*/}
 
-                      itemStyles={{
-                          style: {
-                              margin: "0 0 15px 0",
-                              fill: true
-                          }
-                      }}
+      {/*                itemStyles={{*/}
+      {/*                    style: {*/}
+      {/*                        margin: "0 0 15px 0",*/}
+      {/*                        fill: true*/}
+      {/*                    }*/}
+      {/*                }}*/}
 
-                      wrapperStyles={{
-                          width: "100%",
-                          maxWidth: "550px",
-                      }}
+      {/*                wrapperStyles={{*/}
+      {/*                    width: "100%",*/}
+      {/*                    maxWidth: "550px",*/}
+      {/*                }}*/}
 
-                      mobileTriggerSize={"LG_992"}
-                  />
-              </div>
+      {/*                mobileTriggerSize={"LG_992"}*/}
+      {/*            />*/}
+      {/*        </div>*/}
 
-          </div>
-          <div className={`col-0 d-none d-lg-block col-lg-5`}>
-            <ISTCartTotalSum
-              cartSelector={idPRoducts}
-            />
-          </div>
-        </DefaultLandingPage>
-      </div>
+      {/*    </div>*/}
+      {/*    <div className={`col-0 d-none d-lg-block col-lg-5`}>*/}
+      {/*      /!*<ISTCartTotalSum*!/*/}
+      {/*      /!*  cartSelector={idPRoducts}*!/*/}
+      {/*      /!*//*/}
+      {/*    </div>*/}
+      {/*  </DefaultLandingPage>*/}
+      {/*</div>*/}
     </>
   );
 };
