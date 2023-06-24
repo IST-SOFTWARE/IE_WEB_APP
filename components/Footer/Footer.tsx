@@ -9,6 +9,10 @@ import getOurContactsData, {
 } from "../../queries/landingFeatures/ourContactsQuery";
 import YandexMap from "./Map/YandexMap";
 
+import en from "../../locales/en";
+import ru from "../../locales/ru";
+
+
 interface FooterData{
     route: string,
     height?: number,
@@ -27,6 +31,9 @@ const Footer:FC<FooterData> = (
             }
         }
     )
+    
+    const t = route === 'ru-RU' ? ru : en;
+
 
     useEffect(()=>{
         document.body.style.paddingBottom =
@@ -40,6 +47,8 @@ const Footer:FC<FooterData> = (
            )
     },[data])
 
+
+
     return data && footerContent? (
         <>
                 <div className={styles.Footer}>
@@ -47,9 +56,9 @@ const Footer:FC<FooterData> = (
                         <div className={"row h-100"}>
                             <div className={"col-md-6"}>
                                 <div className={styles.contactsBlock}>
-                                    <p>Контакты:</p>
+                                    <p>{t.footer.contacts}:</p>
                                     <ul>
-                                        <p>Наш телефон:</p>
+                                        <p>{t.footer.phone}:</p>
                                         {footerContent.phone_numbers?.map(
                                             (phone, ph_i) => (
                                                 <li key={`${ph_i}_phone_num`}>
@@ -62,7 +71,7 @@ const Footer:FC<FooterData> = (
                                             ))}
 
 
-                                        <p>Наш Email:</p>
+                                        <p>{t.footer.email}:</p>
                                         {footerContent.emails?.map(
                                             (email, em_i) => (
                                                 <li key={`${em_i}_mail`}>
@@ -74,7 +83,7 @@ const Footer:FC<FooterData> = (
                                                 </li>
                                             ))}
 
-                                        <p>Наш Адрес:</p>
+                                        <p>{t.footer.address}:</p>
                                         {footerContent.addresses?.map(
                                             (address, ad_i) => (
                                                 <li key={`${ad_i}_mail`}>

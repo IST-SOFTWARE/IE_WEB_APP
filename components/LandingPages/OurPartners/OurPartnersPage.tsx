@@ -3,6 +3,9 @@ import PartnersList, {sliderPositionVar} from "./PartnersList";
 import {FC, useEffect, useState} from "react";
 import {IPageOfLanding} from "../../../queries/landingPage";
 import getGallery, {IGallery} from "../GalleryTypes";
+import { useRouter } from 'next/router';
+import ru from '../../../locales/ru';
+import en from '../../../locales/en';
 
 
 //  LandingPageComp data test
@@ -15,6 +18,10 @@ const OurPartnersPage:FC<IOurPartnersPage> = (
                 {
                     page
                 }) => {
+
+    const router = useRouter();
+    const t = router.locale === "ru-RU" ? ru : en;
+
 
     const[partnersList, setPartnersList] = useState<IGallery>(null);
 
@@ -87,18 +94,15 @@ const OurPartnersPage:FC<IOurPartnersPage> = (
                     </div>
                     <div className={"col-lg-5 col-md-10 col-12 d-flex align-items-center mx-auto"}>
                         <div className={styles.PartnersJoinBlock}>
-                            <p>Присоединяйся и ты!</p>
-                            <a>Отправь заявку на звонок
-                                и мы перезвоним!
-                                Или можешь связаться с
-                                нами самомтоятельно:</a>
+                            <p>{t.ourPartnersPage.joinUs}</p>
+                            <a>{t.ourPartnersPage.send}:</a>
                             <div>
                                 <button className={styles.primaryButton}>
-                                    Заказать звонок
+                                    {t.ourPartnersPage.orderCall}
                                 </button>
 
                                 <button>
-                                    Свяжусь самостоятельно
+                                    {t.ourPartnersPage.contact}
                                 </button>
                             </div>
                         </div>
