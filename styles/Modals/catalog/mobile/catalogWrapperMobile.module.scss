@@ -3,10 +3,8 @@
 
 .catalogWrapperMobile{
   width: 100%;
-  height: calc(100% + 80px - 15px);
-
+  height: calc(100% - 10px);
+  margin-top: calc(80px + 10px);
   background: $def_page_bg;
   border-radius: 10px;
-  margin-top: 15px;
-
 }

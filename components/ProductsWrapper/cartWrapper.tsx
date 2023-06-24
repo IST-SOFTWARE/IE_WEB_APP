@@ -218,7 +218,7 @@ export const CartWrapper: FC<ICartWrapper> = ({
                             },
 
                             cartSelector: {
-                                id: `${productId}_product_selector`,
+                                id: productId,
                                 selectedState: cartSelector?.selectedState,
                                 setSelectedState: cartSelector?.setSelectedState,
                             },

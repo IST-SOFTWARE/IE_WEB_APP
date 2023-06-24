@@ -3,16 +3,63 @@ import styles from "../../../../../../styles/Modals/catalog/mobile/catalogCartPa
 import ISTButtonN from "../../../../../UI/ISTButton/ISTButtonN";
 import {CatalogWrapper} from "../../../../../ProductsWrapper/catalogWrapper/catalogWrapper";
 import {CartWrapper} from "../../../../../ProductsWrapper/cartWrapper";
+import {useCartTotalSum} from "../../../../../../Hooks/useCartTotalSum/useCartTotalSum";
+import {cartItemGetter_fnc, IProductData} from "../../../../../UI/common";
+import {cartClient} from "../../../../../../Apollo/cartClient";
+import {GET_PRODUCT_BY_ID, IProducts_Q} from "../../../../../../queries/products/productActions";
 
-interface ICatalogCartPageMobileModal{
 
-}
-
-const CatalogCartPageMobileModal:FC<ICatalogCartPageMobileModal> = ({
+const CatalogCartPageMobileModal:FC = ({
 
 }) => {
 
+
+    const getCartProductDataById: cartItemGetter_fnc = async (
+        id: number | string,
+        callBack
+    ): Promise<IProductData> => {
+        let outProduct = {} as IProductData;
+
+        await cartClient
+            .query<IProducts_Q>({
+                query: GET_PRODUCT_BY_ID,
+                variables: {
+                    id: Number(id),
+                },
+            })
+            .then((prod) => {
+                if (prod.data && prod.data.Products[0]) {
+                    const _data = prod.data.Products[0];
+
+                    outProduct = {
+                        id: _data.id,
+                        image: _data.image_url,
+                        title: _data.product_name_ru,
+                        price: _data.price.toString(),
+                        vendCode: _data.vend_code.toString(),
+                        slug: _data.slug,
+                    };
+                }
+
+                if (callBack?.sideEffect && callBack?.flag === true)
+                    callBack.sideEffect(outProduct);
+            });
+
+        // console.log("out prods: ", outProduct, id);
+        return new Promise<IProductData>(resolve => {
+            resolve(outProduct)
+        });
+    };
+
     const [cartSelector, setCartSelector] = useState<string[]>([])
+    const {getItemsInfo} = useCartTotalSum({
+        cartSelector,
+        getProductByIdQuery_func: getCartProductDataById
+    })
+
+    const handleOrder = () => {
+        getItemsInfo();
+    }
 
     return(
         <div className={styles.mobileModalCartWrapper}>
@@ -79,6 +126,10 @@ const CatalogCartPageMobileModal:FC<ICatalogCartPageMobileModal> = ({
                                 fillContainer: true,
                                 borderRadius: "10px"
                             },
+                        }}
+                        onClick={()=>{
+                            const data = getItemsInfo();
+
                         }}
                     />
                 </div>

@@ -4,9 +4,14 @@
 @import "../../../styles/mixins/ratioBox/ratio-box";
 
 .header {
+
   width: 100%;
   display: flex;
   justify-content: center;
+
+  max-width: calc(1480px + 15px);
+  left: 50%;
+  transform: translateX(-50%);
 
   height: 80px;
   padding: 3px 0 0 0;

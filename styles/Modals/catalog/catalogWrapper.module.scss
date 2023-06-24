@@ -11,12 +11,6 @@ $mobile_bar: 90px;
   @include scroll($size: 3px);
   overflow: auto;
 
-  padding-top: calc($mobile_bar - 15px);
-}
-
-.catalogHeader{
-  height: $headerSize;
-  background: $def_dark;
 }
 
 .catalogContent_wrapper{
@@ -31,10 +25,8 @@ $mobile_bar: 90px;
   height: calc(100% - $headerSize);
   margin: 0 auto;
 
-  margin-top: 15px !important;
+  padding-top: calc($headerSize - 10px) !important;
   padding: 0 5px;
-
-  padding-bottom: calc($mobile_bar + 30px) !important;
 
   width: 100%;
 
@@ -75,6 +67,12 @@ $mobile_bar: 90px;
 
   }
 
+}
+
+@media screen and (max-width: 991.98px){
+  .catalogContent {
+    padding-bottom: calc($mobile_bar + 30px) !important;
+  }
 }
 
 @media screen and (min-width: 575.98px){
