@@ -72,5 +72,28 @@ export default {
     manufacturer: "Производители",
     unit: "Узлы",
     type: "Типы",
+    availability: "Наличие",
   },
+
+  //mobile layout
+  istMobileBar: {
+    searchTitle: "Поиск",
+    filtersTitle: "Фильтры",
+    cartTitle: "Корзина",
+    currencyTitle: "RUB",
+    inputPlaceholder: "Поиск",
+    myCart: "Моя корзина",
+    filters: "Фильтры",
+  },
+
+  //CatalogCartPageMobileModal FC
+  catalogCartPageMobileModal: {
+    currency: false,
+    select: "Выбрано",
+    amount: "Сумма",
+    currencyStyle: "₽",
+    order: "Оформить заказ",
+  },
+
+
 };

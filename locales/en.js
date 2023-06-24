@@ -73,6 +73,26 @@ export default {
     manufacturer: "Manufacturers",
     unit: "Units",
     type: "Types",
+    availability: "Availability",
   },
 
+  //mobile layout
+  istMobileBar: {
+    searchTitle: "Search",
+    filtersTitle: "Filters",
+    cartTitle: "Cart",
+    currencyTitle: "USD",
+    inputPlaceholder: "Search",
+    myCart: "My cart",
+    filters: "Filters",
+  },
+
+  //CatalogCartPageMobileModal FC
+  catalogCartPageMobileModal: {
+    currency: true,
+    select: "Selected",
+    amount: "Amount",
+    currencyStyle: "$",
+    order: "Place an order",
+  },
 };
