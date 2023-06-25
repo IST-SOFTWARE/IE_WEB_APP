@@ -9,6 +9,9 @@ import {cartClient} from "../../../../../../Apollo/cartClient";
 import {GET_PRODUCT_BY_ID, IProducts_Q} from "../../../../../../queries/products/productActions";
 import {ICartSelector_type} from "../../../../../UI/ISTProductItem/Abstract/ICartTypes";
 import {ICartTotalSum_prodsInf} from "../../../../../../Hooks/useCartTotalSum/ICartTotalSum";
+import {useRouter} from "next/router";
+import ru from "../../../../../../locales/ru";
+import en from "../../../../../../locales/en";
 
 
 const CatalogCartPageMobileModal:FC = ({
@@ -63,9 +66,12 @@ const CatalogCartPageMobileModal:FC = ({
     const [numOfSelected, setNumOfSelected] = useState<number>(0);
     const [totalSum, setTotalSum] = useState<number>(0);
 
+    const router = useRouter();
+    const t = router.locale === "ru-RU" ? ru : en;
+
     const handleOrder = () => {
         getItemsInfo()
-            .then(res => console.log(res));
+            .finally(null);
     }
 
     useEffect(()=>{
@@ -102,7 +108,7 @@ const CatalogCartPageMobileModal:FC = ({
 
                 <CartWrapper
                     currency={{
-                         currency: "RU"
+                         currency: t.catalogCartPageMobileModal.currency ? "EN": "RU",
                     }}
 
                     cartID={"9cfa4d6a-f2e9-400c-b0a9-4c85ab777272"}
@@ -135,7 +141,7 @@ const CatalogCartPageMobileModal:FC = ({
 
                     <div className={styles.selected}>
                         <div className={styles.selected_txt}>
-                            Выбрано
+                            {t.catalogCartPageMobileModal.select}
                         </div>
                         <div className={styles.selected_num}>
                             {numOfSelected}
@@ -144,10 +150,10 @@ const CatalogCartPageMobileModal:FC = ({
 
                     <div className={styles.selected}>
                         <div className={styles.selected_txt}>
-                            Сумма
+                            {t.catalogCartPageMobileModal.amount}
                         </div>
                         <div className={styles.selected_num}>
-                            {totalSum} ₽
+                            {totalSum} {t.catalogCartPageMobileModal.currencyStyle}
                         </div>
                     </div>
 
@@ -156,7 +162,7 @@ const CatalogCartPageMobileModal:FC = ({
                 <div className={styles.btnPlace}>
                     <ISTButtonN
                         title={{
-                            caption: "Оформить заказ"
+                            caption: t.catalogCartPageMobileModal.order
                         }}
                         light={{
                             fill: true,

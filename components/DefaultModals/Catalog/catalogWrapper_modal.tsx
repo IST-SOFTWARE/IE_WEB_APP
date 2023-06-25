@@ -120,7 +120,7 @@ const CatalogWrapperModal_mobileBar: FC<mobileBar> = ({
             isActive: filters.state,
           },
           {
-            title: t.istMobileBar.filtersTitle,
+            title: t.istMobileBar.cartTitle,
             image: cart_ico,
             action: cart.action,
             isActive: cart.state,
