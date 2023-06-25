@@ -4,6 +4,9 @@ import {ICatalogFiltersType} from "../../../../../../store/slices/common/catalog
 import useISTFiltersList from "../../../../../UI/hooks/ISTFiltersHook/useISTFiltersList";
 import {useAppSelector} from "../../../../../../Hooks/reduxSettings";
 import {listHasActives_filtersHelper} from "../../../../../../helpers/Catalog/filters";
+import { useRouter } from 'next/router';
+import ru from '../../../../../../locales/ru';
+import en from '../../../../../../locales/en';
 
 interface ICatalogFiltersListPageMobileModal{
     onTransfer: (designation: keyof ICatalogFiltersType) => void;
@@ -14,6 +17,9 @@ const CatalogFiltersListPageMobileModal:FC<ICatalogFiltersListPageMobileModal>= 
 }) => {
 
     const catalog = useAppSelector(selector => selector.catalog);
+
+    const router = useRouter();
+    const t = router.locale === "ru-RU" ? ru : en;
 
     const [mfg, mfg_active, mfg_des] =
         useISTFiltersList<ICatalogFiltersType>("mfg");
@@ -32,7 +38,7 @@ const CatalogFiltersListPageMobileModal:FC<ICatalogFiltersListPageMobileModal>= 
             paddingTop: "15px"
         }}>
             <ISTFiltersWrapper
-                title={"Производители"}
+                title={t.hintsCatalogSearchCollectionName.manufacturer}
                 hasActives={listHasActives_filtersHelper(catalog, "mfg")}
                 mobileSettings={{
                     type: "transfer",
@@ -43,7 +49,7 @@ const CatalogFiltersListPageMobileModal:FC<ICatalogFiltersListPageMobileModal>= 
             />
 
             <ISTFiltersWrapper
-                title={"Узлы"}
+                title={t.hintsCatalogSearchCollectionName.unit}
                 hasActives={listHasActives_filtersHelper(catalog, "unit")}
                 mobileSettings={{
                     type: "transfer",
@@ -54,7 +60,7 @@ const CatalogFiltersListPageMobileModal:FC<ICatalogFiltersListPageMobileModal>= 
             />
 
             <ISTFiltersWrapper
-                title={"Типы"}
+                title={t.hintsCatalogSearchCollectionName.type}
                 hasActives={listHasActives_filtersHelper(catalog, "type")}
                 mobileSettings={{
                     type: "transfer",
@@ -65,7 +71,7 @@ const CatalogFiltersListPageMobileModal:FC<ICatalogFiltersListPageMobileModal>= 
             />
 
             <ISTFiltersWrapper
-                title={"Наличие"}
+                title={t.hintsCatalogSearchCollectionName.availability}
                 hasActives={listHasActives_filtersHelper(catalog, "available")}
                 mobileSettings={{
                     type: "transfer",
