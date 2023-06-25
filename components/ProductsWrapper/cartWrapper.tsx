@@ -55,7 +55,7 @@ export const CartWrapper: FC<ICartWrapper> = ({
     const [products, setProducts] = useState<ICartItem_properties_data[]>([]);
 
     useEffect(()=>{
-        console.log(products);
+        console.log("Products: ", products);
     },[products])
 
     /**

@@ -1,4 +1,4 @@
-import regionSlice from "../../store/slices/regionSlice"
+import regionSlice from "../../store/slices/regionSlice/regionSlice"
 
 export const getData = async<T>(url: string, headers?: any, body?: any) => {
     const headersDef = { 'Content-Type': 'application/json' }

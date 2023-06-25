@@ -21,9 +21,8 @@ import {
 import { filtersList_update } from "../../store/slices/filtersListSlice/filtersListSlice";
 import { getFiltersItemsAsArray_filtersHelper } from "../../helpers/Catalog/filters";
 import CatalogFullProductsListModal from "../DefaultModals/Catalog/Pages/catalogFullProductsList_modal";
-
-import xml2js from "xml2js";
 import { getData } from "../../queries/fetch/getData";
+import {setRegion} from "../../store/slices/regionSlice/regionSlice";
 
 interface ILandingLayout {
   children?: ReactNode;
@@ -39,78 +38,94 @@ type currencyValues = {
 };
 
 export const LandingLayout: FC<ILandingLayout> = ({ children }) => {
-  const [multiplier, setMultiplier] = useState<number>(0);
 
-  useEffect(() => {
-    async function getMultiplier() {
-      await getData<currencyValues>(
-        "https://www.cbr-xml-daily.ru/daily_json.js"
-      ).then((curr) => {
-        let diff = Math.abs(curr.Valute.USD.Previous - curr.Valute.USD.Value);
+    const CURRENCY_FETCH = process.env.NEXT_PUBLIC_CURRENCY_FETCH;
+    const CURRENCY_PERCENT_DIFF = process.env.NEXT_PUBLIC_CURRENCY_PERCENT_DIFF
 
-        let percentDiff = (diff / curr.Valute.USD.Previous) * 100;
-
-        percentDiff >= 5
-          ? setMultiplier(curr.Valute.USD.Value)
-          : setMultiplier(curr.Valute.USD.Previous);
-      });
-    }
-
-    if (multiplier <= 0) {
-      getMultiplier();
-    }
-  }, []);
-
-  useEffect(() => {
-    console.log(multiplier);
-  }, [multiplier]);
-
-  const router = useRouter();
+    const router = useRouter();
+    const dispatch = useDispatch();
+    const [multiplier, setMultiplier] = useState<number>(0);
 
   const { modalComponent, ModalView } = useBaseModal(
     "APP_BODY_WRAPPER",
     "CatalogSpace"
   );
 
-  const dispatch = useDispatch();
-  const { data, error } = useQuery<IGeneralCategoryQuery>(
-    GENERAL_CATEGORY_QUERY
-  );
-
-  useEffect(() => {
-    if (!data) return;
-
-    dispatch(
-      filtersList_update({
-        mfg: getFiltersItemsAsArray_filtersHelper(
-          data,
-          "manufacturer_category",
-          "manufacturer_name"
-        ),
-        unit: getFiltersItemsAsArray_filtersHelper(
-          data,
-          "Unit_category",
-          "unit_name"
-        ),
-        type: getFiltersItemsAsArray_filtersHelper(
-          data,
-          "Type_category",
-          "type_name"
-        ),
-
-        available: ["-1", "0", "1"],
-      })
+    // [ Get general filters ]
+    const { data, error } = useQuery<IGeneralCategoryQuery>(
+        GENERAL_CATEGORY_QUERY
     );
-  }, [data]);
 
-  useEffect(() => {
-    if (modalComponent) {
-      modalComponent.editModals(
-        [toc_catalog_search, toc_catalog_full_prod_list],
-        0
-      );
-    }
-  }, [modalComponent]);
+    // [ Set common filters ]
+    useEffect(() => {
+        if (!data) return;
+
+        dispatch(
+            filtersList_update({
+                mfg: getFiltersItemsAsArray_filtersHelper(
+                    data,
+                    "manufacturer_category",
+                    "manufacturer_name"
+                ),
+                unit: getFiltersItemsAsArray_filtersHelper(
+                    data,
+                    "Unit_category",
+                    "unit_name"
+                ),
+                type: getFiltersItemsAsArray_filtersHelper(
+                    data,
+                    "Type_category",
+                    "type_name"
+                ),
+
+                available: ["-1", "0", "1"],
+            })
+        );
+    }, [data]);
+
+    // [ Modals defining ]
+    useEffect(() => {
+        if (modalComponent) {
+            modalComponent.editModals(
+                [toc_catalog_search, toc_catalog_full_prod_list],
+                0
+            );
+        }
+    }, [modalComponent]);
+
+    // [ Get currency multiplier]
+    useEffect(() => {
+        async function getMultiplier() {
+            await getData<currencyValues>(
+                CURRENCY_FETCH
+            ).then((curr) => {
+                let diff = Math.abs(curr.Valute.USD.Previous - curr.Valute.USD.Value);
+
+                let percentDiff = (diff / curr.Valute.USD.Previous) * 100;
+
+                percentDiff >= Number(CURRENCY_PERCENT_DIFF)
+                    ? setMultiplier(1 / curr.Valute.USD.Value)
+                    : setMultiplier(1 / curr.Valute.USD.Previous);
+            });
+        }
+
+        if (multiplier <= 0) {
+            getMultiplier();
+        }
+    }, []);
+
+    // [ Set currency && region ]
+    useEffect(()=>{
+
+        if(!(multiplier > 0) || !router.locale)
+            return
+
+        dispatch(setRegion({
+            region: router.locale === "ru-RU" ? "RU" : "EN",
+            currencyMultiplier: multiplier
+        }));
+
+    },[multiplier, router])
 
   return (
     <>
