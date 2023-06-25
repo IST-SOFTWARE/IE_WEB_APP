@@ -112,7 +112,7 @@ const CartFunctional:FC<IProductItem_cart> = ({
               <ProductItemSelector
                 state={checkedState}
                 onSelect={()=>{
-                  switchSelectedState_cartActions(cartSelector);
+                  switchSelectedState_cartActions(currentQuantity, cartSelector);
                 }}
               />
             </div>

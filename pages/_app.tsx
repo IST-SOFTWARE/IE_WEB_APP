@@ -17,8 +17,6 @@ import LandingLayout from "../components/Layouts/landingLayout";
 
 export default function MyApp({ Component, pageProps }) {
 
-    const router = useRouter();
-
   return (
     <>
       <Head>

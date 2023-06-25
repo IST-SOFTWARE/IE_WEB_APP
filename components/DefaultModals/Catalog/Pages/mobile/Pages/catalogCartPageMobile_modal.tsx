@@ -1,67 +1,22 @@
-import React, {FC, useEffect, useState} from 'react';
+import React, {FC, useState} from 'react';
 import styles from "../../../../../../styles/Modals/catalog/mobile/catalogCartPageMobileModal.module.scss"
 import ISTButtonN from "../../../../../UI/ISTButton/ISTButtonN";
-import {CatalogWrapper} from "../../../../../ProductsWrapper/catalogWrapper/catalogWrapper";
 import {CartWrapper} from "../../../../../ProductsWrapper/cartWrapper";
-import {useCartTotalSum} from "../../../../../../Hooks/useCartTotalSum/useCartTotalSum";
-import {cartItemGetter_fnc, IProductData} from "../../../../../UI/common";
-import {cartClient} from "../../../../../../Apollo/cartClient";
-import {GET_PRODUCT_BY_ID, IProducts_Q} from "../../../../../../queries/products/productActions";
 import {ICartSelector_type} from "../../../../../UI/ISTProductItem/Abstract/ICartTypes";
-import {ICartTotalSum_prodsInf} from "../../../../../../Hooks/useCartTotalSum/ICartTotalSum";
 import {useRouter} from "next/router";
 import ru from "../../../../../../locales/ru";
 import en from "../../../../../../locales/en";
+import {useAppSelector} from "../../../../../../Hooks/reduxSettings";
 
+interface ICatalogCartPageMobileModal {
+    currency?: "USD" | "RUB"
+}
 
-const CatalogCartPageMobileModal:FC = ({
-
+const CatalogCartPageMobileModal:FC<ICatalogCartPageMobileModal> = ({
+   currency
 }) => {
 
-    const getCartProductDataById: cartItemGetter_fnc = async (
-        id: number | string,
-        callBack
-    ): Promise<IProductData> => {
-        let outProduct = {} as IProductData;
-
-        await cartClient
-            .query<IProducts_Q>({
-                query: GET_PRODUCT_BY_ID,
-                variables: {
-                    id: Number(id),
-                },
-                fetchPolicy: "network-only"
-            })
-            .then((prod) => {
-                if (prod.data && prod.data.Products[0]) {
-                    const _data = prod.data.Products[0];
-
-                    outProduct = {
-                        id: _data.id,
-                        image: _data.image_url,
-                        title: _data.product_name_ru,
-                        price: _data.price.toString(),
-                        vendCode: _data.vend_code.toString(),
-                        slug: _data.slug,
-                    };
-                }
-
-                if (callBack?.sideEffect && callBack?.flag === true)
-                    callBack.sideEffect(outProduct);
-            });
-
-        // console.log("out prods: ", outProduct, id);
-        return new Promise<IProductData>(resolve => {
-            resolve(outProduct)
-        });
-    };
-
     const [cartSelector, setCartSelector] = useState<ICartSelector_type[]>([])
-    const {getItemsInfo} = useCartTotalSum({
-        cartSelector,
-        getProductByIdQuery_func: getCartProductDataById
-
-    })
 
     const [numOfSelected, setNumOfSelected] = useState<number>(0);
     const [totalSum, setTotalSum] = useState<number>(0);
@@ -69,38 +24,7 @@ const CatalogCartPageMobileModal:FC = ({
     const router = useRouter();
     const t = router.locale === "ru-RU" ? ru : en;
 
-    const handleOrder = () => {
-        getItemsInfo()
-            .finally(null);
-    }
-
-    useEffect(()=>{
-
-        const calcTotalSum = (prodsInf: ICartTotalSum_prodsInf[]) => {
-
-            let totalPrice = 0;
-            let totalSelectedNum = 0;
-
-            cartSelector.map((el, i) => {
-                const selectedProduct = el;
-                const fetchedProduct = prodsInf.find(product => product.productId === selectedProduct.id);
-
-                if (fetchedProduct) {
-                    const itemPrice = fetchedProduct.pricePerItem * Number(selectedProduct.quantity);
-                    totalPrice += itemPrice;
-                    totalSelectedNum += Number(selectedProduct.quantity);
-                }
-            })
-
-            setTotalSum(totalPrice);
-            setNumOfSelected(totalSelectedNum);
-
-        }
-
-        getItemsInfo()
-            .then(data => calcTotalSum(data));
-
-    },[cartSelector])
+    const region = useAppSelector(selector => selector.region);
 
     return(
         <div className={styles.mobileModalCartWrapper}>
@@ -115,6 +39,11 @@ const CatalogCartPageMobileModal:FC = ({
                     cartSelector={{
                         selectedState: cartSelector,
                         setSelectedState: setCartSelector
+                    }}
+
+                    amountData={{
+                        amountQuantitySetter: setNumOfSelected,
+                        amountPriceSetter: setTotalSum,
                     }}
 
                     wrapperStyles={{
@@ -153,7 +82,9 @@ const CatalogCartPageMobileModal:FC = ({
                             {t.catalogCartPageMobileModal.amount}
                         </div>
                         <div className={styles.selected_num}>
-                            {totalSum} {t.catalogCartPageMobileModal.currencyStyle}
+                            {`${totalSum
+                                .toLocaleString(router?.locale, {maximumFractionDigits: 2})
+                            } ${region.currency === "RUB" ? "₽" : "$"}`}
                         </div>
                     </div>
 
@@ -171,8 +102,6 @@ const CatalogCartPageMobileModal:FC = ({
                                 borderRadius: "10px"
                             },
                         }}
-
-                        onClick={()=>{handleOrder()}}
 
                     />
                 </div>

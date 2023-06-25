@@ -117,11 +117,12 @@ export const LandingLayout: FC<ILandingLayout> = ({ children }) => {
     // [ Set currency && region ]
     useEffect(()=>{
 
-        if(!(multiplier > 0) || !router.locale)
+        if(!(multiplier > 0) || !router)
             return
 
         dispatch(setRegion({
-            region: router.locale === "ru-RU" ? "RU" : "EN",
+            region: router.locale === "en-US" ? "EN" : "RU",
+            currency: router.locale === "en-US" ? "USD" : "RUB",
             currencyMultiplier: multiplier
         }));
 

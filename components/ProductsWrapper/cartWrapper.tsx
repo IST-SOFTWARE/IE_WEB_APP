@@ -1,4 +1,4 @@
-import React, {CSSProperties, FC, useCallback, useEffect, useState} from "react";
+import React, {CSSProperties, Dispatch, FC, useCallback, useEffect, useState} from "react";
 import {ICartItem_properties_data, ICartSelector} from "../UI/ISTProductItem/Abstract/ICartTypes";
 import {
     cartItemGetter_fnc,
@@ -26,6 +26,9 @@ import {
 } from "../../helpers/Products/products_actions.helper";
 import ISTProductItem from "../UI/ISTProductItem/ISTProductItem";
 import {cartClient} from "../../Apollo/cartClient";
+import {useAppSelector} from "../../Hooks/reduxSettings";
+import {useCartTotalSum} from "../../Hooks/useCartTotalSum/useCartTotalSum";
+import {ICartTotalSum_prodsInf} from "../../Hooks/useCartTotalSum/ICartTotalSum";
 
 
 interface cartCollection {
@@ -35,56 +38,37 @@ interface cartCollection {
 interface ICartWrapper{
     cartID: string,
     currency: Pick<IProductItem, "currency">
+
     cartSelector: Omit<ICartSelector, "data">
 
     mobileTriggerSize?: mobileTrigger_size,
     itemStyles?: Pick<IProductItem, "style">
     wrapperStyles?: CSSProperties,
+
+    amountData?: {
+        amountPriceSetter: Dispatch<number>
+        amountQuantitySetter: Dispatch<number>
+    }
 }
 
 export const CartWrapper: FC<ICartWrapper> = ({
     cartID,
-    currency,
+
     cartSelector,
 
     mobileTriggerSize,
     itemStyles,
-    wrapperStyles
+    wrapperStyles,
+
+    amountData
 }) => {
 
     const [products, setProducts] = useState<ICartItem_properties_data[]>([]);
-
-    useEffect(()=>{
-        console.log("Products: ", products);
-    },[products])
-
-    /**
-     *  DATA FETCHING [CART DATA]
-    */
-
-    const {data, loading, error} = useQuery<cartCollection>(
-        GET_CART_COLLECTION_BY_ID,
-        {
-            fetchPolicy: "cache-and-network",
-            variables: {id: cartID},
-        }
-    );
-
-
-    /**
-     *  DATA UPDATER [CART DATA]
-    */
-    useEffect(() => {
-        if (data && data.cartCollection_by_id)
-            setProducts(redefining_to_ICartItemPropertiesData_redefiningHelper(
-                data.cartCollection_by_id.cart_model))
-
-    }, [data]);
-
+    const regionHandler = useAppSelector(selector => selector.region);
 
     /**
      *  DATA GETTER [PRODUCT DATA]
-    */
+     */
     const getCartProductDataById: cartItemGetter_fnc = async (
         id: number | string,
         callBack
@@ -97,6 +81,7 @@ export const CartWrapper: FC<ICartWrapper> = ({
                 variables: {
                     id: Number(id),
                 },
+                fetchPolicy: "network-only"
             })
             .then((prod) => {
                 if (prod.data && prod.data.Products[0]) {
@@ -105,8 +90,15 @@ export const CartWrapper: FC<ICartWrapper> = ({
                     outProduct = {
                         id: _data.id,
                         image: _data.image_url,
-                        title: _data.product_name_ru,
-                        price: _data.price.toString(),
+
+                        title: regionHandler.region === "RU" ?
+                            _data.product_name_ru :
+                            _data.product_name,
+
+                        price: regionHandler.currency === "RUB" ?
+                            _data.price.toString() :
+                            (Number(_data.price) * regionHandler.currencyMultiplier).toString(),
+
                         vendCode: _data.vend_code.toString(),
                         slug: _data.slug,
                     };
@@ -119,6 +111,33 @@ export const CartWrapper: FC<ICartWrapper> = ({
         // console.log("out prods: ", outProduct, id);
         return outProduct;
     };
+
+        const {getItemsInfo} = useCartTotalSum({
+            cartSelector: cartSelector.selectedState,
+            getProductByIdQuery_func: getCartProductDataById
+        })
+
+    /**
+     *  DATA FETCHING [CART DATA]
+    */
+    const {data, loading, error} = useQuery<cartCollection>(
+        GET_CART_COLLECTION_BY_ID,
+        {
+            fetchPolicy: "cache-and-network",
+            variables: {id: cartID},
+        }
+    );
+
+    /**
+     *  DATA UPDATER [CART DATA]
+    */
+    useEffect(() => {
+        if (data && data.cartCollection_by_id)
+            setProducts(redefining_to_ICartItemPropertiesData_redefiningHelper(
+                data.cartCollection_by_id.cart_model))
+
+    }, [data]);
+
 
     /**
      *  QUANTITY EDITOR
@@ -163,6 +182,7 @@ export const CartWrapper: FC<ICartWrapper> = ({
             return true
     }, [products, data]);
 
+
     /**
      *  PRODUCT REMOVER
     */
@@ -200,10 +220,37 @@ export const CartWrapper: FC<ICartWrapper> = ({
         }, [products, data]);
 
 
+    useEffect(()=>{
+
+        const calcTotalSum = (prodsInf: ICartTotalSum_prodsInf[]) => {
+
+            let totalPrice = 0;
+            let totalSelectedNum = 0;
+
+            cartSelector.selectedState.map((el, i) => {
+                const selectedProduct = el;
+                const fetchedProduct = prodsInf.find(product => product.productId === selectedProduct.id);
+
+                if (fetchedProduct) {
+                    const itemPrice = fetchedProduct.pricePerItem * Number(selectedProduct.quantity);
+                    totalPrice += itemPrice;
+                    totalSelectedNum += Number(selectedProduct.quantity);
+                }
+            })
+
+            amountData?.amountPriceSetter(totalPrice);
+            amountData?.amountQuantitySetter(totalSelectedNum);
+        }
+
+        getItemsInfo()
+            .then(data => calcTotalSum(data));
+
+    },[cartSelector])
+
+
     /**
      *  CART WRAPPER VIEW
     */
-
     return data && products ? (
         <div style={wrapperStyles}>
             {products.map(({productId, quantity}, index) => {
@@ -213,7 +260,7 @@ export const CartWrapper: FC<ICartWrapper> = ({
                 return (
                     <ISTProductItem
                         key={`ISTProductItem_${index}`}
-                        currency={currency?.currency}
+                        currency={regionHandler.currency === "USD" ? "EN" : "RU"}
                         style={itemStyles?.style}
 
                         itemType={{

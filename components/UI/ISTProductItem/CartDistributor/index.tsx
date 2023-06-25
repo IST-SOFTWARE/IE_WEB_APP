@@ -57,6 +57,18 @@ const CartDistributor: FC = () => {
                     sideEffect: data.deleteProduct.productsListSetter,
                     flag: isSub,
                 })
+                    .then(()=>{
+
+                        if(cartSelector) {
+                            cartSelector.setSelectedState(prevState => {
+                                const newSate = [...prevState]
+                                const idx = newSate?.findIndex(el => el.id === cartSelector.data.id);
+                                idx > -1 && newSate ? newSate.splice(idx, 1) : null;
+
+                                return newSate;
+                            })
+                        }
+                    })
                     .catch((ex) => console.warn(ex));
 
             return () => {
@@ -73,6 +85,22 @@ const CartDistributor: FC = () => {
                     .quantityEditor(data.productId, quantity, {
                         sideEffect: setCurrentQuantity,
                         flag: isSub,
+                    })
+                    .then(()=>{
+                        if(cartSelector){
+                            cartSelector.data = {
+                                ...cartSelector.data,
+                                quantity: quantity,
+                            }
+
+                            cartSelector?.setSelectedState(prevState => {
+                                const newSate = [...prevState]
+                                const idx = newSate?.findIndex(el => el.id === cartSelector.data.id);
+                                idx > -1 && newSate ? newSate[idx] = cartSelector.data : null;
+
+                                return newSate
+                            })
+                        }
                     })
                     .catch((ex) => console.warn(ex));
 

@@ -37,3 +37,4 @@ interface IProductItem {
 export const GET_PRODUCT_BY_ID = get_by_id;
 export const GET_FULL_PRODUCTS_LIST = get_full_list;
 export const GRT_FILTERED_PRODUCTS_LIST = get_filtered;
+

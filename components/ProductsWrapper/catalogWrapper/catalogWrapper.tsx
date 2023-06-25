@@ -60,6 +60,7 @@ export const CatalogWrapper: FC<ICatalogWrapper> = ({
     const catalog = useAppSelector(selector => selector.catalog);
     const filtersList = useAppSelector(selector => selector.filtersList);
     const pagination = useAppSelector(selector => selector.pagination);
+    const regionHandler = useAppSelector(selector => selector.region);
     const dispatch = useDispatch();
 
     const [cartProducts, setCartProducts] = useState<ICartItem_properties_data[]>([]);
@@ -271,7 +272,7 @@ export const CatalogWrapper: FC<ICatalogWrapper> = ({
                         key={`productItemCatalog_${i}_key`}
                     >
                         <ISTProductItem
-                            currency={"RU"}
+                            currency={regionHandler.currency === "RUB" ? "RU" : "EN"}
                             forwardingPath={`${additionalForwarding}${el?.slug}`}
                             style={{
                                 fill: true,
@@ -285,16 +286,25 @@ export const CatalogWrapper: FC<ICatalogWrapper> = ({
                             itemType={{
                                 productType: "catalog",
                                 parameters: {
+
                                     inline: false,
                                     cartStatus: !!cartProducts.find(_el => _el.productId === el.id),
 
                                     cartAdder: cartAdder,
                                     cartRemover: cartRemover
                                 },
+
                                 data: {
                                     id: el?.id,
-                                    title: el?.product_name_ru,
-                                    price: el?.price.toString(),
+
+                                    title: regionHandler.region === "RU" ?
+                                        el.product_name_ru :
+                                        el.product_name,
+
+                                    price: regionHandler.currency === "RUB" ?
+                                        el.price.toString() :
+                                        (Number(el.price) * regionHandler.currencyMultiplier).toString(),
+
                                     vendCode: el?.vend_code.toString(),
                                     image: getImageSrc(el?.image_url, el?.vend_code.toString())
                                 },

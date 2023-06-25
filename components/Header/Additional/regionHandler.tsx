@@ -8,7 +8,7 @@ interface regionHandler{
 
 const RegionHandler:FC<regionHandler> = ({
     baseRegion
-                                         }) => {
+}) => {
 
     const chRegion = useDispatch();
 

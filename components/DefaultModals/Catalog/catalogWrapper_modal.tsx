@@ -33,6 +33,7 @@ import CatalogCartPageMobileModal from "./Pages/mobile/Pages/catalogCartPageMobi
 import { useRouter } from "next/router";
 import ru from "../../../locales/ru";
 import en from "../../../locales/en";
+import {setRegionName, switchRegionCurrency, switchRegionName} from "../../../store/slices/regionSlice/regionSlice";
 
 interface catalogWrapper {
   data?: modalStater;
@@ -128,7 +129,9 @@ const CatalogWrapperModal_mobileBar: FC<mobileBar> = ({
           {
             title: t.istMobileBar.currencyTitle,
             image: currency_ico,
-            action: () => {},
+            action: () => {
+              dispatch(switchRegionCurrency());
+            },
             isActive: false,
           },
         ]}
@@ -391,7 +394,7 @@ const CatalogWrapperModal: FC<catalogWrapper> = ({ children, data }) => {
             ) : null}
 
             {modalComponent.isCurrentModal(toc_cart_page_mobile.typeName) ? (
-              <CatalogCartPageMobileModal />
+              <CatalogCartPageMobileModal/>
             ) : null}
           </ModalMobilePage>
         </CatalogWrapperMobileModal>
