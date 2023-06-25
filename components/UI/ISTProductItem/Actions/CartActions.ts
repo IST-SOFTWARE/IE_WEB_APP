@@ -1,17 +1,16 @@
-import {ICartSelector} from "../Abstract/ICartTypes";
+import {ICartSelector, ICartSelector_type} from "../Abstract/ICartTypes";
 
 export const switchSelectedState_cartActions = (
-    idx: number | string,
-    data: ICartSelector
+    cartSelector: ICartSelector
 ) => {
-    if (!data) return;
+    if (!cartSelector) return;
 
-    const prevSelectorsList = [...data.selectedState];
-    const foundIdx = prevSelectorsList.indexOf(idx);
+    const prevSelectorsList = [...cartSelector.selectedState];
+    const foundIdx = prevSelectorsList.findIndex(el => el?.id === cartSelector?.data?.id);
 
     foundIdx > -1
         ? prevSelectorsList.splice(foundIdx, 1)
-        : prevSelectorsList.push(idx);
+        : prevSelectorsList.push(cartSelector?.data);
 
-    data.setSelectedState(prevSelectorsList);
+    cartSelector.setSelectedState(prevSelectorsList);
 }

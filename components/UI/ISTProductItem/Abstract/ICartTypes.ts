@@ -43,10 +43,16 @@ export interface IProductItem_cart {
 
 type ICartSelector_dispatch<T> = Dispatch<SetStateAction<T>>
 
-export interface ICartSelector {
+export type ICartSelector_type = {
     id: number | string;
-    selectedState: (number | string)[];
-    setSelectedState: ICartSelector_dispatch<(number | string)[]>;
+    quantity: number | string;
+    price?: number | string;
+}
+
+export interface ICartSelector {
+    data: ICartSelector_type
+    selectedState: ICartSelector_type[];
+    setSelectedState: ICartSelector_dispatch<ICartSelector_type[]>;
 }
 
 interface mobileSettings {

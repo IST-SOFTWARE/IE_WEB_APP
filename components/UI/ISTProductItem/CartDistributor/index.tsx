@@ -20,7 +20,7 @@ const CartDistributor: FC = () => {
 
     // SELECT / DESELECT
         useEffect(() => {
-            setCheckedState(cartSelector?.selectedState.indexOf(cartSelector.id) > -1);
+            setCheckedState(cartSelector?.selectedState.findIndex(el => el.id === cartSelector?.data?.id) > -1);
         }, [cartSelector]);
     //
 

@@ -35,7 +35,7 @@ interface cartCollection {
 interface ICartWrapper{
     cartID: string,
     currency: Pick<IProductItem, "currency">
-    cartSelector: Omit<ICartSelector, "id">
+    cartSelector: Omit<ICartSelector, "data">
 
     mobileTriggerSize?: mobileTrigger_size,
     itemStyles?: Pick<IProductItem, "style">
@@ -54,9 +54,14 @@ export const CartWrapper: FC<ICartWrapper> = ({
 
     const [products, setProducts] = useState<ICartItem_properties_data[]>([]);
 
+    useEffect(()=>{
+        console.log(products);
+    },[products])
+
     /**
      *  DATA FETCHING [CART DATA]
     */
+
     const {data, loading, error} = useQuery<cartCollection>(
         GET_CART_COLLECTION_BY_ID,
         {
@@ -218,7 +223,12 @@ export const CartWrapper: FC<ICartWrapper> = ({
                             },
 
                             cartSelector: {
-                                id: productId,
+                                data: {
+                                    id: productId,
+                                    quantity: quantity,
+                                    price: undefined
+                                },
+
                                 selectedState: cartSelector?.selectedState,
                                 setSelectedState: cartSelector?.setSelectedState,
                             },

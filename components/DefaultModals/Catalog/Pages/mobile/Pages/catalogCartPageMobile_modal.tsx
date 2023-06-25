@@ -1,4 +1,4 @@
-import React, {FC, useState} from 'react';
+import React, {FC, useEffect, useState} from 'react';
 import styles from "../../../../../../styles/Modals/catalog/mobile/catalogCartPageMobileModal.module.scss"
 import ISTButtonN from "../../../../../UI/ISTButton/ISTButtonN";
 import {CatalogWrapper} from "../../../../../ProductsWrapper/catalogWrapper/catalogWrapper";
@@ -7,12 +7,13 @@ import {useCartTotalSum} from "../../../../../../Hooks/useCartTotalSum/useCartTo
 import {cartItemGetter_fnc, IProductData} from "../../../../../UI/common";
 import {cartClient} from "../../../../../../Apollo/cartClient";
 import {GET_PRODUCT_BY_ID, IProducts_Q} from "../../../../../../queries/products/productActions";
+import {ICartSelector_type} from "../../../../../UI/ISTProductItem/Abstract/ICartTypes";
+import {ICartTotalSum_prodsInf} from "../../../../../../Hooks/useCartTotalSum/ICartTotalSum";
 
 
 const CatalogCartPageMobileModal:FC = ({
 
 }) => {
-
 
     const getCartProductDataById: cartItemGetter_fnc = async (
         id: number | string,
@@ -26,6 +27,7 @@ const CatalogCartPageMobileModal:FC = ({
                 variables: {
                     id: Number(id),
                 },
+                fetchPolicy: "network-only"
             })
             .then((prod) => {
                 if (prod.data && prod.data.Products[0]) {
@@ -51,23 +53,58 @@ const CatalogCartPageMobileModal:FC = ({
         });
     };
 
-    const [cartSelector, setCartSelector] = useState<string[]>([])
+    const [cartSelector, setCartSelector] = useState<ICartSelector_type[]>([])
     const {getItemsInfo} = useCartTotalSum({
         cartSelector,
         getProductByIdQuery_func: getCartProductDataById
+
     })
 
+    const [numOfSelected, setNumOfSelected] = useState<number>(0);
+    const [totalSum, setTotalSum] = useState<number>(0);
+
     const handleOrder = () => {
-        getItemsInfo();
+        getItemsInfo()
+            .then(res => console.log(res));
     }
+
+    useEffect(()=>{
+
+        const calcTotalSum = (prodsInf: ICartTotalSum_prodsInf[]) => {
+
+            let totalPrice = 0;
+            let totalSelectedNum = 0;
+
+            cartSelector.map((el, i) => {
+                const selectedProduct = el;
+                const fetchedProduct = prodsInf.find(product => product.productId === selectedProduct.id);
+
+                if (fetchedProduct) {
+                    const itemPrice = fetchedProduct.pricePerItem * Number(selectedProduct.quantity);
+                    totalPrice += itemPrice;
+                    totalSelectedNum += Number(selectedProduct.quantity);
+                }
+            })
+
+            setTotalSum(totalPrice);
+            setNumOfSelected(totalSelectedNum);
+
+        }
+
+        getItemsInfo()
+            .then(data => calcTotalSum(data));
+
+    },[cartSelector])
 
     return(
         <div className={styles.mobileModalCartWrapper}>
             <div className={styles.cartWrapper}>
+
                 <CartWrapper
                     currency={{
                          currency: "RU"
                     }}
+
                     cartID={"9cfa4d6a-f2e9-400c-b0a9-4c85ab777272"}
                     cartSelector={{
                         selectedState: cartSelector,
@@ -88,6 +125,7 @@ const CatalogCartPageMobileModal:FC = ({
                     }}
 
                     mobileTriggerSize={"LG_992"}
+
                 />
             </div>
 
@@ -100,7 +138,7 @@ const CatalogCartPageMobileModal:FC = ({
                             Выбрано
                         </div>
                         <div className={styles.selected_num}>
-                            {12}
+                            {numOfSelected}
                         </div>
                     </div>
 
@@ -109,7 +147,7 @@ const CatalogCartPageMobileModal:FC = ({
                             Сумма
                         </div>
                         <div className={styles.selected_num}>
-                            {1223211} ₽
+                            {totalSum} ₽
                         </div>
                     </div>
 
@@ -127,10 +165,9 @@ const CatalogCartPageMobileModal:FC = ({
                                 borderRadius: "10px"
                             },
                         }}
-                        onClick={()=>{
-                            const data = getItemsInfo();
 
-                        }}
+                        onClick={()=>{handleOrder()}}
+
                     />
                 </div>
 

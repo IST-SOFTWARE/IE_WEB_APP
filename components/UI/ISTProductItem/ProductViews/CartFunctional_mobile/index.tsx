@@ -107,7 +107,7 @@ const CartFunctional_mobile: FC<IProductItem_cart> = ({
                                 }}
                                 state={checkedState}
                                 onSelect={() => {
-                                    switchSelectedState_cartActions(cartSelector.id, cartSelector);
+                                    switchSelectedState_cartActions(cartSelector);
                                 }}
                             />
                         </div>
