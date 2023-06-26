@@ -1,12 +1,10 @@
 .ProductPage{
     position: relative;
-    z-index: 1;
+    z-index: 10;
     min-height: 100vh;
     padding-top: 100px;
     max-width: 100vw;
     overflow: hidden;
-
-    background: #2C3641;
 }
 .ProductBlock{
     width: 100%;
@@ -241,12 +239,12 @@
 }
 .Actions{
     display: flex;
-    width: 100%;
+    width: fit-content;
     margin-top: 8px;
 }
 
 .Actions button{
-    width: 50%;
+    width: 300px;
     margin: 8px;
     height: 55px;
     border-radius: 47px;

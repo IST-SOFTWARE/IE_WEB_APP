@@ -1,10 +1,7 @@
 .CartPageCont{
-
-    background: #2C3641;
-
     padding-top: 100px;
     position: relative;
-    z-index: 1;
+    z-index: 10;
     overflow-x: hidden;
     padding-bottom: 30px;
     min-height: 100vh;
