@@ -1,4 +1,4 @@
-import styles from "../../styles/ProductPage/ProductPageParticles.module.css";
+import styles from './descriptionEntry.module.scss';
 
 export default function DescriptionEntry({Title, Params}){
     return(

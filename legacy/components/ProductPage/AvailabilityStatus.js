@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef} from "react";
-import styles from "../../styles/ProductPage/ProductPageParticles.module.css";
+import styles from "./availabilityStatus.module.scss";
 
 export default function AvailabilityStatus({status, value}){
     let ref = useRef();

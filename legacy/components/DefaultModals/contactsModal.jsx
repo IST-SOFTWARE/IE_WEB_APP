@@ -1,5 +1,5 @@
 import PopUpBase from "../PopUpBase";
-import cStyles from "../../styles/DefaultModals/contactsModal.module.css";
+import styles from "./contactsModal.module.scss";
 import {useEffect, useState} from "react";
 import {getOurContacts} from "../../queries/getOurContacts"
 import {getData} from "../../queries/getData";
@@ -33,8 +33,8 @@ export default function ContactsModal({modalState, modalSwitcher}){
                    header={"Наши контакты"}
                    paragraph={"Мы всегда рады помочь вам!"}>
 
-            <div className={cStyles.contacts}>
-                <div className={cStyles.contactsData}>
+            <div className={styles.contacts}>
+                <div className={styles.contactsData}>
                     Адрес электронной почты:
                     <span>
                         <a href={`mailTo: ${modalContent.ourEmail.emailAddress}`}>
@@ -43,7 +43,7 @@ export default function ContactsModal({modalState, modalSwitcher}){
                     </span>
                 </div>
 
-                <div className={cStyles.contactsData}>
+                <div className={styles.contactsData}>
                     Наш телефон:
                     <span>
                             <a href={`tel: ${modalContent.phone_number_ru.phoneNum}`}>
@@ -52,7 +52,7 @@ export default function ContactsModal({modalState, modalSwitcher}){
                     </span>
                 </div>
 
-                <div className={cStyles.contactsData}>
+                <div className={styles.contactsData}>
                     Наш адрес:
                     <span>
                             <a>
@@ -65,7 +65,7 @@ export default function ContactsModal({modalState, modalSwitcher}){
 
             <Link href={`${modalContent.address_map}`}
                   passHref>
-                <a className={cStyles.outLink}
+                <a className={styles.outLink}
                    target="_blank">
                     Показать на карте
                 </a>

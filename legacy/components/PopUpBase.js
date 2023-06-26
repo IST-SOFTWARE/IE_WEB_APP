@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback} from "react"
 import { createPortal } from "react-dom";
-import styles from "../styles/PopUp.module.css"
+import styles from "./popUpBase.module.scss"
 
 
 export default function PopUpBase({puState, children, header, paragraph, closer, nonBorder}){

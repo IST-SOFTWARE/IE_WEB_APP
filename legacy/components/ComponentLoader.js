@@ -1,5 +1,5 @@
 import { useEffect, useState} from "react"
-import styles from "../styles/LabelLoader.module.css"
+import styles from "./componentLoader.module.scss"
 
 export default function ComponentLoader({data, children, data_setter, margin, fill_percent}){
 

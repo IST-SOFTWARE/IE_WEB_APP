@@ -1,5 +1,5 @@
 import { useState, useEffect} from "react";
-import styles from "../../styles/ModalComponents/ModalBase.module.css";
+import styles from "./callBackModal.module.scss";
 import Image from "next/image";
 import NextImageRatioSaver from "../NextImageRatioSaver"
 

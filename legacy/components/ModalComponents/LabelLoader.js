@@ -1,5 +1,5 @@
 import { useEffect, useState} from "react"
-import styles from "../../styles/LabelLoader.module.css"
+import styles from "./labelLoader.module.scss"
 
 export default function LabelLoader({data, field, LoadSizeInSymbols, LoadSizeText, stateSetter}){
 

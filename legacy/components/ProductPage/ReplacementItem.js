@@ -1,4 +1,4 @@
-import styles from "../../styles/ProductPage/ProductPageParticles.module.css"
+import styles from "./replacementItem.module.scss";
 import { useState, useEffect } from "react"
 
 export default function ReplacementItem({text, pu, headersSet, paragraph, data, puTyper, isType}){
