@@ -1,10 +1,8 @@
 import React, {FC, ReactNode, useState} from "react";
-import styles from "../../../styles/Modals/catalog/mobile/catalogWrapperMobile.module.scss"
-interface catalogWrapperMobile{
-    children: ReactNode
-}
+import styles from "../../../../styles/Modals/catalog/mobile/catalogWrapperMobile.module.scss"
+import {ICatalogWrapperMobile} from "./common";
 
-const CatalogWrapperMobileModal:FC<catalogWrapperMobile> = ({
+const CatalogWrapperMobileModal:FC<ICatalogWrapperMobile> = ({
     children
 }) => {
 

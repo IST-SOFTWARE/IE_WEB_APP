@@ -1,168 +1,31 @@
 import React, {
   FC,
-  ReactNode,
   useCallback,
   useEffect,
   useRef,
   useState,
 } from "react";
-import { modalStater } from "../../ISTModals/modalSetter";
-import styles from "../../../styles/Modals/catalog/catalogWrapper.module.scss";
-import { setCatalogState } from "../../../store/slices/catalogSlices/catalogSlice";
+import styles from "../../../../styles/Modals/catalog/catalogWrapper.module.scss";
 import { useDispatch } from "react-redux";
-import HeaderCatalog from "../../Catalog/HeaderCatalog/HeaderCatalog";
-import { setSearch } from "../../../store/slices/catalogSlices/catalogSlice";
-import { incOffset } from "../../../store/slices/catalogSlices/catalogPaginationSlice";
-import useBaseModal from "../../ISTModals/useBaseModal";
-import { toc_catalog_search } from "../table_of_contents/Catalog/toc_catalog_search";
+import { incOffset } from "../../../../store/slices/catalogSlices/catalogPaginationSlice";
+import useBaseModal from "../../../ISTModals/useBaseModal";
 import CatalogWrapperMobileModal from "./catalogWrapperMobile_modal";
-import ModalMobilePage from "./Pages/mobile/modalMobilePage";
-import { toc_filter_page_mobile } from "../table_of_contents/Catalog/mobile/toc_filter_page_mobile";
-import { ICatalogFiltersType } from "../../../store/slices/common/catalogFiltersType";
-import CatalogFiltersListPageMobileModal from "./Pages/mobile/Pages/catalogFiltersListPageMobile_modal";
-import { toc_filtersList_page_mobile } from "../table_of_contents/Catalog/mobile/toc_filtersList_page_mobile";
-import { CatalogFilterPageMobileModal } from "./Pages/mobile/Pages/catalogFilterPageMobile_modal";
-import ISTMobileBar from "../../UI/ISTMobileBar/ISTMobileBar";
-import search_ico from "../../../public/MobileHelperIcons/search_icon.svg";
-import filters_ico from "../../../public/MobileHelperIcons/filter_icon.svg";
-import cart_ico from "../../../public/MobileHelperIcons/cart_icon.svg";
-import currency_ico from "../../../public/MobileHelperIcons/currency_icon.svg";
-import { useAppSelector } from "../../../Hooks/reduxSettings";
-import { toc_cart_page_mobile } from "../table_of_contents/Catalog/mobile/toc_cart_page_mobile";
-import CatalogCartPageMobileModal from "./Pages/mobile/Pages/catalogCartPageMobile_modal";
+import ModalMobilePage from "../Pages/mobile/modalMobilePage";
+import { toc_filter_page_mobile } from "../../table_of_contents/Catalog/mobile/toc_filter_page_mobile";
+import { ICatalogFiltersType } from "../../../../store/slices/common/catalogFiltersType";
+import CatalogFiltersListPageMobileModal from "../Pages/mobile/Pages/catalogFiltersListPageMobile_modal";
+import { toc_filtersList_page_mobile } from "../../table_of_contents/Catalog/mobile/toc_filtersList_page_mobile";
+import { CatalogFilterPageMobileModal } from "../Pages/mobile/Pages/catalogFilterPageMobile_modal";
+import { toc_cart_page_mobile } from "../../table_of_contents/Catalog/mobile/toc_cart_page_mobile";
+import CatalogCartPageMobileModal from "../Pages/mobile/Pages/catalogCartPageMobile_modal";
 import { useRouter } from "next/router";
-import ru from "../../../locales/ru";
-import en from "../../../locales/en";
-import {setRegionName, switchRegionCurrency, switchRegionName} from "../../../store/slices/regionSlice/regionSlice";
+import ru from "../../../../locales/ru";
+import en from "../../../../locales/en";
+import {ICatalogWrapper} from "./common";
+import CatalogWrapperModal_mobileBar from "./components/CatalogWrapperModal_mobileBar";
+import CatalogWrapperModal_headerWrapper from "./components/CatalogWrapperModal_headerWrapper";
 
-interface catalogWrapper {
-  data?: modalStater;
-  searching?: boolean;
-  children: ReactNode;
-}
-
-interface mobileBar {
-  search: {
-    action: (...props: any) => any;
-  };
-  filters: {
-    action: (...props: any) => any;
-    state: boolean;
-  };
-  cart: {
-    action: (...props: any) => any;
-    state: boolean;
-  };
-  inputOptions: {
-    state: boolean;
-    onBlur: (...props: any) => any;
-  };
-}
-
-const CatalogWrapperModal_headerWrapper: FC<
-  Omit<catalogWrapper, "children">> = ({
-    data,
-    searching
-  }) => {
-  const dispatch = useDispatch();
-  const catalog = useAppSelector((selector) => selector.catalog);
-
-  const setSearch_helper = (val: string) => {
-    dispatch(setSearch(val));
-  };
-
-  useEffect(()=>{
-    console.log("searching in header : ", searching);
-  },[searching])
-
-  return (
-    <>
-      <HeaderCatalog
-        logo={{ logoSrc: "/Logo/w_logo_svg.svg", forwardingPath: "./main" }}
-        onClose={() => {
-          dispatch(setCatalogState(false));
-        }}
-        searchingElement={{
-          focus: searching,
-          searchField: !data?.isCurrentModal(toc_catalog_search.typeName),
-          searchSetter: setSearch_helper,
-          searchValue: catalog?.search,
-        }}
-      />
-    </>
-  );
-};
-
-const CatalogWrapperModal_mobileBar: FC<mobileBar> = ({
-  search,
-  filters,
-  cart,
-  inputOptions,
-}) => {
-  const router = useRouter();
-  const t = router.locale === "ru-RU" ? ru : en;
-
-  const dispatch = useDispatch();
-  const catalog = useAppSelector((selector) => selector.catalog);
-
-  const setSearch_helper = (val: string) => {
-    dispatch(setSearch(val));
-  };
-
-  return (
-    <>
-      <ISTMobileBar
-        buttons={[
-          {
-            title: t.istMobileBar.searchTitle,
-            image: search_ico,
-            action: () => {
-              search.action(true);
-            },
-            isActive: false,
-          },
-          {
-            title: t.istMobileBar.filtersTitle,
-            image: filters_ico,
-            action: filters.action,
-            isActive: filters.state,
-          },
-          {
-            title: t.istMobileBar.cartTitle,
-            image: cart_ico,
-            action: cart.action,
-            isActive: cart.state,
-          },
-          {
-            title: t.istMobileBar.currencyTitle,
-            image: currency_ico,
-            action: () => {
-              dispatch(switchRegionCurrency());
-            },
-            isActive: false,
-          },
-        ]}
-        style={{
-          height: "100%",
-          borderRadius: "10px",
-        }}
-        inputOptions={{
-          placeholder: t.istMobileBar.inputPlaceholder + "...",
-          state: inputOptions.state,
-          onBlur: () => {
-            inputOptions.onBlur(false);
-          },
-
-          currentDataSetter: setSearch_helper,
-          currentData: catalog?.search,
-        }}
-        mobileTriggerSize={"LG_992"}
-      />
-    </>
-  );
-};
-
-const CatalogWrapperModal: FC<catalogWrapper> = ({
+const CatalogWrapperModal: FC<ICatalogWrapper> = ({
    children,
    data ,
    searching
@@ -178,8 +41,11 @@ const CatalogWrapperModal: FC<catalogWrapper> = ({
 
   const [currentFilterPage, setCurrentFilterPage] =
     useState<keyof ICatalogFiltersType>();
+
   const [searchingState, setSearchingState] =
-    useState<boolean>(searching === undefined ? false : searching);
+    useState<boolean>(searching === undefined ? false: searching);
+
+  const [catalogModalsState, setCatalogModalsState] = useState<boolean>(false);
 
   const router = useRouter();
   const t = router.locale === "ru-RU" ? ru : en;
@@ -227,10 +93,12 @@ const CatalogWrapperModal: FC<catalogWrapper> = ({
   // MOBILE MENU ACTIONS:
 
   const handleHideMobileModal = useCallback(() => {
-    router.push("", undefined, { shallow: true }).then(() => {
-      modalComponent.switch(false);
-    });
-  }, [modalComponent]);
+
+    modalComponent.switch(false);
+    setCatalogModalsState(false);
+    setSearchingState(false)
+
+  }, [setCatalogModalsState, setSearchingState, modalComponent]);
 
   const handleRouteBackMobileModal = useCallback(() => {
     modalComponent
@@ -308,11 +176,13 @@ const CatalogWrapperModal: FC<catalogWrapper> = ({
             maxWidth: "1480px",
           }}
         >
+
           {/*   HEADER  */}
-          <CatalogWrapperModal_headerWrapper
-              data={data}
-              searching={searching}
-          />
+
+            <CatalogWrapperModal_headerWrapper
+                data={data}
+                searching={searching}
+            />
 
           <div
             id={"CatalogSpace_mobile_modal"}
@@ -334,25 +204,26 @@ const CatalogWrapperModal: FC<catalogWrapper> = ({
               searchingState ? styles.searching : ""
             }`}
           >
+
             {/*    MOBILE BAR    */}
 
-            <CatalogWrapperModal_mobileBar
-              search={{
-                action: switchMobileSearching,
-              }}
-              filters={{
-                action: handleOpenMobileModal_filtersList,
-                state: isActive_FiltersMobilePage(),
-              }}
-              cart={{
-                action: handleOpenMobileModal_myCart,
-                state: isActive_CartMobilePage(),
-              }}
-              inputOptions={{
-                state: searchingState,
-                onBlur: switchMobileSearching,
-              }}
-            />
+              <CatalogWrapperModal_mobileBar
+                search={{
+                  action: switchMobileSearching,
+                }}
+                filters={{
+                  action: handleOpenMobileModal_filtersList,
+                  state: isActive_FiltersMobilePage(),
+                }}
+                cart={{
+                  action: handleOpenMobileModal_myCart,
+                  state: isActive_CartMobilePage(),
+                }}
+                inputOptions={{
+                  state: searchingState,
+                  onBlur: switchMobileSearching,
+                }}
+              />
 
           </div>
         </div>

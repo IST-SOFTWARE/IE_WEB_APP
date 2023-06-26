@@ -1,43 +1,43 @@
-import React, { FC, ReactNode, useCallback, useEffect, useState } from "react";
-import { useRouter } from "next/router";
+import React, {FC, ReactNode, useCallback, useEffect, useState} from "react";
+import {useRouter} from "next/router";
 import useBaseModal from "../ISTModals/useBaseModal";
-import { toc_catalog_search } from "../DefaultModals/table_of_contents/Catalog/toc_catalog_search";
-import { toc_catalog_full_prod_list } from "../DefaultModals/table_of_contents/Catalog/toc_catalog_full_prod_list";
-import CatalogWrapper_modal from "../DefaultModals/Catalog/catalogWrapper_modal";
+import {toc_catalog_search} from "../DefaultModals/table_of_contents/Catalog/toc_catalog_search";
+import {toc_catalog_full_prod_list} from "../DefaultModals/table_of_contents/Catalog/toc_catalog_full_prod_list";
+import CatalogWrapper_modal from "../DefaultModals/Catalog/Wrappers/catalogWrapper_modal";
 import CatalogSearchModal from "../DefaultModals/Catalog/Pages/catalogSearch_modal";
 import Header from "../Header/Header";
 import Footer from "../Footer/Footer";
-import { useDispatch } from "react-redux";
+import {useDispatch} from "react-redux";
 import {
-  setCatalogState,
-  updateCatalog,
+    setCatalogState,
+    updateCatalog,
 } from "../../store/slices/catalogSlices/catalogSlice";
 import Catalog from "../Catalog/Catalog";
-import { useQuery } from "@apollo/client";
+import {useQuery} from "@apollo/client";
 import {
-  GENERAL_CATEGORY_QUERY,
-  IGeneralCategoryQuery,
+    GENERAL_CATEGORY_QUERY,
+    IGeneralCategoryQuery,
 } from "../../queries/categories/generalCategoryQuery";
-import { filtersList_update } from "../../store/slices/filtersListSlice/filtersListSlice";
-import { getFiltersItemsAsArray_filtersHelper } from "../../helpers/Catalog/filters";
+import {filtersList_update} from "../../store/slices/filtersListSlice/filtersListSlice";
+import {getFiltersItemsAsArray_filtersHelper} from "../../helpers/Catalog/filters";
 import CatalogFullProductsListModal from "../DefaultModals/Catalog/Pages/catalogFullProductsList_modal";
-import { getData } from "../../queries/fetch/getData";
+import {getData} from "../../queries/fetch/getData";
 import {setRegion} from "../../store/slices/regionSlice/regionSlice";
 
 interface ILandingLayout {
-  children?: ReactNode;
+    children?: ReactNode;
 }
 
 type currencyValues = {
-  Valute: {
-    USD: {
-      Value: number;
-      Previous: number;
+    Valute: {
+        USD: {
+            Value: number;
+            Previous: number;
+        };
     };
-  };
 };
 
-export const LandingLayout: FC<ILandingLayout> = ({ children }) => {
+export const LandingLayout: FC<ILandingLayout> = ({children}) => {
 
     const CURRENCY_FETCH = process.env.NEXT_PUBLIC_CURRENCY_FETCH;
     const CURRENCY_PERCENT_DIFF = process.env.NEXT_PUBLIC_CURRENCY_PERCENT_DIFF
@@ -48,13 +48,13 @@ export const LandingLayout: FC<ILandingLayout> = ({ children }) => {
     const [catalogModalSearchingState, setCatalogModalSearchingState] =
         useState<boolean>(false);
 
-  const { modalComponent, ModalView } = useBaseModal(
-    "APP_BODY_WRAPPER",
-    "CatalogSpace"
-  );
+    const {modalComponent, ModalView} = useBaseModal(
+        "APP_BODY_WRAPPER",
+        "CatalogSpace"
+    );
 
     // [ Get general filters ]
-    const { data, error } = useQuery<IGeneralCategoryQuery>(
+    const {data, error} = useQuery<IGeneralCategoryQuery>(
         GENERAL_CATEGORY_QUERY
     );
 
@@ -117,9 +117,9 @@ export const LandingLayout: FC<ILandingLayout> = ({ children }) => {
     }, []);
 
     // [ Set currency && region ]
-    useEffect(()=>{
+    useEffect(() => {
 
-        if(!(multiplier > 0) || !router)
+        if (!(multiplier > 0) || !router)
             return
 
         dispatch(setRegion({
@@ -128,68 +128,73 @@ export const LandingLayout: FC<ILandingLayout> = ({ children }) => {
             currencyMultiplier: multiplier
         }));
 
-    },[multiplier, router])
+    }, [multiplier, router])
 
-  return (
-    <>
-      <Catalog modal={modalComponent}>
-        <ModalView>
-          <div
-            style={{
-              position: "absolute",
-              bottom: "20px",
-              right: "20px",
-              display: "flex",
-              zIndex: "1000",
-            }}
-          ></div>
+    return (
+        <>
+            <Header
 
-          <CatalogWrapper_modal
-              data={modalComponent}
-              searching={catalogModalSearchingState}
-          >
-            {modalComponent.isCurrentModal(toc_catalog_search.typeName) ? (
-              <CatalogSearchModal />
-            ) : null}
+                catalogOpener={() => {
+                    modalComponent.applyModalByName(toc_catalog_full_prod_list.typeName)
+                        .then(() => setCatalogModalSearchingState(false));
+                    dispatch(setCatalogState(true));
+                }}
 
-            {modalComponent.isCurrentModal(
-              toc_catalog_full_prod_list.typeName
-            ) ? (
-              <CatalogFullProductsListModal />
-            ) : null}
-          </CatalogWrapper_modal>
-        </ModalView>
-      </Catalog>
+                searchOpener={() => {
 
-      <Header
+                    if (Number(window.innerWidth) > 991.98)
+                        modalComponent.applyModalByName(toc_catalog_search.typeName)
+                            .then(() => setCatalogModalSearchingState(true));
 
-        catalogOpener={() => {
-          modalComponent.applyModalByName(toc_catalog_full_prod_list.typeName)
-              .then(() => setCatalogModalSearchingState(false));
-          dispatch(setCatalogState(true));
-        }}
-
-        searchOpener={() => {
-
-            if(Number(window.innerWidth) > 991.98)
-                modalComponent.applyModalByName(toc_catalog_search.typeName)
-                    .then(() => setCatalogModalSearchingState(true));
-
-            else
-                modalComponent.applyModalByName(toc_catalog_full_prod_list.typeName)
-                    .then(() => setCatalogModalSearchingState(true));
+                    else
+                        modalComponent.applyModalByName(toc_catalog_full_prod_list.typeName)
+                            .then(() => setCatalogModalSearchingState(true));
 
 
-            dispatch(setCatalogState(true));
-        }}
+                    dispatch(setCatalogState(true));
+                }}
 
-      />
+            />
 
-      {children}
+            {children}
 
-      <Footer route={router.locale} />
-    </>
-  );
+            <Footer route={router.locale}/>
+
+            {/* ---------------- */}
+            {/*  Mobile catalog  */}
+
+            <Catalog modal={modalComponent}>
+                <ModalView>
+                    <div
+                        style={{
+                            position: "absolute",
+                            bottom: "20px",
+                            right: "20px",
+                            display: "flex",
+                            zIndex: "1000",
+                        }}
+                    ></div>
+
+                    <CatalogWrapper_modal
+                        data={modalComponent}
+                        searching={catalogModalSearchingState}
+                    >
+                        {modalComponent.isCurrentModal(toc_catalog_search.typeName) ? (
+                            <CatalogSearchModal/>
+                        ) : null}
+
+                        {modalComponent.isCurrentModal(
+                            toc_catalog_full_prod_list.typeName
+                        ) ? (
+                            <CatalogFullProductsListModal/>
+                        ) : null}
+                    </CatalogWrapper_modal>
+
+                </ModalView>
+            </Catalog>
+
+        </>
+    );
 };
 
 export default LandingLayout;
