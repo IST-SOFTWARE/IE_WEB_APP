@@ -37,6 +37,7 @@ import {setRegionName, switchRegionCurrency, switchRegionName} from "../../../st
 
 interface catalogWrapper {
   data?: modalStater;
+  searching?: boolean;
   children: ReactNode;
 }
 
@@ -155,7 +156,7 @@ const CatalogWrapperModal_mobileBar: FC<mobileBar> = ({
   );
 };
 
-const CatalogWrapperModal: FC<catalogWrapper> = ({ children, data }) => {
+const CatalogWrapperModal: FC<catalogWrapper> = ({ children, data , searching}) => {
   const dispatch = useDispatch();
   const childrenRef = useRef<HTMLDivElement>(null);
 
@@ -167,7 +168,7 @@ const CatalogWrapperModal: FC<catalogWrapper> = ({ children, data }) => {
   const [currentFilterPage, setCurrentFilterPage] =
     useState<keyof ICatalogFiltersType>();
   const [mobileSearchingState, setMobileSearchingState] =
-    useState<boolean>(false);
+    useState<boolean>(searching === undefined ? false : searching);
 
   const router = useRouter();
   const t = router.locale === "ru-RU" ? ru : en;
@@ -334,6 +335,7 @@ const CatalogWrapperModal: FC<catalogWrapper> = ({ children, data }) => {
                 onBlur: switchMobileSearching,
               }}
             />
+
           </div>
         </div>
       </div>

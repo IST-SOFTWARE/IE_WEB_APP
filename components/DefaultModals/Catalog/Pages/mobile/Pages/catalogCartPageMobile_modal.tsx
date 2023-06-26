@@ -92,9 +92,11 @@ const CatalogCartPageMobileModal:FC<ICatalogCartPageMobileModal> = ({
 
                 <div className={styles.btnPlace}>
                     <ISTButtonN
+                        
                         title={{
                             caption: t.catalogCartPageMobileModal.order
                         }}
+
                         light={{
                             fill: true,
                             style: {

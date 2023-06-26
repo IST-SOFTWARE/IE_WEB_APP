@@ -45,6 +45,8 @@ export const LandingLayout: FC<ILandingLayout> = ({ children }) => {
     const router = useRouter();
     const dispatch = useDispatch();
     const [multiplier, setMultiplier] = useState<number>(0);
+    const [mobileCatalogOpeningSearchState, setMobileCatalogOpeningSearchState] =
+        useState<boolean>(false);
 
   const { modalComponent, ModalView } = useBaseModal(
     "APP_BODY_WRAPPER",
@@ -142,7 +144,10 @@ export const LandingLayout: FC<ILandingLayout> = ({ children }) => {
             }}
           ></div>
 
-          <CatalogWrapper_modal data={modalComponent}>
+          <CatalogWrapper_modal
+              data={modalComponent}
+              searching={mobileCatalogOpeningSearchState}
+          >
             {modalComponent.isCurrentModal(toc_catalog_search.typeName) ? (
               <CatalogSearchModal />
             ) : null}
@@ -162,8 +167,15 @@ export const LandingLayout: FC<ILandingLayout> = ({ children }) => {
           dispatch(setCatalogState(true));
         }}
         searchOpener={() => {
-          modalComponent.applyModalByName(toc_catalog_search.typeName);
-          dispatch(setCatalogState(true));
+            if(Number(window.innerHeight) > 991.98) {
+                modalComponent.applyModalByName(toc_catalog_search.typeName);
+                dispatch(setCatalogState(true));
+            }
+            else{
+                modalComponent.applyModalByName(toc_catalog_full_prod_list.typeName)
+                    .then(() => setMobileCatalogOpeningSearchState(true));
+                dispatch(setCatalogState(true));
+            }
         }}
       />
 
