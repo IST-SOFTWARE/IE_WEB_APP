@@ -1,4 +1,4 @@
-import React, { Dispatch, FC, useEffect, useState } from "react";
+import React, {Dispatch, FC, useEffect, useRef, useState} from "react";
 import styles from "./headerCatalog.module.scss";
 import {IInputDataSetter, mobileTrigger_size} from "../../UI/common";
 import Image from "next/image";
@@ -15,6 +15,7 @@ interface IHeader {
 }
 
 type ISearchOptions = {
+  focus: boolean;
   searchField: boolean;
   searchSetter: IInputDataSetter
   searchValue: string;
@@ -31,6 +32,19 @@ const HeaderCatalog: FC<IHeader> = ({
   searchingElement,
   mobileTriggerSize,
 }) => {
+
+    const inputRef = useRef<HTMLInputElement>();
+
+    useEffect(()=>{
+        if(!inputRef?.current || !searchingElement)
+            return
+
+        searchingElement.focus ? inputRef.current.focus() : null;
+        console.log(searchingElement);
+
+    },[inputRef, searchingElement])
+
+
 
   return (
     <>
@@ -64,6 +78,7 @@ const HeaderCatalog: FC<IHeader> = ({
             >
               <div>
                 <IstInput
+                  ref={inputRef}
                   inputType={inputTypesVars.any_string}
                   placeholder={"Request message"}
                   required={false}

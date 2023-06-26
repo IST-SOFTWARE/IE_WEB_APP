@@ -39,15 +39,6 @@ const Header:FC<Header> = ({
         );
     },[reduxCatalogState.filters]);
 
-    // useEffect(()=>{
-    //     if(currentState && reduxCatalogState && reduxCatalogState.catalog === undefined)
-    //         catalogDispatch(updateCatalog(currentState));
-    // },[currentState, reduxCatalogState])
-
-    // useEffect(()=>{
-    //     if(reduxCatalogState && reduxCatalogState.catalog !== undefined)
-    //         pushQuery(reduxCatalogState);
-    // },[reduxCatalogState])
 
     return(
         <div className={styles.headerCont}>
@@ -93,7 +84,6 @@ const Header:FC<Header> = ({
                             <button className={styles.catalogBtn}
                                 onClick={()=> {
                                         catalogOpener ? catalogOpener() : null
-
                                     }
                                 }
                             >
@@ -117,7 +107,8 @@ const Header:FC<Header> = ({
 
                                    onClick={()=> {
                                        if(searchOpener)
-                                         !hasFilters ? searchOpener() : catalogOpener();
+                                         !hasFilters ?
+                                             searchOpener() : catalogOpener();
                                    }}
                             />
                         </div>

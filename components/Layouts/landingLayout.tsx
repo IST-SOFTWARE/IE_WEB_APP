@@ -45,7 +45,7 @@ export const LandingLayout: FC<ILandingLayout> = ({ children }) => {
     const router = useRouter();
     const dispatch = useDispatch();
     const [multiplier, setMultiplier] = useState<number>(0);
-    const [mobileCatalogOpeningSearchState, setMobileCatalogOpeningSearchState] =
+    const [catalogModalSearchingState, setCatalogModalSearchingState] =
         useState<boolean>(false);
 
   const { modalComponent, ModalView } = useBaseModal(
@@ -146,7 +146,7 @@ export const LandingLayout: FC<ILandingLayout> = ({ children }) => {
 
           <CatalogWrapper_modal
               data={modalComponent}
-              searching={mobileCatalogOpeningSearchState}
+              searching={catalogModalSearchingState}
           >
             {modalComponent.isCurrentModal(toc_catalog_search.typeName) ? (
               <CatalogSearchModal />
@@ -162,21 +162,27 @@ export const LandingLayout: FC<ILandingLayout> = ({ children }) => {
       </Catalog>
 
       <Header
+
         catalogOpener={() => {
-          modalComponent.applyModalByName(toc_catalog_full_prod_list.typeName);
+          modalComponent.applyModalByName(toc_catalog_full_prod_list.typeName)
+              .then(() => setCatalogModalSearchingState(false));
           dispatch(setCatalogState(true));
         }}
+
         searchOpener={() => {
-            if(Number(window.innerHeight) > 991.98) {
-                modalComponent.applyModalByName(toc_catalog_search.typeName);
-                dispatch(setCatalogState(true));
-            }
-            else{
+
+            if(Number(window.innerWidth) > 991.98)
+                modalComponent.applyModalByName(toc_catalog_search.typeName)
+                    .then(() => setCatalogModalSearchingState(true));
+
+            else
                 modalComponent.applyModalByName(toc_catalog_full_prod_list.typeName)
-                    .then(() => setMobileCatalogOpeningSearchState(true));
-                dispatch(setCatalogState(true));
-            }
+                    .then(() => setCatalogModalSearchingState(true));
+
+
+            dispatch(setCatalogState(true));
         }}
+
       />
 
       {children}

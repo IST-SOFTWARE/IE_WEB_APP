@@ -60,8 +60,10 @@ interface mobileBar {
 }
 
 const CatalogWrapperModal_headerWrapper: FC<
-  Omit<catalogWrapper, "children">
-> = ({ data }) => {
+  Omit<catalogWrapper, "children">> = ({
+    data,
+    searching
+  }) => {
   const dispatch = useDispatch();
   const catalog = useAppSelector((selector) => selector.catalog);
 
@@ -69,16 +71,20 @@ const CatalogWrapperModal_headerWrapper: FC<
     dispatch(setSearch(val));
   };
 
+  useEffect(()=>{
+    console.log("searching in header : ", searching);
+  },[searching])
+
   return (
     <>
       <HeaderCatalog
-        logo={{ logoSrc: "/Logo/w_logo_svg.svg", forwardingPath: "Logo" }}
+        logo={{ logoSrc: "/Logo/w_logo_svg.svg", forwardingPath: "./main" }}
         onClose={() => {
           dispatch(setCatalogState(false));
         }}
         searchingElement={{
+          focus: searching,
           searchField: !data?.isCurrentModal(toc_catalog_search.typeName),
-
           searchSetter: setSearch_helper,
           searchValue: catalog?.search,
         }}
@@ -156,7 +162,12 @@ const CatalogWrapperModal_mobileBar: FC<mobileBar> = ({
   );
 };
 
-const CatalogWrapperModal: FC<catalogWrapper> = ({ children, data , searching}) => {
+const CatalogWrapperModal: FC<catalogWrapper> = ({
+   children,
+   data ,
+   searching
+}) => {
+
   const dispatch = useDispatch();
   const childrenRef = useRef<HTMLDivElement>(null);
 
@@ -167,7 +178,7 @@ const CatalogWrapperModal: FC<catalogWrapper> = ({ children, data , searching}) 
 
   const [currentFilterPage, setCurrentFilterPage] =
     useState<keyof ICatalogFiltersType>();
-  const [mobileSearchingState, setMobileSearchingState] =
+  const [searchingState, setSearchingState] =
     useState<boolean>(searching === undefined ? false : searching);
 
   const router = useRouter();
@@ -258,7 +269,7 @@ const CatalogWrapperModal: FC<catalogWrapper> = ({ children, data , searching}) 
   const switchMobileSearching = useCallback(
     (st: boolean) => {
       modalComponent.switch(false);
-      setMobileSearchingState(st);
+      setSearchingState(st);
     },
     [modalComponent]
   );
@@ -280,6 +291,10 @@ const CatalogWrapperModal: FC<catalogWrapper> = ({ children, data , searching}) 
     return false;
   }, [modalComponent]);
 
+  useEffect(()=>{
+    console.log("searching in wrapper : ", searching);
+  },[searching])
+
   return (
     <>
       <div
@@ -294,7 +309,10 @@ const CatalogWrapperModal: FC<catalogWrapper> = ({ children, data , searching}) 
           }}
         >
           {/*   HEADER  */}
-          <CatalogWrapperModal_headerWrapper data={data} />
+          <CatalogWrapperModal_headerWrapper
+              data={data}
+              searching={searching}
+          />
 
           <div
             id={"CatalogSpace_mobile_modal"}
@@ -313,7 +331,7 @@ const CatalogWrapperModal: FC<catalogWrapper> = ({ children, data , searching}) 
 
           <div
             className={`${styles.mobileCatalogBar} ${
-              mobileSearchingState ? styles.searching : ""
+              searchingState ? styles.searching : ""
             }`}
           >
             {/*    MOBILE BAR    */}
@@ -331,7 +349,7 @@ const CatalogWrapperModal: FC<catalogWrapper> = ({ children, data , searching}) 
                 state: isActive_CartMobilePage(),
               }}
               inputOptions={{
-                state: mobileSearchingState,
+                state: searchingState,
                 onBlur: switchMobileSearching,
               }}
             />
