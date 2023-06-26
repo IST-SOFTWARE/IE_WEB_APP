@@ -44,8 +44,6 @@ const HeaderCatalog: FC<IHeader> = ({
 
     },[inputRef, searchingElement])
 
-
-
   return (
     <>
         <div

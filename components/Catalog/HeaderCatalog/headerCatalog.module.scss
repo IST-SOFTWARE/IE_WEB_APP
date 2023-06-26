@@ -7,7 +7,7 @@
 
   width: 100%;
   display: flex;
-  justify-content: center;
+
 
   max-width: calc(1480px + 15px);
   left: 50%;
@@ -19,6 +19,8 @@
   margin: 0px !important;
 
   box-shadow: 0 5px 20px $def_dark;
+
+  justify-content: center;
 
   .logoBlock {
     min-width: 150px;
@@ -51,6 +53,8 @@
 @media screen and (min-width: 1399.98px) {
   .header_XXL_1400 {
 
+    justify-content: space-between !important;
+
     .logoBlock {
       min-width: 170px;
       max-width: 200px;
@@ -75,6 +79,9 @@
 
 @media screen and (min-width: 1199.98px) {
   .header_XL_1200 {
+
+    justify-content: space-between !important;
+
     .logoBlock {
       min-width: 170px;
       max-width: 200px;
@@ -98,6 +105,9 @@
 
 @media screen and (min-width: 991.98px) {
   .header_LG_992 {
+
+    justify-content: space-between !important;
+
     .logoBlock {
       min-width: 170px;
       max-width: 200px;
@@ -121,8 +131,10 @@
 
 @media screen and (min-width: 767.98px) {
   .header_MD_768 {
+
     display: flex;
-    justify-content: center !important;
+
+    justify-content: space-between !important;
 
     .logoBlock {
       min-width: 170px;
