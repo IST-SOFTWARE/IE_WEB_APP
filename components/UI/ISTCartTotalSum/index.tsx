@@ -5,6 +5,7 @@ import { cartItemGetter_fnc } from "../common";
 import { useRouter } from "next/router";
 import ru from "../../../locales/ru";
 import en from "../../../locales/en";
+import { useAppSelector } from "../../../Hooks/reduxSettings";
 
 interface ICartTotalSum {
   totalSum: number;
@@ -14,6 +15,8 @@ interface ICartTotalSum {
 const ISTCartTotalSum: FC<ICartTotalSum> = ({ totalSelect, totalSum }) => {
   const router = useRouter();
   const t = router.locale === "ru-RU" ? ru : en;
+
+  const region = useAppSelector((selector) => selector.region);
 
   return (
     <div className={styles.cart}>
@@ -36,12 +39,14 @@ const ISTCartTotalSum: FC<ICartTotalSum> = ({ totalSelect, totalSum }) => {
                   })}`
                 : 0}
             </span>
-            <span>{t.istCartTotalSum.currencyStyle}</span>
+            <span>{region.currency === "RUB" ? "₽" : "$"}</span>
           </div>
         </div>
         <div className={styles.sale}>
           <div className={styles.title}>{t.istCartTotalSum.sale}</div>
-          <div className={styles.total}>{t.istCartTotalSum.currencyStyle}</div>
+          <div className={styles.total}>
+            {region.currency === "RUB" ? "₽" : "$"}
+          </div>
         </div>
       </div>
       <div className={styles.totalSum}>
@@ -53,7 +58,7 @@ const ISTCartTotalSum: FC<ICartTotalSum> = ({ totalSelect, totalSum }) => {
               })}`
             : 0}
         </span>
-        <span>{t.istCartTotalSum.currencyStyle}</span>
+        <span>{region.currency === "RUB" ? "₽" : "$"}</span>
       </div>
       <IstButtonN
         light={{
