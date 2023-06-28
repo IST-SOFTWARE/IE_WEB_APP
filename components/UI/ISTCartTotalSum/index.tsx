@@ -12,29 +12,32 @@ interface ICartTotalSum {
 }
 
 const ISTCartTotalSum: FC<ICartTotalSum> = ({ totalSelect, totalSum }) => {
-  const [selected, setSelected] = useState<number>(0);
-  const [sum, setSum] = useState<number>(0);
-
   const router = useRouter();
   const t = router.locale === "ru-RU" ? ru : en;
-
-  useEffect(() => {
-    setSelected(totalSelect);
-    setSum(totalSum);
-  }, [totalSelect, totalSum]);
 
   return (
     <div className={styles.cart}>
       <div className={styles.cartLabel}>
         {t.istCartTotalSum.yourCart}
-        <div className={styles.productsQuantity}>{selected ? selected : 0}</div>
+        <div className={styles.productsQuantity}>
+          {totalSelect ? totalSelect : 0}
+        </div>
       </div>
       <div className={styles.prodSaleBox}>
         <div className={styles.prod}>
           <div className={styles.title}>
-            {t.istCartTotalSum.products} ({selected ? selected : 0})
+            {t.istCartTotalSum.products} ({totalSelect ? totalSelect : 0})
           </div>
-          <div className={styles.total}>{t.istCartTotalSum.currencyStyle}</div>
+          <div className={styles.total}>
+            <span>
+              {totalSum
+                ? `${totalSum.toLocaleString(router?.locale, {
+                    maximumFractionDigits: 2,
+                  })}`
+                : 0}
+            </span>
+            <span>{t.istCartTotalSum.currencyStyle}</span>
+          </div>
         </div>
         <div className={styles.sale}>
           <div className={styles.title}>{t.istCartTotalSum.sale}</div>
@@ -42,8 +45,15 @@ const ISTCartTotalSum: FC<ICartTotalSum> = ({ totalSelect, totalSum }) => {
         </div>
       </div>
       <div className={styles.totalSum}>
-        {t.istCartTotalSum.totalSum}: {sum ? sum : 0}
-        {t.istCartTotalSum.currencyStyle}
+        {t.istCartTotalSum.totalSum}:
+        <span>
+          {totalSum
+            ? `${totalSum.toLocaleString(router?.locale, {
+                maximumFractionDigits: 2,
+              })}`
+            : 0}
+        </span>
+        <span>{t.istCartTotalSum.currencyStyle}</span>
       </div>
       <IstButtonN
         light={{

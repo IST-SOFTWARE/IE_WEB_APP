@@ -164,8 +164,6 @@ export default function ProductPage({ data }) {
                   />
                 </p>
                 <Link href="#">
-                  {" "}
-                  {/*чем заменить HREF */}
                   <LabelLoader
                     LoadSizeInSymbols={20}
                     data={productData}
@@ -356,12 +354,20 @@ export default function ProductPage({ data }) {
                         <div className={styles.ProductPrice}>
                           {productData ? (
                             <p>
-                              <span className={styles.priceHider}>{t.productPage.price}: </span>
+                              <span className={styles.priceHider}>
+                                {t.productPage.price}:{" "}
+                              </span>
                               {new Intl.NumberFormat("ru-RU").format(
                                 productData.price
                               )}
-                              <span className={styles.priceHider}> {t.productPage.currency}</span>
-                              <span className={styles.monySymbol}> {t.productPage.currencyStyle}</span>
+                              <span className={styles.priceHider}>
+                                {" "}
+                                {t.productPage.currency}
+                              </span>
+                              <span className={styles.monySymbol}>
+                                {" "}
+                                {t.productPage.currencyStyle}
+                              </span>
                             </p>
                           ) : (
                             ""
@@ -434,11 +440,11 @@ export default function ProductPage({ data }) {
       </PopUpBase>
 
       {/*Image-viewer modal */}
-      <Image
+      {/* <Image
         image={productData ? productData.image_url : null}
         modalState={imageViewerPU}
         setModalState={setImageViewerPU}
-      />
+      /> */}
 
       {/*Contacts modal*/}
       <ContactsModal

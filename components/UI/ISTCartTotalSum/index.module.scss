@@ -40,10 +40,17 @@
       justify-content: space-between;
     }
 
+    .sale {
+      opacity: 0.5;
+    }
+
     .title,
     .total {
       @include font-size(1.25rem);
       font-weight: 500;
+      > span {
+        margin-left: 5px;
+      }
     }
   }
 
@@ -52,5 +59,8 @@
     font-weight: 600;
     align-self: flex-end;
     margin-bottom: 8px;
+    > span {
+      margin-left: 5px;
+    }
   }
 }
