@@ -10,9 +10,7 @@ import ReplacementItem from "../../legacy/components/ProductPage/ReplacementItem
 import AvailabilityStatus from "../../legacy/components/ProductPage/AvailabilityStatus";
 import DescriptionEntry from "../../legacy/components/ProductPage/DescriptionEntry";
 import GeometryViewer from "../../legacy/components/ProductPage/GeometryViewer";
-import AdditionalItem from "../../legacy/components/ProductPage/AdditionalItem";
 import ContactsModal from "../../legacy/components/DefaultModals/contactsModal";
-import ImageViewerModal from "../../legacy/components/DefaultModals/imageViewerModal";
 import PopUpBase from "../../legacy/components/PopUpBase";
 import BlureProdImage from "../../legacy/components/ProductPage/BlureProdImage";
 
@@ -94,7 +92,7 @@ export default function ProductPage({ data }) {
       const createOrder = document.querySelector(`.${styles.sendOrderAction}`);
 
       if (addToCartBtn !== null) {
-        addToCartBtn.innerHTML = "Моя корзина";
+        addToCartBtn.innerHTML = t.productPage.myCart;
         addToCartBtn.classList.add(`${styles.active}`);
       }
       // if((createOrder).classList.contains(`${styles.active}`))
@@ -106,7 +104,7 @@ export default function ProductPage({ data }) {
       const createOrder = document.querySelector(`.${styles.sendOrderAction}`);
 
       if (addToCartBtn !== null) {
-        addToCartBtn.innerHTML = "Добавить в корзину";
+        addToCartBtn.innerHTML = t.productPage.addToCart;
         createOrder?.classList?.add(`${styles.active}`);
         if (addToCartBtn.classList.contains(`${styles.active}`))
           addToCartBtn.classList.remove(`${styles.active}`);
@@ -166,6 +164,8 @@ export default function ProductPage({ data }) {
                   />
                 </p>
                 <Link href="#">
+                  {" "}
+                  {/*чем заменить HREF */}
                   <LabelLoader
                     LoadSizeInSymbols={20}
                     data={productData}
@@ -201,22 +201,22 @@ export default function ProductPage({ data }) {
                         {/*    title={productData ? productData.product_name_ru : ""}*/}
                         {/*/>*/}
 
-                         <Image
-                            src={productData ? productData.image_url : ""}
-                            fill={true}
-                            alt={productData ? productData.product_name_ru : ""}
-                            style={{
-                                objectFit: "contain",
-                                objectPosition: "center",
-                              }}
-                         />
+                        <Image
+                          src={productData ? productData.image_url : ""}
+                          fill={true}
+                          alt={productData ? productData.product_name_ru : ""}
+                          style={{
+                            objectFit: "contain",
+                            objectPosition: "center",
+                          }}
+                        />
                       </div>
                     </button>
 
                     <div className={styles.ProductReplacement}>
                       <ReplacementItem
-                        text={"Аналог"}
-                        paragraph={"для"}
+                        text={t.productPage.analog}
+                        paragraph={t.productPage.for}
                         pu={setPU}
                         headersSet={setPuHeaders}
                         data={productData ? productData.product_name_ru : ""}
@@ -225,8 +225,8 @@ export default function ProductPage({ data }) {
                       />
 
                       <ReplacementItem
-                        text={"Замена"}
-                        paragraph={"для"}
+                        text={t.productPage.replacement}
+                        paragraph={t.productPage.for}
                         pu={setPU}
                         headersSet={setPuHeaders}
                         data={productData ? productData.product_name_ru : ""}
@@ -235,7 +235,7 @@ export default function ProductPage({ data }) {
                       />
 
                       <ReplacementItem
-                        text={"Входит в состав..."}
+                        text={t.productPage.partOf + "..."}
                         pu={setPU}
                         headersSet={setPuHeaders}
                         data={productData ? productData.product_name_ru : ""}
@@ -248,6 +248,7 @@ export default function ProductPage({ data }) {
               </div>
 
               {/* UNDER DEVELOPMENT */}
+
               {/* <div className={styles.AdditionalProductsBlock}>
                                 <p>{productData ? "С этим товаром покупают..." : <LabelLoader LoadSizeInSymbols={15}/>}</p>
                                 <div className={styles.AdditionalList} ref={ref}>
@@ -279,11 +280,11 @@ export default function ProductPage({ data }) {
 
                     <div className={styles.ProductParams}>
                       <p className={styles.CharacteristicsTitle}>
-                        Характеристики:
+                        {t.productPage.specifications}:
                       </p>
                       <div className={styles.ParamsWrapper}>
                         <DescriptionEntry
-                          Title={"Марка"}
+                          Title={t.productPage.brand}
                           Params={
                             productData
                               ? productData.product_manufacturer.map(
@@ -297,7 +298,7 @@ export default function ProductPage({ data }) {
                         />
 
                         <DescriptionEntry
-                          Title={"Узел"}
+                          Title={t.productPage.unit}
                           Params={
                             productData
                               ? productData.product_unit.map(
@@ -309,7 +310,7 @@ export default function ProductPage({ data }) {
                         />
 
                         <DescriptionEntry
-                          Title={"Тип"}
+                          Title={t.productPage.type}
                           Params={
                             productData
                               ? productData.product_type.map(
@@ -321,9 +322,11 @@ export default function ProductPage({ data }) {
                         />
 
                         <DescriptionEntry
-                          Title={"Вес"}
+                          Title={t.productPage.weight}
                           Params={
-                            productData ? productData.weight + "кг" : "0кг"
+                            productData
+                              ? productData.weight + t.productPage.wt
+                              : "0" + t.productPage.wt
                           }
                         />
 
@@ -353,12 +356,12 @@ export default function ProductPage({ data }) {
                         <div className={styles.ProductPrice}>
                           {productData ? (
                             <p>
-                              <span className={styles.priceHider}>Цена: </span>
+                              <span className={styles.priceHider}>{t.productPage.price}: </span>
                               {new Intl.NumberFormat("ru-RU").format(
                                 productData.price
                               )}
-                              <span className={styles.priceHider}> руб</span>
-                              <span className={styles.monySymbol}> ₽</span>
+                              <span className={styles.priceHider}> {t.productPage.currency}</span>
+                              <span className={styles.monySymbol}> {t.productPage.currencyStyle}</span>
                             </p>
                           ) : (
                             ""
@@ -375,7 +378,7 @@ export default function ProductPage({ data }) {
                               addToCart(productData.id, 1, productData.price)
                             }
                           >
-                            Добавить в корзину
+                            {t.productPage.addToCart}
                           </button>
 
                           {/*<button className={styles.sendOrderAction}>*/}
@@ -404,11 +407,11 @@ export default function ProductPage({ data }) {
               productData[isPuType] === "" ? (
                 <li>
                   <p>
-                    Упс!
+                    {t.productPage.u}
                     <br />
-                    Данные еще не заполнены
+                    {t.productPage.info}
                     <br />
-                    Свяжитесь с нами, и мы поможем
+                    {t.productPage.feedback}
                   </p>
 
                   <button
@@ -417,14 +420,14 @@ export default function ProductPage({ data }) {
                       setCbRequestModal(true);
                     }}
                   >
-                    Уточнить по телефону
+                    {t.productPage.infoTel}
                   </button>
                 </li>
               ) : (
                 <li>{productData[isPuType]}</li>
               )
             ) : (
-              <li>Произошла ошибка</li>
+              <li>{t.productPage.error}</li>
             )}
           </ul>
         </ComponentLoader>

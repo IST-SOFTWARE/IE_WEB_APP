@@ -1,11 +1,11 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import DefaultLandingPage from "../../components/LandingPages/DefaultLandingPage";
 import ISTCartTotalSum from "../../components/UI/ISTCartTotalSum";
-import {CartWrapper} from "../../components/ProductsWrapper/cartWrapper";
-import {ICartSelector_type} from "../../components/UI/ISTProductItem/Abstract/ICartTypes";
+import { CartWrapper } from "../../components/ProductsWrapper/cartWrapper";
+import { ICartSelector_type } from "../../components/UI/ISTProductItem/Abstract/ICartTypes";
 import ru from "../../locales/ru";
 import en from "../../locales/en";
-import {useRouter} from "next/router";
+import { useRouter } from "next/router";
 
 const CartPage_index = (props) => {
   // const [idPRoducts, setIdProducts] = useState<string[]>([
@@ -33,78 +33,70 @@ const CartPage_index = (props) => {
   //   });
   // };
 
-  const [cartSelector, setCartSelector] = useState<ICartSelector_type[]>([])
+  const [cartSelector, setCartSelector] = useState<ICartSelector_type[]>([]);
 
   const [numOfSelected, setNumOfSelected] = useState<number>(0);
   const [totalSum, setTotalSum] = useState<number>(0);
+
 
   const router = useRouter();
   const t = router.locale === "ru-RU" ? ru : en;
 
   return (
-      <>
-        <div
-          className={``}
-          style={{
-            color: "white",
+    <>
+      <div
+        className={``}
+        style={{
+          color: "white",
+        }}
+      >
+        <DefaultLandingPage
+          landingDescription={{
+            title: "",
+            titleOffset: 100,
           }}
+          pageId={"CartPage"}
         >
-          <DefaultLandingPage
-            landingDescription={{
-              title: "",
-              titleOffset: 100,
-            }}
-            pageId={"CartPage"}
-          >
-            <div className={`col-12 col-lg-7`}>
-                <div style={{
-                    position: "relative"
-                }}>
-                    <CartWrapper
-                        cartID={"e0a9d860-c0f9-4b6a-ace4-04ecf56b0f0c"}
-
-                        currency={{
-                          currency: t.catalogCartPageMobileModal.currency ? "EN": "RU",
-                        }}
-
-                        cartSelector={{
-                          selectedState: cartSelector,
-                          setSelectedState: setCartSelector
-                        }}
-
-                        amountData={{
-                          amountQuantitySetter: setNumOfSelected,
-                          amountPriceSetter: setTotalSum,
-                        }}
-
-                        itemStyles={{
-                            style: {
-                                margin: "0 0 15px 0",
-                                fill: true
-                            }
-                        }}
-
-                        wrapperStyles={{
-                            width: "100%",
-                            maxWidth: "550px",
-                        }}
-
-                        mobileTriggerSize={"LG_992"}
-                    />
-                </div>
-
+          <div className={`col-12 col-lg-7`}>
+            <div
+              style={{
+                position: "relative",
+              }}
+            >
+              <CartWrapper
+                cartID={"e0a9d860-c0f9-4b6a-ace4-04ecf56b0f0c"}
+                currency={{
+                  currency: t.catalogCartPageMobileModal.currency ? "EN" : "RU",
+                }}
+                cartSelector={{
+                  selectedState: cartSelector,
+                  setSelectedState: setCartSelector,
+                }}
+                amountData={{
+                  amountQuantitySetter: setNumOfSelected,
+                  amountPriceSetter: setTotalSum,
+                }}
+                itemStyles={{
+                  style: {
+                    margin: "0 0 15px 0",
+                    fill: true,
+                  },
+                }}
+                wrapperStyles={{
+                  width: "100%",
+                  maxWidth: "550px",
+                }}
+                mobileTriggerSize={"LG_992"}
+              />
             </div>
-
-            <div className={`col-0 d-none d-lg-block col-lg-5`}>
-
-              {/*<ISTCartTotalSum */}
-              {/*    cartSelector={idPRoducts}*/}
-              {/*/>*/}
-
           </div>
-          </DefaultLandingPage>
-        </div>
-      </>
+
+          <div className={`col-0 d-none d-lg-block col-lg-5`}>
+            <ISTCartTotalSum totalSelect={numOfSelected}  totalSum={totalSum}/>
+          </div>
+        </DefaultLandingPage>
+      </div>
+    </>
   );
 };
 
