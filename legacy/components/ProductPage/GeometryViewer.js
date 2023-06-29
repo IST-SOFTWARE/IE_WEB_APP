@@ -34,7 +34,7 @@ export default function GeometryViewer({ imagePath, geoSizes }) {
           </div>
         </div>
         <div className={styles.GeometryProps}>
-          <ul>
+          <ul style={{alignItems: "center"}}>
             <li>
               <a>{geoSizes}</a>
             </li>

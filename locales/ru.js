@@ -109,6 +109,7 @@ export default {
   productPage: {
     myCart: "Моя корзина",
     addToCart: "Добавить в корзину",
+    inToCart: "В корзине",
     analog: "Аналог",
     for: "для",
     replacement: "Замена",
@@ -122,6 +123,8 @@ export default {
     price: "Цена",
     currencyStyle: "₽",
     currency: "Руб",
+    order: "Оформить заказ",
+
 
     //Popup
     u: "Упс!",

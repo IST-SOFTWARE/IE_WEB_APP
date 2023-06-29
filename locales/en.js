@@ -110,6 +110,7 @@ export default {
   productPage: {
     myCart: "My cart",
     addToCart: "Add to cart",
+    inToCart: "In your cart",
     analog: "Analog",
     for: "for",
     replacement: "Replacement",
@@ -123,6 +124,8 @@ export default {
     price: "Price",
     currencyStyle: "$",
     currency: "Usd",
+    order: "Place an order",
+
 
     //Popup
     u: "Oops!",

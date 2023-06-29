@@ -18,6 +18,8 @@ import { getData } from "../../legacy/queries/getData";
 import { getProductData } from "../../legacy/queries/getProductData";
 import { inCart } from "../../legacy/cartActions/cartActions";
 
+import ISTButtonN from "../../components/UI/ISTButton/ISTButtonN";
+
 import ru from "../../locales/ru";
 import en from "../../locales/en";
 
@@ -153,8 +155,8 @@ export default function ProductPage({ data }) {
             maxWidth: "1480px",
           }}
         >
-          <div className="d-flex justify-content-between">
-            <div className="col-xl-5 col-lg-5 col-12">
+          <div className="d-block d-lg-flex d-xl-flex lg-justify-content-between xl-justify-content-between">
+            <div className="col-12 col-lg-6 col-xl-6">
               <div className={styles.ProductBlock}>
                 <p>
                   <LabelLoader
@@ -374,22 +376,49 @@ export default function ProductPage({ data }) {
                           )}
                         </div>
                         <div className={styles.Actions}>
-                          <button
-                            id={
-                              productData
-                                ? "AddToCartAction_" + productData.slug
-                                : ""
-                            }
-                            onClick={() =>
-                              addToCart(productData.id, 1, productData.price)
-                            }
-                          >
-                            {t.productPage.addToCart}
-                          </button>
+                          {prodInCart ? (
+                            <ISTButtonN
+                              dark={{
+                                solid: {},
+                                fillContainer: true,
+                              }}
+                              title={{
+                                caption: t.productPage.inToCart,
+                              }}
+                              onClick={() => {}}
+                            />
+                          ) : (
+                            <ISTButtonN
 
-                          {/*<button className={styles.sendOrderAction}>*/}
-                          {/*    Оформить заказ*/}
-                          {/*</button>*/}
+                            light={{
+                              fill: false,
+                              style: {
+                                borderRadius: "15px",
+                                fillContainer: true,
+                              },
+                            }}
+                            title={{
+                              caption: t.productPage.addToCart,
+                            }}
+                            onClick={() => {}}
+                          />
+                          )}
+
+                          <ISTButtonN
+
+                            light={{
+                              fill: false,
+                              style: {
+                                borderRadius: "15px",
+                                fillContainer: true,
+                              },
+                            }}
+                            title={{
+                              caption: t.productPage.order,
+                            }}
+                            onClick={() => {}}
+                          />
+
                         </div>
                       </div>
                     </div>
