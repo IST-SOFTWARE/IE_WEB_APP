@@ -37,7 +37,7 @@ interface cartCollection {
 
 interface ICartWrapper{
     cartID: string,
-    currency: Pick<IProductItem, "currency">
+    currency: Pick<IProductItem, "currencySymbol">
 
     cartSelector: Omit<ICartSelector, "data">
 
@@ -95,9 +95,9 @@ export const CartWrapper: FC<ICartWrapper> = ({
                             _data.product_name_ru :
                             _data.product_name,
 
-                        price: regionHandler.currency === "RUB" ?
-                            _data.price.toString() :
-                            (Number(_data.price) * regionHandler.currencyMultiplier).toString(),
+                        price: (Number(_data.price) *
+                            regionHandler.currency[regionHandler.currentCurrencyId]?.currencyMultiplier)
+                            .toString(),
 
                         vendCode: _data.vend_code.toString(),
                         slug: _data.slug,
@@ -260,7 +260,7 @@ export const CartWrapper: FC<ICartWrapper> = ({
                 return (
                     <ISTProductItem
                         key={`ISTProductItem_${index}`}
-                        currency={regionHandler.currency === "USD" ? "EN" : "RU"}
+                        currencySymbol={regionHandler.currency[regionHandler.currentCurrencyId]?.currencySymbol}
                         style={itemStyles?.style}
 
                         itemType={{

@@ -8,7 +8,7 @@ import {base64_empty_product} from "../src/base64_empty_product";
 
 const CatalogView: FC<IProductItem_catalog> = ({
     style,
-    currency,
+    currencySymbol,
     data,
     cartStatus,
 
@@ -106,14 +106,16 @@ const CatalogView: FC<IProductItem_catalog> = ({
 
                                 <div className={styles.priceValue}>
                                     {data && !isNaN(Number(data?.price))
-                                        ? new Intl.NumberFormat(currency).format(
+                                        ? new Intl.NumberFormat("EN", {
+                                            maximumFractionDigits: 2
+                                        }).format(
                                             Number(data?.price)
                                         )
                                     : null}
                                 </div>
 
                                 <span>
-                                    {currency === "RU" ? "₽" : "$"}
+                                    {currencySymbol}
                                 </span>
                             </div>
 

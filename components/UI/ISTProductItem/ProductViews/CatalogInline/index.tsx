@@ -10,7 +10,7 @@ import {IProductData} from "../../../common";
 
 const CatalogInline: FC<IProductItem_catalog> = ({
     style,
-    currency,
+    currencySymbol,
     data
 }) => {
   const [productData, setProductData] = useState<IProductData>();

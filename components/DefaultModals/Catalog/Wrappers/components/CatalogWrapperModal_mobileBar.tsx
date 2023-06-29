@@ -11,7 +11,8 @@ import search_ico from "../../../../../public/MobileHelperIcons/search_icon.svg"
 import filters_ico from "../../../../../public/MobileHelperIcons/filter_icon.svg";
 import cart_ico from "../../../../../public/MobileHelperIcons/cart_icon.svg";
 import currency_ico from "../../../../../public/MobileHelperIcons/currency_icon.svg";
-import {switchRegionCurrency} from "../../../../../store/slices/regionSlice/regionSlice";
+import {switchCurrency} from "../../../../../store/slices/regionSlice/regionSlice";
+
 
 const CatalogWrapperModal_mobileBar: FC<mobileBar> = ({
     search,
@@ -24,7 +25,9 @@ const CatalogWrapperModal_mobileBar: FC<mobileBar> = ({
     const t = router.locale === "ru-RU" ? ru : en;
 
     const dispatch = useDispatch();
+
     const catalog = useAppSelector((selector) => selector.catalog);
+    const region = useAppSelector(selector => selector.region);
 
     const setSearch_helper = (val: string) => {
         dispatch(setSearch(val));
@@ -55,10 +58,10 @@ const CatalogWrapperModal_mobileBar: FC<mobileBar> = ({
                         isActive: cart.state,
                     },
                     {
-                        title: t.istMobileBar.currencyTitle,
+                        title: region.currency[region.currentCurrencyId]?.currencyName,
                         image: currency_ico,
                         action: () => {
-                            dispatch(switchRegionCurrency());
+                            dispatch(switchCurrency());
                         },
                         isActive: false,
                     },

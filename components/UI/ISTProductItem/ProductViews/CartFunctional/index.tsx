@@ -20,7 +20,7 @@ const CartFunctional:FC<IProductItem_cart> = ({
 
   const {
     style,
-    currency,
+    currencySymbol,
     cartSelector,
     forwardingPath
   } = useContext(ISTProductItemDistributor_Context);
@@ -94,14 +94,16 @@ const CartFunctional:FC<IProductItem_cart> = ({
               <div className={styles.price}>
                 <div className={styles.priceValue}>
                   {productData && !isNaN(Number(productData?.price))
-                    ? new Intl.NumberFormat(currency).format(
+                    ? new Intl.NumberFormat("EN", {
+                        maximumFractionDigits: 2
+                      }).format(
                         Number(productData?.price)
                       )
                     : null}
                 </div>
 
                 <span>
-                   {currency === "RU" ? "₽" : "$"}
+                   {currencySymbol}
                 </span>
               </div>
             </div>

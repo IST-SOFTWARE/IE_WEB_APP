@@ -1,7 +1,6 @@
 import {CSSProperties, Dispatch, SetStateAction} from "react";
 import {ICatalogItem} from "./Abstract/ICatalogTypes";
 import {ICartItem} from "./Abstract/ICartTypes";
-import {ImageLoader} from "next/image";
 import {IImageOptimizationOptions} from "../common";
 
 export type pit_catalog = "catalog"
@@ -17,7 +16,7 @@ interface ISTProductItemStyles extends Pick<CSSProperties, "margin" | "width">{
 export interface IProductItem {
 
     itemType: productItemType;
-    currency: "RU" | "EN";
+    currencySymbol: string;
 
     style?: ISTProductItemStyles;
     forwardingPath?: string

@@ -1,0 +1,1 @@
+export type IRegionsListType = "en-US" | "ru-RU"

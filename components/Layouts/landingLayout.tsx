@@ -22,7 +22,7 @@ import {filtersList_update} from "../../store/slices/filtersListSlice/filtersLis
 import {getFiltersItemsAsArray_filtersHelper} from "../../helpers/Catalog/filters";
 import CatalogFullProductsListModal from "../DefaultModals/Catalog/Pages/catalogFullProductsList_modal";
 import {getData} from "../../queries/fetch/getData";
-import {setRegion} from "../../store/slices/regionSlice/regionSlice";
+import {addCurrency, setRegion} from "../../store/slices/regionSlice/regionSlice";
 
 interface ILandingLayout {
     children?: ReactNode;
@@ -122,11 +122,15 @@ export const LandingLayout: FC<ILandingLayout> = ({children}) => {
         if (!(multiplier > 0) || !router)
             return
 
-        dispatch(setRegion({
-            region: router.locale === "en-US" ? "EN" : "RU",
-            currency: router.locale === "en-US" ? "USD" : "RUB",
-            currencyMultiplier: multiplier
-        }));
+        dispatch(addCurrency(
+            {
+                currencyMultiplier: multiplier,
+                targetRegion: "en-US",
+                currencySymbol: "$",
+                currencyName: "USD",
+                currencyId: 1
+            }
+        ));
 
     }, [multiplier, router])
 
