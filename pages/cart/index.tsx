@@ -91,7 +91,7 @@ const CartPage_index = (props) => {
             </div>
           </div>
 
-          <div className={`col-0 d-none d-lg-block col-lg-5`}>
+          <div className={`col-0  d-lg-block col-lg-5`}>
             <ISTCartTotalSum totalSelect={numOfSelected}  totalSum={totalSum}/>
           </div>
         </DefaultLandingPage>

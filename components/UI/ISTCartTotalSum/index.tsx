@@ -13,6 +13,12 @@ interface ICartTotalSum {
 }
 
 const ISTCartTotalSum: FC<ICartTotalSum> = ({ totalSelect, totalSum }) => {
+  const [open, setOpen] = useState(false);
+
+  const switchOpen = () => {
+    open ? setOpen(false) : setOpen(true);
+  };
+
   const router = useRouter();
   const t = router.locale === "ru-RU" ? ru : en;
 
@@ -21,12 +27,19 @@ const ISTCartTotalSum: FC<ICartTotalSum> = ({ totalSelect, totalSum }) => {
   return (
     <div className={styles.cart}>
       <div className={styles.cartLabel}>
-        {t.istCartTotalSum.yourCart}
-        <div className={styles.productsQuantity}>
-          {totalSelect ? totalSelect : 0}
+        <div className={styles.yourCart}>
+          {t.istCartTotalSum.yourCart}
+          <div className={styles.productsQuantity}>
+            {totalSelect ? totalSelect : 0}
+          </div>
         </div>
+
+        <div
+          className={`${styles.arrow} ${open ? styles.openArrow : ""}`}
+          onClick={switchOpen}
+        ></div>
       </div>
-      <div className={styles.prodSaleBox}>
+      <div className={`${styles.prodSaleBox} ${open ? styles.openSaleBox : ""}`}>
         <div className={styles.prod}>
           <div className={styles.title}>
             {t.istCartTotalSum.products} ({totalSelect ? totalSelect : 0})
@@ -49,30 +62,32 @@ const ISTCartTotalSum: FC<ICartTotalSum> = ({ totalSelect, totalSum }) => {
           </div>
         </div>
       </div>
-      <div className={styles.totalSum}>
-        {t.istCartTotalSum.totalSum}:
-        <span>
-          {totalSum
-            ? `${totalSum.toLocaleString(router?.locale, {
-                maximumFractionDigits: 2,
-              })}`
-            : 0}
-        </span>
-        <span>{region.currency === "RUB" ? "₽" : "$"}</span>
+      <div className={styles.sumBox}>
+        <div className={styles.totalSum}>
+          {t.istCartTotalSum.totalSum}:
+          <span>
+            {totalSum
+              ? `${totalSum.toLocaleString(router?.locale, {
+                  maximumFractionDigits: 2,
+                })}`
+              : 0}
+            {region.currency === "RUB" ? " ₽" : " $"}
+          </span>
+        </div>
+        <IstButtonN
+          light={{
+            fill: true,
+            style: {
+              borderRadius: "15px",
+              fillContainer: true,
+            },
+          }}
+          title={{
+            caption: t.istCartTotalSum.order,
+          }}
+          onClick={() => {}}
+        />
       </div>
-      <IstButtonN
-        light={{
-          fill: true,
-          style: {
-            borderRadius: "15px",
-            fillContainer: true,
-          },
-        }}
-        title={{
-          caption: t.istCartTotalSum.order,
-        }}
-        onClick={() => {}}
-      />
     </div>
   );
 };
