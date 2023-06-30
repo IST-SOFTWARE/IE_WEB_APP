@@ -125,12 +125,18 @@ export default {
     currency: "Руб",
     order: "Оформить заказ",
 
-
     //Popup
     u: "Упс!",
     info: "Данные еще не заполнены",
     feedback: "Свяжитесь с нами, и мы поможем",
     infoTel: "Уточнить по телефону",
     error: "Произошла ошибка",
+  },
+
+  //AvailabilityStatus
+  availabilityStatus: {
+    availability: "Есть в ниличии",
+    out: "Нет в наличии",
+    check: "Уточните по телефону",
   },
 };

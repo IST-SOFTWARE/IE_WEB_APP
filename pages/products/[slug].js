@@ -379,7 +379,8 @@ export default function ProductPage({ data }) {
                           {prodInCart ? (
                             <ISTButtonN
                               dark={{
-                                solid: {},
+                                solid: false,
+                                fill: true,
                                 fillContainer: true,
                               }}
                               title={{
@@ -389,25 +390,23 @@ export default function ProductPage({ data }) {
                             />
                           ) : (
                             <ISTButtonN
-
-                            light={{
-                              fill: false,
-                              style: {
-                                borderRadius: "15px",
-                                fillContainer: true,
-                              },
-                            }}
-                            title={{
-                              caption: t.productPage.addToCart,
-                            }}
-                            onClick={() => {}}
-                          />
+                              light={{
+                                fill: false,
+                                style: {
+                                  borderRadius: "15px",
+                                  fillContainer: true,
+                                },
+                              }}
+                              title={{
+                                caption: t.productPage.addToCart,
+                              }}
+                              onClick={() => {}}
+                            />
                           )}
 
                           <ISTButtonN
-
                             light={{
-                              fill: false,
+                              fill: true,
                               style: {
                                 borderRadius: "15px",
                                 fillContainer: true,
@@ -418,7 +417,6 @@ export default function ProductPage({ data }) {
                             }}
                             onClick={() => {}}
                           />
-
                         </div>
                       </div>
                     </div>

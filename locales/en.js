@@ -126,12 +126,18 @@ export default {
     currency: "Usd",
     order: "Place an order",
 
-
     //Popup
     u: "Oops!",
     info: "The data is not filled in yet",
     feedback: "Contact us and we will help",
     infoTel: "To clarify by phone",
     error: "An error occurred",
+  },
+
+  //AvailabilityStatus
+  availabilityStatus: {
+    availability: "Available in stock",
+    out: "Out of stock",
+    check: "Check by phone",
   },
 };

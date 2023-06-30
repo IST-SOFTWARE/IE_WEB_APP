@@ -239,6 +239,7 @@
     color: #FFFFFF;
     white-space: pre-wrap;
 }
+
 .Actions{
     display: flex;
     justify-content: space-between;
@@ -249,12 +250,7 @@
 .Actions button{
     width: 50%;
     margin: 8px;
-    height: 55px;
-    border-radius: 47px;
-    box-sizing: border-box;
-    border: 3px solid #76ACE7;
-    background: transparent;
-    outline: none;
+    height: 50px;
     cursor: pointer;
 
     font-family: 'Roboto';
@@ -262,9 +258,6 @@
     font-weight: 500;
     font-size: calc(16px + (20 - 16) *   ((100vw - 300px) / (1920 - 320)));
     color: #FFFFFF;
-
-    transition: 0.3s;
-    text-shadow: 0px 0px 9px rgba(0, 0, 0, 0.25);
 }
 
 .Actions button.active{
