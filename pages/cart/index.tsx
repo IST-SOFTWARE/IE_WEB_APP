@@ -38,7 +38,6 @@ const CartPage_index = (props) => {
   const [numOfSelected, setNumOfSelected] = useState<number>(0);
   const [totalSum, setTotalSum] = useState<number>(0);
 
-
   const router = useRouter();
   const t = router.locale === "ru-RU" ? ru : en;
 
@@ -91,8 +90,15 @@ const CartPage_index = (props) => {
             </div>
           </div>
 
-          <div className={`col-0  d-lg-block col-lg-5`}>
-            <ISTCartTotalSum totalSelect={numOfSelected}  totalSum={totalSum}/>
+          <div
+            className={`col-0 d-lg-block col-lg-5`}
+            style={{
+              position: "sticky",
+              bottom: "0px",
+              zIndex: "1"
+            }}
+          >
+            <ISTCartTotalSum totalSelect={numOfSelected} totalSum={totalSum} />
           </div>
         </DefaultLandingPage>
       </div>
