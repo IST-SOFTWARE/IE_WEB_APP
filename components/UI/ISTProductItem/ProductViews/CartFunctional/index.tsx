@@ -63,8 +63,7 @@ const CartFunctional:FC<IProductItem_cart> = ({
               </div>
 
           {/*</Link>*/}
-
-
+          
           <div className={styles.ItemDescription}>
             <div className={styles.itemData}>
               <div className={styles.title}>

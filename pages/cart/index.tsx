@@ -8,30 +8,6 @@ import en from "../../locales/en";
 import { useRouter } from "next/router";
 
 const CartPage_index = (props) => {
-  // const [idPRoducts, setIdProducts] = useState<string[]>([
-  //   "172",
-  //   "173",
-  //   "174",
-  //   "175",
-  // ]);
-  //
-  // const [cartSelector, setCartSelector] = useState<string[]>([])
-  //
-  //   useEffect(()=>{
-  //       console.log(cartSelector);
-  //   },[cartSelector])
-
-  // const getPriceProductById = (idCollection: (number | string)[]) => {
-  //   idCollection.map((id) => {
-  //     const {
-  //       data,
-  //       error,
-  //       loading = useQuery(GET_PRODUCT_BY_ID, {
-  //         id: id,
-  //       }),
-  //     };
-  //   });
-  // };
 
   const [cartSelector, setCartSelector] = useState<ICartSelector_type[]>([]);
 
@@ -66,7 +42,7 @@ const CartPage_index = (props) => {
               <CartWrapper
                 cartID={"e0a9d860-c0f9-4b6a-ace4-04ecf56b0f0c"}
                 currency={{
-                  currency: t.catalogCartPageMobileModal.currency ? "EN" : "RU",
+                  currencySymbol: ""
                 }}
                 cartSelector={{
                   selectedState: cartSelector,

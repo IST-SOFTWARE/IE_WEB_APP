@@ -15,7 +15,6 @@ import ru from "../../../../locales/ru";
 import en from "../../../../locales/en";
 
 
-
 const CatalogFullProductsListModal = ({}) => {
 
     const filtersList = useAppSelector((state) => state.filtersList);
@@ -115,9 +114,7 @@ const CatalogFullProductsListModal = ({}) => {
                         isOpened={false}
                         hasActives={types_active}
                         mobileSettings={{
-                            onTransfer: () => {
-                            },
-                            type: "transfer",
+                            type: "dropdown",
                             mobileSizeTrigger: "LG_992"
                         }}
                     >
@@ -155,29 +152,31 @@ const CatalogFullProductsListModal = ({}) => {
                         isOpened={false}
                         hasActives={units_active}
                         mobileSettings={{
-                            onTransfer: () => {
-                            },
-                            type: "transfer",
+                            type: "dropdown",
                             mobileSizeTrigger: "LG_992"
                         }}
                     >
 
-                        <ISTFiltersList fields={[
-                            {
-                                isActive: false,
-                                fieldName: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. ",
-                                isCheckBox: true
-                            },
-                            {isActive: false, fieldName: "Field 2", isCheckBox: true},
-                            {isActive: false, fieldName: "Field 3", isCheckBox: true},
-                            {isActive: false, fieldName: "Field 4", isCheckBox: true},
-                        ]}
-                                        hookedData={units_filter}
+                        <ISTFiltersList
+                            fields={
+                                filtersList?.unit?.map(el => {
+                                    return ({
+                                        fieldName: el,
+                                        isCheckBox: true,
+                                        isActive: isActiveNow_filtersHelper(
+                                            catalog?.filters,
+                                            "unit",
+                                            el),
+                                    })
+                                })
+                            }
 
-                                        switcherOptions={{
-                                            onSwitch: switchFilter,
-                                            filterDesignation: units_designation
-                                        }}
+                            hookedData={units_filter}
+
+                            switcherOptions={{
+                                onSwitch: switchFilter,
+                                filterDesignation: units_designation
+                            }}
                         />
                     </ISTFiltersWrapper>
 

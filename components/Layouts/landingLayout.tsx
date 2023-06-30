@@ -134,6 +134,17 @@ export const LandingLayout: FC<ILandingLayout> = ({children}) => {
 
     }, [multiplier, router])
 
+
+    const openFullProdList = useCallback(()=>{
+        if(!modalComponent)
+            return
+
+        modalComponent.applyModalByName(toc_catalog_full_prod_list.typeName).then(()=>{
+            setCatalogModalSearchingState(false)
+        })
+
+    },[modalComponent])
+
     return (
         <>
             <Header
@@ -184,7 +195,9 @@ export const LandingLayout: FC<ILandingLayout> = ({children}) => {
                         searching={catalogModalSearchingState}
                     >
                         {modalComponent.isCurrentModal(toc_catalog_search.typeName) ? (
-                            <CatalogSearchModal/>
+                            <CatalogSearchModal
+                                onOpenFullProdList={openFullProdList}
+                            />
                         ) : null}
 
                         {modalComponent.isCurrentModal(

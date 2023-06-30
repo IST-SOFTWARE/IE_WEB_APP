@@ -32,7 +32,7 @@ const CatalogCartPageMobileModal:FC<ICatalogCartPageMobileModal> = ({
 
                 <CartWrapper
                     currency={{
-                         currency: t.catalogCartPageMobileModal.currency ? "EN": "RU",
+                         currencySymbol: "",
                     }}
 
                     cartID={"9cfa4d6a-f2e9-400c-b0a9-4c85ab777272"}

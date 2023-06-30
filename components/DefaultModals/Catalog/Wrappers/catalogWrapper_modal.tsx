@@ -159,9 +159,6 @@ const CatalogWrapperModal: FC<ICatalogWrapper> = ({
     return false;
   }, [modalComponent]);
 
-  useEffect(()=>{
-    console.log("searching in wrapper : ", searching);
-  },[searching])
 
   return (
     <>
