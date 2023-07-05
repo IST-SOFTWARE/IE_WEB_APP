@@ -1,6 +1,9 @@
 import {ICatalogFiltersType} from "../../store/slices/common/catalogFiltersType";
 import {IGeneralCategoryQuery} from "../../queries/categories/generalCategoryQuery";
 import {ICatalogQueries} from "../../Hooks/useCatalog/ICatalogQueries";
+import {available_AdditionalFilters} from "../../components/Catalog/Filters/Additional/AdditionalFilters";
+import {ITranslation} from "../../locales/hook/ITranslation";
+import {IFiltersLocale} from "../../locales/filters/filtersLocale";
 
 export const getFiltersDesignationSList_filtersHelper =
     (selectedTypes: keyof ICatalogFiltersType): string=> {
@@ -80,4 +83,61 @@ export const listHasActives_filtersHelper = (
         return catalog.filters[filter] && catalog.filters[filter]?.length > 0
 
     return false
+}
+
+export const getAdditionalFilter_filtersHelper = (
+        el: string,
+        currentTranslation: ITranslation<IFiltersLocale>) => {
+    let outData: string;
+
+    switch(el) {
+        case available_AdditionalFilters.isAvailable:
+            outData = currentTranslation.translation.available.isAvailable
+            break;
+        case available_AdditionalFilters.onOrder:
+            outData = currentTranslation.translation.available.onOrder
+            break;
+
+        case currentTranslation.translation.available.isAvailable:
+            outData = available_AdditionalFilters.isAvailable
+            break;
+
+        case currentTranslation.translation.available.onOrder:
+            outData = available_AdditionalFilters.onOrder
+            break;
+
+        default:
+            outData = el;
+    }
+
+    return outData
+}
+
+export const getNamedFiltersListItem_filtersHelper = (
+    el: keyof ICatalogFiltersType,
+    currentTranslation: ITranslation<IFiltersLocale>
+) => {
+    let outData: string;
+
+    switch(el) {
+        case "mfg":
+            outData = currentTranslation.translation.namesOfFiltersList.manufacturer
+            break;
+        case "type":
+            outData = currentTranslation.translation.namesOfFiltersList.type
+            break;
+
+        case "unit":
+            outData = currentTranslation.translation.namesOfFiltersList.unit
+            break;
+
+        case "available":
+            outData = currentTranslation.translation.namesOfFiltersList.available
+            break;
+
+        default:
+            outData = el;
+    }
+
+    return outData
 }

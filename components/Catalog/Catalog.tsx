@@ -37,16 +37,6 @@ const Catalog: FC<ICatalog> = ({ children, modal}) => {
   const router = useRouter();
   const reduxCatalogState = useAppSelector((state) => state.catalog);
 
-  // useEffect(() => {
-  //     // if (modal && reduxCatalogState.catalog !== undefined)
-  //         modal.switch(true);
-  // }, [modal]);
-
-  //update REDUX (first load if query)
-  // useEffect(()=>{
-  //     if(currentState && reduxCatalogState.catalog === undefined)
-  //         dispatch(updateCatalog(currentState));
-  // },[currentState, reduxCatalogState])
 
   useEffect(() => {
     if (modal && reduxCatalogState.catalog !== undefined)
@@ -63,13 +53,6 @@ const Catalog: FC<ICatalog> = ({ children, modal}) => {
 
   },[modal, reduxCatalogState.filters])
 
-  // Update query from REDUX
-  // useEffect(()=>{
-  //     if(reduxCatalogState){
-  //         console.log("REDUX: ", reduxCatalogState)
-  //         pushQuery(reduxCatalogState);
-  //     }
-  // },[reduxCatalogState])
 
   return <>{children}</>;
 };

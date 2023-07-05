@@ -42,8 +42,6 @@ const regionSlice = createGenericSlice(
                 state.currency.length - 1 >= newCurrency ?
                     newCurrency :
                     firstCurrency;
-
-            console.log(firstCurrency, newCurrency, state.currency.length);
         },
 
         setRegion(state, action: PayloadAction<IRegionsListType>){

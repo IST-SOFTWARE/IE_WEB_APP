@@ -75,6 +75,10 @@ export const CatalogWrapper: FC<ICatalogWrapper> = ({
         search: ""
     })
 
+
+    // useEffect(()=>{
+    //     console.log("RH: ", regionHandler.region);
+    // },[regionHandler])
     // QUERIES BLOCK
     const {data, error, fetchMore} = useQuery<IProducts_Q, IProductFiltersVariables>(
         GRT_FILTERED_PRODUCTS_LIST, {
@@ -273,7 +277,7 @@ export const CatalogWrapper: FC<ICatalogWrapper> = ({
                     >
                         <ISTProductItem
                             currencySymbol={regionHandler.currency[regionHandler.currentCurrencyId]?.currencySymbol}
-                            forwardingPath={`${additionalForwarding}${el?.slug}`}
+                            forwardingPath={`${additionalForwarding}/${el?.slug}`}
                             style={{
                                 fill: true,
                             }}

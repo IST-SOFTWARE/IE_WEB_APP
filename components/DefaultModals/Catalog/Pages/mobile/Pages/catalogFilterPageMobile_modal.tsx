@@ -4,9 +4,18 @@ import {useAppSelector} from "../../../../../../Hooks/reduxSettings";
 import useISTFiltersList from "../../../../../UI/hooks/ISTFiltersHook/useISTFiltersList";
 import {useDispatch} from "react-redux";
 import {onFilterSwitchCustom_t} from "../../../../../UI/hooks/ISTFiltersHook/common";
-import {filterSetter_filtersHelper, isActiveNow_filtersHelper} from "../../../../../../helpers/Catalog/filters";
+import {
+    filterSetter_filtersHelper,
+    getAdditionalFilter_filtersHelper,
+    isActiveNow_filtersHelper
+} from "../../../../../../helpers/Catalog/filters";
 import {addNewFilter} from "../../../../../../store/slices/catalogSlices/catalogSlice";
 import ISTFiltersList from "../../../../../UI/ISTFiltersList/components/ISTFiltersList";
+import {useTransition} from "../../../../../../locales/hook/useTranslation";
+import {IFiltersLocale} from "../../../../../../locales/filters/filtersLocale";
+import {EN_LOCALE, RU_LOCALE} from "../../../../../../locales/locales";
+import ru from "../../../../../../locales/filters/ru";
+import en from "../../../../../../locales/filters/en";
 
 interface mobileFilterModal {
     pageDesignation: keyof ICatalogFiltersType;
@@ -15,6 +24,11 @@ interface mobileFilterModal {
 export const CatalogFilterPageMobileModal: FC<mobileFilterModal> = ({
     pageDesignation
 }) => {
+
+    const {currentTranslation} = useTransition<IFiltersLocale>([
+        {locale: RU_LOCALE, translation: ru},
+        {locale: EN_LOCALE, translation: en}
+    ]);
 
     const catalogFilter = useAppSelector((selector) => selector.filtersList);
     const catalog = useAppSelector((state) => state.catalog);
@@ -32,7 +46,7 @@ export const CatalogFilterPageMobileModal: FC<mobileFilterModal> = ({
                 const newFilters = filterSetter_filtersHelper(
                     catalog.filters,
                     options,
-                    name
+                    getAdditionalFilter_filtersHelper(name, currentTranslation)
                 );
 
                 dispatch(
@@ -42,18 +56,19 @@ export const CatalogFilterPageMobileModal: FC<mobileFilterModal> = ({
                     })
                 );
             },
-            [dispatch, catalog]
+            [dispatch, catalog, currentTranslation]
         );
+
 
     return(
         <div style={{
-            marginTop: "-8px"
+            marginTop: "-8px",
         }}>
             {catalogFilter && catalogFilter[pageDesignation] ? (
                 <ISTFiltersList
                     fields={catalogFilter[pageDesignation].map((el) => {
                         return {
-                            fieldName: el,
+                            fieldName: getAdditionalFilter_filtersHelper(el, currentTranslation),
                             isCheckBox: true,
                             isActive: isActiveNow_filtersHelper(catalog?.filters, pageDesignation, el),
                         };

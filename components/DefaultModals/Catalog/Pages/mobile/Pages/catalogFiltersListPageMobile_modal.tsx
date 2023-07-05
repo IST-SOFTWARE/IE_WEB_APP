@@ -81,17 +81,6 @@ const CatalogFiltersListPageMobileModal:FC<ICatalogFiltersListPageMobileModal>= 
                 isOpened={false}
             />
 
-            {/*<ISTFiltersWrapper*/}
-            {/*    title={"Наличие"}*/}
-            {/*    hasActives={mfg_active}*/}
-            {/*    mobileSettings={{*/}
-            {/*        type: "transfer",*/}
-            {/*        onTransfer: ()=>{onTransfer(mfg_des)},*/}
-            {/*        mobileSizeTrigger: "XXL_1400",*/}
-            {/*    }}*/}
-            {/*    isOpened={false}*/}
-            {/*/>*/}
-
         </div>
     )
 }

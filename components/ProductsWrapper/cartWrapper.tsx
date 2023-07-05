@@ -91,7 +91,7 @@ export const CartWrapper: FC<ICartWrapper> = ({
                         id: _data.id,
                         image: _data.image_url,
 
-                        title: regionHandler.region === "RU" ?
+                        title: regionHandler.region === "ru-RU" ?
                             _data.product_name_ru :
                             _data.product_name,
 
