@@ -75,6 +75,10 @@ export const CatalogWrapper: FC<ICatalogWrapper> = ({
         search: ""
     })
 
+
+    // useEffect(()=>{
+    //     console.log("RH: ", regionHandler.region);
+    // },[regionHandler])
     // QUERIES BLOCK
     const {data, error, fetchMore} = useQuery<IProducts_Q, IProductFiltersVariables>(
         GRT_FILTERED_PRODUCTS_LIST, {
@@ -272,8 +276,8 @@ export const CatalogWrapper: FC<ICatalogWrapper> = ({
                         key={`productItemCatalog_${i}_key`}
                     >
                         <ISTProductItem
-                            currency={regionHandler.currency === "RUB" ? "RU" : "EN"}
-                            forwardingPath={`${additionalForwarding}${el?.slug}`}
+                            currencySymbol={regionHandler.currency[regionHandler.currentCurrencyId]?.currencySymbol}
+                            forwardingPath={`${additionalForwarding}/${el?.slug}`}
                             style={{
                                 fill: true,
                             }}
@@ -297,13 +301,13 @@ export const CatalogWrapper: FC<ICatalogWrapper> = ({
                                 data: {
                                     id: el?.id,
 
-                                    title: regionHandler.region === "RU" ?
+                                    title: regionHandler.region === "ru-RU" ?
                                         el.product_name_ru :
                                         el.product_name,
 
-                                    price: regionHandler.currency === "RUB" ?
-                                        el.price.toString() :
-                                        (Number(el.price) * regionHandler.currencyMultiplier).toString(),
+                                    price: (Number(el.price) *
+                                        regionHandler.currency[regionHandler.currentCurrencyId]?.currencyMultiplier)
+                                        .toString(),
 
                                     vendCode: el?.vend_code.toString(),
                                     image: getImageSrc(el?.image_url, el?.vend_code.toString())

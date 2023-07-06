@@ -40,8 +40,6 @@ const HeaderCatalog: FC<IHeader> = ({
             return
 
         searchingElement.focus ? inputRef.current.focus() : null;
-        console.log(searchingElement);
-
     },[inputRef, searchingElement])
 
   return (

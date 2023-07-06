@@ -1,16 +1,13 @@
-import React, { CSSProperties, FC, useEffect, useState } from "react";
-import { maxLengthText } from "../common";
+import React, { FC } from "react";
 import CatalogView from "./ProductViews/CatalogDefault/Index";
 import CatalogInline from "./ProductViews/CatalogInline";
-import CartInformational from "./ProductViews/CartFunctional_mobile";
-import CartFunctional from "./ProductViews/CartFunctional";
 import { IProductItem } from "./common";
 import CartDistributor from "./CartDistributor";
 import {ISTProductItemDistributor_Context} from "./Context";
 
 const IstProductItem: FC<IProductItem> = ({
     itemType,
-    currency,
+    currencySymbol,
 
     style,
     forwardingPath,
@@ -24,7 +21,7 @@ const IstProductItem: FC<IProductItem> = ({
           <CatalogInline
             data={itemType.data}
             style={style}
-            currency={currency}
+            currencySymbol={currencySymbol}
             cartStatus={itemType.parameters.cartStatus}
 
             cartRemover={itemType.parameters.cartRemover}
@@ -39,7 +36,7 @@ const IstProductItem: FC<IProductItem> = ({
           <CatalogView
             data={itemType.data}
             style={style}
-            currency={currency}
+            currencySymbol={currencySymbol}
             cartStatus={itemType.parameters.cartStatus}
 
             cartAdder={itemType.parameters.cartAdder}
@@ -55,7 +52,7 @@ const IstProductItem: FC<IProductItem> = ({
       return(
           <ISTProductItemDistributor_Context.Provider value={{
             data: itemType.data,
-            currency: currency,
+            currencySymbol: currencySymbol,
             style: style,
             cartSelector: itemType.cartSelector,
             mobileSettings: itemType.mobileSettings,

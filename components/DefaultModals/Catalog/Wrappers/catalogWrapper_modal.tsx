@@ -24,6 +24,12 @@ import en from "../../../../locales/en";
 import {ICatalogWrapper} from "./common";
 import CatalogWrapperModal_mobileBar from "./components/CatalogWrapperModal_mobileBar";
 import CatalogWrapperModal_headerWrapper from "./components/CatalogWrapperModal_headerWrapper";
+import {useTransition} from "../../../../locales/hook/useTranslation";
+import {RU_LOCALE} from "../../../../locales/locales";
+import en_upd from "../../../../locales/filters/en";
+import ru_upd from "../../../../locales/filters/ru";
+import {IFiltersLocale} from "../../../../locales/filters/filtersLocale";
+import {getNamedFiltersListItem_filtersHelper} from "../../../../helpers/Catalog/filters";
 
 const CatalogWrapperModal: FC<ICatalogWrapper> = ({
    children,
@@ -48,6 +54,12 @@ const CatalogWrapperModal: FC<ICatalogWrapper> = ({
   const [catalogModalsState, setCatalogModalsState] = useState<boolean>(false);
 
   const router = useRouter();
+
+  const {currentTranslation} = useTransition<IFiltersLocale>([
+      {locale: RU_LOCALE, translation: ru_upd},
+      {locale: RU_LOCALE, translation: en_upd}
+  ])
+
   const t = router.locale === "ru-RU" ? ru : en;
 
   useEffect(() => {
@@ -112,7 +124,7 @@ const CatalogWrapperModal: FC<ICatalogWrapper> = ({
     (designation: keyof ICatalogFiltersType) => {
       modalComponent.getModalByName(
         toc_filter_page_mobile.typeName
-      ).modal._header = designation.toString();
+      ).modal._header = getNamedFiltersListItem_filtersHelper(designation, currentTranslation);
       modalComponent
         .applyModalByName(toc_filter_page_mobile.typeName)
         .then(() => {
@@ -159,9 +171,6 @@ const CatalogWrapperModal: FC<ICatalogWrapper> = ({
     return false;
   }, [modalComponent]);
 
-  useEffect(()=>{
-    console.log("searching in wrapper : ", searching);
-  },[searching])
 
   return (
     <>

@@ -32,7 +32,7 @@ const CatalogCartPageMobileModal:FC<ICatalogCartPageMobileModal> = ({
 
                 <CartWrapper
                     currency={{
-                         currency: t.catalogCartPageMobileModal.currency ? "EN": "RU",
+                         currencySymbol: "",
                     }}
 
                     cartID={"9cfa4d6a-f2e9-400c-b0a9-4c85ab777272"}
@@ -83,8 +83,13 @@ const CatalogCartPageMobileModal:FC<ICatalogCartPageMobileModal> = ({
                         </div>
                         <div className={styles.selected_num}>
                             {`${totalSum
-                                .toLocaleString(router?.locale, {maximumFractionDigits: 2})
-                            } ${region.currency === "RUB" ? "₽" : "$"}`}
+                                .toLocaleString(
+                                    region.currency[region.currentCurrencyId]?.targetRegion, {
+                                        maximumFractionDigits: 2
+                                    })
+                            } ${
+                                region.currency[region.currentCurrencyId]?.currencySymbol}`
+                            }
                         </div>
                     </div>
 

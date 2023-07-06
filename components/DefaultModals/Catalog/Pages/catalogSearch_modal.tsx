@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, {FC, useCallback, useEffect, useRef, useState} from "react";
 import Image from "next/image";
 import IstInput, { inputTypesVars } from "../../../UI/ISTInput/ISTInput";
 import ISTCategoryHints from "../../../UI/ISTCategoryHints/ISTCategoryHints";
@@ -15,8 +15,15 @@ import cloudSearch from "../../../../public/Modals/Catalog/cloudSearch.svg";
 import { useRouter } from "next/router";
 import en from "../../../../locales/en";
 import ru from "../../../../locales/ru";
+import ISTButtonN from "../../../UI/ISTButton/ISTButtonN";
 
-const CatalogSearchModal = () => {
+interface ICatalogSearchModal{
+ onOpenFullProdList: (...props: any) => any
+}
+
+const CatalogSearchModal:FC<ICatalogSearchModal> = ({
+  onOpenFullProdList
+}) => {
 
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -137,20 +144,21 @@ const CatalogSearchModal = () => {
         >
           <header className={styles.header}>{t.catalogSearchModal.product}</header>
 
-          {/*{searchResults_products && (*/}
-          {/*  <div style={{ width: "180px", alignSelf: "center" }}>*/}
-          {/*    <ISTButtonN*/}
-          {/*      title={{ caption: "Все результаты" }}*/}
-          {/*      dark={{*/}
-          {/*        solid: false,*/}
-          {/*        style: {*/}
-          {/*          borderRadius: "15px",*/}
-          {/*          fillContainer: true,*/}
-          {/*        },*/}
-          {/*      }}*/}
-          {/*    />*/}
-          {/*  </div>*/}
-          {/*)}*/}
+          {catalog?.search  && (
+            <div style={{ width: "180px", alignSelf: "center" }}>
+              <ISTButtonN
+                onClick={onOpenFullProdList}
+                title={{ caption: "Все результаты" }}
+                dark={{
+                  solid: false,
+                  style: {
+                    borderRadius: "15px",
+                    fillContainer: true,
+                  },
+                }}
+              />
+            </div>
+          )}
 
         </div>
 

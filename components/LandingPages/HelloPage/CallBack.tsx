@@ -79,15 +79,15 @@ const CallBack:FC<CallBack> = ({
 
     const sendCallBack = () => {
         // send();
-        console.log(checkFields(
-            [{
-                refObj: phoneRef,
-                required: true
-            },{
-                refObj: nameRef,
-                required: true
-            }],
-        ))
+        // console.log(checkFields(
+        //     [{
+        //         refObj: phoneRef,
+        //         required: true
+        //     },{
+        //         refObj: nameRef,
+        //         required: true
+        //     }],
+        // ))
     }
 
     return(

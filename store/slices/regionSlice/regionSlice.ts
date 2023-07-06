@@ -1,48 +1,75 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {createGenericSlice} from "../GenericSlice";
-import {IRegionSlice} from "./IRegionSlice";
+import {IRegionSlice, IRegionSlice_item} from "./IRegionSlice";
+import {IRegionsListType} from "../common/regionsListType";
 
 const initialState = {
-    region: "RU",
-    currency: "RUB",
-    currencyMultiplier: 0
-} as IRegionSlice;
+    region: "ru-RU",
+    currentCurrencyId: 0,
+
+    currency: [
+        {
+            targetRegion: "ru-RU",
+            currencyMultiplier: 1,
+            currencySymbol: "₽",
+            currencyName: "RUB",
+            currencyId: 0
+        }
+    ]
+
+} as IRegionSlice<IRegionsListType>;
 
 const regionSlice = createGenericSlice(
     "regionSlice",
     initialState,
     {
-        setRegion(state, action: PayloadAction<IRegionSlice>){
-            state.region = action.payload.region;
-            state.currencyMultiplier = action.payload.currencyMultiplier;
-            state.currency = action.payload.currency;
+        addCurrency(state, action: PayloadAction<IRegionSlice_item<IRegionsListType>>){
+            const newCurrencyId = action.payload.currencyId;
+            if(!(state.currency.find(el => el.currencyId === newCurrencyId)))
+                state.currency.push(action.payload);
         },
 
-        setRegionName(state, action: PayloadAction<Pick<IRegionSlice, "region">>){
-            state.region = action.payload.region;
+        setCurrencyById(state, action: PayloadAction<number>){
+            const foundCurrency = state.currency.find(el => el.currencyId === action.payload);
+            state.currentCurrencyId = foundCurrency ? foundCurrency.currencyId : state.currentCurrencyId;
         },
 
-        setRegionCurrency(state, action: PayloadAction<Pick<IRegionSlice, "currency">>){
-            state.currency = action.payload.currency;
+        switchCurrency(state){
+            const newCurrency = state.currentCurrencyId + 1;
+            const firstCurrency = state.currency[0] ? state.currency[0].currencyId : state.currentCurrencyId;
+
+            state.currentCurrencyId =
+                state.currency.length - 1 >= newCurrency ?
+                    newCurrency :
+                    firstCurrency;
         },
 
-        switchRegionName(state){
-            state.region = state.region === "RU" ? "EN" : "RU";
+        setRegion(state, action: PayloadAction<IRegionsListType>){
+            state.region = action.payload
         },
 
-        switchRegionCurrency(state){
-            state.currency = state.currency === "RUB" ? "USD" : "RUB";
+        setCurrencyMultiplier(state, action: PayloadAction<{
+            currencyId: number,
+            multiplier: number
+        }>){
+            const foundCurrencyIdx =
+                state.currency.findIndex(el => el.currencyId === action.payload.currencyId);
+
+            if(foundCurrencyIdx > -1)
+                state.currency[foundCurrencyIdx] ?
+                    state.currency[foundCurrencyIdx].currencyMultiplier =
+                        action.payload.multiplier :
+                    null
         }
     }
 )
 
-
 export const {
+    addCurrency,
+    setCurrencyById,
+    switchCurrency,
     setRegion,
-    setRegionName,
-    switchRegionName,
-    switchRegionCurrency,
-    setRegionCurrency,
+    setCurrencyMultiplier
 } = regionSlice.actions;
 
 export default regionSlice.reducer;
