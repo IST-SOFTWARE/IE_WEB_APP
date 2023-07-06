@@ -117,6 +117,10 @@ export const getNamedFiltersListItem_filtersHelper = (
     el: keyof ICatalogFiltersType,
     currentTranslation: ITranslation<IFiltersLocale>
 ) => {
+
+    if(!currentTranslation ||!el)
+        return
+
     let outData: string;
 
     switch(el) {

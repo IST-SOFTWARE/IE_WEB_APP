@@ -22,8 +22,9 @@ import {filtersList_update} from "../../store/slices/filtersListSlice/filtersLis
 import {getFiltersItemsAsArray_filtersHelper} from "../../helpers/Catalog/filters";
 import CatalogFullProductsListModal from "../DefaultModals/Catalog/Pages/catalogFullProductsList_modal";
 import {getData} from "../../queries/fetch/getData";
-import {addCurrency, setRegion} from "../../store/slices/regionSlice/regionSlice";
+import {addCurrency, addCurrencyAndApply, setCurrencyById, setRegion} from "../../store/slices/regionSlice/regionSlice";
 import {available_AdditionalFilters} from "../Catalog/Filters/Additional/AdditionalFilters";
+import {EN_LOCALE, new_EN_Currency, RU_LOCALE} from "../../locales/locales";
 
 
 interface ILandingLayout {
@@ -127,32 +128,19 @@ export const LandingLayout: FC<ILandingLayout> = ({children}) => {
 
         if (!(multiplier > 0) || !router)
             return
-
-        dispatch(addCurrency(
-            {
-                currencyMultiplier: multiplier,
-                targetRegion: "en-US",
-                currencySymbol: "$",
-                currencyName: "USD",
-                currencyId: 1
-            }
+        if(router.locale === EN_LOCALE)
+            dispatch(addCurrencyAndApply(
+                new_EN_Currency(multiplier, 1)
         ));
 
     }, [multiplier, router])
 
     // [ Set region ]
     useEffect(() => {
-
-        if (!router)
-            return
-
-        dispatch(setRegion(
-            router.locale === "ru-RU" ?
-                "ru-RU" :
-                "en-US"
-        ));
-
-    }, [multiplier, router])
+        if(router.locale === EN_LOCALE){
+            dispatch(setRegion("en-US"));
+        }
+    }, [router, ])
 
 
     const openFullProdList = useCallback(()=>{

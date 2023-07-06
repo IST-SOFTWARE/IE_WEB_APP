@@ -29,6 +29,23 @@ const regionSlice = createGenericSlice(
                 state.currency.push(action.payload);
         },
 
+        addCurrencyAndApply(state, action: PayloadAction<IRegionSlice_item<IRegionsListType>>){
+
+            const newCurrencyId = action.payload.currencyId;
+            if(!(state.currency.find(el => el.currencyId === newCurrencyId)))
+                state.currency.push(action.payload);
+
+            const foundCurrency = state.currency.find(el => el.targetRegion === action.payload.targetRegion)
+            if(!foundCurrency) {
+                return
+            }
+
+            state.currentCurrencyId =
+                foundCurrency.currencyId;
+
+        },
+
+
         setCurrencyById(state, action: PayloadAction<number>){
             const foundCurrency = state.currency.find(el => el.currencyId === action.payload);
             state.currentCurrencyId = foundCurrency ? foundCurrency.currencyId : state.currentCurrencyId;
@@ -69,6 +86,7 @@ export const {
     setCurrencyById,
     switchCurrency,
     setRegion,
+    addCurrencyAndApply,
     setCurrencyMultiplier
 } = regionSlice.actions;
 

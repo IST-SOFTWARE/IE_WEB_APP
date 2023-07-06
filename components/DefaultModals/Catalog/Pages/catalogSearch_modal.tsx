@@ -62,6 +62,8 @@ const CatalogSearchModal:FC<ICatalogSearchModal> = ({
             filter: [name],
           })
         );
+
+        dispatch(setSearch(""));
       },
       [catalog, dispatch]
     );
@@ -117,7 +119,7 @@ const CatalogSearchModal:FC<ICatalogSearchModal> = ({
                   listedHintsId: 2,
                   switcherOptions: {
                     onSwitch: switchFilter,
-                    filterDesignation: type_designation,
+                    filterDesignation: unit_designation,
                   },
                 },
                 {
@@ -125,7 +127,7 @@ const CatalogSearchModal:FC<ICatalogSearchModal> = ({
                   listedHintsId: 1,
                   switcherOptions: {
                     onSwitch: switchFilter,
-                    filterDesignation: unit_designation,
+                    filterDesignation: type_designation,
                   },
                 },
               ]}

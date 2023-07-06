@@ -5,7 +5,11 @@ import useISTFiltersList from "../../../UI/hooks/ISTFiltersHook/useISTFiltersLis
 import {ICatalogFiltersType} from "../../../../store/slices/common/catalogFiltersType";
 import {useDispatch} from "react-redux";
 import {onFilterSwitchCustom_t} from "../../../UI/hooks/ISTFiltersHook/common";
-import {filterSetter_filtersHelper, isActiveNow_filtersHelper} from "../../../../helpers/Catalog/filters";
+import {
+    filterSetter_filtersHelper,
+    getAdditionalFilter_filtersHelper, getNamedFiltersListItem_filtersHelper,
+    isActiveNow_filtersHelper
+} from "../../../../helpers/Catalog/filters";
 import {addNewFilter} from "../../../../store/slices/catalogSlices/catalogSlice";
 import ISTFiltersWrapper from "../../../UI/ISTFiltersList/components/ISTFiltersWrapper";
 import ISTFiltersList from "../../../UI/ISTFiltersList/components/ISTFiltersList";
@@ -13,6 +17,13 @@ import {CatalogWrapper} from "../../../ProductsWrapper/catalogWrapper/catalogWra
 import { useRouter } from "next/router";
 import ru from "../../../../locales/ru";
 import en from "../../../../locales/en";
+
+import upd_ru from "../../../../locales/filters/ru";
+import upd_en from "../../../../locales/filters/en";
+
+import {useTransition} from "../../../../locales/hook/useTranslation";
+import {IFiltersLocale} from "../../../../locales/filters/filtersLocale";
+import {EN_LOCALE, RU_LOCALE} from "../../../../locales/locales";
 
 
 const CatalogFullProductsListModal = ({}) => {
@@ -38,6 +49,15 @@ const CatalogFullProductsListModal = ({}) => {
             "unit"
         );
 
+    const [av_filter, av_active, av_designation] =
+        useISTFiltersList<ICatalogFiltersType>(
+            "available"
+        );
+
+  const {currentTranslation} = useTransition<IFiltersLocale>([
+        {locale: RU_LOCALE, translation: upd_ru},
+        {locale: EN_LOCALE, translation:upd_en}
+    ]);
 
     // Redux catalog state & dispatch
     const dispatch = useDispatch();
@@ -55,14 +75,18 @@ const CatalogFullProductsListModal = ({}) => {
             return
 
         const newFilters =
-            filterSetter_filtersHelper(catalog.filters, options, name);
+            filterSetter_filtersHelper(
+                catalog.filters,
+                options,
+                getAdditionalFilter_filtersHelper(name, currentTranslation)
+            );
 
         dispatch(addNewFilter({
             key: options,
             filter: newFilters
         }))
 
-    }, [dispatch, catalog])
+    }, [dispatch, catalog, currentTranslation])
 
 
     return (
@@ -96,7 +120,6 @@ const CatalogFullProductsListModal = ({}) => {
                                 })
                             }
 
-
                             hookedData={mfg_filter}
 
                             switcherOptions={{
@@ -118,7 +141,6 @@ const CatalogFullProductsListModal = ({}) => {
                             mobileSizeTrigger: "LG_992"
                         }}
                     >
-
                         <ISTFiltersList
                             fields={
                                 filtersList?.type?.map(el => {
@@ -133,7 +155,6 @@ const CatalogFullProductsListModal = ({}) => {
                                 })
                             }
 
-
                             hookedData={types_filter}
 
                             switcherOptions={{
@@ -145,7 +166,6 @@ const CatalogFullProductsListModal = ({}) => {
                     </ISTFiltersWrapper>
 
                     {/*Узлы*/}
-
 
                     <ISTFiltersWrapper
                         title={t.hintsCatalogSearchCollectionName.unit}
@@ -176,6 +196,39 @@ const CatalogFullProductsListModal = ({}) => {
                             switcherOptions={{
                                 onSwitch: switchFilter,
                                 filterDesignation: units_designation
+                            }}
+                        />
+
+                    </ISTFiltersWrapper>
+
+                    <ISTFiltersWrapper
+                        title={getNamedFiltersListItem_filtersHelper(av_designation, currentTranslation)}
+                        isOpened={false}
+                        hasActives={av_active}
+                        mobileSettings={{
+                            type: "dropdown",
+                            mobileSizeTrigger: "LG_992"
+                        }}
+                    >
+                        <ISTFiltersList
+                            fields={
+                                filtersList?.available?.map(el => {
+                                    return ({
+                                        fieldName: getAdditionalFilter_filtersHelper(el, currentTranslation),
+                                        isCheckBox: true,
+                                        isActive: isActiveNow_filtersHelper(
+                                            catalog?.filters,
+                                            "available",
+                                            el),
+                                    })
+                                })
+                            }
+
+                            hookedData={av_filter}
+
+                            switcherOptions={{
+                                onSwitch: switchFilter,
+                                filterDesignation: av_designation
                             }}
                         />
                     </ISTFiltersWrapper>

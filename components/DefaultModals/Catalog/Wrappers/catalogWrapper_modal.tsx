@@ -25,7 +25,7 @@ import {ICatalogWrapper} from "./common";
 import CatalogWrapperModal_mobileBar from "./components/CatalogWrapperModal_mobileBar";
 import CatalogWrapperModal_headerWrapper from "./components/CatalogWrapperModal_headerWrapper";
 import {useTransition} from "../../../../locales/hook/useTranslation";
-import {RU_LOCALE} from "../../../../locales/locales";
+import {EN_LOCALE, RU_LOCALE} from "../../../../locales/locales";
 import en_upd from "../../../../locales/filters/en";
 import ru_upd from "../../../../locales/filters/ru";
 import {IFiltersLocale} from "../../../../locales/filters/filtersLocale";
@@ -57,7 +57,7 @@ const CatalogWrapperModal: FC<ICatalogWrapper> = ({
 
   const {currentTranslation} = useTransition<IFiltersLocale>([
       {locale: RU_LOCALE, translation: ru_upd},
-      {locale: RU_LOCALE, translation: en_upd}
+      {locale: EN_LOCALE, translation: en_upd}
   ])
 
   const t = router.locale === "ru-RU" ? ru : en;
@@ -124,14 +124,14 @@ const CatalogWrapperModal: FC<ICatalogWrapper> = ({
     (designation: keyof ICatalogFiltersType) => {
       modalComponent.getModalByName(
         toc_filter_page_mobile.typeName
-      ).modal._header = getNamedFiltersListItem_filtersHelper(designation, currentTranslation);
+      ).modal._header = currentTranslation ? getNamedFiltersListItem_filtersHelper(designation, currentTranslation) : "FILTER";
       modalComponent
         .applyModalByName(toc_filter_page_mobile.typeName)
         .then(() => {
           setCurrentFilterPage(designation);
         });
     },
-    [modalComponent]
+    [modalComponent, currentTranslation]
   );
 
   const handleOpenMobileModal_filtersList = useCallback(() => {
