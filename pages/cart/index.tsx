@@ -89,7 +89,7 @@ const CartPage_index = (props) => {
                     currencySymbol: region.currency[region.currentCurrencyId]?.currencySymbol ?? "$" ,
                     region: region.region
                 }}
-                translation={currentTranslation.translation}
+                translation={currentTranslation?.translation}
             />
 
           </div>

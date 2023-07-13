@@ -16,7 +16,7 @@ import BlureProdImage from "../../legacy/components/ProductPage/BlureProdImage";
 
 import { getData } from "../../legacy/queries/getData";
 import { getProductData } from "../../legacy/queries/getProductData";
-import { inCart } from "../../legacy/cartActions/cartActions";
+import {cartCreateAct, inCart} from "../../legacy/cartActions/cartActions";
 
 import ISTButtonN from "../../components/UI/ISTButton/ISTButtonN";
 
@@ -26,6 +26,7 @@ import en from "../../locales/en";
 import { useRouter } from "next/router";
 import Image from "next/image";
 import Link from "next/link";
+import DefaultLandingPage from "../../components/LandingPages/DefaultLandingPage";
 
 export default function ProductPage({ data }) {
   const router = useRouter();
@@ -126,307 +127,268 @@ export default function ProductPage({ data }) {
 
   return (
     <>
-      <Head>
-        <title>
-          {data && data[0]
-            ? `${data[0].product_name_ru} в Москве – купить в интернет-магазине запчастей для лифтов и эскалаторов`
-            : "Product page"}
-        </title>
-        <meta
-          name={"description"}
-          content={
-            data && data[0]
-              ? `
-                    У нас вы сможете приобрести ${data[0].product_name_ru} в Москве. 
-                    Изделия, представленные в нашем магазине, изготавливаются только их 
-                    прочных материалов, благодаря чему в несколько раз увеличивается срок 
-                    эксплуатации. Башмаки, представленные в нашем магазине, обладают высокой 
-                    безопасностью. 
-                `
-              : ""
-          }
-        />
-      </Head>
 
-      <div className={styles.ProductPage}>
-        <div
-          className="container-fluid justify-content-between"
-          style={{
-            maxWidth: "1480px",
+      <DefaultLandingPage
+          landingDescription={{
+            title: "",
+            titleOffset: 100,
           }}
-        >
-          <div className="d-block d-lg-flex d-xl-flex lg-justify-content-between xl-justify-content-between">
-            <div className="col-12 col-lg-6 col-xl-6">
-              <div className={styles.ProductBlock}>
-                <p>
-                  <LabelLoader
-                    LoadSizeInSymbols={20}
-                    data={productData}
-                    field={"product_name_ru"}
-                  />
-                </p>
-                <Link href="#">
-                  <LabelLoader
-                    LoadSizeInSymbols={20}
-                    data={productData}
-                    field={"vend_code"}
-                  />
-                </Link>
+          pageId={"ProductPage"}
+      >
 
-                <div className={styles.Image_and_replacement}>
-                  <ComponentLoader
-                    fill_percent={90}
-                    margin={10}
-                    data={productData}
-                  >
-                    <button
-                      onClick={() => setImageViewerPU(true)}
-                      className={styles.ProductImage}
-                      style={{
-                        backgroundImage: `url(${BlureProdImage(
-                          productData ? productData.image_url : ""
-                        )})`,
-                        backgroundPosition: "center center",
-                        backgroundSize: "cover",
-                        backgroundRepeat: "no-repeat",
-                      }}
+          <>
+              <div className="col-12 col-lg-6 p-0">
+                <div className={styles.ProductBlock}>
+                  <p>
+                    <LabelLoader
+                      LoadSizeInSymbols={20}
+                      data={productData}
+                      field={"product_name_ru"}
+                    />
+                  </p>
+                  <Link href="#">
+                    <LabelLoader
+                      LoadSizeInSymbols={20}
+                      data={productData}
+                      field={"vend_code"}
+                    />
+                  </Link>
+
+                  <div className={styles.Image_and_replacement}>
+                    <ComponentLoader
+                      fill_percent={90}
+                      margin={10}
+                      data={productData}
                     >
-                      <div>
-                        {/*<NextImageRatioSaver*/}
-                        {/*    Img={productData ? productData.image_url : ""}*/}
-                        {/*    primaryFill={"width"}*/}
-                        {/*    q={100}*/}
-                        {/*    unique={"_MainPI"}*/}
-                        {/*    alt={productData ? productData.product_name_ru : ""}*/}
-                        {/*    title={productData ? productData.product_name_ru : ""}*/}
-                        {/*/>*/}
+                      <button
+                        onClick={() => setImageViewerPU(true)}
+                        className={styles.ProductImage}
+                        style={{
+                          backgroundImage: `url(${BlureProdImage(
+                            productData ? productData.image_url : ""
+                          )})`,
+                          backgroundPosition: "center center",
+                          backgroundSize: "cover",
+                          backgroundRepeat: "no-repeat",
+                        }}
+                      >
+                        <div>
+                          <Image
+                            src={productData ? productData.image_url : ""}
+                            fill={true}
+                            alt={productData ? productData.product_name_ru : ""}
+                            style={{
+                              objectFit: "contain",
+                              objectPosition: "center",
+                            }}
+                          />
+                        </div>
+                      </button>
 
-                        <Image
-                          src={productData ? productData.image_url : ""}
-                          fill={true}
-                          alt={productData ? productData.product_name_ru : ""}
-                          style={{
-                            objectFit: "contain",
-                            objectPosition: "center",
-                          }}
+                      <div className={styles.ProductReplacement}>
+                        <ReplacementItem
+                          text={t.productPage.analog}
+                          paragraph={t.productPage.for}
+                          pu={setPU}
+                          headersSet={setPuHeaders}
+                          data={productData ? productData.product_name_ru : ""}
+                          puTyper={setIsPuType}
+                          isType={Analogue}
+                        />
+
+                        <ReplacementItem
+                          text={t.productPage.replacement}
+                          paragraph={t.productPage.for}
+                          pu={setPU}
+                          headersSet={setPuHeaders}
+                          data={productData ? productData.product_name_ru : ""}
+                          puTyper={setIsPuType}
+                          isType={Replacement}
+                        />
+
+                        <ReplacementItem
+                          text={t.productPage.partOf + "..."}
+                          pu={setPU}
+                          headersSet={setPuHeaders}
+                          data={productData ? productData.product_name_ru : ""}
+                          puTyper={setIsPuType}
+                          isType={Included}
                         />
                       </div>
-                    </button>
+                    </ComponentLoader>
+                  </div>
+                </div>
+              </div>
 
-                    <div className={styles.ProductReplacement}>
-                      <ReplacementItem
-                        text={t.productPage.analog}
-                        paragraph={t.productPage.for}
-                        pu={setPU}
-                        headersSet={setPuHeaders}
-                        data={productData ? productData.product_name_ru : ""}
-                        puTyper={setIsPuType}
-                        isType={Analogue}
+              <div className="col-12 col-lg-6">
+                <div className={styles.ProductDescription_wrapper}>
+                  <ComponentLoader data={productData} margin={50}>
+                    <div className={styles.ProductDescription}>
+                      <AvailabilityStatus
+                        status={
+                          productData ? parseInt(productData.available_status) : 0
+                        }
                       />
 
-                      <ReplacementItem
-                        text={t.productPage.replacement}
-                        paragraph={t.productPage.for}
-                        pu={setPU}
-                        headersSet={setPuHeaders}
-                        data={productData ? productData.product_name_ru : ""}
-                        puTyper={setIsPuType}
-                        isType={Replacement}
-                      />
+                      <div className={styles.ProductParams}>
+                        <p className={styles.CharacteristicsTitle}>
+                          {t.productPage.specifications}:
+                        </p>
+                        <div className={styles.ParamsWrapper}>
+                          <DescriptionEntry
+                            Title={t.productPage.brand}
+                            Params={
+                              productData
+                                ? productData.product_manufacturer.map(
+                                    (elem) =>
+                                      " " +
+                                      elem.manufacturer_category_id
+                                        .manufacturer_name
+                                  ) + ""
+                                : ""
+                            }
+                          />
 
-                      <ReplacementItem
-                        text={t.productPage.partOf + "..."}
-                        pu={setPU}
-                        headersSet={setPuHeaders}
-                        data={productData ? productData.product_name_ru : ""}
-                        puTyper={setIsPuType}
-                        isType={Included}
-                      />
+                          <DescriptionEntry
+                            Title={t.productPage.unit}
+                            Params={
+                              productData
+                                ? productData.product_unit.map(
+                                    (elem) =>
+                                      " " + elem.Unit_category_id.unit_name
+                                  ) + ""
+                                : ""
+                            }
+                          />
+
+                          <DescriptionEntry
+                            Title={t.productPage.type}
+                            Params={
+                              productData
+                                ? productData.product_type.map(
+                                    (elem) =>
+                                      " " + elem.Type_category_id.type_name
+                                  ) + ""
+                                : ""
+                            }
+                          />
+
+                          <DescriptionEntry
+                            Title={t.productPage.weight}
+                            Params={
+                              productData
+                                ? productData.weight + t.productPage.wt
+                                : "0" + t.productPage.wt
+                            }
+                          />
+
+                          <div className={styles.GeometryBlock}>
+                            {/* внутри надо добавить некстовский имейдж для
+                                                      отображения картинки с размерами*/}
+
+                            <GeometryViewer
+                              imagePath={
+                                productData ? productData.form_factor_image : ""
+                              }
+                              geoSizes={productData ? productData.sizes : null}
+                            />
+                          </div>
+
+                          <div className={styles.DetailedDescription}>
+                            <p>
+                              <LabelLoader
+                                fill_percent={60}
+                                data={productData}
+                                field={"text_description"}
+                              />
+                            </p>
+                          </div>
+                        </div>
+                        <div className={styles.ProductActions}>
+                          <div className={styles.ProductPrice}>
+                            {productData ? (
+                              <p>
+                                <span className={styles.priceHider}>
+                                  {t.productPage.price}:{" "}
+                                </span>
+                                {new Intl.NumberFormat("ru-RU").format(
+                                  productData.price
+                                )}
+                                <span className={styles.priceHider}>
+                                  {" "}
+                                  {t.productPage.currency}
+                                </span>
+                                <span className={styles.monySymbol}>
+                                  {" "}
+                                  {t.productPage.currencyStyle}
+                                </span>
+                              </p>
+                            ) : (
+                              ""
+                            )}
+                          </div>
+                          <div className={styles.Actions}>
+                            {prodInCart ? (
+                              <ISTButtonN
+                                dark={{
+                                  solid: false,
+                                  fill: true,
+                                  fillContainer: true,
+
+                                }}
+                                title={{
+                                  caption: t.productPage.inToCart,
+                                }}
+                                onClick={() => {
+                                  addToCart(
+                                      productData.id, 1, null
+                                  )
+                                }}
+                              />
+                            ) : (
+                              <ISTButtonN
+                                light={{
+                                  fill: false,
+                                  style: {
+                                    borderRadius: "15px",
+                                    fillContainer: true,
+                                  },
+                                }}
+                                title={{
+                                  caption: t.productPage.addToCart,
+                                }}
+                                onClick={() => {
+                                  addToCart(
+                                      productData.id, 1, null
+                                  )
+                                }}
+                              />
+                            )}
+
+                            <ISTButtonN
+                              light={{
+                                fill: true,
+                                style: {
+                                  borderRadius: "15px",
+                                  fillContainer: true,
+
+                                },
+                              }}
+                              title={{
+                                caption: t.productPage.order,
+                              }}
+                              onClick={() => {}}
+                            />
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </ComponentLoader>
                 </div>
               </div>
+            </>
 
-              {/* UNDER DEVELOPMENT */}
-
-              {/* <div className={styles.AdditionalProductsBlock}>
-                                <p>{productData ? "С этим товаром покупают..." : <LabelLoader LoadSizeInSymbols={15}/>}</p>
-                                <div className={styles.AdditionalList} ref={ref}>
-
-                                    {!productData ? [1,2,3].map(i => {
-                                        return <AdditionalItem key={i}/>
-                                    }) : (productData.additional_items).map(el => {
-                                        return <AdditionalItem
-                                            img={el.related_Products_id.image_url}
-                                            name={el.related_Products_id.product_name_ru}
-                                            slug={el.related_Products_id.slug}
-                                            key={el.related_Products_id.slug}
-                                        />
-                                    })}
-
-                                </div>
-                            </div> */}
-            </div>
-
-            <div className="col-12 col-lg-6 col-xl-6">
-              <div className={styles.ProductDescription_wrapper}>
-                <ComponentLoader data={productData} margin={50}>
-                  <div className={styles.ProductDescription}>
-                    <AvailabilityStatus
-                      status={
-                        productData ? parseInt(productData.available_status) : 0
-                      }
-                    />
-
-                    <div className={styles.ProductParams}>
-                      <p className={styles.CharacteristicsTitle}>
-                        {t.productPage.specifications}:
-                      </p>
-                      <div className={styles.ParamsWrapper}>
-                        <DescriptionEntry
-                          Title={t.productPage.brand}
-                          Params={
-                            productData
-                              ? productData.product_manufacturer.map(
-                                  (elem) =>
-                                    " " +
-                                    elem.manufacturer_category_id
-                                      .manufacturer_name
-                                ) + ""
-                              : ""
-                          }
-                        />
-
-                        <DescriptionEntry
-                          Title={t.productPage.unit}
-                          Params={
-                            productData
-                              ? productData.product_unit.map(
-                                  (elem) =>
-                                    " " + elem.Unit_category_id.unit_name
-                                ) + ""
-                              : ""
-                          }
-                        />
-
-                        <DescriptionEntry
-                          Title={t.productPage.type}
-                          Params={
-                            productData
-                              ? productData.product_type.map(
-                                  (elem) =>
-                                    " " + elem.Type_category_id.type_name
-                                ) + ""
-                              : ""
-                          }
-                        />
-
-                        <DescriptionEntry
-                          Title={t.productPage.weight}
-                          Params={
-                            productData
-                              ? productData.weight + t.productPage.wt
-                              : "0" + t.productPage.wt
-                          }
-                        />
-
-                        <div className={styles.GeometryBlock}>
-                          {/* внутри надо добавить некстовский имейдж для
-                                                    отображения картинки с размерами*/}
-
-                          <GeometryViewer
-                            imagePath={
-                              productData ? productData.form_factor_image : ""
-                            }
-                            geoSizes={productData ? productData.sizes : null}
-                          />
-                        </div>
-
-                        <div className={styles.DetailedDescription}>
-                          <p>
-                            <LabelLoader
-                              fill_percent={60}
-                              data={productData}
-                              field={"text_description"}
-                            />
-                          </p>
-                        </div>
-                      </div>
-                      <div className={styles.ProductActions}>
-                        <div className={styles.ProductPrice}>
-                          {productData ? (
-                            <p>
-                              <span className={styles.priceHider}>
-                                {t.productPage.price}:{" "}
-                              </span>
-                              {new Intl.NumberFormat("ru-RU").format(
-                                productData.price
-                              )}
-                              <span className={styles.priceHider}>
-                                {" "}
-                                {t.productPage.currency}
-                              </span>
-                              <span className={styles.monySymbol}>
-                                {" "}
-                                {t.productPage.currencyStyle}
-                              </span>
-                            </p>
-                          ) : (
-                            ""
-                          )}
-                        </div>
-                        <div className={styles.Actions}>
-                          {prodInCart ? (
-                            <ISTButtonN
-                              dark={{
-                                solid: false,
-                                fill: true,
-                                fillContainer: true,
-                              }}
-                              title={{
-                                caption: t.productPage.inToCart,
-                              }}
-                              onClick={() => {}}
-                            />
-                          ) : (
-                            <ISTButtonN
-                              light={{
-                                fill: false,
-                                style: {
-                                  borderRadius: "15px",
-                                  fillContainer: true,
-                                },
-                              }}
-                              title={{
-                                caption: t.productPage.addToCart,
-                              }}
-                              onClick={() => {}}
-                            />
-                          )}
-
-                          <ISTButtonN
-                            light={{
-                              fill: true,
-                              style: {
-                                borderRadius: "15px",
-                                fillContainer: true,
-                              },
-                            }}
-                            title={{
-                              caption: t.productPage.order,
-                            }}
-                            onClick={() => {}}
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </ComponentLoader>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+      </DefaultLandingPage>
 
       <PopUpBase
         puState={puState}
@@ -466,14 +428,7 @@ export default function ProductPage({ data }) {
         </ComponentLoader>
       </PopUpBase>
 
-      {/*Image-viewer modal */}
-      {/* <Image
-        image={productData ? productData.image_url : null}
-        modalState={imageViewerPU}
-        setModalState={setImageViewerPU}
-      /> */}
 
-      {/*Contacts modal*/}
       <ContactsModal
         modalState={cbRequestModal}
         modalSwitcher={setCbRequestModal}

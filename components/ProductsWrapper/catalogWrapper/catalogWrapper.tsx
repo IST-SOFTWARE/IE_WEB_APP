@@ -13,8 +13,9 @@ import styles from "./catalogWrapper.module.scss";
 
 import {filterExclude_filtersHelper} from "../../../helpers/Catalog/filters";
 import {
+    CREATE_CART_COLLECTION,
     GET_CART_COLLECTION_BY_ID,
-    ICartCollection,
+    ICartCollection, ICartCollection_created,
     ICartCollection_updated,
     ICartCollectionVariables, UPDATE_CART_BY_ID
 } from "../../../queries/cart/cartActions";
@@ -31,11 +32,10 @@ import {ImageLoader} from "next/image";
 import {imageLoader_imagesHelper} from "../../../helpers/Images/customImageLoader";
 import {useDispatch} from "react-redux";
 import {setOffset} from "../../../store/slices/catalogSlices/catalogPaginationSlice";
+import {useCartActions} from "../../../Hooks/useCartActions/useCartActions";
 
 interface ICatalogWrapper {
     additionalForwarding: string
-
-    cartID?: string;
 
     itemWrapper_ClassName?: string
     wrapper_ClassName?: string
@@ -53,7 +53,6 @@ export const CatalogWrapper: FC<ICatalogWrapper> = ({
     wrapper_ClassName,
     wrapperStyles,
     itemWrapperStyles,
-    cartID,
     additionalForwarding
 }) => {
 
@@ -75,10 +74,27 @@ export const CatalogWrapper: FC<ICatalogWrapper> = ({
         search: ""
     })
 
+    const {
+        addToCart,
+        getSessionFromLS,
+        fails,
+        removeCartSession
+    } = useCartActions<ICartCollection_created, ICartCollectionVariables>(
+        CREATE_CART_COLLECTION,
+        UPDATE_CART_BY_ID,
+        UPDATE_CART_BY_ID,
+        "id"
+    )
 
-    // useEffect(()=>{
-    //     console.log("RH: ", regionHandler.region);
-    // },[regionHandler])
+    useEffect(()=>{
+
+        if(fails.length > 0){
+
+        }
+
+    },[fails])
+
+
     // QUERIES BLOCK
     const {data, error, fetchMore} = useQuery<IProducts_Q, IProductFiltersVariables>(
         GRT_FILTERED_PRODUCTS_LIST, {
@@ -91,7 +107,7 @@ export const CatalogWrapper: FC<ICatalogWrapper> = ({
         GET_CART_COLLECTION_BY_ID,
         {
             fetchPolicy: "cache-and-network",
-            variables: {id: cartID},
+            variables: {id: getSessionFromLS()?.toString()},
         }
     );
 
@@ -117,11 +133,11 @@ export const CatalogWrapper: FC<ICatalogWrapper> = ({
 
 
     useEffect(() => {
-        if (data && !cartData.called)
+        if (data && !cartData.called && getSessionFromLS())
             getCartData()
                 .then(el => {
                     const newCartItems = new Array<ICartItem_properties_data>();
-                    el.data?.cartCollection_by_id.cart_model.map(_el => {
+                    el.data?.cartCollection_by_id?.cart_model.map(_el => {
                         newCartItems.push({
                             productId: _el.product_id,
                             quantity: _el.quantity
@@ -129,7 +145,7 @@ export const CatalogWrapper: FC<ICatalogWrapper> = ({
                     })
                     setCartProducts(newCartItems);
                 })
-    }, [data, cartData])
+    }, [data, cartData, getSessionFromLS])
 
 
     useEffect(() => {
@@ -189,44 +205,42 @@ export const CatalogWrapper: FC<ICatalogWrapper> = ({
     const cartAdder = useCallback<cartAdder_fnc_onAdd>(
         async (id) => {
 
-            if (!cartProducts || !cartData?.data?.cartCollection_by_id)
+            if (!cartProducts)
                 return
 
             const newCart =
                 products_addItem_actionsHelper(cartProducts, id, 1);
 
             const vars = {
-                id: cartID,
+                id: null,
                 data: {
                     status: "Draft",
                     cart_model: redefining_to_CartModel_redefiningHelper(newCart)
                 }
             } as ICartCollectionVariables;
 
-            onMutateCart({variables: vars}).then((el) => {
-                if (el.data?.update_cartCollection_item && !el.errors)
-                    setCartProducts(
-                        redefining_to_ICartItemPropertiesData_redefiningHelper(
-                            el.data.update_cartCollection_item.cart_model
-                        )
-                    )
+            addToCart(
+                vars,
+                (data) => {
+                return data.create_cartCollection_item?.id
+
             })
 
             return true
 
-        }, [cartProducts, cartData]);
+        }, [cartProducts, cartData, addToCart]);
 
     const cartRemover = useCallback<deleteProduct_fnc_onDelete>(
         async (id) => {
 
-            if (!cartProducts || !cartData?.data?.cartCollection_by_id)
+            if (!cartProducts || !cartData?.data?.cartCollection_by_id || !getSessionFromLS())
                 return
 
             const newCart =
                 products_removeItem_actionsHelper(cartProducts, id);
 
             const vars = {
-                id: cartID,
+                id: getSessionFromLS()?.toString(),
                 data: {
                     status: "Draft",
                     cart_model: redefining_to_CartModel_redefiningHelper(newCart)
