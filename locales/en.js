@@ -18,7 +18,7 @@ export default {
   },
 
   //callBack modal FC
-  callBackRequest_modal: {
+  callBackRequest: {
     name: "Name",
     firstName: "Eugene",
     phone: "Phone",
