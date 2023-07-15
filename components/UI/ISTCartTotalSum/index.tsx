@@ -4,10 +4,10 @@ import IstButtonN from "../ISTButton/ISTButtonN";
 
 export interface ICartTotalSum_translation{
   title: string,
-  totalSum: string,
-  order: string,
   products: string,
   sale: string,
+  totalSum: string,
+  order: string,
 }
 
 interface ICartTotalSum_region {
@@ -34,11 +34,12 @@ const ISTCartTotalSum: FC<ICartTotalSum> = ({
     open ? setOpen(false) : setOpen(true);
   };
 
+
   return (
     <div className={styles.cart}>
       <div className={styles.cartLabel}>
         <div className={styles.yourCart}>
-          {translation.title}
+          {translation?.title}
           <div className={styles.productsQuantity}>
             {totalSelect ? totalSelect : 0}
           </div>
@@ -52,7 +53,7 @@ const ISTCartTotalSum: FC<ICartTotalSum> = ({
       <div className={`${styles.prodSaleBox} ${open ? styles.openSaleBox : ""}`}>
         <div className={styles.prod}>
           <div className={styles.title}>
-            {translation.products} ({totalSelect ? totalSelect : 0})
+            {translation?.products} ({totalSelect ? totalSelect : 0})
           </div>
           <div className={styles.total}>
             <span>
@@ -66,7 +67,7 @@ const ISTCartTotalSum: FC<ICartTotalSum> = ({
           </div>
         </div>
         <div className={styles.sale}>
-          <div className={styles.title}>{translation.sale}</div>
+          <div className={styles.title}>{translation?.sale}</div>
           <div className={styles.total}>
             {region.currencySymbol}
           </div>
@@ -74,7 +75,7 @@ const ISTCartTotalSum: FC<ICartTotalSum> = ({
       </div>
       <div className={styles.sumBox}>
         <div className={styles.totalSum}>
-          {translation.totalSum}:
+          {translation?.totalSum}:
           <span>
             {totalSum
               ? `${totalSum.toLocaleString(region.region, {
@@ -93,7 +94,7 @@ const ISTCartTotalSum: FC<ICartTotalSum> = ({
             },
           }}
           title={{
-            caption: translation.order,
+            caption: translation?.order,
           }}
           onClick={() => {}}
         />

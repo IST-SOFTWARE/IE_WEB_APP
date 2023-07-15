@@ -175,7 +175,7 @@ const CatalogSearchModal:FC<ICatalogSearchModal> = ({
             {catalog?.search ? (
                 <CatalogWrapper
                     itemWrapper_ClassName={styles.productCardVariant_Block}
-                    cartID={"9cfa4d6a-f2e9-400c-b0a9-4c85ab777272"}
+                    // cartID={"9cfa4d6a-f2e9-400c-b0a9-4c85ab777272"}
                     additionalForwarding={""}
                 />
             ) : (
