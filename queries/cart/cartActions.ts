@@ -16,9 +16,7 @@ export interface ICartCollection {
   cart_model: cart_model[];
 }
 
-/**
- *
- */
+
 type updated_cartCollection_data = ICartCollection;
 
 export interface ICartCollection_updated {
@@ -27,7 +25,6 @@ export interface ICartCollection_updated {
 
 export interface ICartCollection_created{
   create_cartCollection_item: updated_cartCollection_data
-
 }
 
 export interface ICartItem extends cart_model {};

@@ -1,132 +1,122 @@
-import {useMutation} from "@apollo/client";
-import {DocumentNode} from "graphql/language";
-import {useCallback, useEffect, useState} from "react";
-import {GraphQLError} from "graphql/error";
+import { useMutation } from "@apollo/client";
+import { DocumentNode } from "graphql/language";
+import { useCallback, useEffect, useState } from "react";
+import { ICartActionsConfig, ICartResolversConfig, ICreationFnc, IFailItem, IUpdateFnc, cartSessionObjectKey } from "./common";
+import { ISTCartAdder } from "./cartAdder";
+import { GraphQLError } from "graphql";
 
 export const useCartActions = <
-        CREATION_DATA_TYPE,
-        MUTATION_VARS_TYPE,
-    >(
-    cartCreationQuery: DocumentNode,
-    cartAdderQuery: DocumentNode,
-    cartRemoverQuery: DocumentNode,
-    cartIdFieldName: keyof MUTATION_VARS_TYPE
+    MUTATION_VARS_TYPE,
+    CREATION_DATA_TYPE,
+    UPDATE_DATA_TYPE = any,
+    EXCEPTIONS_TYPE extends ReadonlyArray<GraphQLError> = ReadonlyArray<GraphQLError>,
+>(
+    cartIdFieldName: keyof MUTATION_VARS_TYPE | string,
+    cartActionsConfig: ICartActionsConfig<MUTATION_VARS_TYPE, CREATION_DATA_TYPE, UPDATE_DATA_TYPE>,
+    cartResolversConfig?: ICartResolversConfig<CREATION_DATA_TYPE, UPDATE_DATA_TYPE>
 ) => {
-    //  ---- ---- ---- TYPES ---- ---- ----
-    type ICreationResolver = (data: CREATION_DATA_TYPE) => string | number;
-    type IFailItem = {
-        operation: string,
-        ex: readonly GraphQLError[],
-        calledFnc: (...props: any)=>any,
-    }
-    //  ---- ---- ---- ACTIONS ---- ---- ----
-    const cartSessionObjectKey = "cart_session"
-
 
     const [sessionCaratId, setSessionCaratId] = useState<string>();
 
-        // >> ---- ---- ---- EX Handling ---- ---- ----
-            const [fails, setFails] = useState<IFailItem[]>([]);
+    // >> ---- ---- ---- EX Handling ---- ---- ----
+    const [fails, setFails] = useState<IFailItem<EXCEPTIONS_TYPE>[]>([]);
 
-            const addExToList = useCallback((data: IFailItem) => {
-                const newExList = [...fails];
-                newExList.push({
-                    ...data
-                })
-                setFails(newExList);
-            },[fails])
-
-    const [onMutateCart_create, mutatedData_create] =
-        useMutation<any, MUTATION_VARS_TYPE>(cartCreationQuery, {
-            onError: (ex) => {
-                addExToList({
-                    operation: "cart creation",
-                    ex: ex.graphQLErrors,
-                    calledFnc: onMutateCart_create
-                })
-            }
+    const addToCartExceptions = useCallback((data: IFailItem<EXCEPTIONS_TYPE>) => {
+        const newExList = [...fails];
+        newExList.push({
+            ...data
         })
+        setFails(newExList);
+    }, [fails])
 
-    const [onMutateCart_add, mutatedData_add] =
-        useMutation<any, MUTATION_VARS_TYPE>(cartAdderQuery,
-            {
-                onError: (ex) => {
-                    addExToList({
-                        operation: "cart adding",
-                        ex: ex.graphQLErrors,
-                        calledFnc: onMutateCart_add
-                    })
-                },
-                fetchPolicy: "network-only"
-            })
 
-    const [onMutateCart_remove, mutatedData_remove] =
-        useMutation<any, MUTATION_VARS_TYPE>(cartRemoverQuery,
-            {
-                onError: (ex) => {
-                    addExToList({
-                        operation: "cart remove",
-                        ex: ex.graphQLErrors,
-                        calledFnc: onMutateCart_remove
-                    })
-                }
-            })
-
-    //
-
-    const getSessionFromLS = useCallback(()=>{
+    const getSessionFromLS = useCallback(() => {
         return typeof window !== 'undefined' && localStorage.getItem(cartSessionObjectKey) ?
             localStorage.getItem(cartSessionObjectKey) :
             null;
-    },[window, localStorage])
+    }, [window, localStorage])
+
+    useEffect(() => {
+        let _sessionCaratId = getSessionFromLS()
+        if (_sessionCaratId)
+            setSessionCaratId(_sessionCaratId)
+    }, [])
+
+    useEffect(() => {
+        let _sessionCaratId = getSessionFromLS();
+        if (!_sessionCaratId && sessionCaratId && window)
+            localStorage.setItem(cartSessionObjectKey, sessionCaratId)
+    }, [sessionCaratId, window, localStorage])
+
 
     const removeCartSession = useCallback(()=>{
-        console.log("CLEAR");
+        let _sessionCaratId = getSessionFromLS();
+        if (!_sessionCaratId && sessionCaratId && window)
+            localStorage.removeItem(cartSessionObjectKey)
     },[window, localStorage])
 
-    useEffect(()=>{
-        let _sessionCaratId = getSessionFromLS()
-        if(_sessionCaratId)
-            setSessionCaratId(_sessionCaratId)
-    },[])
 
-    useEffect(()=>{
-        let _sessionCaratId = getSessionFromLS();
-        if(!_sessionCaratId && sessionCaratId && window)
-            localStorage.setItem(cartSessionObjectKey, sessionCaratId)
-    },[sessionCaratId, window, localStorage])
+    const [cartAdder] = useState(
+        new ISTCartAdder<CREATION_DATA_TYPE, UPDATE_DATA_TYPE, MUTATION_VARS_TYPE>(
+            cartActionsConfig,
+            cartResolversConfig
+        )
+    )
 
 
-    const removeFromCart = async(cartData: MUTATION_VARS_TYPE) => {
+    const removeFromCart = async (cartData: MUTATION_VARS_TYPE) => {
         return
     }
 
-    const addToCart = useCallback((
-            cartData: MUTATION_VARS_TYPE,
-            creationResolver: ICreationResolver
+    const configureCartResolvers = useCallback((config: ICartResolversConfig<CREATION_DATA_TYPE, UPDATE_DATA_TYPE>) => {
+        if (!cartAdder)
+            return
+
+        cartAdder.setCartIDGetterForCreation = config.cartIDGetterForCreation;
+        cartAdder.setUpdatedDataResolver = config.updateResolver;
+        cartAdder.setCreateDataResolver = config.creationResolver;
+
+    }, [cartAdder])
+
+
+    const addToCart = useCallback(async (
+        cartData: MUTATION_VARS_TYPE,
     ) => {
+        if (sessionCaratId)
+            await cartAdder.update({
+                ...cartData,
+                [cartIdFieldName]: sessionCaratId
+            }).then((data) => {
+                if(!data) return
+                    cartAdder.getUpdatedDataResolver ? 
+                    cartAdder.getUpdatedDataResolver(data) :
+                    console.warn("Cannot find resolver configuration to modify cart. Check the useCartActions configuration");
+            });
 
-        if(sessionCaratId){
-            return onMutateCart_add({
-                variables: {
-                    ...cartData,
-                    [cartIdFieldName]: sessionCaratId,
-                }
-            })
+
+        else {
+            await cartAdder.create({
+                ...cartData
+            }).then((data) => {
+                if(!data || !cartAdder.getCartIDGetterForCreation){
+                    console.warn("Could not find a function to get the new cart ID required to register a new cart. Check the useCartActions configuration ");
+                    return  
+                } 
+                    const newSessionID = cartAdder.getCartIDGetterForCreation(data);
+                  
+                    if(newSessionID){
+
+                        setSessionCaratId(newSessionID.toString());
+                        cartAdder.getCreateDataResolver ? 
+                            cartAdder.getCreateDataResolver(data) : 
+                            "Cannot find resolver configuration to cart creation. Check the useCartActions configuration";
+                    }
+                    else
+                        console.warn("Failed to get an ID for a new cart system entry. Check the useCartActions configuration");
+               
+            });
         }
-
-        else{
-            return onMutateCart_create({
-                variables: cartData
-            }).then((el) => {
-                if(el && el.data && !el.errors){
-                    if(!creationResolver(el.data))
-                        console.warn("Failed to get an ID for a new cart system entry");
-                    setSessionCaratId(creationResolver(el.data)?.toString())
-            }})
-        }
-
-    },[sessionCaratId])
+    }, [sessionCaratId, fails, cartAdder])
 
 
     return {
@@ -134,6 +124,8 @@ export const useCartActions = <
         addToCart,
         getSessionFromLS,
         removeCartSession,
+        addToCartExceptions,
+        configureCartResolvers
     }
 
 }

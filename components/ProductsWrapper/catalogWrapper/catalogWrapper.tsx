@@ -1,38 +1,41 @@
-import React, {CSSProperties, FC, useCallback, useEffect, useState} from "react";
-import {cartAdder_fnc_onAdd, deleteProduct_fnc_onDelete} from "../../UI/common";
-import {useLazyQuery, useMutation, useQuery} from "@apollo/client";
+import React, { CSSProperties, FC, useCallback, useEffect, useState } from "react";
+import { cartAdder_fnc_onAdd, deleteProduct_fnc_onDelete } from "../../UI/common";
+import { useLazyQuery, useMutation, useQuery } from "@apollo/client";
 import {
     GRT_FILTERED_PRODUCTS_LIST,
     IProductFiltersVariables,
     IProducts_Q
 } from "../../../queries/products/productActions";
 import ISTProductItem from "../../UI/ISTProductItem/ISTProductItem";
-import {useAppSelector} from "../../../Hooks/reduxSettings";
+import { useAppSelector } from "../../../Hooks/reduxSettings";
 
 import styles from "./catalogWrapper.module.scss";
 
-import {filterExclude_filtersHelper} from "../../../helpers/Catalog/filters";
+import { filterExclude_filtersHelper } from "../../../helpers/Catalog/filters";
 import {
     CREATE_CART_COLLECTION,
     GET_CART_COLLECTION_BY_ID,
     ICartCollection, ICartCollection_created,
     ICartCollection_updated,
-    ICartCollectionVariables, UPDATE_CART_BY_ID
+    ICartCollectionVariables, ICartItem, UPDATE_CART_BY_ID
 } from "../../../queries/cart/cartActions";
 import {
     products_addItem_actionsHelper,
     products_removeItem_actionsHelper
 } from "../../../helpers/Products/products_actions.helper";
-import {ICartItem_properties_data} from "../../UI/ISTProductItem/Abstract/ICartTypes";
+import { ICartItem_properties_data } from "../../UI/ISTProductItem/Abstract/ICartTypes";
 import {
     redefining_to_CartModel_redefiningHelper,
     redefining_to_ICartItemPropertiesData_redefiningHelper
 } from "../../../helpers/Products/products_redefining.helper";
-import {ImageLoader} from "next/image";
-import {imageLoader_imagesHelper} from "../../../helpers/Images/customImageLoader";
-import {useDispatch} from "react-redux";
-import {setOffset} from "../../../store/slices/catalogSlices/catalogPaginationSlice";
-import {useCartActions} from "../../../Hooks/useCartActions/useCartActions";
+import { ImageLoader } from "next/image";
+import { imageLoader_imagesHelper } from "../../../helpers/Images/customImageLoader";
+import { useDispatch } from "react-redux";
+import { setOffset } from "../../../store/slices/catalogSlices/catalogPaginationSlice";
+import { useCartActions } from "../../../Hooks/useCartActions/useCartActions";
+import { IDirectusGraplQlErrors } from "../../../Directus/ExceptionTypes/DirectusExceptionTypes";
+import { ICreationFnc, IUpdateFnc } from "../../../Hooks/useCartActions/common";
+;
 
 interface ICatalogWrapper {
     additionalForwarding: string
@@ -56,14 +59,12 @@ export const CatalogWrapper: FC<ICatalogWrapper> = ({
     additionalForwarding
 }) => {
 
+    // FILTERING & PAGINATION [STATE]
     const catalog = useAppSelector(selector => selector.catalog);
     const filtersList = useAppSelector(selector => selector.filtersList);
     const pagination = useAppSelector(selector => selector.pagination);
-    const regionHandler = useAppSelector(selector => selector.region);
-    const dispatch = useDispatch();
-
-    const [cartProducts, setCartProducts] = useState<ICartItem_properties_data[]>([]);
     const [fetchedAll, setFetchedAll] = useState<boolean>(false);
+    const dispatch = useDispatch();
 
     const [fullProdVars, setFullProdsVars] = useState<IProductFiltersVariables>({
         ...pagination,
@@ -74,82 +75,114 @@ export const CatalogWrapper: FC<ICatalogWrapper> = ({
         search: ""
     })
 
+    // REGION HANDELING [STATE]
+    const regionHandler = useAppSelector(selector => selector.region);
+
+    // CART [STATE]
+
+
+    const [onMutateCart_create] =
+        useMutation<ICartCollection_created, ICartCollectionVariables>(CREATE_CART_COLLECTION, {
+            onError: (ex) => {
+                addToCartExceptions({
+                    operation: "cart creation",
+                    ex: ex.graphQLErrors,
+                    calledFnc: onMutateCart_create
+                })
+            }
+        })
+
+    const [onMutateCart_add] =
+        useMutation<ICartCollection_updated, ICartCollectionVariables>(UPDATE_CART_BY_ID,
+            {
+                onError: (ex) => {
+                    addToCartExceptions({
+                        operation: "cart adding",
+                        ex: ex.graphQLErrors,
+                        calledFnc: onMutateCart_add
+                    })
+                }
+            })
+
+    const cartCreateNew = useCallback<ICreationFnc<ICartCollectionVariables, ICartCollection_created>>(async (
+        variables: ICartCollectionVariables
+    ) => {
+        return await onMutateCart_create({ variables: variables }).then((data) => { return data?.data })
+    }, [onMutateCart_create])
+
+    const cartUpdateItem = useCallback<IUpdateFnc<ICartCollectionVariables, ICartCollection_updated>>(async (
+        variables: ICartCollectionVariables
+    ) => {
+        return await onMutateCart_add({ variables: variables }).then((data) => { return data?.data })
+    }, [onMutateCart_create])
+    
+    const [cartProducts, setCartProducts] = useState<ICartItem_properties_data[]>([]);
+
+
+    const _updateResolver = (data: ICartCollection_updated) => {
+        const newCartModel = data?.update_cartCollection_item?.cart_model;
+        if (newCartModel)
+            cartItemsUpdeter(newCartModel)
+    }
+
+    const _creationResolver = (data: ICartCollection_created) => {
+        const newCartModel = data?.create_cartCollection_item?.cart_model;
+        if (newCartModel)
+            cartItemsUpdeter(newCartModel)
+    }
+
+
     const {
+        fails,
         addToCart,
         getSessionFromLS,
-        fails,
-        removeCartSession
-    } = useCartActions<ICartCollection_created, ICartCollectionVariables>(
-        CREATE_CART_COLLECTION,
-        UPDATE_CART_BY_ID,
-        UPDATE_CART_BY_ID,
-        "id"
-    )
-
-    useEffect(()=>{
-
-        if(fails.length > 0){
-
-        }
-
-    },[fails])
-
-
-    // QUERIES BLOCK
-    const {data, error, fetchMore} = useQuery<IProducts_Q, IProductFiltersVariables>(
-        GRT_FILTERED_PRODUCTS_LIST, {
-            variables: fullProdVars,
-            fetchPolicy: "network-only"
-        }
-    );
+        addToCartExceptions
+    } = useCartActions
+        <ICartCollectionVariables,
+        ICartCollection_created,
+        ICartCollection_updated,
+        IDirectusGraplQlErrors>(
+            "id",
+            {
+                creation: cartCreateNew,
+                update: cartUpdateItem
+            },
+            {
+                cartIDGetterForCreation: (data) => {
+                    return data?.create_cartCollection_item?.id.toString()
+                },
+                updateResolver: _updateResolver,
+                creationResolver: _creationResolver
+            }
+        )
 
     const [getCartData, cartData] = useLazyQuery<cartCollection>(
         GET_CART_COLLECTION_BY_ID,
         {
             fetchPolicy: "cache-and-network",
-            variables: {id: getSessionFromLS()?.toString()},
+            variables: { id: getSessionFromLS()?.toString() },
         }
     );
 
-    const [onMutateCart, mutatedData] =
-        useMutation<ICartCollection_updated, ICartCollectionVariables>(UPDATE_CART_BY_ID)
+    useEffect(()=>{
+        // if(fails.length > 0){
+        //     const forbiddenEx = 
+        //         fails.find(el => el.ex.find(ex => ex.extensions?.code?.toString().toLocaleLowerCase() === ""))
+        // }
+        console.log("FAILS: ", fails);
+    },[fails])
 
 
+    // GETTING CATALOG
+    const { data, error, fetchMore } = useQuery<IProducts_Q, IProductFiltersVariables>(
+        GRT_FILTERED_PRODUCTS_LIST, {
+        variables: fullProdVars,
+        fetchPolicy: "network-only"
+    }
+    );
+
+    // CATALOG FILTERING
     useEffect(() => {
-        if (!fetchedAll && pagination.offset > 0)
-            fetchMore<IProducts_Q, IProductFiltersVariables>({
-                variables: {
-                    ...fullProdVars,
-                    limit: pagination?.limit,
-                    offset: pagination?.offset,
-                }
-            }).then(el => {
-                    if (!(el?.data?.Products?.length > 0))
-                        setFetchedAll(true);
-                }
-            ).catch(ex => console.error(ex));
-
-    }, [pagination, fetchedAll])
-
-
-    useEffect(() => {
-        if (data && !cartData.called && getSessionFromLS())
-            getCartData()
-                .then(el => {
-                    const newCartItems = new Array<ICartItem_properties_data>();
-                    el.data?.cartCollection_by_id?.cart_model.map(_el => {
-                        newCartItems.push({
-                            productId: _el.product_id,
-                            quantity: _el.quantity
-                        } as ICartItem_properties_data)
-                    })
-                    setCartProducts(newCartItems);
-                })
-    }, [data, cartData, getSessionFromLS])
-
-
-    useEffect(() => {
-
         const timeOutId = setTimeout(() => {
 
             setFetchedAll(false);
@@ -167,7 +200,6 @@ export const CatalogWrapper: FC<ICatalogWrapper> = ({
 
         return () => clearTimeout(timeOutId);
     }, [catalog?.search]);
-
 
     useEffect(() => {
         if (!catalog.filters || !filtersList)
@@ -202,11 +234,57 @@ export const CatalogWrapper: FC<ICatalogWrapper> = ({
 
     }, [filtersList, catalog.filters])
 
+    const cartItemsUpdeter = useCallback((
+        data: ICartItem[]
+    ) => {
+        const newCartItems = new Array<ICartItem_properties_data>();
+        data?.map(_el => {
+            newCartItems.push({
+                productId: _el.product_id,
+                quantity: _el.quantity
+            } as ICartItem_properties_data)
+        })
+        setCartProducts(newCartItems);
+    }, [setCartProducts])
+
+
+    const cartItemsFetch = useCallback(() => {
+        if (!getCartData)
+            return
+
+        getCartData()
+            .then(el => el?.data ? cartItemsUpdeter(el.data.cartCollection_by_id?.cart_model) : null)
+    }, [getCartData])
+
+    useEffect(() => {
+        if (data)
+            cartItemsFetch();
+    }, [data])
+
+
+    // PAGINATION HANDELING
+    useEffect(() => {
+        if (!fetchedAll && pagination.offset > 0)
+            fetchMore<IProducts_Q, IProductFiltersVariables>({
+                variables: {
+                    ...fullProdVars,
+                    limit: pagination?.limit,
+                    offset: pagination?.offset,
+                }
+            }).then(el => {
+                if (!(el?.data?.Products?.length > 0))
+                    setFetchedAll(true);
+            }
+            ).catch(ex => console.error(ex));
+
+    }, [pagination, fetchedAll])
+
+    // CART MOVEMENTS
     const cartAdder = useCallback<cartAdder_fnc_onAdd>(
         async (id) => {
 
             if (!cartProducts)
-                return
+                return false
 
             const newCart =
                 products_addItem_actionsHelper(cartProducts, id, 1);
@@ -219,12 +297,7 @@ export const CatalogWrapper: FC<ICatalogWrapper> = ({
                 }
             } as ICartCollectionVariables;
 
-            addToCart(
-                vars,
-                (data) => {
-                return data.create_cartCollection_item?.id
-
-            })
+            addToCart(vars)
 
             return true
 
@@ -234,7 +307,7 @@ export const CatalogWrapper: FC<ICatalogWrapper> = ({
         async (id) => {
 
             if (!cartProducts || !cartData?.data?.cartCollection_by_id || !getSessionFromLS())
-                return
+                return false
 
             const newCart =
                 products_removeItem_actionsHelper(cartProducts, id);
@@ -248,23 +321,25 @@ export const CatalogWrapper: FC<ICatalogWrapper> = ({
             } as ICartCollectionVariables;
 
 
-            onMutateCart({variables: vars}).then((el) => {
-                if (el.data?.update_cartCollection_item && !el.errors)
-                    setCartProducts(
-                        redefining_to_ICartItemPropertiesData_redefiningHelper(
-                            el.data.update_cartCollection_item.cart_model
-                        )
-                    )
-            })
+            // onMutateCart({variables: vars}).then((el) => {
+            //     if (el.data?.update_cartCollection_item && !el.errors)
+            //         setCartProducts(
+            //             redefining_to_ICartItemPropertiesData_redefiningHelper(
+            //                 el.data.update_cartCollection_item.cart_model
+            //             )
+            //         )
+            // })
 
             return true
         }, [cartProducts, cartData]);
 
-    const getImageLoader = useCallback<ImageLoader>(({src, width, quality}) => {
+
+    // PRODUCT IMAGE OPTIMIZATIONS
+    const getImageLoader = useCallback<ImageLoader>(({ src, width, quality }) => {
 
         let cloudinary_acc = process.env.NEXT_PUBLIC_CLOUDINARY_ACC
         const imageHelper = new imageLoader_imagesHelper(cloudinary_acc);
-        const newUrl = imageHelper.customImageLoader({src, width, quality});
+        const newUrl = imageHelper.customImageLoader({ src, width, quality });
 
         return newUrl ? newUrl : src
 
@@ -278,9 +353,10 @@ export const CatalogWrapper: FC<ICatalogWrapper> = ({
 
     }, [])
 
+
     return (
-        <div style={{...wrapperStyles}}
-             className={`${wrapper_ClassName} ${styles.wrapper} ${mutatedData?.loading ? styles.isLoading : ""}`}
+        <div style={{ ...wrapperStyles }}
+            className={`${wrapper_ClassName} ${styles.wrapper}`}
         >
             {data && cartProducts ? data.Products.map((el, i) => {
                 return (
@@ -332,7 +408,7 @@ export const CatalogWrapper: FC<ICatalogWrapper> = ({
                 )
             }) : (
                 <>
-                    <div className={styles.loadingWrapper}/>
+                    <div className={styles.loadingWrapper} />
                 </>
             )
             }
