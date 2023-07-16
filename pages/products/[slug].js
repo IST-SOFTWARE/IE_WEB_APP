@@ -130,7 +130,7 @@ export default function ProductPage({ data }) {
 
       <DefaultLandingPage
           landingDescription={{
-            title: "",
+            title: null,
             titleOffset: 100,
           }}
           pageId={"ProductPage"}

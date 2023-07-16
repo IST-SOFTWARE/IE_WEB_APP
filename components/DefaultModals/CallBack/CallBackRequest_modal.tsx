@@ -20,8 +20,9 @@ import { useQuery } from "@apollo/client";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { useISTInputFelt } from "../../UI/ISTInput/useISTInputFelt";
-import en from "../../../locales/en";
 import ru from "../../../locales/ru";
+import en from "../../../locales/en";
+
 
 export interface ICB_RequestModalData {
   name: string;
@@ -145,13 +146,13 @@ const CallBackRequest_modal: FC<ICallBack_Request> = ({
   return (
     <>
       <ISTComponentWrapper
-        title={t.callBackRequest_modal.name}
+        title={t.callBackRequest.name}
         wrapperClass={styles.inputWrapper}
       >
         <ISTInput
           ref={nameRef}
           inputType={inputTypesVars.any_string}
-          placeholder={t.callBackRequest_modal.firstName}
+          placeholder={t.callBackRequest.firstName}
           required={true}
           outDataSetter={setName}
           actualData={name}
@@ -163,13 +164,13 @@ const CallBackRequest_modal: FC<ICallBack_Request> = ({
       </ISTComponentWrapper>
 
       <ISTComponentWrapper
-        title={t.callBackRequest_modal.phone}
+        title={t.callBackRequest.phone}
         wrapperClass={styles.inputWrapper}
       >
         <ISTInput
           ref={phoneRef}
           inputType={inputTypesVars.phone}
-          placeholder={t.callBackRequest_modal.placeholderPhone}
+          placeholder={t.callBackRequest.placeholderPhone}
           required={true}
           outDataSetter={setPhone}
           actualData={phone}
@@ -190,7 +191,7 @@ const CallBackRequest_modal: FC<ICallBack_Request> = ({
             },
           }}
           title={{
-            caption: t.callBackRequest_modal.send,
+            caption: t.callBackRequest.send,
           }}
           onClick={() => sendNewCallRequest_handler()}
         />
@@ -240,7 +241,7 @@ const CallBackRequest_modal: FC<ICallBack_Request> = ({
                   }}
                 />
               </span>
-              <a>{t.callBackRequest_modal.close}</a>
+              <a>{t.callBackRequest.close}</a>
             </div>
           </div>
         </div>
@@ -255,7 +256,7 @@ const CallBackRequest_modal: FC<ICallBack_Request> = ({
               setContactsDeployed(!contactsDeployed);
             }}
           >
-            {t.callBackRequest_modal.contacts}
+            {t.callBackRequest.contacts}
           </a>
         </div>
       ) : null}
