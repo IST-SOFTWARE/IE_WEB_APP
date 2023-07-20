@@ -16,18 +16,7 @@ export default {
     send: "Send a request",
     ourPhone: "Our phone",
   },
-
-  //callBack modal FC
-  callBackRequest: {
-    name: "Name",
-    firstName: "Eugene",
-    phone: "Phone",
-    send: "Send",
-    close: "Close",
-    contacts: "Contacts",
-    placeholderPhone: "+1(000)000-00-00",
-  },
-
+  
   //OurPartnersPage FC
   ourPartnersPage: {
     joinUs: "Join us and you!",

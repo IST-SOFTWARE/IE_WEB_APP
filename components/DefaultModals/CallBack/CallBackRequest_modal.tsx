@@ -23,16 +23,26 @@ import { useISTInputFelt } from "../../UI/ISTInput/useISTInputFelt";
 import ru from "../../../locales/ru";
 import en from "../../../locales/en";
 
-
 export interface ICB_RequestModalData {
   name: string;
   phone: string;
+}
+
+export interface ICallBackRequest_translation {
+  name: string;
+  firstName: string;
+  phone: string;
+  send: string;
+  close: string;
+  contacts: string;
+  placeholderPhone: string;
 }
 
 interface ICallBack_Request {
   getContactsQuery: DocumentNode;
   getContactVars: IOurContactsVars;
   reqStatusSetter: Dispatch<ICB_RequestModalData>;
+  translation: ICallBackRequest_translation;
 }
 
 interface IContactsList {
@@ -44,6 +54,7 @@ const CallBackRequest_modal: FC<ICallBack_Request> = ({
   getContactsQuery,
   getContactVars,
   reqStatusSetter,
+  translation,
 }) => {
   const [name, setName] = useState<string>("");
   const [phone, setPhone] = useState<string>("");
@@ -58,6 +69,7 @@ const CallBackRequest_modal: FC<ICallBack_Request> = ({
 
   const phoneLinkRef = useRef<HTMLAnchorElement>(null);
   const contactsList = useRef<HTMLDivElement>(null);
+
   const router = useRouter();
   const t = router.locale === "ru-RU" ? ru : en;
 

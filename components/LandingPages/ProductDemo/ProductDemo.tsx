@@ -1,4 +1,10 @@
-import React, { FC, useCallback, useEffect, useMemo, useState } from "react";
+import React, {
+  FC,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import { IPageOfLanding } from "../../../queries/landingPage";
 import styles from "../../../styles/LandingStyles/PagesComponents/ProductDemo/ProdDemo.module.scss";
 import getGallery, { IGallery } from "../GalleryTypes";
@@ -8,23 +14,34 @@ import useBaseModal from "../../ISTModals/useBaseModal";
 import PuWrapper from "../../DefaultModals/popUp/puWrapper";
 import CallBackRequest_modal, {
   ICB_RequestModalData,
+  ICallBackRequest_translation,
 } from "../../DefaultModals/CallBack/CallBackRequest_modal";
 import { GET_OUR_CONTACTS_QUERY } from "../../../queries/landingFeatures/ourContactsQuery";
 import { toc_cb_req } from "../../DefaultModals/table_of_contents/CallBack/toc_cb_request";
 import { toc_cb_response } from "../../DefaultModals/table_of_contents/CallBack/toc_cb_response";
 import CallBackResponse_modal from "../../DefaultModals/CallBack/CallBackResponse_modal";
 import { useRouter } from "next/router";
-import en from "../../../locales/en";
-import ru from "../../../locales/ru";
+import ru_upd from "../../../locales/callBackRequest/ru";
+import en_upd from "../../../locales/callBackRequest/en";
 import { modalsBasics } from "../../ISTModals/modalSetter";
+import { EN_LOCALE, RU_LOCALE } from "../../../locales/locales";
+import { useTransition } from "../../../locales/hook/useTranslation";
+import ru from "../../../locales/ru";
+import en from "../../../locales/en";
 
 interface IPage {
   page: IPageOfLanding;
 }
 
 const ProductDemo: FC<IPage> = ({ page }) => {
+
   const router = useRouter();
   const t = router.locale === "ru-RU" ? ru : en;
+
+  const { currentTranslation } = useTransition<ICallBackRequest_translation>([
+    { locale: RU_LOCALE, translation: ru_upd },
+    { locale: EN_LOCALE, translation: en_upd },
+  ]);
 
   const [galleryContent, setGalleryContent] = useState<IGallery>(null);
 
@@ -53,27 +70,26 @@ const ProductDemo: FC<IPage> = ({ page }) => {
   );
 
   useEffect(() => {
-    if (!modalComponent || !router) return 
-    
-      modalComponent.setOnClose = () => onCloser(toc_cb_req.typeName);
+    if (!modalComponent || !router) return;
 
-      modalComponent.editModals(
-        [
-          {
-            typeName: toc_cb_req.typeName,
-            _header: t.productDemo.headerReq,
-            _paragraph: t.productDemo.paragraphReq,
-          } as modalsBasics,
+    modalComponent.setOnClose = () => onCloser(toc_cb_req.typeName);
 
-          {
-            typeName: toc_cb_response.typeName,
-            _header: t.productDemo.headerRes,
-            _paragraph: t.productDemo.paragraphRes,
-          } as modalsBasics,
-        ],
-        0
-      );
-    
+    modalComponent.editModals(
+      [
+        {
+          typeName: toc_cb_req.typeName,
+          _header: t.productDemo.headerReq,
+          _paragraph: t.productDemo.paragraphReq,
+        } as modalsBasics,
+
+        {
+          typeName: toc_cb_response.typeName,
+          _header: t.productDemo.headerRes,
+          _paragraph: t.productDemo.paragraphRes,
+        } as modalsBasics,
+      ],
+      0
+    );
   }, [modalComponent, router, t]);
 
   useEffect(() => {
@@ -164,6 +180,7 @@ const ProductDemo: FC<IPage> = ({ page }) => {
               getContactsQuery={GET_OUR_CONTACTS_QUERY}
               getContactVars={{ code: "en-US" }}
               reqStatusSetter={setNewCB_data}
+              translation={currentTranslation?.translation}
             />
           ) : modalComponent.isCurrentModal(toc_cb_response.typeName) ? (
             <CallBackResponse_modal />
