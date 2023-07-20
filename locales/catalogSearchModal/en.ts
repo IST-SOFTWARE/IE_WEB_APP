@@ -3,10 +3,10 @@ import { ICatalogSearchModal_translation } from "../../components/DefaultModals/
 
 
 export default {
-    search: "Search",
-    request: "Enter your request",
+    search: "EN Translation",
+    request: "EN Translation",
 
     //product block
-    product: "Products",
-    searchProduct: "Start typing a query to search for a product",
+    product: "EN Translation",
+    searchProduct: "EN Translation",
   } as ICatalogSearchModal_translation

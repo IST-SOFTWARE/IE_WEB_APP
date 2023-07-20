@@ -1,10 +1,4 @@
-import React, {
-  FC,
-  useCallback,
-  useEffect,
-  useMemo,
-  useState,
-} from "react";
+import React, { FC, useCallback, useEffect, useMemo, useState } from "react";
 import { IPageOfLanding } from "../../../queries/landingPage";
 import styles from "../../../styles/LandingStyles/PagesComponents/ProductDemo/ProdDemo.module.scss";
 import getGallery, { IGallery } from "../GalleryTypes";
@@ -29,16 +23,29 @@ import { useTransition } from "../../../locales/hook/useTranslation";
 import ru from "../../../locales/ru";
 import en from "../../../locales/en";
 
-interface IPage {
-  page: IPageOfLanding;
+export interface IProductDemo_translation {
+  more: string;
+  openCatalog: string;
+  questions: string;
+  leave: string;
+  request: string;
+  call: string;
+  headerReq: string;
+  paragraphReq: string;
+  headerRes: string;
+  paragraphRes: string;
 }
 
-const ProductDemo: FC<IPage> = ({ page }) => {
+interface IPage {
+  page: IPageOfLanding;
+  translation: IProductDemo_translation;
+}
 
+const ProductDemo: FC<IPage> = ({ page, translation }) => {
   const router = useRouter();
   const t = router.locale === "ru-RU" ? ru : en;
 
-  const { currentTranslation } = useTransition<ICallBackRequest_translation>([
+  const currentTranslation = useTransition<ICallBackRequest_translation>([
     { locale: RU_LOCALE, translation: ru_upd },
     { locale: EN_LOCALE, translation: en_upd },
   ]);
@@ -78,14 +85,14 @@ const ProductDemo: FC<IPage> = ({ page }) => {
       [
         {
           typeName: toc_cb_req.typeName,
-          _header: t.productDemo.headerReq,
-          _paragraph: t.productDemo.paragraphReq,
+          _header: translation?.headerReq,
+          _paragraph: translation?.paragraphReq,
         } as modalsBasics,
 
         {
           typeName: toc_cb_response.typeName,
-          _header: t.productDemo.headerRes,
-          _paragraph: t.productDemo.paragraphRes,
+          _header: translation?.headerRes,
+          _paragraph: translation?.paragraphRes,
         } as modalsBasics,
       ],
       0
@@ -129,7 +136,7 @@ const ProductDemo: FC<IPage> = ({ page }) => {
                       opacity: 0,
                     }}
                   >
-                    {t.productDemo.more}...
+                    {translation?.more}...
                   </button>
                 </Link>
               </div>
@@ -152,23 +159,23 @@ const ProductDemo: FC<IPage> = ({ page }) => {
               />
             </div>
             <div className={styles.textBlock}>
-              <p>{t.productDemo.openCatalog}</p>
+              <p>{translation?.openCatalog}</p>
             </div>
           </div>
         </div>
 
         <div className={styles.helpBlock}>
-          <p>{t.productDemo.questions}</p>
+          <p>{translation?.questions}</p>
           <a>
-            {t.productDemo.leave}{" "}
+            {translation?.leave}{" "}
             <span
               onClick={() => {
                 handleCB_Request();
               }}
             >
-              {t.productDemo.request}
+              {translation?.request}
             </span>{" "}
-            {t.productDemo.call}
+            {translation?.call}
           </a>
         </div>
       </div>

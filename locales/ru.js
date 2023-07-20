@@ -1,61 +1,19 @@
 // eslint-disable-next-line import/no-anonymous-default-export
 export default {
   //header FC
-  header: {
-    catalog: "Каталог",
-    search: "Поиск",
-    contacts: "Контакты",
-  },
 
   //callBack FC
-  callBack: {
-    call: "Заказать звонок",
-    name: "Имя",
-    phone: "Телефон",
-    send: "Отправить заявку",
-    ourPhone: "Наш телефон",
-  },
+
 
   //OurPartnersPage FC
-  ourPartnersPage: {
-    joinUs: "Присоединяйся и ты!",
-    send: "Отправь заявку на звонок и мы перезвоним! Или можешь связаться с нами самостоятельно",
-    orderCall: "Заказать звонок",
-    contact: "Свяжусь самостоятельно",
-  },
 
   //productDemo FC
-  productDemo: {
-    more: "Подробнее",
-    openCatalog: "Открыть каталог",
-    questions: "Возникли вопросы",
-    leave: "Оставь ",
-    request: "заявку ",
-    call: "и мы перезвоним!",
-    headerReq: "Заказать звонок",
-    paragraphReq: "Есть вопросы? Оставь заявку, а мы перезвоним!",
-    headerRes: "Спасибо за сотрудничество!",
-    paragraphRes: "Мы получили ваши данные и скоро свяжемся с вами",
-  },
 
   // footer FC
-  footer: {
-    contacts: "Контакты",
-    phone: "Наш телефон",
-    email: "Наш Email",
-    address: "Наш Адрес",
-  },
+
 
   //pages
 
- 
-
-  hintsCatalogSearchCollectionName: {
-    manufacturer: "Производители",
-    unit: "Узлы",
-    type: "Типы",
-    availability: "Наличие",
-  },
 
   //mobile layout
   istMobileBar: {
@@ -69,13 +27,6 @@ export default {
   },
 
   //CatalogCartPageMobileModal FC
-  catalogCartPageMobileModal: {
-    currency: false,
-    select: "Выбрано",
-    amount: "Сумма",
-    currencyStyle: "₽",
-    order: "Оформить заказ",
-  },
 
   //ISTCartTotalSum
   istCartTotalSum: {
