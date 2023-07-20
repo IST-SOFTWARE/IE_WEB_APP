@@ -4,7 +4,7 @@ import useBaseModal from "../ISTModals/useBaseModal";
 import {toc_catalog_search} from "../DefaultModals/table_of_contents/Catalog/toc_catalog_search";
 import {toc_catalog_full_prod_list} from "../DefaultModals/table_of_contents/Catalog/toc_catalog_full_prod_list";
 import CatalogWrapper_modal from "../DefaultModals/Catalog/Wrappers/catalogWrapper_modal";
-import CatalogSearchModal from "../DefaultModals/Catalog/Pages/catalogSearch_modal";
+import CatalogSearchModal, { ICatalogSearchModal_translation } from "../DefaultModals/Catalog/Pages/catalogSearch_modal";
 import Header from "../Header/Header";
 import Footer from "../Footer/Footer";
 import {useDispatch} from "react-redux";
@@ -25,6 +25,9 @@ import {getData} from "../../queries/fetch/getData";
 import {addCurrency, addCurrencyAndApply, setCurrencyById, setRegion} from "../../store/slices/regionSlice/regionSlice";
 import {available_AdditionalFilters} from "../Catalog/Filters/Additional/AdditionalFilters";
 import {EN_LOCALE, new_EN_Currency, RU_LOCALE} from "../../locales/locales";
+import { useTransition } from "../../locales/hook/useTranslation";
+import ru from "../../locales/catalogSearchModal/ru";
+import en from "../../locales/catalogSearchModal/en";
 
 
 interface ILandingLayout {
@@ -40,7 +43,15 @@ type currencyValues = {
     };
 };
 
+
+
+
 export const LandingLayout: FC<ILandingLayout> = ({children}) => {
+
+    const { currentTranslation } = useTransition<ICatalogSearchModal_translation>([
+        { locale: RU_LOCALE, translation: ru },
+        { locale: EN_LOCALE, translation: en },
+      ]);
 
     const CURRENCY_FETCH = process.env.NEXT_PUBLIC_CURRENCY_FETCH;
     const CURRENCY_PERCENT_DIFF = process.env.NEXT_PUBLIC_CURRENCY_PERCENT_DIFF
@@ -205,6 +216,7 @@ export const LandingLayout: FC<ILandingLayout> = ({children}) => {
                         {modalComponent.isCurrentModal(toc_catalog_search.typeName) ? (
                             <CatalogSearchModal
                                 onOpenFullProdList={openFullProdList}
+                                translation={currentTranslation?.translation}
                             />
                         ) : null}
 

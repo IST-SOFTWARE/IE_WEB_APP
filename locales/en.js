@@ -49,14 +49,7 @@ export default {
 
   //pages
 
-  catalogSearchModal: {
-    search: "Search",
-    request: "Enter your request",
 
-    //product block
-    product: "Products",
-    searchProduct: "Start typing a query to search for a product",
-  },
 
   hintsCatalogSearchCollectionName: {
     manufacturer: "Manufacturers",
@@ -129,4 +122,8 @@ export default {
     out: "Out of stock",
     check: "Check by phone",
   },
+
+  buttonsTitle: {
+    allResult: "All results"
+  }
 };

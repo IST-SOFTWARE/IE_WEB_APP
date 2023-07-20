@@ -13,22 +13,35 @@ import { ICatalogFiltersType } from "../../../../store/slices/common/catalogFilt
 import {CatalogWrapper} from "../../../ProductsWrapper/catalogWrapper/catalogWrapper";
 import cloudSearch from "../../../../public/Modals/Catalog/cloudSearch.svg";
 import { useRouter } from "next/router";
+import ISTButtonN from "../../../UI/ISTButton/ISTButtonN";
 import en from "../../../../locales/en";
 import ru from "../../../../locales/ru";
-import ISTButtonN from "../../../UI/ISTButton/ISTButtonN";
+
+
+export interface ICatalogSearchModal_translation {
+  search: string,
+  request: string,
+
+  //product block
+  product: string,
+  searchProduct:string ,
+}
+
 
 interface ICatalogSearchModal{
  onOpenFullProdList: (...props: any) => any
+ translation: ICatalogSearchModal_translation;
 }
 
 const CatalogSearchModal:FC<ICatalogSearchModal> = ({
-  onOpenFullProdList
+  onOpenFullProdList,
+  translation
 }) => {
 
   const inputRef = useRef<HTMLInputElement>(null);
 
   const router = useRouter();
-  const t = router.locale === "ru-RU" ? ru : en;
+  const t = router.locale === "ru-RU" ? en : ru;
 
   const dispatch = useDispatch();
   const catalog = useAppSelector((state) => state.catalog);
@@ -80,14 +93,14 @@ const CatalogSearchModal:FC<ICatalogSearchModal> = ({
         className={`d-none d-lg-block col-0 col-lg-6 ${styles.catalogFiltersModal_comp}`}
       >
         <div className={styles.headerContainer}>
-          <header className={styles.header}>{t.catalogSearchModal.search}</header>
+          <header className={styles.header}>{translation?.search}</header>
         </div>
 
         <div className={styles.inputAndHints_block}>
           <IstInput
             ref={inputRef}
             inputType={inputTypesVars.any_string}
-            placeholder={t.catalogSearchModal.request}
+            placeholder={translation?.request}
             required={true}
             outDataSetter={setSearch_helper}
             actualData={catalog?.search}
@@ -144,13 +157,13 @@ const CatalogSearchModal:FC<ICatalogSearchModal> = ({
           className={styles.headerContainer}
           style={{ justifyContent: "space-between" }}
         >
-          <header className={styles.header}>{t.catalogSearchModal.product}</header>
+          <header className={styles.header}>{translation?.product}</header>
 
           {catalog?.search  && (
             <div style={{ width: "180px", alignSelf: "center" }}>
               <ISTButtonN
                 onClick={onOpenFullProdList}
-                title={{ caption: "Все результаты" }}
+                title={{ caption: t.buttonsTitle.allResult }}
                 dark={{
                   solid: false,
                   style: {
@@ -192,7 +205,7 @@ const CatalogSearchModal:FC<ICatalogSearchModal> = ({
                       }}
                   />
                   <div className={styles.noResultsText}>
-                    {t.catalogSearchModal.searchProduct}
+                    {translation?.searchProduct}
                   </div>
                 </div>
             )}

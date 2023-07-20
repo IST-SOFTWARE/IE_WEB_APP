@@ -20,8 +20,7 @@ import { useQuery } from "@apollo/client";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { useISTInputFelt } from "../../UI/ISTInput/useISTInputFelt";
-import ru from "../../../locales/ru";
-import en from "../../../locales/en";
+
 
 export interface ICB_RequestModalData {
   name: string;
@@ -69,6 +68,8 @@ const CallBackRequest_modal: FC<ICallBack_Request> = ({
 
   const phoneLinkRef = useRef<HTMLAnchorElement>(null);
   const contactsList = useRef<HTMLDivElement>(null);
+
+  const router = useRouter();
 
   //FOR OUR CONTACTS IN MODAL 👇
   const { data } = useQuery<IOurContacts, IOurContactsVars>(getContactsQuery, {

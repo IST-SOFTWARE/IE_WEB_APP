@@ -48,14 +48,7 @@ export default {
 
   //pages
 
-  catalogSearchModal: {
-    search: "Поиск",
-    request: "Введите свой запрос",
-
-    //product block
-    product: "Товары",
-    searchProduct: "Начните вводить запрос для поиска товара",
-  },
+ 
 
   hintsCatalogSearchCollectionName: {
     manufacturer: "Производители",
@@ -128,4 +121,8 @@ export default {
     out: "Нет в наличии",
     check: "Уточните по телефону",
   },
+
+  buttonsTitle: {
+    allResult: "Все результаты"
+  }
 };
