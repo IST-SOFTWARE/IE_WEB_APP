@@ -18,7 +18,7 @@ const CartPage_index = ({}) => {
   const [numOfSelected, setNumOfSelected] = useState<number>(0);
   const [totalSum, setTotalSum] = useState<number>(0);
 
-  const { currentTranslation } = useTransition<ICartTotalSum_translation>([
+  const currentTranslation = useTransition<ICartTotalSum_translation>([
     { locale: RU_LOCALE, translation: ru_upd },
     { locale: EN_LOCALE, translation: en_upd },
   ]);
