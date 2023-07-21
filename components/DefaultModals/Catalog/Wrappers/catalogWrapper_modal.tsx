@@ -29,6 +29,10 @@ import { getNamedFiltersListItem_filtersHelper } from "../../../../helpers/Catal
 import { ICallBackRequest_translation } from "../../CallBack/CallBackRequest_modal";
 import ru_catalogCartPageMobileModal from "../../../../locales/catalogCartPageMobileModal/ru";
 import en_catalogCartPageMobileModal from "../../../../locales/catalogCartPageMobileModal/en";
+import ru_catalogWrapperModal_mobileBar from "../../../../locales/istMobileBar/ru"
+import en_catalogWrapperModal_mobileBar from "../../../../locales/istMobileBar/en"
+
+
 
 const CatalogWrapperModal: FC<ICatalogWrapper> = ({
   children,
@@ -65,6 +69,12 @@ const CatalogWrapperModal: FC<ICatalogWrapper> = ({
       { locale: EN_LOCALE, translation: en_catalogCartPageMobileModal },
     ]);
 
+  const currentTranslationIstMobileBar = useTransition([
+    { locale: RU_LOCALE, translation: ru_catalogWrapperModal_mobileBar },
+    { locale: EN_LOCALE, translation: en_catalogWrapperModal_mobileBar },
+  ])
+
+
   const t = router.locale === "ru-RU" ? ru : en;
 
   useEffect(() => {
@@ -74,13 +84,13 @@ const CatalogWrapperModal: FC<ICatalogWrapper> = ({
       [
         {
           typeName: toc_filtersList_page_mobile.typeName,
-          _header: t.istMobileBar.filters,
+          _header: t.modalComponent.filters,
           _paragraph: "",
         },
         toc_filter_page_mobile,
         {
           typeName: toc_cart_page_mobile.typeName,
-          _header: t.istMobileBar.myCart,
+          _header: t.modalComponent.myCart,
           _paragraph: "",
         },
       ],
@@ -234,6 +244,7 @@ const CatalogWrapperModal: FC<ICatalogWrapper> = ({
                 state: searchingState,
                 onBlur: switchMobileSearching,
               }}
+              translation={currentTranslationIstMobileBar?.translation}
             />
           </div>
         </div>
