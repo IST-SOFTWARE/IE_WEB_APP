@@ -2,8 +2,6 @@ import { useEffect, useRef, useState } from "react";
 
 import styles from "../../styles/ProductPage/ProductPage.module.css";
 
-import Head from "next/head";
-
 import LabelLoader from "../../legacy/components/ModalComponents/LabelLoader";
 import ComponentLoader from "../../legacy/components/ComponentLoader";
 import ReplacementItem from "../../legacy/components/ProductPage/ReplacementItem";
@@ -20,18 +18,14 @@ import { cartCreateAct, inCart } from "../../legacy/cartActions/cartActions";
 
 import ISTButtonN from "../../components/UI/ISTButton/ISTButtonN";
 
-import ru from "../../locales/ru";
-import en from "../../locales/en";
 
-import { useRouter } from "next/router";
 import Image from "next/image";
 import Link from "next/link";
 import DefaultLandingPage from "../../components/LandingPages/DefaultLandingPage";
 
 import { useTransition } from "../../locales/hook/useTranslation";
 import { EN_LOCALE, RU_LOCALE } from "../../locales/locales";
-import internal from "stream";
-import { Interface } from "readline";
+
 
 import ru_productPage from "../../locales/productPage/ru";
 import en_productPage from "../../locales/productPage/en";
@@ -42,9 +36,6 @@ export default function ProductPage({ data }) {
     { locale: RU_LOCALE, translation: ru_productPage },
     { locale: EN_LOCALE, translation: en_productPage },
   ]);
-
-  const router = useRouter();
-  const t = router.locale === "ru-RU" ? ru : en;
 
   const [isPuType, setIsPuType] = useState("");
 
@@ -127,7 +118,7 @@ export default function ProductPage({ data }) {
           addToCartBtn.classList.remove(`${styles.active}`);
       }
     }
-  }, [prodInCart, productData]);
+  }, [prodInCart, productData, currentTranslationProductPage]);
 
   const addToCart = (id, q, p) => {
     if (!prodInCart) {

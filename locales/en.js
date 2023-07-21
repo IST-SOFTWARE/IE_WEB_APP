@@ -20,8 +20,8 @@ export default {
 
 
   modalComponent: {
-    myCart: "My cart",
-    filters: "Filters",
+    myCart: "EN Translation",
+    filters: "EN Translation",
   },
 
 
@@ -36,12 +36,12 @@ export default {
 
   //AvailabilityStatus
   availabilityStatus: {
-    availability: "Available in stock",
-    out: "Out of stock",
-    check: "Check by phone",
+    availability: "EN Translation",
+    out: "EN Translation",
+    check: "EN Translation",
   },
 
   buttonsTitle: {
-    allResult: "All results"
+    allResult: "EN Translation"
   }
 };
