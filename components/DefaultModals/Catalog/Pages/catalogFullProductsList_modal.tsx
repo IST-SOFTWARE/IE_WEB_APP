@@ -25,7 +25,6 @@ import {useTransition} from "../../../../locales/hook/useTranslation";
 import {IFiltersLocale} from "../../../../locales/filters/filtersLocale";
 import {EN_LOCALE, RU_LOCALE} from "../../../../locales/locales";
 
-
 const CatalogFullProductsListModal = ({}) => {
 
     const filtersList = useAppSelector((state) => state.filtersList);
@@ -56,7 +55,7 @@ const CatalogFullProductsListModal = ({}) => {
 
   const {currentTranslation} = useTransition<IFiltersLocale>([
         {locale: RU_LOCALE, translation: upd_ru},
-        {locale: EN_LOCALE, translation:upd_en}
+        {locale: EN_LOCALE, translation: upd_en}
     ]);
 
     // Redux catalog state & dispatch
@@ -238,8 +237,6 @@ const CatalogFullProductsListModal = ({}) => {
             </div>
 
             {/*Products bock*/}
-
-
             <div className={"col-12 col-lg-8 p-0 pl-lg-2 d-flex flex-wrap"}>
                 <CatalogWrapper
                     itemWrapper_ClassName={styles.productCardVariant_Block}
