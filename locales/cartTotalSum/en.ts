@@ -1,9 +1,9 @@
 import {ICartTotalSum_translation} from "../../components/UI/ISTCartTotalSum";
 
 export default {
-    title: "Your cart",
-    products: "Products",
-    sale: "Discount",
-    totalSum: "Sum",
-    order: "Checkout"
+    title: "EN Translation",
+    products: "EN Translation",
+    sale: "EN Translation",
+    totalSum: "EN Translation",
+    order: "EN Translation",
 } as ICartTotalSum_translation

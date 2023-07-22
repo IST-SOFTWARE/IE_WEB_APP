@@ -1,10 +1,4 @@
-import React, {
-  FC,
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import React, { FC, useCallback, useEffect, useRef, useState } from "react";
 import styles from "../../../../styles/Modals/catalog/catalogWrapper.module.scss";
 import { useDispatch } from "react-redux";
 import { incOffset } from "../../../../store/slices/catalogSlices/catalogPaginationSlice";
@@ -17,26 +11,34 @@ import CatalogFiltersListPageMobileModal from "../Pages/mobile/Pages/catalogFilt
 import { toc_filtersList_page_mobile } from "../../table_of_contents/Catalog/mobile/toc_filtersList_page_mobile";
 import { CatalogFilterPageMobileModal } from "../Pages/mobile/Pages/catalogFilterPageMobile_modal";
 import { toc_cart_page_mobile } from "../../table_of_contents/Catalog/mobile/toc_cart_page_mobile";
-import CatalogCartPageMobileModal from "../Pages/mobile/Pages/catalogCartPageMobile_modal";
+import CatalogCartPageMobileModal, {
+  ICatalogCartPageMobileModal_translation,
+} from "../Pages/mobile/Pages/catalogCartPageMobile_modal";
 import { useRouter } from "next/router";
 import ru from "../../../../locales/ru";
 import en from "../../../../locales/en";
-import {ICatalogWrapper} from "./common";
+import { ICatalogWrapper } from "./common";
 import CatalogWrapperModal_mobileBar from "./components/CatalogWrapperModal_mobileBar";
 import CatalogWrapperModal_headerWrapper from "./components/CatalogWrapperModal_headerWrapper";
-import {useTransition} from "../../../../locales/hook/useTranslation";
-import {EN_LOCALE, RU_LOCALE} from "../../../../locales/locales";
+import { useTransition } from "../../../../locales/hook/useTranslation";
+import { EN_LOCALE, RU_LOCALE } from "../../../../locales/locales";
 import en_upd from "../../../../locales/filters/en";
 import ru_upd from "../../../../locales/filters/ru";
-import {IFiltersLocale} from "../../../../locales/filters/filtersLocale";
-import {getNamedFiltersListItem_filtersHelper} from "../../../../helpers/Catalog/filters";
+import { IFiltersLocale } from "../../../../locales/filters/filtersLocale";
+import { getNamedFiltersListItem_filtersHelper } from "../../../../helpers/Catalog/filters";
+import { ICallBackRequest_translation } from "../../CallBack/CallBackRequest_modal";
+import ru_catalogCartPageMobileModal from "../../../../locales/catalogCartPageMobileModal/ru";
+import en_catalogCartPageMobileModal from "../../../../locales/catalogCartPageMobileModal/en";
+import ru_catalogWrapperModal_mobileBar from "../../../../locales/istMobileBar/ru"
+import en_catalogWrapperModal_mobileBar from "../../../../locales/istMobileBar/en"
+
+
 
 const CatalogWrapperModal: FC<ICatalogWrapper> = ({
-   children,
-   data ,
-   searching
+  children,
+  data,
+  searching,
 }) => {
-
   const dispatch = useDispatch();
   const childrenRef = useRef<HTMLDivElement>(null);
 
@@ -48,17 +50,30 @@ const CatalogWrapperModal: FC<ICatalogWrapper> = ({
   const [currentFilterPage, setCurrentFilterPage] =
     useState<keyof ICatalogFiltersType>();
 
-  const [searchingState, setSearchingState] =
-    useState<boolean>(searching === undefined ? false: searching);
+  const [searchingState, setSearchingState] = useState<boolean>(
+    searching === undefined ? false : searching
+  );
 
   const [catalogModalsState, setCatalogModalsState] = useState<boolean>(false);
 
   const router = useRouter();
 
-  const {currentTranslation} = useTransition<IFiltersLocale>([
-      {locale: RU_LOCALE, translation: ru_upd},
-      {locale: EN_LOCALE, translation: en_upd}
+  const currentTranslation = useTransition<IFiltersLocale>([
+    { locale: RU_LOCALE, translation: ru_upd },
+    { locale: EN_LOCALE, translation: en_upd },
+  ]);
+
+  const currentTranslationCatalogCartPageMobile =
+    useTransition<ICatalogCartPageMobileModal_translation>([
+      { locale: RU_LOCALE, translation: ru_catalogCartPageMobileModal },
+      { locale: EN_LOCALE, translation: en_catalogCartPageMobileModal },
+    ]);
+
+  const currentTranslationIstMobileBar = useTransition([
+    { locale: RU_LOCALE, translation: ru_catalogWrapperModal_mobileBar },
+    { locale: EN_LOCALE, translation: en_catalogWrapperModal_mobileBar },
   ])
+
 
   const t = router.locale === "ru-RU" ? ru : en;
 
@@ -69,13 +84,13 @@ const CatalogWrapperModal: FC<ICatalogWrapper> = ({
       [
         {
           typeName: toc_filtersList_page_mobile.typeName,
-          _header: t.istMobileBar.filters,
+          _header: t.modalComponent.filters,
           _paragraph: "",
         },
         toc_filter_page_mobile,
         {
           typeName: toc_cart_page_mobile.typeName,
-          _header: t.istMobileBar.myCart,
+          _header: t.modalComponent.myCart,
           _paragraph: "",
         },
       ],
@@ -105,11 +120,9 @@ const CatalogWrapperModal: FC<ICatalogWrapper> = ({
   // MOBILE MENU ACTIONS:
 
   const handleHideMobileModal = useCallback(() => {
-
     modalComponent.switch(false);
     setCatalogModalsState(false);
-    setSearchingState(false)
-
+    setSearchingState(false);
   }, [setCatalogModalsState, setSearchingState, modalComponent]);
 
   const handleRouteBackMobileModal = useCallback(() => {
@@ -124,7 +137,9 @@ const CatalogWrapperModal: FC<ICatalogWrapper> = ({
     (designation: keyof ICatalogFiltersType) => {
       modalComponent.getModalByName(
         toc_filter_page_mobile.typeName
-      ).modal._header = currentTranslation ? getNamedFiltersListItem_filtersHelper(designation, currentTranslation) : "FILTER";
+      ).modal._header = currentTranslation
+        ? getNamedFiltersListItem_filtersHelper(designation, currentTranslation)
+        : "FILTER";
       modalComponent
         .applyModalByName(toc_filter_page_mobile.typeName)
         .then(() => {
@@ -171,7 +186,6 @@ const CatalogWrapperModal: FC<ICatalogWrapper> = ({
     return false;
   }, [modalComponent]);
 
-
   return (
     <>
       <div
@@ -185,13 +199,12 @@ const CatalogWrapperModal: FC<ICatalogWrapper> = ({
             maxWidth: "1480px",
           }}
         >
-
           {/*   HEADER  */}
 
-            <CatalogWrapperModal_headerWrapper
-                data={data}
-                searching={searching}
-            />
+          <CatalogWrapperModal_headerWrapper
+            data={data}
+            searching={searching}
+          />
 
           <div
             id={"CatalogSpace_mobile_modal"}
@@ -213,27 +226,26 @@ const CatalogWrapperModal: FC<ICatalogWrapper> = ({
               searchingState ? styles.searching : ""
             }`}
           >
-
             {/*    MOBILE BAR    */}
 
-              <CatalogWrapperModal_mobileBar
-                search={{
-                  action: switchMobileSearching,
-                }}
-                filters={{
-                  action: handleOpenMobileModal_filtersList,
-                  state: isActive_FiltersMobilePage(),
-                }}
-                cart={{
-                  action: handleOpenMobileModal_myCart,
-                  state: isActive_CartMobilePage(),
-                }}
-                inputOptions={{
-                  state: searchingState,
-                  onBlur: switchMobileSearching,
-                }}
-              />
-
+            <CatalogWrapperModal_mobileBar
+              search={{
+                action: switchMobileSearching,
+              }}
+              filters={{
+                action: handleOpenMobileModal_filtersList,
+                state: isActive_FiltersMobilePage(),
+              }}
+              cart={{
+                action: handleOpenMobileModal_myCart,
+                state: isActive_CartMobilePage(),
+              }}
+              inputOptions={{
+                state: searchingState,
+                onBlur: switchMobileSearching,
+              }}
+              translation={currentTranslationIstMobileBar?.translation}
+            />
           </div>
         </div>
       </div>
@@ -294,7 +306,11 @@ const CatalogWrapperModal: FC<ICatalogWrapper> = ({
             ) : null}
 
             {modalComponent.isCurrentModal(toc_cart_page_mobile.typeName) ? (
-              <CatalogCartPageMobileModal/>
+              <CatalogCartPageMobileModal
+                translation={
+                  currentTranslationCatalogCartPageMobile?.translation
+                }
+              />
             ) : null}
           </ModalMobilePage>
         </CatalogWrapperMobileModal>

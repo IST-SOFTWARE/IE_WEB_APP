@@ -8,14 +8,8 @@ export const useTransition = <TRANSLATION_BASE_TYPE>(
     const router = useRouter();
     const locale = router.locale;
 
-    if(!locale)
-        return
+    if(!locale) return
 
-    const currentTranslation
-        = translations.find(el => el.locale === locale);
-
-    return{
-        currentTranslation
-    }
+    return translations?.find(el => el.locale === locale);
 
 }

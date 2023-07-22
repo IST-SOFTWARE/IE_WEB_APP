@@ -20,8 +20,6 @@ import { useQuery } from "@apollo/client";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { useISTInputFelt } from "../../UI/ISTInput/useISTInputFelt";
-import ru from "../../../locales/ru";
-import en from "../../../locales/en";
 
 
 export interface ICB_RequestModalData {
@@ -29,10 +27,21 @@ export interface ICB_RequestModalData {
   phone: string;
 }
 
+export interface ICallBackRequest_translation {
+  name: string;
+  firstName: string;
+  phone: string;
+  send: string;
+  close: string;
+  contacts: string;
+  placeholderPhone: string;
+}
+
 interface ICallBack_Request {
   getContactsQuery: DocumentNode;
   getContactVars: IOurContactsVars;
   reqStatusSetter: Dispatch<ICB_RequestModalData>;
+  translation: ICallBackRequest_translation;
 }
 
 interface IContactsList {
@@ -44,6 +53,7 @@ const CallBackRequest_modal: FC<ICallBack_Request> = ({
   getContactsQuery,
   getContactVars,
   reqStatusSetter,
+  translation,
 }) => {
   const [name, setName] = useState<string>("");
   const [phone, setPhone] = useState<string>("");
@@ -58,8 +68,8 @@ const CallBackRequest_modal: FC<ICallBack_Request> = ({
 
   const phoneLinkRef = useRef<HTMLAnchorElement>(null);
   const contactsList = useRef<HTMLDivElement>(null);
+
   const router = useRouter();
-  const t = router.locale === "ru-RU" ? ru : en;
 
   //FOR OUR CONTACTS IN MODAL 👇
   const { data } = useQuery<IOurContacts, IOurContactsVars>(getContactsQuery, {
@@ -146,13 +156,13 @@ const CallBackRequest_modal: FC<ICallBack_Request> = ({
   return (
     <>
       <ISTComponentWrapper
-        title={t.callBackRequest.name}
+        title={translation?.name}
         wrapperClass={styles.inputWrapper}
       >
         <ISTInput
           ref={nameRef}
           inputType={inputTypesVars.any_string}
-          placeholder={t.callBackRequest.firstName}
+          placeholder={translation?.firstName}
           required={true}
           outDataSetter={setName}
           actualData={name}
@@ -164,13 +174,13 @@ const CallBackRequest_modal: FC<ICallBack_Request> = ({
       </ISTComponentWrapper>
 
       <ISTComponentWrapper
-        title={t.callBackRequest.phone}
+        title={translation?.phone}
         wrapperClass={styles.inputWrapper}
       >
         <ISTInput
           ref={phoneRef}
           inputType={inputTypesVars.phone}
-          placeholder={t.callBackRequest.placeholderPhone}
+          placeholder={translation?.placeholderPhone}
           required={true}
           outDataSetter={setPhone}
           actualData={phone}
@@ -191,7 +201,7 @@ const CallBackRequest_modal: FC<ICallBack_Request> = ({
             },
           }}
           title={{
-            caption: t.callBackRequest.send,
+            caption: translation?.send,
           }}
           onClick={() => sendNewCallRequest_handler()}
         />
@@ -241,7 +251,7 @@ const CallBackRequest_modal: FC<ICallBack_Request> = ({
                   }}
                 />
               </span>
-              <a>{t.callBackRequest.close}</a>
+              <a>{translation?.close}</a>
             </div>
           </div>
         </div>
@@ -256,7 +266,7 @@ const CallBackRequest_modal: FC<ICallBack_Request> = ({
               setContactsDeployed(!contactsDeployed);
             }}
           >
-            {t.callBackRequest.contacts}
+            {translation?.contacts}
           </a>
         </div>
       ) : null}

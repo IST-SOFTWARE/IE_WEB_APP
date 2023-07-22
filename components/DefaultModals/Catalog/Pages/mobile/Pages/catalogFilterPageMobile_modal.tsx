@@ -25,7 +25,7 @@ export const CatalogFilterPageMobileModal: FC<mobileFilterModal> = ({
     pageDesignation
 }) => {
 
-    const {currentTranslation} = useTransition<IFiltersLocale>([
+    const currentTranslation = useTransition<IFiltersLocale>([
         {locale: RU_LOCALE, translation: ru},
         {locale: EN_LOCALE, translation: en}
     ]);

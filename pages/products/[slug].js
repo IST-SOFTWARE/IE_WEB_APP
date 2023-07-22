@@ -2,8 +2,6 @@ import { useEffect, useRef, useState } from "react";
 
 import styles from "../../styles/ProductPage/ProductPage.module.css";
 
-import Head from "next/head";
-
 import LabelLoader from "../../legacy/components/ModalComponents/LabelLoader";
 import ComponentLoader from "../../legacy/components/ComponentLoader";
 import ReplacementItem from "../../legacy/components/ProductPage/ReplacementItem";
@@ -16,21 +14,28 @@ import BlureProdImage from "../../legacy/components/ProductPage/BlureProdImage";
 
 import { getData } from "../../legacy/queries/getData";
 import { getProductData } from "../../legacy/queries/getProductData";
-import {cartCreateAct, inCart} from "../../legacy/cartActions/cartActions";
+import { cartCreateAct, inCart } from "../../legacy/cartActions/cartActions";
 
 import ISTButtonN from "../../components/UI/ISTButton/ISTButtonN";
 
-import ru from "../../locales/ru";
-import en from "../../locales/en";
 
-import { useRouter } from "next/router";
 import Image from "next/image";
 import Link from "next/link";
 import DefaultLandingPage from "../../components/LandingPages/DefaultLandingPage";
 
+import { useTransition } from "../../locales/hook/useTranslation";
+import { EN_LOCALE, RU_LOCALE } from "../../locales/locales";
+
+
+import ru_productPage from "../../locales/productPage/ru";
+import en_productPage from "../../locales/productPage/en";
+
 export default function ProductPage({ data }) {
-  const router = useRouter();
-  const t = router.locale === "ru-RU" ? ru : en;
+
+  const currentTranslationProductPage = useTransition([
+    { locale: RU_LOCALE, translation: ru_productPage },
+    { locale: EN_LOCALE, translation: en_productPage },
+  ]);
 
   const [isPuType, setIsPuType] = useState("");
 
@@ -95,7 +100,7 @@ export default function ProductPage({ data }) {
       const createOrder = document.querySelector(`.${styles.sendOrderAction}`);
 
       if (addToCartBtn !== null) {
-        addToCartBtn.innerHTML = t.productPage.myCart;
+        addToCartBtn.innerHTML = currentTranslationProductPage?.translation?.myCart;
         addToCartBtn.classList.add(`${styles.active}`);
       }
       // if((createOrder).classList.contains(`${styles.active}`))
@@ -107,13 +112,13 @@ export default function ProductPage({ data }) {
       const createOrder = document.querySelector(`.${styles.sendOrderAction}`);
 
       if (addToCartBtn !== null) {
-        addToCartBtn.innerHTML = t.productPage.addToCart;
+        addToCartBtn.innerHTML = currentTranslationProductPage?.translation?.addToCart;
         createOrder?.classList?.add(`${styles.active}`);
         if (addToCartBtn.classList.contains(`${styles.active}`))
           addToCartBtn.classList.remove(`${styles.active}`);
       }
     }
-  }, [prodInCart, productData]);
+  }, [prodInCart, productData, currentTranslationProductPage]);
 
   const addToCart = (id, q, p) => {
     if (!prodInCart) {
@@ -127,267 +132,256 @@ export default function ProductPage({ data }) {
 
   return (
     <>
-
       <DefaultLandingPage
-          landingDescription={{
-            title: null,
-            titleOffset: 100,
-          }}
-          pageId={"ProductPage"}
+        landingDescription={{
+          title: null,
+          titleOffset: 100,
+        }}
+        pageId={"ProductPage"}
       >
+        <>
+          <div className="col-12 col-lg-6 p-0">
+            <div className={styles.ProductBlock}>
+              <p>
+                <LabelLoader
+                  LoadSizeInSymbols={20}
+                  data={productData}
+                  field={"product_name_ru"}
+                />
+              </p>
+              <Link href="#">
+                <LabelLoader
+                  LoadSizeInSymbols={20}
+                  data={productData}
+                  field={"vend_code"}
+                />
+              </Link>
 
-          <>
-              <div className="col-12 col-lg-6 p-0">
-                <div className={styles.ProductBlock}>
-                  <p>
-                    <LabelLoader
-                      LoadSizeInSymbols={20}
-                      data={productData}
-                      field={"product_name_ru"}
-                    />
-                  </p>
-                  <Link href="#">
-                    <LabelLoader
-                      LoadSizeInSymbols={20}
-                      data={productData}
-                      field={"vend_code"}
-                    />
-                  </Link>
-
-                  <div className={styles.Image_and_replacement}>
-                    <ComponentLoader
-                      fill_percent={90}
-                      margin={10}
-                      data={productData}
-                    >
-                      <button
-                        onClick={() => setImageViewerPU(true)}
-                        className={styles.ProductImage}
+              <div className={styles.Image_and_replacement}>
+                <ComponentLoader
+                  fill_percent={90}
+                  margin={10}
+                  data={productData}
+                >
+                  <button
+                    onClick={() => setImageViewerPU(true)}
+                    className={styles.ProductImage}
+                    style={{
+                      backgroundImage: `url(${BlureProdImage(
+                        productData ? productData.image_url : ""
+                      )})`,
+                      backgroundPosition: "center center",
+                      backgroundSize: "cover",
+                      backgroundRepeat: "no-repeat",
+                    }}
+                  >
+                    <div>
+                      <Image
+                        src={productData ? productData.image_url : ""}
+                        fill={true}
+                        alt={productData ? productData.product_name_ru : ""}
                         style={{
-                          backgroundImage: `url(${BlureProdImage(
-                            productData ? productData.image_url : ""
-                          )})`,
-                          backgroundPosition: "center center",
-                          backgroundSize: "cover",
-                          backgroundRepeat: "no-repeat",
+                          objectFit: "contain",
+                          objectPosition: "center",
                         }}
-                      >
-                        <div>
-                          <Image
-                            src={productData ? productData.image_url : ""}
-                            fill={true}
-                            alt={productData ? productData.product_name_ru : ""}
-                            style={{
-                              objectFit: "contain",
-                              objectPosition: "center",
-                            }}
-                          />
-                        </div>
-                      </button>
+                      />
+                    </div>
+                  </button>
 
-                      <div className={styles.ProductReplacement}>
-                        <ReplacementItem
-                          text={t.productPage.analog}
-                          paragraph={t.productPage.for}
-                          pu={setPU}
-                          headersSet={setPuHeaders}
-                          data={productData ? productData.product_name_ru : ""}
-                          puTyper={setIsPuType}
-                          isType={Analogue}
-                        />
+                  <div className={styles.ProductReplacement}>
+                    <ReplacementItem
+                      text={currentTranslationProductPage?.translation?.analog}
+                      paragraph={currentTranslationProductPage?.translation?.for}
+                      pu={setPU}
+                      headersSet={setPuHeaders}
+                      data={productData ? productData.product_name_ru : ""}
+                      puTyper={setIsPuType}
+                      isType={Analogue}
+                    />
 
-                        <ReplacementItem
-                          text={t.productPage.replacement}
-                          paragraph={t.productPage.for}
-                          pu={setPU}
-                          headersSet={setPuHeaders}
-                          data={productData ? productData.product_name_ru : ""}
-                          puTyper={setIsPuType}
-                          isType={Replacement}
-                        />
+                    <ReplacementItem
+                      text={currentTranslationProductPage?.translation?.replacement}
+                      paragraph={currentTranslationProductPage?.translation?.for}
+                      pu={setPU}
+                      headersSet={setPuHeaders}
+                      data={productData ? productData.product_name_ru : ""}
+                      puTyper={setIsPuType}
+                      isType={Replacement}
+                    />
 
-                        <ReplacementItem
-                          text={t.productPage.partOf + "..."}
-                          pu={setPU}
-                          headersSet={setPuHeaders}
-                          data={productData ? productData.product_name_ru : ""}
-                          puTyper={setIsPuType}
-                          isType={Included}
-                        />
-                      </div>
-                    </ComponentLoader>
+                    <ReplacementItem
+                      text={currentTranslationProductPage?.translation?.partOf + "..."}
+                      pu={setPU}
+                      headersSet={setPuHeaders}
+                      data={productData ? productData.product_name_ru : ""}
+                      puTyper={setIsPuType}
+                      isType={Included}
+                    />
                   </div>
-                </div>
+                </ComponentLoader>
               </div>
+            </div>
+          </div>
 
-              <div className="col-12 col-lg-6">
-                <div className={styles.ProductDescription_wrapper}>
-                  <ComponentLoader data={productData} margin={50}>
-                    <div className={styles.ProductDescription}>
-                      <AvailabilityStatus
-                        status={
-                          productData ? parseInt(productData.available_status) : 0
+          <div className="col-12 col-lg-6">
+            <div className={styles.ProductDescription_wrapper}>
+              <ComponentLoader data={productData} margin={50}>
+                <div className={styles.ProductDescription}>
+                  <AvailabilityStatus
+                    status={
+                      productData ? parseInt(productData.available_status) : 0
+                    }
+                  />
+
+                  <div className={styles.ProductParams}>
+                    <p className={styles.CharacteristicsTitle}>
+                      {currentTranslationProductPage?.translation?.specifications}:
+                    </p>
+                    <div className={styles.ParamsWrapper}>
+                      <DescriptionEntry
+                        Title={currentTranslationProductPage?.translation?.brand}
+                        Params={
+                          productData
+                            ? productData.product_manufacturer.map(
+                                (elem) =>
+                                  " " +
+                                  elem.manufacturer_category_id
+                                    .manufacturer_name
+                              ) + ""
+                            : ""
                         }
                       />
 
-                      <div className={styles.ProductParams}>
-                        <p className={styles.CharacteristicsTitle}>
-                          {t.productPage.specifications}:
-                        </p>
-                        <div className={styles.ParamsWrapper}>
-                          <DescriptionEntry
-                            Title={t.productPage.brand}
-                            Params={
-                              productData
-                                ? productData.product_manufacturer.map(
-                                    (elem) =>
-                                      " " +
-                                      elem.manufacturer_category_id
-                                        .manufacturer_name
-                                  ) + ""
-                                : ""
-                            }
-                          />
+                      <DescriptionEntry
+                        Title={currentTranslationProductPage?.translation?.unit}
+                        Params={
+                          productData
+                            ? productData.product_unit.map(
+                                (elem) => " " + elem.Unit_category_id.unit_name
+                              ) + ""
+                            : ""
+                        }
+                      />
 
-                          <DescriptionEntry
-                            Title={t.productPage.unit}
-                            Params={
-                              productData
-                                ? productData.product_unit.map(
-                                    (elem) =>
-                                      " " + elem.Unit_category_id.unit_name
-                                  ) + ""
-                                : ""
-                            }
-                          />
+                      <DescriptionEntry
+                        Title={currentTranslationProductPage?.translation?.type}
+                        Params={
+                          productData
+                            ? productData.product_type.map(
+                                (elem) => " " + elem.Type_category_id.type_name
+                              ) + ""
+                            : ""
+                        }
+                      />
 
-                          <DescriptionEntry
-                            Title={t.productPage.type}
-                            Params={
-                              productData
-                                ? productData.product_type.map(
-                                    (elem) =>
-                                      " " + elem.Type_category_id.type_name
-                                  ) + ""
-                                : ""
-                            }
-                          />
+                      <DescriptionEntry
+                        Title={currentTranslationProductPage?.translation?.weight}
+                        Params={
+                          productData
+                            ? productData.weight + currentTranslationProductPage?.translation?.wt
+                            : "0" + currentTranslationProductPage?.translation?.wt
+                        }
+                      />
 
-                          <DescriptionEntry
-                            Title={t.productPage.weight}
-                            Params={
-                              productData
-                                ? productData.weight + t.productPage.wt
-                                : "0" + t.productPage.wt
-                            }
-                          />
-
-                          <div className={styles.GeometryBlock}>
-                            {/* внутри надо добавить некстовский имейдж для
+                      <div className={styles.GeometryBlock}>
+                        {/* внутри надо добавить некстовский имейдж для
                                                       отображения картинки с размерами*/}
 
-                            <GeometryViewer
-                              imagePath={
-                                productData ? productData.form_factor_image : ""
-                              }
-                              geoSizes={productData ? productData.sizes : null}
-                            />
-                          </div>
+                        <GeometryViewer
+                          imagePath={
+                            productData ? productData.form_factor_image : ""
+                          }
+                          geoSizes={productData ? productData.sizes : null}
+                        />
+                      </div>
 
-                          <div className={styles.DetailedDescription}>
-                            <p>
-                              <LabelLoader
-                                fill_percent={60}
-                                data={productData}
-                                field={"text_description"}
-                              />
-                            </p>
-                          </div>
-                        </div>
-                        <div className={styles.ProductActions}>
-                          <div className={styles.ProductPrice}>
-                            {productData ? (
-                              <p>
-                                <span className={styles.priceHider}>
-                                  {t.productPage.price}:{" "}
-                                </span>
-                                {new Intl.NumberFormat("ru-RU").format(
-                                  productData.price
-                                )}
-                                <span className={styles.priceHider}>
-                                  {" "}
-                                  {t.productPage.currency}
-                                </span>
-                                <span className={styles.monySymbol}>
-                                  {" "}
-                                  {t.productPage.currencyStyle}
-                                </span>
-                              </p>
-                            ) : (
-                              ""
-                            )}
-                          </div>
-                          <div className={styles.Actions}>
-                            {prodInCart ? (
-                              <ISTButtonN
-                                dark={{
-                                  solid: false,
-                                  fill: true,
-                                  fillContainer: true,
-
-                                }}
-                                title={{
-                                  caption: t.productPage.inToCart,
-                                }}
-                                onClick={() => {
-                                  addToCart(
-                                      productData.id, 1, null
-                                  )
-                                }}
-                              />
-                            ) : (
-                              <ISTButtonN
-                                light={{
-                                  fill: false,
-                                  style: {
-                                    borderRadius: "15px",
-                                    fillContainer: true,
-                                  },
-                                }}
-                                title={{
-                                  caption: t.productPage.addToCart,
-                                }}
-                                onClick={() => {
-                                  addToCart(
-                                      productData.id, 1, null
-                                  )
-                                }}
-                              />
-                            )}
-
-                            <ISTButtonN
-                              light={{
-                                fill: true,
-                                style: {
-                                  borderRadius: "15px",
-                                  fillContainer: true,
-
-                                },
-                              }}
-                              title={{
-                                caption: t.productPage.order,
-                              }}
-                              onClick={() => {}}
-                            />
-                          </div>
-                        </div>
+                      <div className={styles.DetailedDescription}>
+                        <p>
+                          <LabelLoader
+                            fill_percent={60}
+                            data={productData}
+                            field={"text_description"}
+                          />
+                        </p>
                       </div>
                     </div>
-                  </ComponentLoader>
-                </div>
-              </div>
-            </>
+                    <div className={styles.ProductActions}>
+                      <div className={styles.ProductPrice}>
+                        {productData ? (
+                          <p>
+                            <span className={styles.priceHider}>
+                              {currentTranslationProductPage?.translation?.price}:{" "}
+                            </span>
+                            {new Intl.NumberFormat("ru-RU").format(
+                              productData.price
+                            )}
+                            <span className={styles.priceHider}>
+                              {" "}
+                              {currentTranslationProductPage?.translation?.currency}
+                            </span>
+                            <span className={styles.monySymbol}>
+                              {" "}
+                              {currentTranslationProductPage?.translation?.currencyStyle}
+                            </span>
+                          </p>
+                        ) : (
+                          ""
+                        )}
+                      </div>
+                      <div className={styles.Actions}>
+                        {prodInCart ? (
+                          <ISTButtonN
+                            dark={{
+                              solid: false,
+                              fill: true,
+                              fillContainer: true,
+                            }}
+                            title={{
+                              caption: currentTranslationProductPage?.translation?.inToCart,
+                            }}
+                            onClick={() => {
+                              addToCart(productData.id, 1, null);
+                            }}
+                          />
+                        ) : (
+                          <ISTButtonN
+                            light={{
+                              fill: false,
+                              style: {
+                                borderRadius: "15px",
+                                fillContainer: true,
+                              },
+                            }}
+                            title={{
+                              caption: currentTranslationProductPage?.translation?.addToCart,
+                            }}
+                            onClick={() => {
+                              addToCart(productData.id, 1, null);
+                            }}
+                          />
+                        )}
 
+                        <ISTButtonN
+                          light={{
+                            fill: true,
+                            style: {
+                              borderRadius: "15px",
+                              fillContainer: true,
+                            },
+                          }}
+                          title={{
+                            caption: currentTranslationProductPage?.translation?.order,
+                          }}
+                          onClick={() => {}}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </ComponentLoader>
+            </div>
+          </div>
+        </>
       </DefaultLandingPage>
 
       <PopUpBase
@@ -402,11 +396,11 @@ export default function ProductPage({ data }) {
               productData[isPuType] === "" ? (
                 <li>
                   <p>
-                    {t.productPage.u}
+                    {currentTranslationProductPage?.translation?.u}
                     <br />
-                    {t.productPage.info}
+                    {currentTranslationProductPage?.translation?.info}
                     <br />
-                    {t.productPage.feedback}
+                    {currentTranslationProductPage?.translation?.feedback}
                   </p>
 
                   <button
@@ -415,19 +409,18 @@ export default function ProductPage({ data }) {
                       setCbRequestModal(true);
                     }}
                   >
-                    {t.productPage.infoTel}
+                    {currentTranslationProductPage?.translation?.infoTel}
                   </button>
                 </li>
               ) : (
                 <li>{productData[isPuType]}</li>
               )
             ) : (
-              <li>{t.productPage.error}</li>
+              <li>{currentTranslationProductPage?.translation?.error}</li>
             )}
           </ul>
         </ComponentLoader>
       </PopUpBase>
-
 
       <ContactsModal
         modalState={cbRequestModal}
