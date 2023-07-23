@@ -2,7 +2,7 @@ import React, { FC, useCallback, useEffect, useRef, useState } from "react";
 import styles from "../../../../styles/Modals/catalog/catalogWrapper.module.scss";
 import { useDispatch } from "react-redux";
 import { incOffset } from "../../../../store/slices/catalogSlices/catalogPaginationSlice";
-import useBaseModal from "../../../ISTModals/useBaseModal";
+import useBaseModal from "../../../../Hooks/useBaseModal/useBaseModal";
 import CatalogWrapperMobileModal from "./catalogWrapperMobile_modal";
 import ModalMobilePage from "../Pages/mobile/modalMobilePage";
 import { toc_filter_page_mobile } from "../../table_of_contents/Catalog/mobile/toc_filter_page_mobile";

@@ -4,7 +4,7 @@ import styles from "../../../styles/LandingStyles/PagesComponents/ProductDemo/Pr
 import getGallery, { IGallery } from "../GalleryTypes";
 import Image from "next/image";
 import Link from "next/link";
-import useBaseModal from "../../ISTModals/useBaseModal";
+import useBaseModal from "../../../Hooks/useBaseModal/useBaseModal";
 import PuWrapper from "../../DefaultModals/popUp/puWrapper";
 import CallBackRequest_modal, {
   ICB_RequestModalData,
@@ -17,7 +17,7 @@ import CallBackResponse_modal from "../../DefaultModals/CallBack/CallBackRespons
 import { useRouter } from "next/router";
 import ru_upd from "../../../locales/callBackRequest/ru";
 import en_upd from "../../../locales/callBackRequest/en";
-import { modalsBasics } from "../../ISTModals/modalSetter";
+import { modalsBasics } from "../../../Hooks/useBaseModal/modalSetter";
 import { EN_LOCALE, RU_LOCALE } from "../../../locales/locales";
 import { useTransition } from "../../../locales/hook/useTranslation";
 import ru from "../../../locales/ru";
@@ -194,6 +194,7 @@ const ProductDemo: FC<IPage> = ({ page, translation }) => {
           ) : null}
         </PuWrapper>
       </ModalView>
+      
     </>
   );
 };

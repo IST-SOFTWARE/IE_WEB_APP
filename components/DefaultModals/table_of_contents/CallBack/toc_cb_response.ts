@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import {modalsBasics} from "../../../ISTModals/modalSetter";
+import {modalsBasics} from "../../../../Hooks/useBaseModal/modalSetter";
 
 export const toc_cb_response = {
     typeName: "cb_response",

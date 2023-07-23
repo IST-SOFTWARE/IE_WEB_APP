@@ -1,4 +1,4 @@
-import {modalStater} from "../../../ISTModals/modalSetter";
+import {modalStater} from "../../../../Hooks/useBaseModal/modalSetter";
 import {ReactNode} from "react";
 
 export interface ICatalogWrapper {

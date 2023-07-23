@@ -1,4 +1,4 @@
-import {modalsBasics} from "../../../ISTModals/modalSetter";
+import {modalsBasics} from "../../../../Hooks/useBaseModal/modalSetter";
 
 export const toc_catalog_search = {
     typeName: "catalogSearch",
