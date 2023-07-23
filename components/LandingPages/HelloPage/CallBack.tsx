@@ -11,7 +11,7 @@ import getOurContactsData, {
 import { useQuery } from "@apollo/client";
 import { catalogClient } from "../../../Apollo/catalogClient";
 import useCallRequest from "../../../Hooks/useCallRequest/useCallRequest";
-import useBaseModal from "../../ISTModals/useBaseModal";
+import useBaseModal from "../../../Hooks/useBaseModal/useBaseModal";
 import { useISTInputFelt } from "../../UI/ISTInput/useISTInputFelt";
 import en from "../../../locales/en";
 import ru from "../../../locales/ru";

@@ -11,7 +11,7 @@ import { useCatalog } from "../../Hooks/useCatalog/useCatalog";
 import { ICatalogQueries } from "../../Hooks/useCatalog/ICatalogQueries";
 import { ICatalogFiltersType } from "../../store/slices/common/catalogFiltersType";
 import { useAppSelector } from "../../Hooks/reduxSettings";
-import {modalStater} from "../ISTModals/modalSetter";
+import {modalStater} from "../../Hooks/useBaseModal/modalSetter";
 import {catalogHasFilters_modalsHelper} from "../../helpers/Catalog/modals";
 import {toc_catalog_full_prod_list} from "../DefaultModals/table_of_contents/Catalog/toc_catalog_full_prod_list";
 import {toc_catalog_search} from "../DefaultModals/table_of_contents/Catalog/toc_catalog_search";

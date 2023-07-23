@@ -1,7 +1,7 @@
 import React, {FC, useEffect, useMemo} from 'react';
 import styles from "../../../styles/Modals/popUp/puWrapper.module.scss";
 import Image from "next/image";
-import {modalStater} from "../../ISTModals/modalSetter";
+import {modalStater} from "../../../Hooks/useBaseModal/modalSetter";
 
 interface puWrapper{
     data: modalStater,

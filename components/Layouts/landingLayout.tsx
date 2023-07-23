@@ -1,6 +1,6 @@
 import React, { FC, ReactNode, useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import useBaseModal from "../ISTModals/useBaseModal";
+import useBaseModal from "../../Hooks/useBaseModal/useBaseModal";
 import { toc_catalog_search } from "../DefaultModals/table_of_contents/Catalog/toc_catalog_search";
 import { toc_catalog_full_prod_list } from "../DefaultModals/table_of_contents/Catalog/toc_catalog_full_prod_list";
 import CatalogWrapper_modal from "../DefaultModals/Catalog/Wrappers/catalogWrapper_modal";

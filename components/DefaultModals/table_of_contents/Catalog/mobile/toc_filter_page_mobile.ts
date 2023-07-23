@@ -1,4 +1,4 @@
-import {modalsBasics} from "../../../../ISTModals/modalSetter";
+import {modalsBasics} from "../../../../../Hooks/useBaseModal/modalSetter";
 
 export const toc_filter_page_mobile = {
     typeName: "filterPageMobile",
