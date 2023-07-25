@@ -1,7 +1,7 @@
 import { DocumentNode, GraphQLError } from "graphql";
 
 //  ---- ---- ---- TYPES ---- ---- ----
-export type ICartIDGetterForCreation<CREATION_DATA_TYPE> = (
+export type ISessionIDGetterForCreation<CREATION_DATA_TYPE> = (
   data: CREATION_DATA_TYPE
 ) => string | number;
 
@@ -17,9 +17,9 @@ export type ICreationFnc<MUTATION_VARS_TYPE, CREATION_DATA_TYPE> = (
   vars: MUTATION_VARS_TYPE
 ) => Promise<CREATION_DATA_TYPE>;
 
-export type IUpdateFnc<MUTATION_VARS_TYPE, UPDATE_CART_BY_ID> = (
+export type IUpdateFnc<MUTATION_VARS_TYPE, UPDATE_SESSION_BY_ID> = (
   vars: MUTATION_VARS_TYPE
-) => Promise<UPDATE_CART_BY_ID>;
+) => Promise<UPDATE_SESSION_BY_ID>;
 
 export type IAddingDataResult<RESULT_TYPE> = {
   id: string | number;
@@ -50,7 +50,7 @@ export type ICachedData<
 };
 
 //  ---- ---- ---- CONSTANTS ---- ---- ----
-export const cartSessionObjectKey = "CART_SESSION";
+export const sessionObjectKey = "SESSION_ID";
 
 // ---- ---- ---- INTERFACES ---- ---- ----
 
@@ -75,17 +75,17 @@ export interface IHandlingFailItem<
   operation?: string;
 }
 
-export interface ICartResolversConfig<CREATION_DATA_TYPE, UPDATE_DATA_TYPE> {
-  cartIDGetterForCreation: ICartIDGetterForCreation<CREATION_DATA_TYPE>;
+export interface ISessionResolversConfig<CREATION_DATA_TYPE, UPDATE_DATA_TYPE> {
+  sessionIDGetterForCreation: ISessionIDGetterForCreation<CREATION_DATA_TYPE>;
   updateResolver?: IUpdatedDataResolver<UPDATE_DATA_TYPE>;
   creationResolver?: ICreateDataResolver<CREATION_DATA_TYPE>;
 }
 
-export interface ICartActionsConfig<
+export interface ISessionActionsConfig<
   MUTATION_VARS_TYPE,
   CREATION_DATA_TYPE,
-  UPDATE_CART_BY_ID
+  UPDATE_SESSION_BY_ID
 > {
   creation: ICreationFnc<MUTATION_VARS_TYPE, CREATION_DATA_TYPE>;
-  update: IUpdateFnc<MUTATION_VARS_TYPE, UPDATE_CART_BY_ID>;
+  update: IUpdateFnc<MUTATION_VARS_TYPE, UPDATE_SESSION_BY_ID>;
 }
