@@ -227,7 +227,6 @@ const CatalogFullProductsListModal: FC<ICatalogFullProductListModal> = ({
       <div className={"col-12 col-lg-8 p-0 pl-lg-2 d-flex flex-wrap"}>
         <CatalogWrapper
           itemWrapper_ClassName={styles.productCardVariant_Block}
-          // cartID={"9cfa4d6a-f2e9-400c-b0a9-4c85ab777272"}
           additionalForwarding={""}
         />
       </div>

@@ -116,7 +116,6 @@ const CartPage_index = ({}) => {
               }}
             >
               <CartWrapper
-                cartID={"9faea663-d7fc-4912-8325-6120c53d1713"}
                 currency={{
                   currencySymbol: "",
                 }}

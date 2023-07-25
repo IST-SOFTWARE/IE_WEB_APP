@@ -50,13 +50,14 @@ import OrderingInformation_modal from "../DefaultModals/CallBack/order/OrderingI
 import OrderingRequest_modal from "../DefaultModals/CallBack/order/OrderingRequest_modal";
 import { toc_order_request } from "../DefaultModals/table_of_contents/order/toc_order_request";
 import { modalsBasics } from "../../Hooks/useBaseModal/modalSetter";
+import { useLocalStorageManager } from '../../Hooks/useCartActions/useLocalStorageManager'
+import { sessionObjectKey } from '../../Hooks/useCartActions/common'
 
 interface cartCollection {
   cartCollection_by_id: ICartCollection;
 }
 
 interface ICartWrapper {
-  cartID: string;
   currency: Pick<IProductItem, "currencySymbol">;
 
   cartSelector: Omit<ICartSelector, "data">;
@@ -72,8 +73,6 @@ interface ICartWrapper {
 }
 
 export const CartWrapper: FC<ICartWrapper> = ({
-  cartID,
-
   cartSelector,
 
   mobileTriggerSize,
@@ -84,7 +83,7 @@ export const CartWrapper: FC<ICartWrapper> = ({
 }) => {
   const [products, setProducts] = useState<ICartItem_properties_data[]>([]);
   const regionHandler = useAppSelector((selector) => selector.region);
-
+  const {getStorageItem} = useLocalStorageManager(sessionObjectKey);
   /**
    *  DATA GETTER [PRODUCT DATA]
    */
@@ -146,7 +145,7 @@ export const CartWrapper: FC<ICartWrapper> = ({
     GET_CART_COLLECTION_BY_ID,
     {
       fetchPolicy: "cache-and-network",
-      variables: { id: cartID },
+      variables: { id: getStorageItem() ? getStorageItem() : null },
     }
   );
 
@@ -176,7 +175,7 @@ export const CartWrapper: FC<ICartWrapper> = ({
       );
 
       const variables = {
-        id: cartID,
+        id: getStorageItem() ? getStorageItem() : null,
         data: {
           status: "Draft",
           cart_model: redefining_to_CartModel_redefiningHelper(newCart),
@@ -214,7 +213,7 @@ export const CartWrapper: FC<ICartWrapper> = ({
       if (!products || !data?.cartCollection_by_id) return;
 
       const variables = {
-        id: cartID,
+        id: getStorageItem() ? getStorageItem() : null,
         data: {
           status: "Draft",
           cart_model: redefining_to_CartModel_redefiningHelper(newCart),

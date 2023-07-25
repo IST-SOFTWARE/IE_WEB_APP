@@ -2,6 +2,7 @@ import { GraphQLError } from 'graphql'
 import { IAddingDataResult, ICachedData, IFailItem, IHandlingFailItem, ISessionActionsConfig, ISessionResolversConfig, sessionObjectKey } from './common'
 import { useCallback, useState } from 'react'
 import { ISTSessionAdder } from './sessionAdder'
+import { useLocalStorageManager } from './useLocalStorageManager'
 
 export const useSessionActions = <
   MUTATION_VARS_TYPE,
@@ -20,6 +21,13 @@ export const useSessionActions = <
     UPDATE_DATA_TYPE
   >
 ) => {
+
+  const {
+    getStorageItem,
+    setStorageItem,
+    removeStorageItem
+  } = useLocalStorageManager(sessionObjectKey);
+
   // >> ---- ---- ---- EX Handling ---- ---- ----
   const [fails, setFails] = useState<
     IFailItem<CREATION_DATA_TYPE, UPDATE_DATA_TYPE, EXCEPTIONS_TYPE>[]
@@ -63,24 +71,6 @@ export const useSessionActions = <
     [cachedData]
   );
 
-  const getSessionFromLS = useCallback(() => {
-    return typeof window !== "undefined" &&
-      localStorage.getItem(sessionObjectKey)
-      ? localStorage.getItem(sessionObjectKey)
-      : null;
-  }, []);
-
-  const setSessionToLS = useCallback((id: string | number) => {
-    window !== undefined
-      ? localStorage.setItem(sessionObjectKey, id.toString())
-      : null;
-  }, []);
-
-  const removeSession = useCallback(() => {
-    let _sessionCaratId = getSessionFromLS();
-    if (_sessionCaratId && window)
-      localStorage.removeItem(sessionObjectKey);
-  }, [getSessionFromLS]);
 
   const [sessionAdder] = useState(
     new ISTSessionAdder<CREATION_DATA_TYPE, UPDATE_DATA_TYPE, MUTATION_VARS_TYPE>(
@@ -105,7 +95,7 @@ export const useSessionActions = <
       IdFieldName: typeof sessionIdFieldName,
       data: MUTATION_VARS_TYPE
     ): MUTATION_VARS_TYPE => {
-      const newSession = getSessionFromLS();
+      const newSession = getStorageItem();
 
       return newSession
         ? {
@@ -114,7 +104,7 @@ export const useSessionActions = <
           }
         : data;
     },
-    [getSessionFromLS]
+    [getStorageItem]
   );
 
   const updateData = useCallback(
@@ -170,7 +160,7 @@ export const useSessionActions = <
             result: data,
           };
 
-          setSessionToLS(sessionAdder.getSessionIDGetterForCreation(data).toString());
+          setStorageItem(sessionAdder.getSessionIDGetterForCreation(data).toString());
 
           sessionAdder.getCreateDataResolver
             ? sessionAdder.getCreateDataResolver(data)
@@ -182,14 +172,14 @@ export const useSessionActions = <
         resolve(result);
       });
     },
-    [sessionAdder, sessionIdFieldName, setSessionToLS, variablesBuilder]
+    [sessionAdder, sessionIdFieldName, setStorageItem, variablesBuilder]
   );
 
   return {
     fails,
     updateData,
-    getSessionFromLS,
-    removeSession,
+    getSessionFromLS: getStorageItem,
+    removeSession: removeStorageItem,
     handleSessionException,
     addToSessionExceptions,
     configureSessionResolvers,
