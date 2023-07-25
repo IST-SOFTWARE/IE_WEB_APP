@@ -50,9 +50,9 @@ import { ImageLoader } from "next/image";
 import { imageLoader_imagesHelper } from "../../../helpers/Images/customImageLoader";
 import { useDispatch } from "react-redux";
 import { setOffset } from "../../../store/slices/catalogSlices/catalogPaginationSlice";
-import { useCartActions } from "../../../Hooks/useCartActions/useCartActions";
-import { IDirectusGraplQlErrors as IDirectusGraphQlErrors } from "../../../Directus/ExceptionTypes/DirectusExceptionTypes";
 import { ICreationFnc, IUpdateFnc } from "../../../Hooks/useCartActions/common";
+import { useSessionActions } from '../../../Hooks/useCartActions/useSessionActions'
+import { IDirectusGraphQlErrors } from '../../../Directus/ExceptionTypes/DirectusExceptionTypes'
 interface ICatalogWrapper {
   additionalForwarding: string;
 
@@ -114,7 +114,11 @@ export const CatalogWrapper: FC<ICatalogWrapper> = ({
   const [onMutateCart_add] = useMutation<
     ICartCollection_updated,
     ICartCollectionVariables
-  >(UPDATE_CART_BY_ID, { onError: (ex) => handleCartExc(ex.graphQLErrors) });
+  >(UPDATE_CART_BY_ID, {
+    onError: (ex) => {
+      handleCartExc(ex.graphQLErrors);
+    },
+  });
 
   const cartCreateNew = useCallback<
     ICreationFnc<ICartCollectionVariables, ICartCollection_created>
@@ -155,11 +159,11 @@ export const CatalogWrapper: FC<ICatalogWrapper> = ({
   };
 
   const {
-    addToCart,
+    handleSessionException,
     getSessionFromLS,
-    removeCartSession,
-    handleCartException,
-  } = useCartActions<
+    removeSession,
+    updateData,
+  } = useSessionActions<
     ICartCollectionVariables,
     ICartCollection_created,
     ICartCollection_updated,
@@ -171,7 +175,7 @@ export const CatalogWrapper: FC<ICatalogWrapper> = ({
       update: cartUpdateItem,
     },
     {
-      cartIDGetterForCreation: (data) => {
+      sessionIDGetterForCreation: (data) => {
         return data?.create_cartCollection_item?.id.toString();
       },
       updateResolver: _updateResolver,
@@ -187,35 +191,44 @@ export const CatalogWrapper: FC<ICatalogWrapper> = ({
     }
   );
 
-
   const handleCartExc = useCallback(
     (ex: IDirectusGraphQlErrors) => {
-  
-      console.log("CALLING");
-
-    const nonExistentCartHandling = () => {
+      const nonExistentCartHandling = () => {
         return ex.find((el) => el.extensions?.code === "FORBIDDEN");
-    };
+      };
 
-      handleCartException({
+      handleSessionException({
         ex: ex,
         onHandle: (ex, fnc, vars) => {
-
           const nonExistentCartError = nonExistentCartHandling();
 
-          if (ex?.length > 0 && nonExistentCartError && refetchDataState) {
-            fnc(vars).then((data) => {
+          if (
+            ex?.length > 0 &&
+            nonExistentCartError &&
+            refetchDataState &&
+            fnc &&
+            vars
+          ) {
+            setRefetchDataState(false);
+            removeSession();
+
+            fnc({
+              ...vars,
+              id: null
+            }).then((data) => {
               if (!data.result || !data.id) {
-                console.log("OOPS, something went wrong, refresh page =) ", refetchDataState);
-                setRefetchDataState(false);
+                console.log(
+                  "OOPS, something went wrong, refresh page =) ",
+                  refetchDataState
+                );
               }
             });
           }
-
         },
       });
-
-    }, [handleCartException, refetchDataState]);
+    },
+    [handleSessionException, refetchDataState, removeSession]
+  );
 
   // GETTING CATALOG
   const { data, error, fetchMore } = useQuery<
@@ -245,7 +258,7 @@ export const CatalogWrapper: FC<ICatalogWrapper> = ({
     }, 1000);
 
     return () => clearTimeout(timeOutId);
-  }, [catalog?.search]);
+  }, [catalog?.search, dispatch]);
 
   useEffect(() => {
     if (!catalog.filters || !filtersList) return;
@@ -310,11 +323,11 @@ export const CatalogWrapper: FC<ICatalogWrapper> = ({
         ? cartItemsUpdater(el.data.cartCollection_by_id?.cart_model)
         : null
     );
-  }, [getCartData]);
+  }, [cartItemsUpdater, getCartData]);
 
   useEffect(() => {
     if (data) cartItemsFetch();
-  }, [data]);
+  }, [cartItemsFetch, data]);
 
   // PAGINATION HANDELING
   useEffect(() => {
@@ -330,7 +343,7 @@ export const CatalogWrapper: FC<ICatalogWrapper> = ({
           if (!(el?.data?.Products?.length > 0)) setFetchedAll(true);
         })
         .catch((ex) => console.error(ex));
-  }, [pagination, fetchedAll]);
+  }, [pagination, fetchedAll, fetchMore, fullProdVars]);
 
   // CART MOVEMENTS
   const cartAdder = useCallback<cartAdder_fnc_onAdd>(
@@ -347,11 +360,11 @@ export const CatalogWrapper: FC<ICatalogWrapper> = ({
         },
       } as ICartCollectionVariables;
 
-      addToCart(vars);
+      updateData(vars);
 
       return true;
     },
-    [cartProducts, cartData, addToCart]
+    [cartProducts, updateData]
   );
 
   const cartRemover = useCallback<deleteProduct_fnc_onDelete>(
@@ -373,14 +386,7 @@ export const CatalogWrapper: FC<ICatalogWrapper> = ({
         },
       } as ICartCollectionVariables;
 
-      // onMutateCart({variables: vars}).then((el) => {
-      //     if (el.data?.update_cartCollection_item && !el.errors)
-      //         setCartProducts(
-      //             redefining_to_ICartItemPropertiesData_redefiningHelper(
-      //                 el.data.update_cartCollection_item.cart_model
-      //             )
-      //         )
-      // })
+      updateData(vars);
 
       return true;
     },

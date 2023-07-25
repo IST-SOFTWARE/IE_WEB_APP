@@ -33,10 +33,10 @@ type IDirectusExceptionCodes = {
     UNPROCESSABLE_ENTITY_EX
 }
    
-class DirectusGraplQlError extends GraphQLError{
+class DirectusGraphQlError extends GraphQLError{
     readonly extensions: IDirectusExceptionCodes;
 }
 
-export type IDirectusGraplQlErrors = 
-    ReadonlyArray<DirectusGraplQlError>
+export type IDirectusGraphQlErrors = 
+    ReadonlyArray<DirectusGraphQlError>
 
