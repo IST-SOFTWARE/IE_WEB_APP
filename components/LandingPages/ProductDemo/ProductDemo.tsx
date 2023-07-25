@@ -53,7 +53,7 @@ const ProductDemo: FC<IPage> = ({ page, translation }) => {
   const [galleryContent, setGalleryContent] = useState<IGallery>(null);
 
   // Modal windows
-  const { modalComponent, ModalView } = useBaseModal("APP_BODY_WRAPPER");
+  const { modalComponent, ModalView } = useBaseModal("PopUpBase");
 
   //user contacts for CB request
   const [newCB_data, setNewCB_data] = useState<ICB_RequestModalData>(null);
@@ -97,7 +97,7 @@ const ProductDemo: FC<IPage> = ({ page, translation }) => {
       ],
       0
     );
-  }, [modalComponent, router, t]);
+  }, [modalComponent, router]);
 
   useEffect(() => {
     if (newCB_data && modalComponent)

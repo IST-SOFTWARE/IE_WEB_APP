@@ -1,0 +1,34 @@
+@import "../../../styles/mixins/scroll_mixin.scss";
+@import "../../../styles/mixins/background_mixin.scss";
+@import "../../../styles/scss_mixins.scss";
+@import "../../../styles/variables.scss";
+
+.orderRequestBox {
+  max-width: 500px;
+  min-width: 367px;
+
+  margin-top: 34px;
+
+  color: $def_white;
+  font-weight: 700;
+  .input {
+    margin-top: 15px;
+  }
+
+  .description {
+    color: $def_pastel_yellow;
+    > div {
+      margin: 14px 0;
+      font-weight: 700;
+    }
+  }
+
+  .footerButtonBox {
+    display: flex;
+    margin-top: 30px;
+    > div {
+      width: 100%;
+      margin: 0 5px;
+    }
+  }
+}

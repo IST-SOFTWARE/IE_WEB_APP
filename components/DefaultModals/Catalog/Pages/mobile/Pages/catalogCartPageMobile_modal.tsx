@@ -38,7 +38,7 @@ const CatalogCartPageMobileModal: FC<ICatalogCartPageMobileModal> = ({
           currency={{
             currencySymbol: "",
           }}
-          cartID={"9cfa4d6a-f2e9-400c-b0a9-4c85ab777272"}
+          cartID={"9faea663-d7fc-4912-8325-6120c53d1713"}
           cartSelector={{
             selectedState: cartSelector,
             setSelectedState: setCartSelector,

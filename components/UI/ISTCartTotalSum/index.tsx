@@ -20,6 +20,7 @@ interface ICartTotalSum {
   totalSelect: number;
   region: ICartTotalSum_region;
   translation: ICartTotalSum_translation;
+  sendOrderFun?: (...props) => any;
 }
 
 const ISTCartTotalSum: FC<ICartTotalSum> = ({
@@ -27,6 +28,7 @@ const ISTCartTotalSum: FC<ICartTotalSum> = ({
     totalSum,
     region,
     translation,
+    sendOrderFun,
 }) => {
   const [open, setOpen] = useState(false);
 
@@ -96,7 +98,7 @@ const ISTCartTotalSum: FC<ICartTotalSum> = ({
           title={{
             caption: translation?.order,
           }}
-          onClick={() => {}}
+          onClick={sendOrderFun}
         />
       </div>
     </div>
