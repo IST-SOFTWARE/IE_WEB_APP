@@ -7,6 +7,13 @@
   max-width: 500px;
   min-width: 367px;
 
+  padding-left: 6px;
+
+  max-height: 60vh;
+  overflow: auto;
+  border: solid 1px red;
+  @include scroll($size: 2px, $direction: rtl);
+
   margin-top: 34px;
 
   color: $def_white;

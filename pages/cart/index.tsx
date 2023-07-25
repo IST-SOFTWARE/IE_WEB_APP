@@ -34,7 +34,7 @@ const CartPage_index = ({}) => {
   const [numOfSelected, setNumOfSelected] = useState<number>(0);
   const [totalSum, setTotalSum] = useState<number>(0);
 
-  const { modalComponent, ModalView } = useBaseModal("PopUpBase");
+  const { modalComponent, ModalView } = useBaseModal("APP_BODY_WRAPPER", "PopUpBase");
 
   const currentTranslation = useTransition<ICartTotalSum_translation>([
     { locale: RU_LOCALE, translation: ru_upd },
@@ -78,7 +78,7 @@ const CartPage_index = ({}) => {
   }, [modalComponent]);
 
 
-  const handlSwitcherCartModalRequest = useCallback(()=> {
+  const handleSwitcherCartModalRequest = useCallback(()=> {
     modalComponent
     .applyModalByName(toc_order_request?.typeName)
     .then((value) => {
@@ -86,7 +86,7 @@ const CartPage_index = ({}) => {
     });
   }, [modalComponent])
 
-  const handlSwitcherCartModalInformation = useCallback(()=> {
+  const handleSwitcherCartModalInformation = useCallback(()=> {
     modalComponent
     .applyModalByName(toc_order_information?.typeName)
     .then((value) => {
@@ -173,12 +173,12 @@ const CartPage_index = ({}) => {
           {modalComponent.isCurrentModal(toc_order_information.typeName) ? (
             <OrderingInformation_modal
               translation={currentTranslationOrderInformation?.translation}
-              nextModalFunc={handlSwitcherCartModalRequest}
+              nextModalFunc={handleSwitcherCartModalRequest}
             />
           ) : modalComponent.isCurrentModal(toc_order_request.typeName) ? (
             <OrderingRequest_modal
               translation={currentTranslationOrderRequest?.translation}
-              previousModalFunc={handlSwitcherCartModalInformation}
+              previousModalFunc={handleSwitcherCartModalInformation}
             />
           ) : null}
         </PuWrapper>
