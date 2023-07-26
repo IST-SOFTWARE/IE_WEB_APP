@@ -220,7 +220,6 @@ export const LandingLayout: FC<ILandingLayout> = ({ children }) => {
               bottom: "20px",
               right: "20px",
               display: "flex",
-              zIndex: "1000",
             }}
           ></div>
 

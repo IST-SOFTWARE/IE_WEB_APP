@@ -959,7 +959,7 @@
         box-shadow: 0px 0px 10px #76ACE7;
         border: solid 1px #76ACE7;
         border-radius: 40%;
-        z-index: 10;
+        z-index: 1;
         background-image: url("/FormsFilled.svg");
         background-size: 50%;
         background-repeat: no-repeat;

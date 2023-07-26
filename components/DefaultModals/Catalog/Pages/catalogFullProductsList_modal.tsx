@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useState } from "react";
+import React, { FC, useCallback, useEffect, useState } from "react";
 import styles from "../../../../styles/Modals/catalog/catalogProducts/catalogFullProductsList.module.scss";
 import { useAppSelector } from "../../../../Hooks/reduxSettings";
 import useISTFiltersList from "../../../UI/hooks/ISTFiltersHook/useISTFiltersList";
@@ -15,9 +15,6 @@ import { addNewFilter } from "../../../../store/slices/catalogSlices/catalogSlic
 import ISTFiltersWrapper from "../../../UI/ISTFiltersList/components/ISTFiltersWrapper";
 import ISTFiltersList from "../../../UI/ISTFiltersList/components/ISTFiltersList";
 import { CatalogWrapper } from "../../../ProductsWrapper/catalogWrapper/catalogWrapper";
-import { useRouter } from "next/router";
-import ru from "../../../../locales/ru";
-import en from "../../../../locales/en";
 
 import upd_ru from "../../../../locales/filters/ru";
 import upd_en from "../../../../locales/filters/en";
@@ -25,6 +22,8 @@ import upd_en from "../../../../locales/filters/en";
 import { useTransition } from "../../../../locales/hook/useTranslation";
 import { IFiltersLocale } from "../../../../locales/filters/filtersLocale";
 import { EN_LOCALE, RU_LOCALE } from "../../../../locales/locales";
+import useBaseModal from '../../../../Hooks/useBaseModal/useBaseModal'
+import LoaderModal from '../../Loader/Loader_modal'
 
 export interface ICatalogFullProductListModal_translation {
   manufacturer: string;
@@ -40,8 +39,8 @@ interface ICatalogFullProductListModal {
 const CatalogFullProductsListModal: FC<ICatalogFullProductListModal> = ({
   translation,
 }) => {
-  const filtersList = useAppSelector((state) => state.filtersList);
 
+  const filtersList = useAppSelector((state) => state.filtersList);
 
   // Filters state
   const [mfg_filter, mfg_active, mfg_designation] =
@@ -64,6 +63,17 @@ const CatalogFullProductsListModal: FC<ICatalogFullProductListModal> = ({
   // Redux catalog state & dispatch
   const dispatch = useDispatch();
   const catalog = useAppSelector((state) => state.catalog);
+
+  // Loading modal
+  const [loadingModal, setLoadingModal] = useState<boolean>(false)
+  const { modalComponent, ModalView } = useBaseModal(
+    "APP_BODY_WRAPPER",
+    "PopUpBase"
+  )
+
+  useEffect(()=>{
+    modalComponent.switch(loadingModal);
+  },[loadingModal, modalComponent])
 
   // add/remove function (Catalog)
   const switchFilter: onFilterSwitchCustom_t<keyof ICatalogFiltersType> =
@@ -224,12 +234,18 @@ const CatalogFullProductsListModal: FC<ICatalogFullProductListModal> = ({
 
       {/*Products bock*/}
 
-      <div className={"col-12 col-lg-8 p-0 pl-lg-2 d-flex flex-wrap"}>
+      <div className={"col-12 col-lg-8 p-0 pl-lg-2 d-flex flex-wrap"} id="CATALOG_WRAPPER">
         <CatalogWrapper
           itemWrapper_ClassName={styles.productCardVariant_Block}
+          loadingSetter={setLoadingModal}
           additionalForwarding={""}
         />
       </div>
+      
+      <ModalView>
+        <LoaderModal/>
+      </ModalView>
+
     </>
   );
 };

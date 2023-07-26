@@ -6,9 +6,6 @@ import { useCatalog } from "../../Hooks/useCatalog/useCatalog";
 import { ICatalogQueries } from "../../Hooks/useCatalog/ICatalogQueries";
 import { ICatalogFiltersType } from "../../store/slices/common/catalogFiltersType";
 import { catalogHasFilters_modalsHelper } from "../../helpers/Catalog/modals";
-import en from "../../locales/en";
-import ru from "../../locales/ru";
-import { useRouter } from "next/router";
 
 export interface IHeader_translation {
   catalog: string;

@@ -75,9 +75,7 @@ const DefaultLandingPage: FC<LandingInterface> =
         }) => {
 
 
-
     const dispatch = useAppDispatch();
-    const scrollSpy = useAppSelector(state => state.scrollSpy.scrollSpy)
 
 // Background item - - - - - - - - - - - - - - - -
     const[windowSize, setWindowSize] = useState<windowSizes>(null);

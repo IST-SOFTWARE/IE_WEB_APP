@@ -86,7 +86,7 @@
     position: absolute;
     right: 0;
     top: 0;
-    z-index: 2;
+    z-index: 1;
     background: linear-gradient(270deg, #2B3540 0%, rgba(44, 54, 65, 0) 80.28%);
 }
 
@@ -97,7 +97,7 @@
     position: absolute;
     left: 0;
     top: 30px;
-    z-index: 2;
+    z-index: 1;
     background: linear-gradient(90deg, #2B3540 0%, rgba(44, 54, 65, 0) 30.28%);
 }
 

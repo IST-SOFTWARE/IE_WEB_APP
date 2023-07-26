@@ -1,6 +1,5 @@
 import React, {
   CSSProperties,
-  Dispatch,
   FC,
   useCallback,
   useEffect,
@@ -10,12 +9,7 @@ import {
   cartAdder_fnc_onAdd,
   deleteProduct_fnc_onDelete,
 } from "../../UI/common";
-import {
-  ApolloError,
-  useLazyQuery,
-  useMutation,
-  useQuery,
-} from "@apollo/client";
+import { useLazyQuery, useMutation, useQuery } from "@apollo/client";
 import {
   GRT_FILTERED_PRODUCTS_LIST,
   IProductFiltersVariables,
@@ -51,29 +45,18 @@ import { imageLoader_imagesHelper } from "../../../helpers/Images/customImageLoa
 import { useDispatch } from "react-redux";
 import { setOffset } from "../../../store/slices/catalogSlices/catalogPaginationSlice";
 import { ICreationFnc, IUpdateFnc } from "../../../Hooks/useCartActions/common";
-import { useSessionActions } from '../../../Hooks/useCartActions/useSessionActions'
-import { IDirectusGraphQlErrors } from '../../../Directus/ExceptionTypes/DirectusExceptionTypes'
-interface ICatalogWrapper {
-  additionalForwarding: string;
-
-  itemWrapper_ClassName?: string;
-  wrapper_ClassName?: string;
-
-  itemWrapperStyles?: CSSProperties;
-  wrapperStyles?: CSSProperties;
-}
-
-interface cartCollection {
-  cartCollection_by_id: ICartCollection;
-}
+import { useSessionActions } from "../../../Hooks/useCartActions/useSessionActions";
+import { IDirectusGraphQlErrors } from "../../../Directus/ExceptionTypes/DirectusExceptionTypes";
+import { cartCollection, ICatalogWrapper } from "./ICatalogWrapper";
 
 export const CatalogWrapper: FC<ICatalogWrapper> = ({
   itemWrapper_ClassName,
+  loadingSetter,
   wrapper_ClassName,
   wrapperStyles,
   itemWrapperStyles,
   additionalForwarding,
-}) => {
+}) => {  
   // FILTERING & PAGINATION [STATE]
   const catalog = useAppSelector((selector) => selector.catalog);
   const filtersList = useAppSelector((selector) => selector.filtersList);
@@ -93,8 +76,7 @@ export const CatalogWrapper: FC<ICatalogWrapper> = ({
   // REGION HANDLING [STATE]
   const regionHandler = useAppSelector((selector) => selector.region);
 
-  // CART [STATE]
-
+  // CART 
   const [refetchDataState, setRefetchDataState] = useState<boolean>(true);
 
   const [onMutateCart_create] = useMutation<
@@ -144,9 +126,8 @@ export const CatalogWrapper: FC<ICatalogWrapper> = ({
     [onMutateCart_add]
   );
 
-  const [cartProducts, setCartProducts] = useState<ICartItem_properties_data[]>(
-    []
-  );
+  const [cartProducts, setCartProducts] = 
+    useState<ICartItem_properties_data[]>([]);
 
   const _updateResolver = (data: ICartCollection_updated) => {
     const newCartModel = data?.update_cartCollection_item?.cart_model;
@@ -214,7 +195,7 @@ export const CatalogWrapper: FC<ICatalogWrapper> = ({
 
             fnc({
               ...vars,
-              id: null
+              id: null,
             }).then((data) => {
               if (!data.result || !data.id) {
                 console.log(
@@ -230,14 +211,24 @@ export const CatalogWrapper: FC<ICatalogWrapper> = ({
     [handleSessionException, refetchDataState, removeSession]
   );
 
+
   // GETTING CATALOG
-  const { data, error, fetchMore } = useQuery<
+  const { data, error, loading, fetchMore } = useQuery<
     IProducts_Q,
     IProductFiltersVariables
   >(GRT_FILTERED_PRODUCTS_LIST, {
     variables: fullProdVars,
     fetchPolicy: "network-only",
   });
+
+  // LOADING HANDLER
+  useEffect(()=>{
+    if(!data || !cartProducts || loading) 
+      loadingSetter(true)
+    else
+      loadingSetter(false);
+
+  },[data, cartProducts, loading, loadingSetter]) 
 
   // CATALOG FILTERING
   useEffect(() => {
@@ -299,7 +290,7 @@ export const CatalogWrapper: FC<ICatalogWrapper> = ({
     });
 
     dispatch(setOffset(0));
-  }, [filtersList, catalog.filters]);
+  }, [filtersList, catalog?.filters, dispatch]);
 
   const cartItemsUpdater = useCallback(
     (data: ICartItem[]) => {
@@ -329,7 +320,7 @@ export const CatalogWrapper: FC<ICatalogWrapper> = ({
     if (data) cartItemsFetch();
   }, [cartItemsFetch, data]);
 
-  // PAGINATION HANDELING
+  // PAGINATION HANDLING
   useEffect(() => {
     if (!fetchedAll && pagination.offset > 0)
       fetchMore<IProducts_Q, IProductFiltersVariables>({
@@ -390,7 +381,12 @@ export const CatalogWrapper: FC<ICatalogWrapper> = ({
 
       return true;
     },
-    [cartProducts, cartData]
+    [
+      cartProducts,
+      cartData?.data?.cartCollection_by_id,
+      getSessionFromLS,
+      updateData,
+    ]
   );
 
   // PRODUCT IMAGE OPTIMIZATIONS
@@ -409,70 +405,71 @@ export const CatalogWrapper: FC<ICatalogWrapper> = ({
   }, []);
 
   return (
-    <div
-      style={{ ...wrapperStyles }}
-      className={`${wrapper_ClassName} ${styles.wrapper}`}
-    >
-      {data && cartProducts ? (
-        data.Products.map((el, i) => {
-          return (
-            <div
-              className={itemWrapper_ClassName}
-              style={itemWrapperStyles}
-              key={`productItemCatalog_${i}_key`}
-            >
-              <ISTProductItem
-                currencySymbol={
-                  regionHandler.currency[regionHandler.currentCurrencyId]
-                    ?.currencySymbol
-                }
-                forwardingPath={`${additionalForwarding}/${el?.slug}`}
-                style={{
-                  fill: true,
-                }}
-                imageOptimization={{
-                  loader: getImageLoader,
-                  sizes: "350px",
-                }}
-                itemType={{
-                  productType: "catalog",
-                  parameters: {
-                    inline: false,
-                    cartStatus: !!cartProducts.find(
-                      (_el) => _el.productId === el.id
-                    ),
-
-                    cartAdder: cartAdder,
-                    cartRemover: cartRemover,
-                  },
-
-                  data: {
-                    id: el?.id,
-
-                    title:
-                      regionHandler.region === "ru-RU"
-                        ? el.product_name_ru
-                        : el.product_name,
-
-                    price: (
-                      Number(el.price) *
+    <>
+      <div
+        style={{ ...wrapperStyles }}
+        className={`${wrapper_ClassName} ${styles.wrapper}`}
+      >
+        {data && cartProducts
+          ? data.Products?.map((el, i) => {
+              return (
+                <div
+                  className={itemWrapper_ClassName}
+                  style={itemWrapperStyles}
+                  key={`productItemCatalog_${i}_key`}
+                >
+                  <ISTProductItem
+                    currencySymbol={
                       regionHandler.currency[regionHandler.currentCurrencyId]
-                        ?.currencyMultiplier
-                    ).toString(),
+                        ?.currencySymbol
+                    }
+                    forwardingPath={`${additionalForwarding}/${el?.slug}`}
+                    style={{
+                      fill: true,
+                    }}
+                    imageOptimization={{
+                      loader: getImageLoader,
+                      sizes: "350px",
+                    }}
+                    itemType={{
+                      productType: "catalog",
+                      parameters: {
+                        inline: false,
+                        cartStatus: !!cartProducts.find(
+                          (_el) => _el.productId === el.id
+                        ),
 
-                    vendCode: el?.vend_code.toString(),
-                    image: getImageSrc(el?.image_url, el?.vend_code.toString()),
-                  },
-                }}
-              />
-            </div>
-          );
-        })
-      ) : (
-        <>
-          <div className={styles.loadingWrapper} />
-        </>
-      )}
-    </div>
+                        cartAdder: cartAdder,
+                        cartRemover: cartRemover,
+                      },
+
+                      data: {
+                        id: el?.id,
+
+                        title:
+                          regionHandler.region === "ru-RU"
+                            ? el.product_name_ru
+                            : el.product_name,
+
+                        price: (
+                          Number(el.price) *
+                          regionHandler.currency[
+                            regionHandler.currentCurrencyId
+                          ]?.currencyMultiplier
+                        ).toString(),
+
+                        vendCode: el?.vend_code.toString(),
+                        image: getImageSrc(
+                          el?.image_url,
+                          el?.vend_code.toString()
+                        ),
+                      },
+                    }}
+                  />
+                </div>
+              );
+            }) : null}
+      </div>
+    </>
   );
 };

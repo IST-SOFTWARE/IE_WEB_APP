@@ -9,19 +9,19 @@ import React, {
 import {
   ICartItem_properties_data,
   ICartSelector,
-} from "../UI/ISTProductItem/Abstract/ICartTypes";
+} from "../../UI/ISTProductItem/Abstract/ICartTypes";
 import {
   cartItemGetter_fnc,
   deleteProduct_fnc_onDelete,
   IProductData,
   mobileTrigger_size,
   quantityEditor_fnc,
-} from "../UI/common";
-import { IProductItem } from "../UI/ISTProductItem/common";
+} from "../../UI/common";
+import { IProductItem } from "../../UI/ISTProductItem/common";
 import {
   GET_PRODUCT_BY_ID,
   IProducts_Q,
-} from "../../queries/products/productActions";
+} from "../../../queries/products/productActions";
 import { useQuery } from "@apollo/client";
 import {
   GET_CART_COLLECTION_BY_ID,
@@ -29,51 +29,29 @@ import {
   ICartCollection_updated,
   ICartCollectionVariables,
   UPDATE_CART_BY_ID,
-} from "../../queries/cart/cartActions";
+} from "../../../queries/cart/cartActions";
 import {
   redefining_to_CartModel_redefiningHelper,
   redefining_to_ICartItemPropertiesData_redefiningHelper,
-} from "../../helpers/Products/products_redefining.helper";
+} from "../../../helpers/Products/products_redefining.helper";
 import {
   products_editQuantity_actionsHelper,
   products_removeItem_actionsHelper,
-} from "../../helpers/Products/products_actions.helper";
-import ISTProductItem from "../UI/ISTProductItem/ISTProductItem";
-import { cartClient } from "../../Apollo/cartClient";
-import { useAppSelector } from "../../Hooks/reduxSettings";
-import { useCartTotalSum } from "../../Hooks/useCartTotalSum/useCartTotalSum";
-import { ICartTotalSum_prodsInf } from "../../Hooks/useCartTotalSum/ICartTotalSum";
-import PuWrapper from "../DefaultModals/popUp/puWrapper";
-import useBaseModal from "../../Hooks/useBaseModal/useBaseModal";
-import { toc_order_information } from "../DefaultModals/table_of_contents/order/toc_order_information";
-import OrderingInformation_modal from "../DefaultModals/CallBack/order/OrderingInformation_modal";
-import OrderingRequest_modal from "../DefaultModals/CallBack/order/OrderingRequest_modal";
-import { toc_order_request } from "../DefaultModals/table_of_contents/order/toc_order_request";
-import { modalsBasics } from "../../Hooks/useBaseModal/modalSetter";
-import { useLocalStorageManager } from '../../Hooks/useCartActions/useLocalStorageManager'
-import { sessionObjectKey } from '../../Hooks/useCartActions/common'
-
-interface cartCollection {
-  cartCollection_by_id: ICartCollection;
-}
-
-interface ICartWrapper {
-  currency: Pick<IProductItem, "currencySymbol">;
-
-  cartSelector: Omit<ICartSelector, "data">;
-
-  mobileTriggerSize?: mobileTrigger_size;
-  itemStyles?: Pick<IProductItem, "style">;
-  wrapperStyles?: CSSProperties;
-
-  amountData?: {
-    amountPriceSetter: Dispatch<number>;
-    amountQuantitySetter: Dispatch<number>;
-  };
-}
+} from "../../../helpers/Products/products_actions.helper";
+import ISTProductItem from "../../UI/ISTProductItem/ISTProductItem";
+import { cartClient } from "../../../Apollo/cartClient";
+import { useAppSelector } from "../../../Hooks/reduxSettings";
+import { useCartTotalSum } from "../../../Hooks/useCartTotalSum/useCartTotalSum";
+import { ICartTotalSum_prodsInf } from "../../../Hooks/useCartTotalSum/ICartTotalSum";
+import { useLocalStorageManager } from "../../../Hooks/useCartActions/useLocalStorageManager";
+import { sessionObjectKey } from "../../../Hooks/useCartActions/common";
+import styles from "./cartWrapper.module.scss";
+import IstButtonN from "../../UI/ISTButton/ISTButtonN";
+import { ICartWrapper, cartCollection } from './ICartWrapper'
 
 export const CartWrapper: FC<ICartWrapper> = ({
   cartSelector,
+  loadingSetter,
 
   mobileTriggerSize,
   itemStyles,
@@ -83,7 +61,8 @@ export const CartWrapper: FC<ICartWrapper> = ({
 }) => {
   const [products, setProducts] = useState<ICartItem_properties_data[]>([]);
   const regionHandler = useAppSelector((selector) => selector.region);
-  const {getStorageItem} = useLocalStorageManager(sessionObjectKey);
+  const { getStorageItem } = useLocalStorageManager(sessionObjectKey);
+
   /**
    *  DATA GETTER [PRODUCT DATA]
    */
@@ -145,7 +124,7 @@ export const CartWrapper: FC<ICartWrapper> = ({
     GET_CART_COLLECTION_BY_ID,
     {
       fetchPolicy: "cache-and-network",
-      variables: { id: getStorageItem() ? getStorageItem() : null },
+      variables: { id: getStorageItem() },
     }
   );
 
@@ -166,7 +145,7 @@ export const CartWrapper: FC<ICartWrapper> = ({
    */
   const editQuantity = useCallback<quantityEditor_fnc>(
     async (id, newQuantity, callBack) => {
-      if (!products || !data?.cartCollection_by_id) return;
+      if (!products || !data?.cartCollection_by_id || !getStorageItem()) return;
 
       const newCart = products_editQuantity_actionsHelper(
         products,
@@ -175,7 +154,7 @@ export const CartWrapper: FC<ICartWrapper> = ({
       );
 
       const variables = {
-        id: getStorageItem() ? getStorageItem() : null,
+        id: getStorageItem(),
         data: {
           status: "Draft",
           cart_model: redefining_to_CartModel_redefiningHelper(newCart),
@@ -200,7 +179,7 @@ export const CartWrapper: FC<ICartWrapper> = ({
 
       return true;
     },
-    [products, data]
+    [products, data?.cartCollection_by_id, getStorageItem]
   );
 
   /**
@@ -210,10 +189,10 @@ export const CartWrapper: FC<ICartWrapper> = ({
     async (id, callBack) => {
       const newCart = products_removeItem_actionsHelper(products, id);
 
-      if (!products || !data?.cartCollection_by_id) return;
+      if (!products || !data?.cartCollection_by_id || !getStorageItem()) return;
 
       const variables = {
-        id: getStorageItem() ? getStorageItem() : null,
+        id: getStorageItem(),
         data: {
           status: "Draft",
           cart_model: redefining_to_CartModel_redefiningHelper(newCart),
@@ -238,7 +217,7 @@ export const CartWrapper: FC<ICartWrapper> = ({
 
       return true;
     },
-    [products, data]
+    [products, data?.cartCollection_by_id, getStorageItem]
   );
 
   useEffect(() => {
@@ -265,79 +244,93 @@ export const CartWrapper: FC<ICartWrapper> = ({
     };
 
     getItemsInfo().then((data) => calcTotalSum(data));
-  }, [cartSelector]);
+  }, [amountData, cartSelector, getItemsInfo]);
+
+  /**
+   *  LOADING HANDLER
+   */
+  useEffect(() => {
+    loadingSetter(loading);
+  }, [loading, loadingSetter]);
 
   /**
    *  CART WRAPPER VIEW
    */
-  return data && products ? (
-    <>
-      <div style={wrapperStyles}>
-        {products.map(({ productId, quantity }, index) => {
-          // console.log("_Prods: ", productId);
 
-          return (
-            <ISTProductItem
-              key={`ISTProductItem_${index}`}
-              currencySymbol={
-                regionHandler.currency[regionHandler.currentCurrencyId]
-                  ?.currencySymbol
-              }
-              style={itemStyles?.style}
-              itemType={{
-                productType: "cart",
-                mobileSettings: {
-                  mobileSizeTrigger: mobileTriggerSize,
-                },
+  return (
+    <div className={styles.cartWrapper}>
+      {data?.cartCollection_by_id?.cart_model?.length < 1 || error ? (
+        <div className={styles.emptyCart}>
+          <div className={styles.emptyCart_title}>Корзина пуста</div>
 
-                cartSelector: {
-                  data: {
-                    id: productId,
-                    quantity: quantity,
-                    price: undefined,
-                  },
+          <div className={styles.emptyCart_hint}>
+            Воспользуйтесь каталогом, чтобы найти всё, что нужно.
+          </div>
 
-                  selectedState: cartSelector?.selectedState,
-                  setSelectedState: cartSelector?.setSelectedState,
-                },
-
-                data: {
-                  productId: productId,
-                  quantity: quantity,
-
-                  cartItemGetter: getCartProductDataById,
-                  quantityEditor: editQuantity,
-                  deleteProduct: {
-                    onDelete: deleteProduct,
-                    productsListSetter: setProducts,
-                  },
+          <div className={styles.emptyCart_cartOpener}>
+            <IstButtonN
+              title={{
+                caption: "Каталог",
+              }}
+              light={{
+                fill: true,
+                style: {
+                  borderRadius: "10px",
+                  fillContainer: true,
                 },
               }}
             />
-          );
-        })}
-      </div>
-    </>
-  ) : loading ? (
-    <>
-      <h1
-        style={{
-          margin: "30% auto",
-        }}
-      >
-        LOADING
-      </h1>
-    </>
-  ) : (
-    <>
-      <h1
-        style={{
-          margin: "30% auto",
-          color: "red",
-        }}
-      >
-        ERRoR :(
-      </h1>
-    </>
+          </div>
+        </div>
+      ) : (
+        <>
+          <div style={wrapperStyles}>
+            {products.map(({ productId, quantity }, index) => {
+   
+              return (
+                <ISTProductItem
+                  key={`ISTProductItem_${index}`}
+                  currencySymbol={
+                    regionHandler.currency[regionHandler.currentCurrencyId]
+                      ?.currencySymbol
+                  }
+                  style={itemStyles?.style}
+                  itemType={{
+                    productType: "cart",
+                    mobileSettings: {
+                      mobileSizeTrigger: mobileTriggerSize,
+                    },
+
+                    cartSelector: {
+                      data: {
+                        id: productId,
+                        quantity: quantity,
+                        price: undefined,
+                      },
+
+                      selectedState: cartSelector?.selectedState,
+                      setSelectedState: cartSelector?.setSelectedState,
+                    },
+
+                    data: {
+                      productId: productId,
+                      quantity: quantity,
+
+                      cartItemGetter: getCartProductDataById,
+                      quantityEditor: editQuantity,
+                      deleteProduct: {
+                        onDelete: deleteProduct,
+                        productsListSetter: setProducts,
+                      },
+                    },
+                  }}
+                />
+              );
+            })}
+          </div>
+        </>
+      )}
+    </div>
   );
 };
+

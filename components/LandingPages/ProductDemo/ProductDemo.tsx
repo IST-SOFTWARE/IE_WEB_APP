@@ -180,7 +180,7 @@ const ProductDemo: FC<IPage> = ({ page, translation }) => {
         </div>
       </div>
 
-      <ModalView style={{ zIndex: 10 }}>
+      <ModalView>
         <PuWrapper data={modalComponent}>
           {modalComponent.isCurrentModal(toc_cb_req.typeName) ? (
             <CallBackRequest_modal

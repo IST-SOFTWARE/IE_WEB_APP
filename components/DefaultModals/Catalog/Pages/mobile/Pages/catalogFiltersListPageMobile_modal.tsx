@@ -5,8 +5,11 @@ import useISTFiltersList from "../../../../../UI/hooks/ISTFiltersHook/useISTFilt
 import {useAppSelector} from "../../../../../../Hooks/reduxSettings";
 import {listHasActives_filtersHelper} from "../../../../../../helpers/Catalog/filters";
 import { useRouter } from 'next/router';
-import ru from '../../../../../../locales/ru';
-import en from '../../../../../../locales/en';
+import ru from '../../../../../../locales/filters/ru';
+import en from '../../../../../../locales/filters/en';
+import { IFiltersLocale } from '../../../../../../locales/filters/filtersLocale'
+import { EN_LOCALE, RU_LOCALE } from '../../../../../../locales/locales'
+import { useTransition } from '../../../../../../locales/hook/useTranslation'
 
 interface ICatalogFiltersListPageMobileModal{
     onTransfer: (designation: keyof ICatalogFiltersType) => void;
@@ -17,9 +20,6 @@ const CatalogFiltersListPageMobileModal:FC<ICatalogFiltersListPageMobileModal>= 
 }) => {
 
     const catalog = useAppSelector(selector => selector.catalog);
-
-    const router = useRouter();
-    const t = router.locale === "ru-RU" ? ru : en;
 
     const [mfg, mfg_active, mfg_des] =
         useISTFiltersList<ICatalogFiltersType>("mfg");
@@ -32,13 +32,17 @@ const CatalogFiltersListPageMobileModal:FC<ICatalogFiltersListPageMobileModal>= 
     // const [eq_type, eq_type_active, eq_type_des] =
     //     useISTFiltersList<ICatalogFiltersType>("mfg");
 
+    const currentTranslation = useTransition<IFiltersLocale>([
+        {locale: RU_LOCALE, translation: ru},
+        {locale: EN_LOCALE, translation: en}
+    ]);
 
     return(
         <div style={{
             paddingTop: "15px"
         }}>
             <ISTFiltersWrapper
-                title={t.hintsCatalogSearchCollectionName.manufacturer}
+                title={currentTranslation.translation.namesOfFiltersList.manufacturer}
                 hasActives={listHasActives_filtersHelper(catalog, "mfg")}
                 mobileSettings={{
                     type: "transfer",
@@ -49,7 +53,7 @@ const CatalogFiltersListPageMobileModal:FC<ICatalogFiltersListPageMobileModal>= 
             />
 
             <ISTFiltersWrapper
-                title={t.hintsCatalogSearchCollectionName.unit}
+                title={currentTranslation.translation.namesOfFiltersList.unit}
                 hasActives={listHasActives_filtersHelper(catalog, "unit")}
                 mobileSettings={{
                     type: "transfer",
@@ -60,7 +64,7 @@ const CatalogFiltersListPageMobileModal:FC<ICatalogFiltersListPageMobileModal>= 
             />
 
             <ISTFiltersWrapper
-                title={t.hintsCatalogSearchCollectionName.type}
+                title={currentTranslation.translation.namesOfFiltersList.type}
                 hasActives={listHasActives_filtersHelper(catalog, "type")}
                 mobileSettings={{
                     type: "transfer",
@@ -71,7 +75,7 @@ const CatalogFiltersListPageMobileModal:FC<ICatalogFiltersListPageMobileModal>= 
             />
 
             <ISTFiltersWrapper
-                title={t.hintsCatalogSearchCollectionName.availability}
+                title={currentTranslation.translation.namesOfFiltersList.available}
                 hasActives={listHasActives_filtersHelper(catalog, "available")}
                 mobileSettings={{
                     type: "transfer",

@@ -1,7 +1,7 @@
 .CartPageCont{
     padding-top: 100px;
     position: relative;
-    z-index: 10;
+    z-index: 1;
     overflow-x: hidden;
     padding-bottom: 30px;
     min-height: 100vh;

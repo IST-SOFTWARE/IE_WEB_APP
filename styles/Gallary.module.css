@@ -6,7 +6,7 @@
     display: grid;
     justify-items: end;
     grid-template-rows: 187px 60px;
-    z-index: 10;
+    z-index: 1;
 }
 .gtBlock.unload{
      animation-duration: 1.7s;
