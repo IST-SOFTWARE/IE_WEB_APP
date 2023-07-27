@@ -23,6 +23,8 @@ import { useTransition } from "../../../../locales/hook/useTranslation";
 import { EN_LOCALE, RU_LOCALE } from "../../../../locales/locales";
 import hints_ru from "../../../../locales/istCategoryHints/ru";
 import hints_en from "../../../../locales/istCategoryHints/en";
+import useBaseModal from '../../../../Hooks/useBaseModal/useBaseModal'
+import LoaderModal from '../../Loader/Loader_modal'
 
 export interface ICatalogSearchModal_translation {
   search: string;
@@ -45,6 +47,7 @@ interface ICatalogSearchModal {
   translation: ICatalogSearchModal_translation;
 }
 
+ 
 const CatalogSearchModal: FC<ICatalogSearchModal> = ({
   onOpenFullProdList,
   translation,
@@ -63,6 +66,18 @@ const CatalogSearchModal: FC<ICatalogSearchModal> = ({
   const dispatch = useDispatch();
   const catalog = useAppSelector((state) => state.catalog);
   const filters = useAppSelector((state) => state.filtersList);
+
+  const [loaderState, setLoaderState] = useState<boolean>(false)
+  const {ModalView, modalComponent} = useBaseModal(
+      "APP_BODY_WRAPPER",
+      "PopUpBase"
+  )
+
+  useEffect(()=>{
+    modalComponent.switch(loaderState)
+  },[loaderState, modalComponent])
+
+
 
   const [mfgFilter, ha_mfg, mfg_designation] =
     useISTFiltersList<ICatalogFiltersType>("mfg");
@@ -200,6 +215,7 @@ const CatalogSearchModal: FC<ICatalogSearchModal> = ({
             <CatalogWrapper
               itemWrapper_ClassName={styles.productCardVariant_Block}
               additionalForwarding={""}
+              loadingSetter={setLoaderState}
             />
           ) : (
             <div className={styles.noResultsBlock}>
@@ -221,6 +237,10 @@ const CatalogSearchModal: FC<ICatalogSearchModal> = ({
           )}
         </div>
       </div>
+
+      <ModalView>
+        <LoaderModal/>
+      </ModalView>
     </>
   );
 };
