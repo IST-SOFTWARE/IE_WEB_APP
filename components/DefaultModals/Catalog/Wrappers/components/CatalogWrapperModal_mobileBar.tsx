@@ -1,8 +1,5 @@
 import React, { FC } from "react";
 import { mobileBar } from "../common";
-import { useRouter } from "next/router";
-import ru from "../../../../../locales/ru";
-import en from "../../../../../locales/en";
 import { useDispatch } from "react-redux";
 import { useAppSelector } from "../../../../../Hooks/reduxSettings";
 import { setSearch } from "../../../../../store/slices/catalogSlices/catalogSlice";
@@ -69,6 +66,7 @@ const CatalogWrapperModal_mobileBar: FC<ICatalogWrapperModal> = ({
             title: region.currency[region.currentCurrencyId]?.currencyName,
             image: currency_ico,
             action: () => {
+              
               dispatch(switchCurrency());
             },
             isActive: false,

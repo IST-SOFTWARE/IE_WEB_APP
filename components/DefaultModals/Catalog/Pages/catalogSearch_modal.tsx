@@ -69,7 +69,7 @@ const CatalogSearchModal: FC<ICatalogSearchModal> = ({
 
   const [loaderState, setLoaderState] = useState<boolean>(false)
   const {ModalView, modalComponent} = useBaseModal(
-      "APP_BODY_WRAPPER",
+      undefined,
       "PopUpBase"
   )
 

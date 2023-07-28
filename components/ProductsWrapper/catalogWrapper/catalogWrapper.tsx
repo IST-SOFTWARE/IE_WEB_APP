@@ -44,10 +44,11 @@ import { ImageLoader } from "next/image";
 import { imageLoader_imagesHelper } from "../../../helpers/Images/customImageLoader";
 import { useDispatch } from "react-redux";
 import { setOffset } from "../../../store/slices/catalogSlices/catalogPaginationSlice";
-import { ICreationFnc, IUpdateFnc } from "../../../Hooks/useCartActions/common";
-import { useSessionActions } from "../../../Hooks/useCartActions/useSessionActions";
+import { ICreationFnc, IUpdateFnc } from "../../../Hooks/useSessionActions/common";
+import { useSessionActions } from "../../../Hooks/useSessionActions/useSessionActions";
 import { IDirectusGraphQlErrors } from "../../../Directus/ExceptionTypes/DirectusExceptionTypes";
 import { cartCollection, ICatalogWrapper } from "./ICatalogWrapper";
+import { RU_LOCALE } from '../../../locales/locales'
 
 export const CatalogWrapper: FC<ICatalogWrapper> = ({
   itemWrapper_ClassName,
@@ -447,7 +448,7 @@ export const CatalogWrapper: FC<ICatalogWrapper> = ({
                         id: el?.id,
 
                         title:
-                          regionHandler.region === "ru-RU"
+                          regionHandler.region === RU_LOCALE
                             ? el.product_name_ru
                             : el.product_name,
 

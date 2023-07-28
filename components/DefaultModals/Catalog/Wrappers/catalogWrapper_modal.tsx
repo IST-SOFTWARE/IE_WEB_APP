@@ -32,8 +32,6 @@ import en_catalogCartPageMobileModal from "../../../../locales/catalogCartPageMo
 import ru_catalogWrapperModal_mobileBar from "../../../../locales/istMobileBar/ru"
 import en_catalogWrapperModal_mobileBar from "../../../../locales/istMobileBar/en"
 
-
-
 const CatalogWrapperModal: FC<ICatalogWrapper> = ({
   children,
   data,

@@ -126,7 +126,7 @@ export const LandingLayout: FC<ILandingLayout> = ({ children }) => {
         ],
       })
     );
-  }, [data]);
+  }, [data, dispatch]);
 
   // [ Modals defining ]
   useEffect(() => {
@@ -155,21 +155,29 @@ export const LandingLayout: FC<ILandingLayout> = ({ children }) => {
     if (multiplier <= 0) {
       getMultiplier();
     }
-  }, []);
+  }, [CURRENCY_FETCH, CURRENCY_PERCENT_DIFF, multiplier]);
 
   // [ Add currency ]
   useEffect(() => {
     if (!(multiplier > 0) || !router) return;
-    if (router.locale === EN_LOCALE)
-      dispatch(addCurrencyAndApply(new_EN_Currency(multiplier, 1)));
-  }, [multiplier, router]);
+
+    dispatch(addCurrency(new_EN_Currency(multiplier, 1)));
+    switch (router.locale) {
+      case EN_LOCALE:
+        dispatch(setCurrencyById(1));
+        break;
+      case RU_LOCALE:
+        dispatch(setCurrencyById(0));
+        break;
+    }
+  }, [dispatch, multiplier, router]);
 
   // [ Set region ]
   useEffect(() => {
     if (router.locale === EN_LOCALE) {
       dispatch(setRegion("en-US"));
     }
-  }, [router]);
+  }, [dispatch, router]);
 
   const openFullProdList = useCallback(() => {
     if (!modalComponent) return;
@@ -207,7 +215,10 @@ export const LandingLayout: FC<ILandingLayout> = ({ children }) => {
 
       {children}
 
-      <Footer translation={currencyTranslationFooter?.translation} route={router.locale} />
+      <Footer
+        translation={currencyTranslationFooter?.translation}
+        route={router.locale}
+      />
 
       {/* ---------------- */}
       {/*  Mobile catalog  */}

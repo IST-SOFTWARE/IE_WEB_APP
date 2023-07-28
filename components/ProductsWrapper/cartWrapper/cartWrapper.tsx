@@ -1,6 +1,4 @@
 import React, {
-  CSSProperties,
-  Dispatch,
   FC,
   useCallback,
   useEffect,
@@ -43,11 +41,12 @@ import { cartClient } from "../../../Apollo/cartClient";
 import { useAppSelector } from "../../../Hooks/reduxSettings";
 import { useCartTotalSum } from "../../../Hooks/useCartTotalSum/useCartTotalSum";
 import { ICartTotalSum_prodsInf } from "../../../Hooks/useCartTotalSum/ICartTotalSum";
-import { useLocalStorageManager } from "../../../Hooks/useCartActions/useLocalStorageManager";
-import { sessionObjectKey } from "../../../Hooks/useCartActions/common";
+import { useLocalStorageManager } from "../../../Hooks/useSessionActions/useLocalStorageManager";
+import { sessionObjectKey } from "../../../Hooks/useSessionActions/common";
 import styles from "./cartWrapper.module.scss";
 import IstButtonN from "../../UI/ISTButton/ISTButtonN";
 import { ICartWrapper, cartCollection } from './ICartWrapper'
+import { RU_LOCALE } from '../../../locales/locales'
 
 export const CartWrapper: FC<ICartWrapper> = ({
   cartSelector,
@@ -89,7 +88,7 @@ export const CartWrapper: FC<ICartWrapper> = ({
             image: _data.image_url,
 
             title:
-              regionHandler.region === "ru-RU"
+              regionHandler.region === RU_LOCALE
                 ? _data.product_name_ru
                 : _data.product_name,
 

@@ -67,7 +67,7 @@ const CatalogFullProductsListModal: FC<ICatalogFullProductListModal> = ({
   // Loading modal
   const [loadingModal, setLoadingModal] = useState<boolean>(false)
   const { modalComponent, ModalView } = useBaseModal(
-    "APP_BODY_WRAPPER",
+    undefined,
     "PopUpBase"
   )
 

@@ -1,5 +1,4 @@
 import React from "react";
-import {rejects} from "assert";
 
 export type modalsBasics = {
     typeName: string,
