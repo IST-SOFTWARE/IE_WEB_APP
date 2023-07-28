@@ -18,12 +18,10 @@ import { cartCreateAct, inCart } from "../../legacy/cartActions/cartActions";
 
 import ISTButtonN from "../../components/UI/ISTButton/ISTButtonN";
 
-
 import Image from "next/image";
 import Link from "next/link";
 import DefaultLandingPage from "../../components/LandingPages/DefaultLandingPage";
 
-import { useTransition } from "../../locales/hook/useTranslation";
 import { EN_LOCALE, RU_LOCALE } from "../../locales/locales";
 
 

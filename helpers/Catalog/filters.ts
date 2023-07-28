@@ -1,9 +1,9 @@
 import {ICatalogFiltersType} from "../../store/slices/common/catalogFiltersType";
 import {IGeneralCategoryQuery} from "../../queries/categories/generalCategoryQuery";
-import {ICatalogQueries} from "../../Hooks/useCatalog/ICatalogQueries";
 import {available_AdditionalFilters} from "../../components/Catalog/Filters/Additional/AdditionalFilters";
-import {ITranslation} from "../../locales/hook/ITranslation";
 import {IFiltersLocale} from "../../locales/filters/filtersLocale";
+import { ICatalogQueries } from '../../components/Catalog/Abstract/ICatalogQueries'
+import { ITranslation } from '../../Hooks/useTranslation/ITranslation'
 
 export const getFiltersDesignationSList_filtersHelper =
     (selectedTypes: keyof ICatalogFiltersType): string=> {
