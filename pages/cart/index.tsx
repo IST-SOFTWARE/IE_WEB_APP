@@ -25,16 +25,24 @@ import ru_order_information from "../../locales/orderInformation/ru";
 import en_order_information from "../../locales/orderInformation/en";
 import ru_order_request from "../../locales/orderRequest/ru";
 import en_order_request from "../../locales/orderRequest/en";
+import { useQueryBuilder } from "../../Hooks/useQueryBuilder/useQueryBuilder";
+import queryString from "query-string";
+import { useRouter } from "next/router";
 
 const CartPage_index = ({}) => {
   const [cartSelector, setCartSelector] = useState<ICartSelector_type[]>([]);
+
+  const { setQueryAsArray, getQueryAsArray } = useQueryBuilder<string>();
 
   const [cartModalSwitch, setCartModalSwitch] = useState(0);
 
   const [numOfSelected, setNumOfSelected] = useState<number>(0);
   const [totalSum, setTotalSum] = useState<number>(0);
 
-  const { modalComponent, ModalView } = useBaseModal("APP_BODY_WRAPPER", "PopUpBase");
+  const { modalComponent, ModalView } = useBaseModal(
+    "APP_BODY_WRAPPER",
+    "PopUpBase"
+  );
 
   const currentTranslation = useTransition<ICartTotalSum_translation>([
     { locale: RU_LOCALE, translation: ru_upd },
@@ -54,6 +62,16 @@ const CartPage_index = ({}) => {
     ]);
 
   const region = useAppSelector((sel) => sel.region);
+
+  useEffect(() => {
+
+    const newIDsArray = new Array<string>();
+    cartSelector.map((el) => newIDsArray.push(el.id.toString()));
+
+    setQueryAsArray(newIDsArray)
+
+  }, [cartSelector]);
+ 
 
   useEffect(() => {
     if (!modalComponent) return;
@@ -77,22 +95,21 @@ const CartPage_index = ({}) => {
     );
   }, [modalComponent]);
 
-
-  const handleSwitcherCartModalRequest = useCallback(()=> {
+  const handleSwitcherCartModalRequest = useCallback(() => {
     modalComponent
-    .applyModalByName(toc_order_request?.typeName)
-    .then((value) => {
-      setCartModalSwitch(value.index)
-    });
-  }, [modalComponent])
+      .applyModalByName(toc_order_request?.typeName)
+      .then((value) => {
+        setCartModalSwitch(value.index);
+      });
+  }, [modalComponent]);
 
-  const handleSwitcherCartModalInformation = useCallback(()=> {
+  const handleSwitcherCartModalInformation = useCallback(() => {
     modalComponent
-    .applyModalByName(toc_order_information?.typeName)
-    .then((value) => {
-      setCartModalSwitch(value.index)
-    });
-  }, [modalComponent])
+      .applyModalByName(toc_order_information?.typeName)
+      .then((value) => {
+        setCartModalSwitch(value.index);
+      });
+  }, [modalComponent]);
 
   return (
     <>
