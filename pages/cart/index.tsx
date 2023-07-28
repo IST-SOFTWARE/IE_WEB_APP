@@ -26,9 +26,13 @@ import en_order_information from "../../locales/orderInformation/en";
 import ru_order_request from "../../locales/orderRequest/ru";
 import en_order_request from "../../locales/orderRequest/en";
 import LoaderModal from "../../components/DefaultModals/Loader/Loader_modal";
+import { useQueryBuilder } from "../../Hooks/useQueryBuilder/useQueryBuilder";
 
 const CartPage_index = ({}) => {
   const [cartSelector, setCartSelector] = useState<ICartSelector_type[]>([]);
+
+  const { setQueryAsArray, getQueryAsArray } = useQueryBuilder<string>();
+
   const [cartModalSwitch, setCartModalSwitch] = useState(0);
 
   const [numOfSelected, setNumOfSelected] = useState<number>(0);
@@ -38,6 +42,7 @@ const CartPage_index = ({}) => {
     "APP_BODY_WRAPPER",
     "PopUpBase"
   );
+
   const [loadingModal, setLoadingModal] = useState<boolean>(false);
 
   const currentTranslation = useTransition<ICartTotalSum_translation>([
@@ -58,6 +63,16 @@ const CartPage_index = ({}) => {
     ]);
 
   const region = useAppSelector((sel) => sel.region);
+
+  useEffect(() => {
+
+    const newIDsArray = new Array<string>();
+    cartSelector.map((el) => newIDsArray.push(el.id.toString()));
+
+    setQueryAsArray(newIDsArray)
+
+  }, [cartSelector]);
+ 
 
   useEffect(() => {
     if (!modalComponent) return;
