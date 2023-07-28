@@ -27,7 +27,7 @@ import { setActualPosition } from "../../store/slices/pageTrackerSlice";
 import TrackerBody from "../../components/pageTracker/trackerBody";
 import { useRouter } from "next/router";
 import FeedBackPage from "../../components/LandingPages/FeedBackPage/FeedBackPage";
-import { useTransition } from "../../locales/hook/useTranslation";
+import { useTransition } from "../../Hooks/useTranslation/useTranslation";
 import { EN_LOCALE, RU_LOCALE } from "../../locales/locales";
 import ru_ourPartnersPage from "../../locales/ourPartnersPage/ru";
 import en_ourPartnersPage from "../../locales/ourPartnersPage/en";

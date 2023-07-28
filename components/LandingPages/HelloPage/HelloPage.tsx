@@ -5,7 +5,7 @@ import getGallery, { IGallery } from "../GalleryTypes";
 import { IPageOfLanding } from "../../../queries/landingPage";
 import IstButton from "../../UI/ISTButton/IstButton";
 import { useRouter } from "next/router";
-import { useTransition } from "../../../locales/hook/useTranslation";
+import { useTransition } from "../../../Hooks/useTranslation/useTranslation";
 import { EN_LOCALE, RU_LOCALE } from "../../../locales/locales";
 
 import ru_callback from "../../../locales/callback/ru";

@@ -34,7 +34,7 @@ import {
 } from "../../store/slices/regionSlice/regionSlice";
 import { available_AdditionalFilters } from "../Catalog/Filters/Additional/AdditionalFilters";
 import { EN_LOCALE, new_EN_Currency, RU_LOCALE } from "../../locales/locales";
-import { useTransition } from "../../locales/hook/useTranslation";
+import { useTransition } from "../../Hooks/useTranslation/useTranslation";
 import ru_catalogSearchTranslation from "../../locales/catalogSearchModal/ru";
 import en_catalogSearchTranslation from "../../locales/catalogSearchModal/en";
 import ru_catalogFullProductList from "../../locales/catalogFullProductListModal/ru";

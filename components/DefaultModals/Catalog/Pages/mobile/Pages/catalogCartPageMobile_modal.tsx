@@ -16,7 +16,6 @@ export interface ICatalogCartPageMobileModal_translation {
 }
 
 interface ICatalogCartPageMobileModal {
-  currency?: "USD" | "RUB";
   translation: ICatalogCartPageMobileModal_translation;
 }
 

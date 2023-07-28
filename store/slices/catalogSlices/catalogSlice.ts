@@ -4,9 +4,8 @@ import {ICatalogFiltersType} from "../common/catalogFiltersType";
 import {
     ISTCatalogUpdateFilter,
     ISTCatalogCreate,
-    ISTCatalogFilter,
-    ICatalogQueries
-} from "../../../Hooks/useCatalog/ICatalogQueries";
+    ISTCatalogFilter
+} from "../../../components/Catalog/Abstract/ICatalogQueries";
 
 
 const initialState =

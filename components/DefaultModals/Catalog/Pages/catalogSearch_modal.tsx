@@ -19,7 +19,7 @@ import { useRouter } from "next/router";
 import ISTButtonN from "../../../UI/ISTButton/ISTButtonN";
 import en from "../../../../locales/en";
 import ru from "../../../../locales/ru";
-import { useTransition } from "../../../../locales/hook/useTranslation";
+import { useTransition } from "../../../../Hooks/useTranslation/useTranslation";
 import { EN_LOCALE, RU_LOCALE } from "../../../../locales/locales";
 import hints_ru from "../../../../locales/istCategoryHints/ru";
 import hints_en from "../../../../locales/istCategoryHints/en";

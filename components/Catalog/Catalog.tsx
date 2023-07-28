@@ -7,8 +7,6 @@ import React, {
   useMemo,
   useState,
 } from "react";
-import { useCatalog } from "../../Hooks/useCatalog/useCatalog";
-import { ICatalogQueries } from "../../Hooks/useCatalog/ICatalogQueries";
 import { ICatalogFiltersType } from "../../store/slices/common/catalogFiltersType";
 import { useAppSelector } from "../../Hooks/reduxSettings";
 import {modalStater} from "../../Hooks/useBaseModal/modalSetter";
@@ -23,16 +21,6 @@ interface ICatalog {
 }
 
 const Catalog: FC<ICatalog> = ({ children, modal}) => {
-  const { pushQuery } = useCatalog<ICatalogQueries<ICatalogFiltersType>>(
-    {
-      arrayFormat: "bracket-separator",
-      arrayFormatSeparator: "|",
-    },
-    {
-      option: "filters",
-      params: ["mfg", "unit", "available", "type"],
-    }
-  );
 
   const router = useRouter();
   const reduxCatalogState = useAppSelector((state) => state.catalog);
@@ -51,7 +39,7 @@ const Catalog: FC<ICatalog> = ({ children, modal}) => {
           .then(()=>router.push("", undefined, {shallow: true}))
     }
 
-  },[modal, reduxCatalogState.filters])
+  },[modal, reduxCatalogState?.filters, router])
 
 
   return <>{children}</>;

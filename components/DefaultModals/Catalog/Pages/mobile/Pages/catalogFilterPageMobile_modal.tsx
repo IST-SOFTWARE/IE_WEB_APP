@@ -11,7 +11,7 @@ import {
 } from "../../../../../../helpers/Catalog/filters";
 import {addNewFilter} from "../../../../../../store/slices/catalogSlices/catalogSlice";
 import ISTFiltersList from "../../../../../UI/ISTFiltersList/components/ISTFiltersList";
-import {useTransition} from "../../../../../../locales/hook/useTranslation";
+import {useTransition} from "../../../../../../Hooks/useTranslation/useTranslation";
 import {IFiltersLocale} from "../../../../../../locales/filters/filtersLocale";
 import {EN_LOCALE, RU_LOCALE} from "../../../../../../locales/locales";
 import ru from "../../../../../../locales/filters/ru";

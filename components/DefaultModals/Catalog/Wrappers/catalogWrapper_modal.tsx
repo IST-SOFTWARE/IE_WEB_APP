@@ -20,7 +20,7 @@ import en from "../../../../locales/en";
 import { ICatalogWrapper } from "./common";
 import CatalogWrapperModal_mobileBar from "./components/CatalogWrapperModal_mobileBar";
 import CatalogWrapperModal_headerWrapper from "./components/CatalogWrapperModal_headerWrapper";
-import { useTransition } from "../../../../locales/hook/useTranslation";
+import { useTransition } from "../../../../Hooks/useTranslation/useTranslation";
 import { EN_LOCALE, RU_LOCALE } from "../../../../locales/locales";
 import en_upd from "../../../../locales/filters/en";
 import ru_upd from "../../../../locales/filters/ru";

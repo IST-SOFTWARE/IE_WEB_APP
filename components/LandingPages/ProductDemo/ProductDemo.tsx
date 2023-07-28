@@ -19,7 +19,7 @@ import ru_upd from "../../../locales/callBackRequest/ru";
 import en_upd from "../../../locales/callBackRequest/en";
 import { modalsBasics } from "../../../Hooks/useBaseModal/modalSetter";
 import { EN_LOCALE, RU_LOCALE } from "../../../locales/locales";
-import { useTransition } from "../../../locales/hook/useTranslation";
+import { useTransition } from "../../../Hooks/useTranslation/useTranslation";
 import ru from "../../../locales/ru";
 import en from "../../../locales/en";
 

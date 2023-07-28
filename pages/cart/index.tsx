@@ -5,7 +5,7 @@ import ISTCartTotalSum, {
 } from "../../components/UI/ISTCartTotalSum";
 import { CartWrapper } from "../../components/ProductsWrapper/cartWrapper/cartWrapper";
 import { ICartSelector_type } from "../../components/UI/ISTProductItem/Abstract/ICartTypes";
-import { useTransition } from "../../locales/hook/useTranslation";
+import { useTransition } from "../../Hooks/useTranslation/useTranslation";
 import { IFiltersLocale } from "../../locales/filters/filtersLocale";
 import { EN_LOCALE, RU_LOCALE } from "../../locales/locales";
 import ru_upd from "../../locales/cartTotalSum/ru";

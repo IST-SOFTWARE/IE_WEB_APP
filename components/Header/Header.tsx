@@ -2,8 +2,6 @@ import React, { FC, useEffect, useState } from "react";
 import styles from "../../styles/Header/Header.module.scss";
 import Image from "next/image";
 import { useAppSelector } from "../../Hooks/reduxSettings";
-import { useCatalog } from "../../Hooks/useCatalog/useCatalog";
-import { ICatalogQueries } from "../../Hooks/useCatalog/ICatalogQueries";
 import { ICatalogFiltersType } from "../../store/slices/common/catalogFiltersType";
 import { catalogHasFilters_modalsHelper } from "../../helpers/Catalog/modals";
 
@@ -31,10 +29,6 @@ const Header: FC<Header> = ({
   const reduxCatalogState = useAppSelector((state) => state.catalog);
   const [hasFilters, setHasFilters] = useState<boolean>(false);
 
-  const { pushQuery, currentState } = useCatalog<
-    ICatalogQueries<ICatalogFiltersType>,
-    ICatalogFiltersType
-  >();
 
   useEffect(() => {
     setHasFilters(catalogHasFilters_modalsHelper(reduxCatalogState?.filters));

@@ -110,8 +110,12 @@
   }
 
   .childrenLayout {
-    padding: 0 10px 0 10px;
+    padding: 0 15px 0 10px;
     height: 100%;
     overflow: auto;
+    @include scroll(
+      $size: 2px, 
+      $track_bg: $def_page_bg
+      );
   }
 }

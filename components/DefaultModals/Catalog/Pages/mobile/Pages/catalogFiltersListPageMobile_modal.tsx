@@ -9,7 +9,7 @@ import ru from '../../../../../../locales/filters/ru';
 import en from '../../../../../../locales/filters/en';
 import { IFiltersLocale } from '../../../../../../locales/filters/filtersLocale'
 import { EN_LOCALE, RU_LOCALE } from '../../../../../../locales/locales'
-import { useTransition } from '../../../../../../locales/hook/useTranslation'
+import { useTransition } from '../../../../../../Hooks/useTranslation/useTranslation'
 
 interface ICatalogFiltersListPageMobileModal{
     onTransfer: (designation: keyof ICatalogFiltersType) => void;
