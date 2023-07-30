@@ -1,9 +1,4 @@
-import React, {
-  FC,
-  useCallback,
-  useEffect,
-  useState,
-} from "react";
+import React, { FC, useCallback, useEffect, useState } from "react";
 import {
   ICartItem_properties_data,
   ICartSelector,
@@ -45,8 +40,8 @@ import { useLocalStorageManager } from "../../../Hooks/useSessionActions/useLoca
 import { sessionObjectKey } from "../../../Hooks/useSessionActions/common";
 import styles from "./cartWrapper.module.scss";
 import IstButtonN from "../../UI/ISTButton/ISTButtonN";
-import { ICartWrapper, cartCollection } from './ICartWrapper'
-import { RU_LOCALE } from '../../../locales/locales'
+import { ICartWrapper, cartCollection } from "./ICartWrapper";
+import { RU_LOCALE } from "../../../locales/locales";
 
 export const CartWrapper: FC<ICartWrapper> = ({
   cartSelector,
@@ -107,7 +102,6 @@ export const CartWrapper: FC<ICartWrapper> = ({
           callBack.sideEffect(outProduct);
       });
 
-    // console.log("out prods: ", outProduct, id);
     return outProduct;
   };
 
@@ -285,7 +279,6 @@ export const CartWrapper: FC<ICartWrapper> = ({
         <>
           <div style={wrapperStyles}>
             {products.map(({ productId, quantity }, index) => {
-   
               return (
                 <ISTProductItem
                   key={`ISTProductItem_${index}`}
@@ -332,4 +325,3 @@ export const CartWrapper: FC<ICartWrapper> = ({
     </div>
   );
 };
-

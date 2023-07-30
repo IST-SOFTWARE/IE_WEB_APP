@@ -31,7 +31,7 @@ import { useQueryBuilder } from "../../Hooks/useQueryBuilder/useQueryBuilder";
 const CartPage_index = ({}) => {
   const [cartSelector, setCartSelector] = useState<ICartSelector_type[]>([]);
 
-  const { setQueryAsArray, getQueryAsArray } = useQueryBuilder<string>();
+  const { setQueryAsArray } = useQueryBuilder<string>();
 
   const [cartModalSwitch, setCartModalSwitch] = useState(0);
 
@@ -65,14 +65,12 @@ const CartPage_index = ({}) => {
   const region = useAppSelector((sel) => sel.region);
 
   useEffect(() => {
-
     const newIDsArray = new Array<string>();
     cartSelector.map((el) => newIDsArray.push(el.id.toString()));
 
-    setQueryAsArray(newIDsArray)
-
+    setQueryAsArray(newIDsArray);
   }, [cartSelector]);
- 
+
 
   useEffect(() => {
     if (!modalComponent) return;
@@ -128,7 +126,6 @@ const CartPage_index = ({}) => {
         <div className={`col-12 col-lg-7 position-relative`}>
           <CartWrapper
             loadingSetter={setLoadingModal}
-  
             cartSelector={{
               selectedState: cartSelector,
               setSelectedState: setCartSelector,
@@ -155,7 +152,7 @@ const CartPage_index = ({}) => {
           className={`col-0 d-lg-block col-lg-5`}
           style={{
             position: "sticky",
-            bottom: "0px"
+            bottom: "0px",
           }}
         >
           <ISTCartTotalSum

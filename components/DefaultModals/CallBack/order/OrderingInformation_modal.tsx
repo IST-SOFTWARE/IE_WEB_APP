@@ -1,6 +1,13 @@
-import React, { FC } from "react";
+import React, { FC, useEffect, useState } from "react";
 import styles from "../../../../styles/Modals/order/ordering_information.module.scss";
 import ISTButtonN from "../../../UI/ISTButton/ISTButtonN";
+import { useQueryBuilder } from "../../../../Hooks/useQueryBuilder/useQueryBuilder";
+import { useQuery } from "@apollo/client";
+import { cartCollection } from "../../../ProductsWrapper/cartWrapper/ICartWrapper";
+import { GET_CART_COLLECTION_BY_ID } from "../../../../queries/cart/cartActions";
+import { useLocalStorageManager } from "../../../../Hooks/useSessionActions/useLocalStorageManager";
+import { sessionObjectKey } from "../../../../Hooks/useSessionActions/common";
+import { type } from "os";
 
 export interface IOrderingInformation_translation {
   order: string;
@@ -20,12 +27,46 @@ const OrderingInformation_modal: FC<IOrderingInformation> = ({
   translation,
   nextModalFunc,
 }) => {
+  const [filteredOrderProducts, setFilteredOrderProducts] = useState();
+
+  const { getQueryAsArray } = useQueryBuilder<string>();
+  const { getStorageItem } = useLocalStorageManager(sessionObjectKey);
+
+  const { data, loading, error } = useQuery<cartCollection>(
+    GET_CART_COLLECTION_BY_ID,
+    {
+      fetchPolicy: "cache-and-network",
+      variables: { id: getStorageItem() },
+    }
+  );
+
+  useEffect(() => {
+    const selectedProduct = getQueryAsArray();
+    const dataProduct = data?.cartCollection_by_id?.cart_model;
+
+    console.log(selectedProduct);
+
+    setFilteredOrderProducts(
+      selectedProduct?.map((el) => {
+        const prods = dataProduct.find(
+          (findElement) => findElement.product_id === el
+        );
+        return prods;
+      })
+    );
+  }, []);
+
+
   return (
     <>
       <div className={styles.orderBox}>
         <div className={styles.cartProducts}>
-          {/* контейнер для продуктов юзера. получаем товары корзины или передаем пропсом? */}
-          PRODUCTS IN CART
+          {filteredOrderProducts ? (
+            <>
+            </>
+          ) : (
+            <div>Добавьте продукты для оформления заказа</div>
+          )}
         </div>
 
         <div className={styles.cartTotal}>

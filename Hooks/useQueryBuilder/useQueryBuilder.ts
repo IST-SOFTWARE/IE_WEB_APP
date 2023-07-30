@@ -9,6 +9,8 @@ export const useQueryBuilder = <T extends string | number | string[] | number[] 
 
 ) => {
 
+const [currentQuery, setCurrentQuery ] = useState<string>()
+
 const router = useRouter();
 
 const [_parseOptions] = useState<queryString.StringifyOptions>(
@@ -25,19 +27,21 @@ const setQueryAsArray = useCallback((data: T[] ) => {
       {..._parseOptions}
     );
     
-    query
-      ? router.push(`?${query}`)
-      : router.push(``);
+    // query
+    //   ? router.push(`?${query}`)
+    //   : router.push(``);
       
 
 },[_parseOptions, router])
 
 
-const getQueryAsArray = useCallback(()=> {
 
-    return queryString.parseUrl(
+const getQueryAsArray = useCallback(()  => {
+
+    const parsedQuery = queryString.parse(
         router.asPath, {..._parseOptions}
     )
+    return  typeof(parsedQuery) === "object" ? parsedQuery : []
 
 }, [_parseOptions, router?.asPath])
     
