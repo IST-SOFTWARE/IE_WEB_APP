@@ -1,13 +1,12 @@
 import React, { FC, useEffect, useState } from "react";
-import styles from "../../../../styles/Modals/order/ordering_information.module.scss";
-import ISTButtonN from "../../../UI/ISTButton/ISTButtonN";
-import { useQueryBuilder } from "../../../../Hooks/useQueryBuilder/useQueryBuilder";
+import styles from "../../../styles/Modals/order/ordering_information.module.scss";
+import ISTButtonN from "../../UI/ISTButton/ISTButtonN";
+import { useQueryBuilder } from "../../../Hooks/useQueryBuilder/useQueryBuilder";
 import { useQuery } from "@apollo/client";
-import { cartCollection } from "../../../ProductsWrapper/cartWrapper/ICartWrapper";
-import { GET_CART_COLLECTION_BY_ID } from "../../../../queries/cart/cartActions";
-import { useLocalStorageManager } from "../../../../Hooks/useSessionActions/useLocalStorageManager";
-import { sessionObjectKey } from "../../../../Hooks/useSessionActions/common";
-import { type } from "os";
+import { cartCollection } from "../../ProductsWrapper/cartWrapper/ICartWrapper";
+import { GET_CART_COLLECTION_BY_ID } from "../../../queries/cart/cartActions";
+import { useLocalStorageManager } from "../../../Hooks/useSessionActions/useLocalStorageManager";
+import { sessionObjectKey } from "../../../Hooks/useSessionActions/common";
 
 export interface IOrderingInformation_translation {
   order: string;
@@ -46,27 +45,23 @@ const OrderingInformation_modal: FC<IOrderingInformation> = ({
 
     console.log(selectedProduct);
 
-    setFilteredOrderProducts(
-      selectedProduct?.map((el) => {
-        const prods = dataProduct.find(
-          (findElement) => findElement.product_id === el
-        );
-        return prods;
-      })
-    );
-  }, []);
+    // setFilteredOrderProducts(
+    //   selectedProduct?.map((el) => {
+    //     const prods = dataProduct.find(
+    //       (findElement) => findElement.product_id === el
+    //     );
+    //     return prods;
+    //   })
+    // );
 
+  }, [data?.cartCollection_by_id?.cart_model, getQueryAsArray]);
 
   return (
     <>
       <div className={styles.orderBox}>
         <div className={styles.cartProducts}>
-          {filteredOrderProducts ? (
-            <>
-            </>
-          ) : (
-            <div>Добавьте продукты для оформления заказа</div>
-          )}
+          {/* контейнер для продуктов юзера. получаем товары корзины или передаем пропсом? */}
+          
         </div>
 
         <div className={styles.cartTotal}>

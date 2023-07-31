@@ -17,10 +17,10 @@ import { toc_order_information } from "../../components/DefaultModals/table_of_c
 import { toc_order_request } from "../../components/DefaultModals/table_of_contents/order/toc_order_request";
 import OrderingInformation_modal, {
   IOrderingInformation_translation,
-} from "../../components/DefaultModals/CallBack/order/OrderingInformation_modal";
+} from "../../components/DefaultModals/Order/OrderingInformation_modal";
 import OrderingRequest_modal, {
   IOrderRequest_translation,
-} from "../../components/DefaultModals/CallBack/order/OrderingRequest_modal";
+} from "../../components/DefaultModals/Order/OrderingRequest_modal";
 import ru_order_information from "../../locales/orderInformation/ru";
 import en_order_information from "../../locales/orderInformation/en";
 import ru_order_request from "../../locales/orderRequest/ru";

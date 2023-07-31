@@ -1,4 +1,4 @@
-import { IOrderingInformation_translation } from "../../components/DefaultModals/CallBack/order/OrderingInformation_modal";
+import { IOrderingInformation_translation } from "../../components/DefaultModals/Order/OrderingInformation_modal";
 
 export default {
     order: "Оформление заказа",

@@ -1,7 +1,7 @@
 import React, { FC } from "react";
-import styles from "../../../../styles/Modals/order/ordering_request.module.scss";
-import ISTInput, { inputTypesVars } from "../../../UI/ISTInput/ISTInput";
-import ISTButtonN from "../../../UI/ISTButton/ISTButtonN";
+import styles from "../../../styles/Modals/order/ordering_request.module.scss";
+import ISTInput, { inputTypesVars } from "../../UI/ISTInput/ISTInput";
+import ISTButtonN from "../../UI/ISTButton/ISTButtonN";
 
 export interface IOrderRequest_translation {
   order: string;

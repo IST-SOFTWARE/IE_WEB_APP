@@ -1,4 +1,4 @@
-import { IOrderRequest_translation } from "../../components/DefaultModals/CallBack/order/OrderingRequest_modal";
+import { IOrderRequest_translation } from "../../components/DefaultModals/Order/OrderingRequest_modal";
 
 
 export default {    
