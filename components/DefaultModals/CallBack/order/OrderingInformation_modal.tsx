@@ -1,6 +1,7 @@
 import React, { FC } from "react";
 import styles from "../../../../styles/Modals/order/ordering_information.module.scss";
 import ISTButtonN from "../../../UI/ISTButton/ISTButtonN";
+import { OrderedCartWrapper } from './OrderedCartWrapper'
 
 export interface IOrderingInformation_translation {
   order: string;
@@ -12,7 +13,6 @@ export interface IOrderingInformation_translation {
 
 interface IOrderingInformation {
   translation: IOrderingInformation_translation;
-
   nextModalFunc: (...props) => any;
 }
 
@@ -25,7 +25,7 @@ const OrderingInformation_modal: FC<IOrderingInformation> = ({
       <div className={styles.orderBox}>
         <div className={styles.cartProducts}>
           {/* контейнер для продуктов юзера. получаем товары корзины или передаем пропсом? */}
-          PRODUCTS IN CART
+          <OrderedCartWrapper/>
         </div>
 
         <div className={styles.cartTotal}>

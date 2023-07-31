@@ -1,10 +1,6 @@
 import styles from "./index.module.scss";
 import {
-  useState,
-  useEffect,
-  useCallback,
   FC,
-  CSSProperties,
   useContext,
 } from "react";
 import emptyProduct from "../src/Empty_Prod_image.svg";
@@ -15,10 +11,7 @@ import { switchSelectedState_cartActions } from "../../Actions/CartActions";
 import { ProductItemSelector } from "../../../ISTCheckBox";
 import QuantityEditor from "../../QuantityEditor";
 import { IProductItem_cart } from "../../Abstract/ICartTypes";
-import queryString from "query-string";
-import { URLSearchParams } from "next/dist/compiled/@edge-runtime/primitives/url";
-import { useRouter } from "next/router";
-import { useQueryBuilder } from "../../../../../Hooks/useQueryBuilder/useQueryBuilder";
+
 
 const CartFunctional: FC<IProductItem_cart> = ({
   onEditQuantity,
@@ -29,7 +22,7 @@ const CartFunctional: FC<IProductItem_cart> = ({
   checkedState,
 }) => {
 
-  const { style, currencySymbol, cartSelector, forwardingPath } = useContext(
+  const { style, currencySymbol, cartSelector, forwardingPath, blocked } = useContext(
     ISTProductItemDistributor_Context
   );
 
@@ -93,6 +86,7 @@ const CartFunctional: FC<IProductItem_cart> = ({
                     quantity={currentQuantity}
                     onChange={onEditQuantity}
                     onDelete={onRemoveItem}
+                    blocked={blocked}
                   />
                 ) : null}
               </div>
