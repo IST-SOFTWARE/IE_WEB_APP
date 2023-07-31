@@ -15,6 +15,7 @@ const QuantityEditor: FC<IQuantityEditor> = ({
   quantity,
   onChange,
   onDelete,
+  blocked
 }) => {
   const [currentQuantity, setCurrentQuantity] = useState<string>(quantity.toString());
 
@@ -77,9 +78,13 @@ const QuantityEditor: FC<IQuantityEditor> = ({
     }
   }
 
+  // useEffect(()=>{
+  //     console.log("blocked: ", blocked);
+  // },[blocked])
+
   return (
     <>
-      <div className={styles.ActionsContainer}>
+      <div className={`${styles.ActionsContainer} ${blocked ? styles.blocked : ""}`}>
         {Number(quantity) <= 1 ? (
 
             <div className={styles.btnContainer}>

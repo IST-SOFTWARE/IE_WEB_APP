@@ -56,7 +56,8 @@ const IstProductItem: FC<IProductItem> = ({
             style: style,
             cartSelector: itemType.cartSelector,
             mobileSettings: itemType.mobileSettings,
-            forwardingPath: forwardingPath
+            forwardingPath: forwardingPath,
+            blocked: itemType.blocked
           }}>
 
               <CartDistributor/>

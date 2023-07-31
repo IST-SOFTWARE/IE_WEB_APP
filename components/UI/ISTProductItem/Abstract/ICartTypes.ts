@@ -1,4 +1,4 @@
-import {Dispatch, ReactNode, SetStateAction} from "react";
+import {Dispatch, SetStateAction} from "react";
 import {
     cartItemGetter_fnc,
     deleteProduct_fnc_onDelete,
@@ -29,19 +29,21 @@ export type ICartItem = {
     mobileSettings?: mobileSettings;
     data: ICartItem_properties;
     cartSelector?: ICartSelector;
+    blocked?: boolean
 }
 
 export interface IProductItem_cart {
     productData: IProductData,
-    currentQuantity: number,
     checkedState?: boolean,
-
+    
+    currentQuantity: number,
     onEditQuantity: quantityEditor_onChange,
     onRemoveItem: quantityEditor_onDelete,
-
+    
 };
 
-type ICartSelector_dispatch<T> = Dispatch<SetStateAction<T>>
+type ICartSelector_dispatch<T> = 
+    Dispatch<SetStateAction<T>>
 
 export type ICartSelector_type = {
     id: number | string;
@@ -63,5 +65,6 @@ export interface IProductItem_distributor extends Omit<IProductItem, "itemType">
     data: ICartItem_properties;
     mobileSettings?: mobileSettings;
     cartSelector?: ICartSelector;
+    blocked?: boolean
 }
 
