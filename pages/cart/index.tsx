@@ -22,12 +22,13 @@ import en_order_request from "../../locales/orderRequest/en";
 import LoaderModal from "../../components/DefaultModals/Loader/Loader_modal";
 import { useQueryBuilder } from "../../Hooks/useQueryBuilder/useQueryBuilder";
 import {
+  ICartSelected,
   IOrderRequest_translation,
   IOrderingInformation_translation,
 } from "../../components/DefaultModals/Order/common";
 import OrderingInformation_modal from "../../components/DefaultModals/Order/OrderingInformation_modal";
 import OrderingRequest_modal from "../../components/DefaultModals/Order/OrderingRequest_modal";
-import { ICartSelected } from "./ICartSelected";
+
 
 const CartPage_index = ({}) => {
   const [cartSelector, setCartSelector] = useState<ICartSelector_type[]>([]);

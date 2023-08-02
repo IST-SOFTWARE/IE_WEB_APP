@@ -2,14 +2,13 @@ import React, { FC, useEffect, useState } from "react";
 import styles from "../../../styles/Modals/order/ordering_information.module.scss";
 import ISTButtonN from "../../UI/ISTButton/ISTButtonN";
 import { OrderedCartWrapper } from "./OrderedCartWrapper";
-import { IOrderingInformation } from "./common";
+import { ICartSelected, IOrderingInformation } from "./common";
 import { useLazyQuery } from "@apollo/client";
 import { GET_CART_COLLECTION_BY_ID } from "../../../queries/cart/cartActions";
 import { useLocalStorageManager } from "../../../Hooks/useSessionActions/useLocalStorageManager";
-import { sessionObjectKey } from "../../../Hooks/useSessionActions/common";
 import { cartCollection } from "../../ProductsWrapper/common";
 import { useQueryBuilder } from "../../../Hooks/useQueryBuilder/useQueryBuilder";
-import { ICartSelected } from "../../../pages/cart/ICartSelected";
+
 
 const OrderingInformation_modal: FC<IOrderingInformation> = ({
   translation,

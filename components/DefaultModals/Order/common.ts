@@ -1,5 +1,4 @@
 import { cartCollection } from '../../ProductsWrapper/common'
-import { IProductData } from "../../UI/common";
 
 export interface IOrderingInformation_translation {
   order: string;
@@ -42,5 +41,10 @@ export interface IOrderRequest_translation {
   buttonOrdering: string;
   buttonOrderingDetails: string;
 }
+
+export type ICartSelected = {
+  cartSelected: string[]
+}
+
 
 

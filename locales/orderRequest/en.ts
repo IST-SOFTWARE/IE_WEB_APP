@@ -1,5 +1,4 @@
-import { IOrderRequest_translation } from "../../components/DefaultModals/Order/OrderingRequest_modal";
-
+import { IOrderRequest_translation } from '../../components/DefaultModals/Order/common'
 
 export default {    
     order: "EN Translation",
