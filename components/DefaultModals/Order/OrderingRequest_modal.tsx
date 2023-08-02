@@ -2,30 +2,8 @@ import React, { FC } from "react";
 import styles from "../../../styles/Modals/order/ordering_request.module.scss";
 import ISTInput, { inputTypesVars } from "../../UI/ISTInput/ISTInput";
 import ISTButtonN from "../../UI/ISTButton/ISTButtonN";
+import { IOrderRequest } from './common'
 
-export interface IOrderRequest_translation {
-  order: string;
-  detailsOrder: string;
-  contactPhoneText: string;
-  placeholderPhone: string;
-  descriptionText: string;
-  descriptionTextInformation: string;
-  IPNText: string;
-  IPN: string;
-  organizationNameText: string;
-  organizationName: string;
-  fullNameRepresentativeText: string;
-  fullNameRepresentative: string;
-  emailText: string;
-  email: string;
-  buttonOrdering: string;
-  buttonOrderingDetails: string;
-}
-
-interface IOrderRequest {
-  translation: IOrderRequest_translation;
-  previousModalFunc: (...props) => any;
-}
 
 const OrderingRequest_modal: FC<IOrderRequest> = ({
   translation,

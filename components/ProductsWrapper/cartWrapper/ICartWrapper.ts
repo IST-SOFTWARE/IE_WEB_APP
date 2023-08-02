@@ -4,9 +4,6 @@ import { ICartSelector } from '../../UI/ISTProductItem/Abstract/ICartTypes'
 import { IProductItem } from '../../UI/ISTProductItem/common'
 import { mobileTrigger_size } from '../../UI/common'
 
-export interface cartCollection {
-  cartCollection_by_id: ICartCollection;
-}
 
 export interface ICartWrapper {
   cartSelector: Omit<ICartSelector, "data">;

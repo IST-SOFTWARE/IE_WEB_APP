@@ -39,9 +39,9 @@ import { ICartTotalSum_prodsInf } from "../../../Hooks/useCartTotalSum/ICartTota
 import { useLocalStorageManager } from "../../../Hooks/useSessionActions/useLocalStorageManager";
 import { sessionObjectKey } from "../../../Hooks/useSessionActions/common";
 import styles from "./cartWrapper.module.scss";
-import IstButtonN from "../../UI/ISTButton/ISTButtonN";
-import { ICartWrapper, cartCollection } from "./ICartWrapper";
+import { ICartWrapper } from "./ICartWrapper";
 import { RU_LOCALE } from "../../../locales/locales";
+import { cartCollection } from '../common'
 
 export const CartWrapper: FC<ICartWrapper> = ({
   cartSelector,
@@ -260,7 +260,7 @@ export const CartWrapper: FC<ICartWrapper> = ({
             Воспользуйтесь каталогом, чтобы найти всё, что нужно.
           </div>
 
-          <div className={styles.emptyCart_cartOpener}>
+          {/* <div className={styles.emptyCart_cartOpener}>
             <IstButtonN
               title={{
                 caption: "Каталог",
@@ -273,7 +273,7 @@ export const CartWrapper: FC<ICartWrapper> = ({
                 },
               }}
             />
-          </div>
+          </div> */}
         </div>
       ) : (
         <>

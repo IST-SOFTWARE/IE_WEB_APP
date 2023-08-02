@@ -15,23 +15,25 @@ import useBaseModal from "../../Hooks/useBaseModal/useBaseModal";
 import PuWrapper from "../../components/DefaultModals/popUp/puWrapper";
 import { toc_order_information } from "../../components/DefaultModals/table_of_contents/order/toc_order_information";
 import { toc_order_request } from "../../components/DefaultModals/table_of_contents/order/toc_order_request";
-import OrderingInformation_modal, {
-  IOrderingInformation_translation,
-} from "../../components/DefaultModals/Order/OrderingInformation_modal";
-import OrderingRequest_modal, {
-  IOrderRequest_translation,
-} from "../../components/DefaultModals/Order/OrderingRequest_modal";
 import ru_order_information from "../../locales/orderInformation/ru";
 import en_order_information from "../../locales/orderInformation/en";
 import ru_order_request from "../../locales/orderRequest/ru";
 import en_order_request from "../../locales/orderRequest/en";
 import LoaderModal from "../../components/DefaultModals/Loader/Loader_modal";
 import { useQueryBuilder } from "../../Hooks/useQueryBuilder/useQueryBuilder";
+import {
+  IOrderRequest_translation,
+  IOrderingInformation_translation,
+} from "../../components/DefaultModals/Order/common";
+import OrderingInformation_modal from "../../components/DefaultModals/Order/OrderingInformation_modal";
+import OrderingRequest_modal from "../../components/DefaultModals/Order/OrderingRequest_modal";
+import { ICartSelected } from "./ICartSelected";
 
 const CartPage_index = ({}) => {
   const [cartSelector, setCartSelector] = useState<ICartSelector_type[]>([]);
 
-  const { setQueryAsArray } = useQueryBuilder<string>();
+  const { getQuery, parseQuery, pushToQuery } =
+    useQueryBuilder<ICartSelected>();
 
   const [cartModalSwitch, setCartModalSwitch] = useState(0);
 
@@ -64,13 +66,16 @@ const CartPage_index = ({}) => {
 
   const region = useAppSelector((sel) => sel.region);
 
-  useEffect(() => {
+  const pushSelectedItemsToQuery = useCallback(() => {
     const newIDsArray = new Array<string>();
     cartSelector.map((el) => newIDsArray.push(el.id.toString()));
 
-    setQueryAsArray(newIDsArray);
-  }, [cartSelector]);
-
+    pushToQuery({
+      cartSelected: newIDsArray,
+    }).then((res) => {
+      res ? modalComponent.switch(true) : null;
+    });
+  }, [cartSelector, modalComponent, pushToQuery]);
 
   useEffect(() => {
     if (!modalComponent) return;
@@ -166,7 +171,7 @@ const CartPage_index = ({}) => {
             }}
             translation={currentTranslation?.translation}
             sendOrderFun={() => {
-              modalComponent.switch(true);
+              pushSelectedItemsToQuery();
             }}
           />
         </div>

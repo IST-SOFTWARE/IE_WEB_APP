@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { useTransition } from '../../Hooks/useTranslation/useTranslation';
 
 import styles from "../../styles/ProductPage/ProductPage.module.css";
 

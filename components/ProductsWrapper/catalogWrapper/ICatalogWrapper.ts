@@ -11,7 +11,3 @@ export interface ICatalogWrapper {
   itemWrapperStyles?: CSSProperties;
   wrapperStyles?: CSSProperties;
 }
-
-export interface cartCollection {
-  cartCollection_by_id: ICartCollection;
-}

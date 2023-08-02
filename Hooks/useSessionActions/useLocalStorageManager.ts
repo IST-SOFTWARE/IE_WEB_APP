@@ -1,7 +1,8 @@
 import { useCallback } from 'react'
+import { sessionObjectKey } from './common'
 
 export const useLocalStorageManager = (
-  storageItemName: string,
+  storageItemName: string = sessionObjectKey,
 ) => {
 
   const getStorageItem = useCallback(() => {

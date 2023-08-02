@@ -1,3 +1,4 @@
+import { ApolloClient, NormalizedCacheObject } from '@apollo/client'
 import {ICartItem_properties_data} from "../../components/UI/ISTProductItem/Abstract/ICartTypes";
 
 export const products_editQuantity_actionsHelper = (
@@ -49,3 +50,4 @@ export const products_addItem_actionsHelper = (
     newData.push(newItem);
     return newData
 }
+

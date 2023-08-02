@@ -14,8 +14,6 @@ const setData = async (mutation, data = {}, additionalPath = '') => {
 
   const responseJson = await response.json();
 
-  console.log(responseJson);
-
   return responseJson.data;
 };
 

@@ -47,8 +47,9 @@ import { setOffset } from "../../../store/slices/catalogSlices/catalogPagination
 import { ICreationFnc, IUpdateFnc } from "../../../Hooks/useSessionActions/common";
 import { useSessionActions } from "../../../Hooks/useSessionActions/useSessionActions";
 import { IDirectusGraphQlErrors } from "../../../Directus/ExceptionTypes/DirectusExceptionTypes";
-import { cartCollection, ICatalogWrapper } from "./ICatalogWrapper";
+import { ICatalogWrapper } from "./ICatalogWrapper";
 import { RU_LOCALE } from '../../../locales/locales'
+import { cartCollection } from '../common'
 
 export const CatalogWrapper: FC<ICatalogWrapper> = ({
   itemWrapper_ClassName,

@@ -1,49 +1,63 @@
-import queryString from "query-string"
+import queryString from "query-string";
 import { useRouter } from "next/router";
-import { useCallback, useState } from "react";
-import { arrayBuffer } from "stream/consumers";
+import { useCallback, useEffect, useState } from "react";
 
-
-export const useQueryBuilder = <T extends string | number | string[] | number[] = string>(
-    parseOptions?: queryString.StringifyOptions,
-
-) => {
-
-const [currentQuery, setCurrentQuery ] = useState<string>()
-
-const router = useRouter();
-
-const [_parseOptions] = useState<queryString.StringifyOptions>(
-    parseOptions ? parseOptions : {
-        arrayFormat: "bracket-separator",
-        arrayFormatSeparator: "|"
-    }
-)
-
-const setQueryAsArray = useCallback((data: T[] ) => {
-
-    const query = queryString.stringify(
-      { cartSelected: data },
-      {..._parseOptions}
-    );
-    
-    // query
-    //   ? router.push(`?${query}`)
-    //   : router.push(``);
-      
-
-},[_parseOptions, router])
-
-
-
-const getQueryAsArray = useCallback(()  => {
-
-    const parsedQuery = queryString.parse(
-        router.asPath, {..._parseOptions}
-    )
-    return  typeof(parsedQuery) === "object" ? parsedQuery : []
-
-}, [_parseOptions, router?.asPath])
-    
-  return {setQueryAsArray, getQueryAsArray}
+interface dataT {
+  cartSelected: Array<string>;
 }
+
+/**
+ * Warning: Please only pass types (type) instead of interfaces for T.
+ *
+ * @template {Record<any, string | number | string[] | number[]>} T - The data type to be used as the argument.
+ * @param {queryString.StringifyOptions} [parseOptions] - Query string parsing options.
+ */
+export const useQueryBuilder = <
+  T extends Record<string, string | number | string[] | number[]>
+>(
+  parseOptions?: queryString.StringifyOptions
+) => {
+  const [currentQuery, setCurrentQuery] = useState<string>();
+  const router = useRouter();
+
+  const [_parseOptions] = useState<queryString.StringifyOptions>(
+    parseOptions
+      ? parseOptions
+      : {
+          arrayFormat: 'bracket-separator',
+          arrayFormatSeparator: "|",
+          skipNull: true,
+        }
+  );
+
+  const getQuery = useCallback(
+    (data: T): string => {
+      return queryString.stringify({ ...data }, { ..._parseOptions });
+    },
+    [_parseOptions]
+  );
+
+  const pushToQuery = useCallback(
+    (data: T):Promise<boolean> => {
+      const newQuery = getQuery(data);
+
+      return newQuery
+      ? router.push(`?${newQuery}`, undefined, {shallow: true})
+      : router.push(``);
+
+    },
+    [getQuery, router]
+  );
+
+  const parseQuery = useCallback((): T => {
+    const parsedUrl = queryString.parseUrl(router?.asPath, {
+      ..._parseOptions,
+    });
+
+    if (parsedUrl?.query) return parsedUrl.query as unknown as T;
+
+    return;
+  }, [_parseOptions, router?.asPath]);
+
+  return { parseQuery, getQuery, pushToQuery };
+};
