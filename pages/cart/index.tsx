@@ -66,16 +66,33 @@ const CartPage_index = ({}) => {
 
   const region = useAppSelector((sel) => sel.region);
 
+  const [state, setState] = useState<boolean>(false)
+
+  const openModalWithSelected = useCallback(() => {
+    if(parseQuery()?.cartSelected && parseQuery()?.cartSelected.length > 0){
+      modalComponent.switch(true)
+      setState(!state)
+      console.log("openModalWITHSelected");
+    } 
+ 
+  }, [modalComponent, parseQuery]);
+
   const pushSelectedItemsToQuery = useCallback(() => {
     const newIDsArray = new Array<string>();
     cartSelector.map((el) => newIDsArray.push(el.id.toString()));
 
-    pushToQuery({
-      cartSelected: newIDsArray,
-    }).then((res) => {
-      res ? modalComponent.switch(true) : null;
-    });
-  }, [cartSelector, modalComponent, pushToQuery]);
+    if (newIDsArray.length > 0) {
+      pushToQuery({
+        cartSelected: newIDsArray,
+      }).then((res) => (res ? openModalWithSelected() : null));
+    }
+
+  }, [openModalWithSelected, cartSelector, pushToQuery]);
+
+  useEffect(() => {
+    openModalWithSelected();
+    
+  }, [openModalWithSelected]);
 
   useEffect(() => {
     if (!modalComponent) return;
@@ -205,7 +222,6 @@ const CartPage_index = ({}) => {
           </PuWrapper>
         )}
       </ModalView>
-
     </>
   );
 };
