@@ -8,13 +8,19 @@ import { GET_CART_COLLECTION_BY_ID } from "../../../queries/cart/cartActions";
 import { useLocalStorageManager } from "../../../Hooks/useSessionActions/useLocalStorageManager";
 import { cartCollection } from "../../ProductsWrapper/common";
 import { useQueryBuilder } from "../../../Hooks/useQueryBuilder/useQueryBuilder";
-
+import LoaderModal from "../Loader/Loader_modal";
+import useBaseModal from "../../../Hooks/useBaseModal/useBaseModal";
 
 const OrderingInformation_modal: FC<IOrderingInformation> = ({
   translation,
+  totalSelect,
+  totalSum,
+  region,
   nextModalFunc,
 }) => {
   const { getStorageItem } = useLocalStorageManager();
+
+  const [loadingModal, setLoadingModal] = useState<boolean>(false);
 
   const [ICartData, setCartData] = useState<cartCollection>();
   const [cartErr, setCartErr] = useState<boolean>(false);
@@ -40,6 +46,17 @@ const OrderingInformation_modal: FC<IOrderingInformation> = ({
     });
   }, [getCartData]);
 
+  const { modalComponent, ModalView } = useBaseModal(undefined, "PopUpBase");
+
+  useEffect(() => {
+    modalComponent.switch(loadingModal);
+  }, [loadingModal, modalComponent]);
+
+  useEffect(() => {
+    if (!ICartData) setLoadingModal(true);
+    else setLoadingModal(false);
+  },[ICartData]);
+
   return (
     <>
       <div className={styles.orderBox}>
@@ -49,8 +66,18 @@ const OrderingInformation_modal: FC<IOrderingInformation> = ({
 
         <div className={styles.cartTotal}>
           <div className="costBox">
-            <div className={styles.products}>{translation?.products}: 4</div>
-            <div className={styles.sum}>{translation?.sum}: 0 000 000</div>
+            <div className={styles.products}>
+              {translation?.products}: {totalSelect}
+            </div>
+            <div className={styles.sum}>
+              {translation?.sum}:{" "}
+              {totalSum
+                ? `${totalSum.toLocaleString(region.region, {
+                    maximumFractionDigits: 2,
+                  })}`
+                : 0}
+              {region.currencySymbol}
+            </div>
           </div>
           <div className={styles.boxButtonOrder}>
             <ISTButtonN
@@ -69,6 +96,10 @@ const OrderingInformation_modal: FC<IOrderingInformation> = ({
           </div>
         </div>
       </div>
+
+      <ModalView>
+        <LoaderModal />
+      </ModalView>
     </>
   );
 };

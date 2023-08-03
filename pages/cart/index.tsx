@@ -29,7 +29,6 @@ import {
 import OrderingInformation_modal from "../../components/DefaultModals/Order/OrderingInformation_modal";
 import OrderingRequest_modal from "../../components/DefaultModals/Order/OrderingRequest_modal";
 
-
 const CartPage_index = ({}) => {
   const [cartSelector, setCartSelector] = useState<ICartSelector_type[]>([]);
 
@@ -183,8 +182,17 @@ const CartPage_index = ({}) => {
           <LoaderModal />
         ) : (
           <PuWrapper data={modalComponent}>
+            {}
             {modalComponent.isCurrentModal(toc_order_information.typeName) ? (
               <OrderingInformation_modal
+                totalSelect={numOfSelected}
+                totalSum={totalSum}
+                region={{
+                  currencySymbol:
+                    region.currency[region.currentCurrencyId]?.currencySymbol ??
+                    "$",
+                  region: region.region,
+                }}
                 translation={currentTranslationOrderInformation?.translation}
                 nextModalFunc={handleSwitcherCartModalRequest}
               />
@@ -197,6 +205,7 @@ const CartPage_index = ({}) => {
           </PuWrapper>
         )}
       </ModalView>
+
     </>
   );
 };
