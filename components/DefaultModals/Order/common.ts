@@ -51,7 +51,8 @@ export interface IOrderRequest_translation {
 }
 
 export type ICartSelected = {
-  cartSelected: string[]
+  cartSelected: string[],
+  path?: string,
 }
 
 

@@ -72,7 +72,6 @@ const CartPage_index = ({}) => {
     if(parseQuery()?.cartSelected && parseQuery()?.cartSelected.length > 0){
       modalComponent.switch(true)
       setState(!state)
-      console.log("openModalWITHSelected");
     } 
  
   }, [modalComponent, parseQuery]);

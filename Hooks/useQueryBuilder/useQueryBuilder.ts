@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import { useCallback, useEffect, useState } from "react";
 
 interface dataT {
-  cartSelected: Array<string>;
+  cartSelected: Array<string>,
 }
 
 /**
@@ -32,17 +32,19 @@ export const useQueryBuilder = <
 
   const getQuery = useCallback(
     (data: T): string => {
+      
       return queryString.stringify({ ...data }, { ..._parseOptions });
+
     },
     [_parseOptions]
   );
 
   const pushToQuery = useCallback(
-    (data: T):Promise<boolean> => {
+    (data: T, path?: string):Promise<boolean> => {
       const newQuery = getQuery(data);
-
+      console.log("data: ", data)
       return newQuery
-      ? router.push(`?${newQuery}`, undefined, {shallow: true})
+      ? router.push(`${newQuery}`)
       : router.push(``);
 
     },
