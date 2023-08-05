@@ -51,13 +51,14 @@ const IstProductItem: FC<IProductItem> = ({
     case "cart": {
       return(
           <ISTProductItemDistributor_Context.Provider value={{
-            data: itemType.data,
-            currencySymbol: currencySymbol,
-            style: style,
-            cartSelector: itemType.cartSelector,
             mobileSettings: itemType.mobileSettings,
-            forwardingPath: forwardingPath,
-            blocked: itemType.blocked
+            cartSelector: itemType.cartSelector,
+            blocked: itemType.blocked,
+            data: itemType.data,
+            imageOptimization,
+            currencySymbol,
+            forwardingPath,
+            style,
           }}>
 
               <CartDistributor/>

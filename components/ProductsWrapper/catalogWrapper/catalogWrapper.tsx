@@ -1,15 +1,5 @@
-import React, {
-  CSSProperties,
-  FC,
-  useCallback,
-  useEffect,
-  useState,
-} from "react";
-import {
-  cartAdder_fnc,
-  deleteProduct_fnc,
-} from "../../UI/common";
-import { useLazyQuery, useMutation, useQuery } from "@apollo/client";
+import React, { FC, useEffect, useState } from "react";
+import { useQuery } from "@apollo/client";
 import {
   GRT_FILTERED_PRODUCTS_LIST,
   IProductFiltersVariables,
@@ -17,43 +7,14 @@ import {
 } from "../../../queries/products/productActions";
 import ISTProductItem from "../../UI/ISTProductItem/ISTProductItem";
 import { useAppSelector } from "../../../Hooks/reduxSettings";
-
 import styles from "./catalogWrapper.module.scss";
-
 import { filterExclude_filtersHelper } from "../../../helpers/Catalog/filters";
-import {
-  CREATE_CART_COLLECTION,
-  GET_CART_COLLECTION_BY_ID,
-  ICartCollection,
-  ICartCollection_created,
-  ICartCollection_updated,
-  ICartCollectionVariables,
-  ICartItem,
-  UPDATE_CART_BY_ID,
-} from "../../../queries/cart/cartActions";
-import {
-  products_addItem_actionsHelper,
-  products_removeItem_actionsHelper,
-} from "../../../helpers/Products/products_actions.helper";
-import { ICartItem_properties_data } from "../../UI/ISTProductItem/Abstract/ICartTypes";
-import {
-  redefining_to_CartModel_redefiningHelper,
-  redefining_to_ICartItemPropertiesData_redefiningHelper,
-} from "../../../helpers/Products/products_redefining.helper";
-import { ImageLoader } from "next/image";
-import { imageLoader_imagesHelper } from "../../../helpers/Images/customImageLoader";
 import { useDispatch } from "react-redux";
 import { setOffset } from "../../../store/slices/catalogSlices/catalogPaginationSlice";
-import {
-  ICreationFnc,
-  IUpdateFnc,
-} from "../../../Hooks/useSessionActions/common";
-import { useSessionActions } from "../../../Hooks/useSessionActions/useSessionActions";
-import { IDirectusGraphQlErrors } from "../../../Directus/ExceptionTypes/DirectusExceptionTypes";
 import { ICatalogWrapper } from "./ICatalogWrapper";
 import { RU_LOCALE } from "../../../locales/locales";
-import { cartCollection } from "../common";
 import { useCartActions } from "../../../Hooks/useCartActions/useCartActions";
+import { useImageOptimization } from "../../../Hooks/useImagePtimization/useImageOptimization";
 
 export const CatalogWrapper: FC<ICatalogWrapper> = ({
   itemWrapper_ClassName,
@@ -91,10 +52,21 @@ export const CatalogWrapper: FC<ICatalogWrapper> = ({
     fetchPolicy: "network-only",
   });
 
-  const { cData, cAdder, cRemover, cFetch } =
-    useCartActions();
+  // IMAGE OPTIMIZATION
+  let cloudinary_acc = process.env.NEXT_PUBLIC_CLOUDINARY_ACC;
+  const PROD_IMAGES_ROOT = process.env.NEXT_PUBLIC_PROD_IMAGES_ROOT;
+  const PROD_NAME_INCLUDED_PART =
+    process.env.NEXT_PUBLIC_PROD_NAME_INCLUDED_PART;
+
+  const { sourcedLoader } = useImageOptimization(
+    cloudinary_acc,
+    PROD_NAME_INCLUDED_PART,
+    PROD_IMAGES_ROOT
+  );
 
   // CART HANDLING
+  const { cData, cAdder, cRemover, cFetch } = useCartActions();
+
   useEffect(() => {
     if (data) cFetch();
   }, [cFetch, data]);
@@ -183,21 +155,6 @@ export const CatalogWrapper: FC<ICatalogWrapper> = ({
         .catch((ex) => console.error(ex));
   }, [pagination, fetchedAll, fetchMore, fullProdVars]);
 
-  // PRODUCT IMAGE OPTIMIZATIONS
-  const getImageLoader = useCallback<ImageLoader>(({ src, width, quality }) => {
-    let cloudinary_acc = process.env.NEXT_PUBLIC_CLOUDINARY_ACC;
-    const imageHelper = new imageLoader_imagesHelper(cloudinary_acc);
-    const newUrl = imageHelper.customImageLoader({ src, width, quality });
-
-    return newUrl ? newUrl : src;
-  }, []);
-
-  const getImageSrc = useCallback((src: string, v_code: string): string => {
-    const cloudinary_acc = process.env.NEXT_PUBLIC_CLOUDINARY_ACC;
-    const imageHelper = new imageLoader_imagesHelper(cloudinary_acc);
-    return imageHelper.getCloudinaryImageByUrl(src, v_code, "ProductsImages");
-  }, []);
-
   return (
     <>
       <div
@@ -222,7 +179,7 @@ export const CatalogWrapper: FC<ICatalogWrapper> = ({
                       fill: true,
                     }}
                     imageOptimization={{
-                      loader: getImageLoader,
+                      loader: sourcedLoader,
                       sizes: "350px",
                     }}
                     itemType={{
@@ -253,10 +210,7 @@ export const CatalogWrapper: FC<ICatalogWrapper> = ({
                         ).toString(),
 
                         vendCode: el?.vend_code.toString(),
-                        image: getImageSrc(
-                          el?.image_url,
-                          el?.vend_code.toString()
-                        ),
+                        image: el?.image_url,
                       },
                     }}
                   />

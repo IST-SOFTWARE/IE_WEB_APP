@@ -6,7 +6,7 @@ import { ISTProductItemDistributor_Context } from "../Context";
 import { IProductData } from "../../common";
 
 const CartDistributor: FC = () => {
-  const { mobileSettings, data, cartSelector, forwardingPath } = useContext(
+  const { mobileSettings, data, cartSelector, forwardingPath, imageOptimization } = useContext(
     ISTProductItemDistributor_Context
   );
 
@@ -104,7 +104,6 @@ const CartDistributor: FC = () => {
       isSub = false;
     };
   };
-  //
 
   return (
     <>

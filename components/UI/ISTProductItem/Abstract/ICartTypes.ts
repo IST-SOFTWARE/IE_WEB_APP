@@ -2,6 +2,7 @@ import { Dispatch, SetStateAction } from "react";
 import {
   cartItemGetter_fnc,
   deleteProduct_fnc,
+  IImageOptimizationOptions,
   IProductData,
   mobileTrigger_size,
   quantityEditor_fnc,
@@ -37,11 +38,10 @@ export type ICartItem = {
  */
 export interface IProductItem_cart {
   productData: IProductData;
-  checkedState?: boolean;
-
   currentQuantity: number;
   onEditQuantity: quantityEditor_onChange;
   onRemoveItem: quantityEditor_onDelete;
+  checkedState?: boolean;
 }
 
 type ICartSelector_dispatch<T> = Dispatch<SetStateAction<T>>;
@@ -65,6 +65,7 @@ interface mobileSettings {
 export interface IProductItem_distributor
   extends Omit<IProductItem, "itemType"> {
   data: ICartItem_properties;
+  imageOptimization?: IImageOptimizationOptions;
   mobileSettings?: mobileSettings;
   cartSelector?: ICartSelector;
   blocked?: boolean;

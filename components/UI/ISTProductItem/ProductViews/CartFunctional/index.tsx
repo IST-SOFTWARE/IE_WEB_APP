@@ -1,8 +1,5 @@
 import styles from "./index.module.scss";
-import {
-  FC,
-  useContext,
-} from "react";
+import { FC, useContext } from "react";
 import emptyProduct from "../src/Empty_Prod_image.svg";
 import Link from "next/link";
 import Image from "next/image";
@@ -11,7 +8,7 @@ import { switchSelectedState_cartActions } from "../../Actions/CartActions";
 import { ProductItemSelector } from "../../../ISTCheckBox";
 import QuantityEditor from "../../QuantityEditor";
 import { IProductItem_cart } from "../../Abstract/ICartTypes";
-
+import { base64_empty_product } from "../src/base64_empty_product";
 
 const CartFunctional: FC<IProductItem_cart> = ({
   onEditQuantity,
@@ -21,10 +18,14 @@ const CartFunctional: FC<IProductItem_cart> = ({
   currentQuantity,
   checkedState,
 }) => {
-
-  const { style, currencySymbol, cartSelector, forwardingPath, blocked } = useContext(
-    ISTProductItemDistributor_Context
-  );
+  const {
+    style,
+    currencySymbol,
+    cartSelector,
+    forwardingPath,
+    blocked,
+    imageOptimization,
+  } = useContext(ISTProductItemDistributor_Context);
 
   return (
     <>
@@ -41,6 +42,22 @@ const CartFunctional: FC<IProductItem_cart> = ({
               {productData && productData.image ? (
                 <Image
                   alt="Product Item Image"
+                  sizes={
+                    imageOptimization?.sizes
+                      ? imageOptimization?.sizes
+                      : undefined
+                  }
+                  loader={
+                    imageOptimization?.loader
+                      ? imageOptimization?.loader
+                      : undefined
+                  }
+                  placeholder={"blur"}
+                  blurDataURL={
+                    imageOptimization?.placeholderData
+                      ? imageOptimization?.placeholderData
+                      : base64_empty_product
+                  }
                   src={productData.image}
                   fill={true}
                   style={{
