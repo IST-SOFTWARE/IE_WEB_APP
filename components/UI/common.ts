@@ -32,23 +32,16 @@ export interface IProductData {
     slug?: string
 }
 
-export type deleteProduct_fnc = {
-    onDelete: deleteProduct_fnc_onDelete;
-    productsListSetter: Dispatch<ICartItem_properties_data[]>
-}
-
-export type cartAdder_fnc = cartAdder_fnc_onAdd;
-
 /**
  * PRODUCT ACTION TYPES
  */
 export type cartItemGetter_fnc =
     (id: string | number, callBack?: callBack_fnc<IProductData>) => Promise<IProductData>
 
-export type deleteProduct_fnc_onDelete =
+export type deleteProduct_fnc =
     (id: string | number, callBack?: callBack_fnc<ICartItem_properties_data[]>) => Promise<boolean>
 
-export type cartAdder_fnc_onAdd =
+export type cartAdder_fnc =
     (id: string | number, callBack?: callBack_fnc<ICartItem_properties_data[]>) => Promise<boolean>;
 
 export type quantityEditor_fnc =

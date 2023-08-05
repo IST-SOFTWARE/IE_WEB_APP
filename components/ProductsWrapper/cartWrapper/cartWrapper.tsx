@@ -5,7 +5,7 @@ import {
 } from "../../UI/ISTProductItem/Abstract/ICartTypes";
 import {
   cartItemGetter_fnc,
-  deleteProduct_fnc_onDelete,
+  deleteProduct_fnc,
   IProductData,
   mobileTrigger_size,
   quantityEditor_fnc,
@@ -41,7 +41,8 @@ import { sessionObjectKey } from "../../../Hooks/useSessionActions/common";
 import styles from "./cartWrapper.module.scss";
 import { ICartWrapper } from "./ICartWrapper";
 import { RU_LOCALE } from "../../../locales/locales";
-import { cartCollection } from '../common'
+import { cartCollection } from "../common";
+import { useCartActions } from "../../../Hooks/useCartActions/useCartActions";
 
 export const CartWrapper: FC<ICartWrapper> = ({
   cartSelector,
@@ -53,165 +54,19 @@ export const CartWrapper: FC<ICartWrapper> = ({
 
   amountData,
 }) => {
-  const [products, setProducts] = useState<ICartItem_properties_data[]>([]);
   const regionHandler = useAppSelector((selector) => selector.region);
-  const { getStorageItem } = useLocalStorageManager(sessionObjectKey);
 
-  /**
-   *  DATA GETTER [PRODUCT DATA]
-   */
-  const getCartProductDataById: cartItemGetter_fnc = async (
-    id: number | string,
-    callBack
-  ): Promise<IProductData> => {
-    let outProduct = {} as IProductData;
-
-    await cartClient
-      .query<IProducts_Q>({
-        query: GET_PRODUCT_BY_ID,
-        variables: {
-          id: Number(id),
-        },
-        fetchPolicy: "network-only",
-      })
-      .then((prod) => {
-        if (prod.data && prod.data.Products[0]) {
-          const _data = prod.data.Products[0];
-
-          outProduct = {
-            id: _data.id,
-            image: _data.image_url,
-
-            title:
-              regionHandler.region === RU_LOCALE
-                ? _data.product_name_ru
-                : _data.product_name,
-
-            price: (
-              Number(_data.price) *
-              regionHandler.currency[regionHandler.currentCurrencyId]
-                ?.currencyMultiplier
-            ).toString(),
-
-            vendCode: _data.vend_code.toString(),
-            slug: _data.slug,
-          };
-        }
-
-        if (callBack?.sideEffect && callBack?.flag === true)
-          callBack.sideEffect(outProduct);
-      });
-
-    return outProduct;
-  };
-
-  const { getItemsInfo } = useCartTotalSum({
-    cartSelector: cartSelector.selectedState,
-    getProductByIdQuery_func: getCartProductDataById,
-  });
-
-  /**
-   *  DATA FETCHING [CART DATA]
-   */
-  const { data, loading, error } = useQuery<cartCollection>(
-    GET_CART_COLLECTION_BY_ID,
+  const { cItemById, cRemover, cData, cQuantityEditor, cMeta } = useCartActions(
     {
-      fetchPolicy: "cache-and-network",
-      variables: { id: getStorageItem() },
+      cartAutoFetching: true,
+      regionHandler: regionHandler,
     }
   );
 
-  /**
-   *  DATA UPDATER [CART DATA]
-   */
-  useEffect(() => {
-    if (data && data.cartCollection_by_id)
-      setProducts(
-        redefining_to_ICartItemPropertiesData_redefiningHelper(
-          data.cartCollection_by_id.cart_model
-        )
-      );
-  }, [data]);
-
-  /**
-   *  QUANTITY EDITOR
-   */
-  const editQuantity = useCallback<quantityEditor_fnc>(
-    async (id, newQuantity, callBack) => {
-      if (!products || !data?.cartCollection_by_id || !getStorageItem()) return;
-
-      const newCart = products_editQuantity_actionsHelper(
-        products,
-        id,
-        newQuantity
-      );
-
-      const variables = {
-        id: getStorageItem(),
-        data: {
-          status: "Draft",
-          cart_model: redefining_to_CartModel_redefiningHelper(newCart),
-        },
-      } as ICartCollectionVariables;
-
-      let _newQuantity = 0;
-
-      await cartClient
-        .mutate<ICartCollection_updated>({
-          mutation: UPDATE_CART_BY_ID,
-          variables: variables,
-        })
-        .then((el) => {
-          if (el.data && !el.errors) {
-            _newQuantity = newQuantity;
-
-            if (callBack?.sideEffect && callBack?.flag === true)
-              callBack.sideEffect(_newQuantity);
-          }
-        });
-
-      return true;
-    },
-    [products, data?.cartCollection_by_id, getStorageItem]
-  );
-
-  /**
-   *  PRODUCT REMOVER
-   */
-  const deleteProduct = useCallback<deleteProduct_fnc_onDelete>(
-    async (id, callBack) => {
-      const newCart = products_removeItem_actionsHelper(products, id);
-
-      if (!products || !data?.cartCollection_by_id || !getStorageItem()) return;
-
-      const variables = {
-        id: getStorageItem(),
-        data: {
-          status: "Draft",
-          cart_model: redefining_to_CartModel_redefiningHelper(newCart),
-        },
-      } as ICartCollectionVariables;
-
-      await cartClient
-        .mutate<ICartCollection_updated>({
-          mutation: UPDATE_CART_BY_ID,
-          variables: variables,
-        })
-        .then((el) => {
-          if (el.data?.update_cartCollection_item && !el.errors) {
-            if (callBack?.sideEffect && callBack?.flag === true)
-              callBack.sideEffect(
-                redefining_to_ICartItemPropertiesData_redefiningHelper(
-                  el.data.update_cartCollection_item.cart_model
-                )
-              );
-          }
-        });
-
-      return true;
-    },
-    [products, data?.cartCollection_by_id, getStorageItem]
-  );
+  const { getItemsInfo } = useCartTotalSum({
+    cartSelector: cartSelector.selectedState,
+    getProductByIdQuery_func: cItemById,
+  });
 
   useEffect(() => {
     const calcTotalSum = (prodsInf: ICartTotalSum_prodsInf[]) => {
@@ -243,42 +98,26 @@ export const CartWrapper: FC<ICartWrapper> = ({
    *  LOADING HANDLER
    */
   useEffect(() => {
-    loadingSetter(loading);
-  }, [loading, loadingSetter]);
+    loadingSetter(cMeta.loading);
+  }, [cMeta.loading, loadingSetter]);
 
   /**
    *  CART WRAPPER VIEW
    */
-
   return (
     <div className={styles.cartWrapper}>
-      {data?.cartCollection_by_id?.cart_model?.length < 1 || error ? (
+      {cData?.length < 1 || cMeta.error ? (
         <div className={styles.emptyCart}>
           <div className={styles.emptyCart_title}>Корзина пуста</div>
 
           <div className={styles.emptyCart_hint}>
             Воспользуйтесь каталогом, чтобы найти всё, что нужно.
           </div>
-
-          {/* <div className={styles.emptyCart_cartOpener}>
-            <IstButtonN
-              title={{
-                caption: "Каталог",
-              }}
-              light={{
-                fill: true,
-                style: {
-                  borderRadius: "10px",
-                  fillContainer: true,
-                },
-              }}
-            />
-          </div> */}
         </div>
       ) : (
         <>
           <div style={wrapperStyles}>
-            {products.map(({ productId, quantity }, index) => {
+            {cData.map((el, index) => {
               return (
                 <ISTProductItem
                   key={`ISTProductItem_${index}`}
@@ -287,6 +126,7 @@ export const CartWrapper: FC<ICartWrapper> = ({
                       ?.currencySymbol
                   }
                   style={itemStyles?.style}
+              
                   itemType={{
                     productType: "cart",
                     mobileSettings: {
@@ -295,8 +135,8 @@ export const CartWrapper: FC<ICartWrapper> = ({
 
                     cartSelector: {
                       data: {
-                        id: productId,
-                        quantity: quantity,
+                        id: el?.productId,
+                        quantity: el?.quantity,
                         price: undefined,
                       },
 
@@ -305,15 +145,12 @@ export const CartWrapper: FC<ICartWrapper> = ({
                     },
 
                     data: {
-                      productId: productId,
-                      quantity: quantity,
+                      productId: el?.productId,
+                      quantity: el?.quantity,
 
-                      cartItemGetter: getCartProductDataById,
-                      quantityEditor: editQuantity,
-                      deleteProduct: {
-                        onDelete: deleteProduct,
-                        productsListSetter: setProducts,
-                      },
+                      cartItemGetter: cItemById,
+                      quantityEditor: cQuantityEditor,
+                      deleteProduct: cRemover,
                     },
                   }}
                 />
