@@ -6,7 +6,7 @@ import { ICartTotalSum_prodsInf } from "../../../Hooks/useCartTotalSum/ICartTota
 import styles from "./cartWrapper.module.scss";
 import { ICartWrapper } from "./ICartWrapper";
 import { useCartActions } from "../../../Hooks/useCartActions/useCartActions";
-import { useImageOptimization } from "../../../Hooks/useImagePtimization/useImageOptimization";
+import { useImageOptimization } from "../../../Hooks/useImageOptimization/useImageOptimization";
 
 export const CartWrapper: FC<ICartWrapper> = ({
   cartSelector,

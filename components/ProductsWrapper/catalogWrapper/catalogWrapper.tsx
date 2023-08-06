@@ -14,7 +14,7 @@ import { setOffset } from "../../../store/slices/catalogSlices/catalogPagination
 import { ICatalogWrapper } from "./ICatalogWrapper";
 import { RU_LOCALE } from "../../../locales/locales";
 import { useCartActions } from "../../../Hooks/useCartActions/useCartActions";
-import { useImageOptimization } from "../../../Hooks/useImagePtimization/useImageOptimization";
+import { useImageOptimization } from "../../../Hooks/useImageOptimization/useImageOptimization";
 
 export const CatalogWrapper: FC<ICatalogWrapper> = ({
   itemWrapper_ClassName,

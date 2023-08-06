@@ -340,20 +340,13 @@ export const useCartActions = (data?: ICartActionsPayload) => {
         },
       } as ICartCollectionVariables;
 
-      let _newQuantity = 0;
-
       await cartClient
         .mutate<ICartCollection_updated>({
           mutation: UPDATE_CART_BY_ID,
           variables: variables,
         })
         .then((el) => {
-          if (el.data && !el.errors) {
-            _newQuantity = newQuantity;
-
-            if (callBack?.sideEffect && callBack?.flag === true)
-              callBack.sideEffect(_newQuantity);
-          }
+          if (el.data && !el.errors && callBack?.flag) setCartProducts(newCart);
         });
 
       return true;
@@ -368,6 +361,6 @@ export const useCartActions = (data?: ICartActionsPayload) => {
     cQuantityEditor: editQuantity,
     cFetch: cartItemsFetch,
     cItemById: getCartProductDataById,
-    cMeta: fetchingMeta
+    cMeta: fetchingMeta,
   };
 };
