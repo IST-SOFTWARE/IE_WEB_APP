@@ -4,8 +4,8 @@
 @import "../../../styles/variables.scss";
 
 .orderBox {
-  min-width: 400px;
-
+  max-width: 500px;
+  
   .cartTotal {
     @include font-size(1.25rem);
     color: $def_white;

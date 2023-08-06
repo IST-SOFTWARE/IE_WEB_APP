@@ -8,8 +8,16 @@ export interface IOrderingInformation_translation {
   continueOrder: string;
 }
 
+interface IOrderInformation_region {
+  currencySymbol: string,
+  region:  Intl.LocalesArgument
+}
+
 export interface IOrderingInformation {
   translation: IOrderingInformation_translation;
+  totalSum: number;
+  totalSelect: number;
+  region?: IOrderInformation_region;
   nextModalFunc: (...props) => any;
 }
 
@@ -43,7 +51,8 @@ export interface IOrderRequest_translation {
 }
 
 export type ICartSelected = {
-  cartSelected: string[]
+  cartSelected: string[],
+  path?: string,
 }
 
 

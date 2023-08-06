@@ -78,12 +78,12 @@ export const OrderedCartWrapper: FC<IOrderedCart> = ({
       {sortedCart?.cart_model?.map((el, idx) => {
         return (
           <ISTProductItem
-          style={{
-            margin: "0 0 10px 0",
-          }}
-          key={`ISTProductItem_${idx}`}
-          currencySymbol={"R"}
-          itemType={{
+            style={{
+              margin: "0 0 10px 0",
+            }}
+            key={`ISTProductItem_${idx}`}
+            currencySymbol={"R"}
+            itemType={{
               blocked: true,
               productType: "cart",
               mobileSettings: {
@@ -95,7 +95,6 @@ export const OrderedCartWrapper: FC<IOrderedCart> = ({
                 quantity: el?.quantity ?? 0,
                 cartItemGetter: getCartProductDataById,
               },
-
             }}
           />
         );

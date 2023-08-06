@@ -1,11 +1,13 @@
-import React, { FC, useEffect, useState } from "react";
+import React, { FC, useCallback, useEffect, useState } from "react";
 import styles from "../../../../../../styles/Modals/catalog/mobile/catalogCartPageMobileModal.module.scss";
 import ISTButtonN from "../../../../../UI/ISTButton/ISTButtonN";
 import { CartWrapper } from "../../../../../ProductsWrapper/cartWrapper/cartWrapper";
 import { ICartSelector_type } from "../../../../../UI/ISTProductItem/Abstract/ICartTypes";
 import { useAppSelector } from "../../../../../../Hooks/reduxSettings";
 import useBaseModal from "../../../../../../Hooks/useBaseModal/useBaseModal";
-import LoaderModal from '../../../../Loader/Loader_modal'
+import LoaderModal from "../../../../Loader/Loader_modal";
+import { useQueryBuilder } from "../../../../../../Hooks/useQueryBuilder/useQueryBuilder";
+import { ICartSelected } from "../../../../Order/common";
 
 export interface ICatalogCartPageMobileModal_translation {
   currency: boolean;
@@ -29,16 +31,25 @@ const CatalogCartPageMobileModal: FC<ICatalogCartPageMobileModal> = ({
 
   const region = useAppSelector((selector) => selector.region);
 
+  const { getQuery, parseQuery, pushToQuery } =
+    useQueryBuilder<ICartSelected>();
+
   // Loading modal
   const [loadingModal, setLoadingModal] = useState<boolean>(false);
-  const { modalComponent, ModalView } = useBaseModal(
-    undefined,
-    "PopUpBase"
-  );
+  const { modalComponent, ModalView } = useBaseModal(undefined, "PopUpBase");
 
-  useEffect(()=>{
+  const transitionAndPushSelectedItemsToQuery = useCallback(() => {
+    const newIDsArray = new Array<string>();
+    cartSelector.map((el) => newIDsArray.push(el.id.toString()));
+
+    if (newIDsArray.length > 0) {
+      pushToQuery({ cartSelected: newIDsArray, path: "/cart/"});
+    }
+  }, [cartSelector, pushToQuery]);
+
+  useEffect(() => {
     modalComponent.switch(loadingModal);
-  },[loadingModal, modalComponent])
+  }, [loadingModal, modalComponent]);
 
   return (
     <>
@@ -103,18 +114,17 @@ const CatalogCartPageMobileModal: FC<ICatalogCartPageMobileModal> = ({
                   borderRadius: "10px",
                 },
               }}
+              onClick={transitionAndPushSelectedItemsToQuery}
             />
           </div>
         </div>
       </div>
 
       <ModalView>
-        <LoaderModal/>
+        <LoaderModal />
       </ModalView>
-
     </>
   );
 };
 
 export default CatalogCartPageMobileModal;
-

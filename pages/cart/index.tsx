@@ -29,7 +29,6 @@ import {
 import OrderingInformation_modal from "../../components/DefaultModals/Order/OrderingInformation_modal";
 import OrderingRequest_modal from "../../components/DefaultModals/Order/OrderingRequest_modal";
 
-
 const CartPage_index = ({}) => {
   const [cartSelector, setCartSelector] = useState<ICartSelector_type[]>([]);
 
@@ -67,16 +66,32 @@ const CartPage_index = ({}) => {
 
   const region = useAppSelector((sel) => sel.region);
 
+  const [state, setState] = useState<boolean>(false)
+
+  const openModalWithSelected = useCallback(() => {
+    if(parseQuery()?.cartSelected && parseQuery()?.cartSelected.length > 0){
+      modalComponent.switch(true)
+      setState(!state)
+    } 
+ 
+  }, [modalComponent, parseQuery]);
+
   const pushSelectedItemsToQuery = useCallback(() => {
     const newIDsArray = new Array<string>();
     cartSelector.map((el) => newIDsArray.push(el.id.toString()));
 
-    pushToQuery({
-      cartSelected: newIDsArray,
-    }).then((res) => {
-      res ? modalComponent.switch(true) : null;
-    });
-  }, [cartSelector, modalComponent, pushToQuery]);
+    if (newIDsArray.length > 0) {
+      pushToQuery({
+        cartSelected: newIDsArray,
+      }).then((res) => (res ? openModalWithSelected() : null));
+    }
+
+  }, [openModalWithSelected, cartSelector, pushToQuery]);
+
+  useEffect(() => {
+    openModalWithSelected();
+    
+  }, [openModalWithSelected]);
 
   useEffect(() => {
     if (!modalComponent) return;
@@ -183,8 +198,17 @@ const CartPage_index = ({}) => {
           <LoaderModal />
         ) : (
           <PuWrapper data={modalComponent}>
+            {}
             {modalComponent.isCurrentModal(toc_order_information.typeName) ? (
               <OrderingInformation_modal
+                totalSelect={numOfSelected}
+                totalSum={totalSum}
+                region={{
+                  currencySymbol:
+                    region.currency[region.currentCurrencyId]?.currencySymbol ??
+                    "$",
+                  region: region.region,
+                }}
                 translation={currentTranslationOrderInformation?.translation}
                 nextModalFunc={handleSwitcherCartModalRequest}
               />
