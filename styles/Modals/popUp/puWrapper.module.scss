@@ -20,27 +20,38 @@
     max-width: 100%;
     width: fit-content;
     position: relative;
-    padding: 35px 45px 20px;
     background-color: $def_page_bg;
     box-shadow: 0px 0px 7px $def_blue;
     border-radius: 40px;
     z-index: inherit;
-
+    padding-bottom: 15px;
 
     @media (max-width: 539.98px){
       width: 95%;
       position: relative;
-      padding: 30px 20px;
-      padding-bottom: 15px !important;
       border-radius: 17px;
+    }
+
+    .contentWrapper{
+      padding: 0px 37px;
+
+      @media (max-width: 539.98px){
+        padding: 10px 15px;
+      }
+
     }
 
     .modalHeader {
       width: 100%;
       display: flex;
       margin-bottom: 15px;
+      padding: 37px 37px 15px;
       flex-direction: column;
       padding-right: 30px;
+
+      @media (max-width: 539.98px){
+        padding: 25px 15px 0px;
+      }
 
       h1 {
         text-align: start;

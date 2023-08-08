@@ -148,7 +148,9 @@ const OrderingModal: FC<IOrderingModal> = ({ loadingSetter }) => {
   return (
     <PU_ModalView>
       {puModalComponent.isCurrentModal(toc_order_information.typeName) ? (
-        <PuWrapper data={puModalComponent}>
+        <PuWrapper data={puModalComponent} style={{
+          padding: "0px 0px 10px"
+        }}>
           <OrderingInformation_modal
             translation={currentTranslationOrderInformation?.translation}
             openRequestPage={handleSwitcherCartModalRequest}
