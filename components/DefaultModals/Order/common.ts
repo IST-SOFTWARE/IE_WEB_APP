@@ -5,27 +5,10 @@ import { IRegionsListType } from '../../../store/slices/common/regionsListType'
 import { ICartSelector_type } from '../../UI/ISTProductItem/Abstract/ICartTypes'
 import { modalStater } from '../../../Hooks/useBaseModal/modalSetter'
 
-export interface IOrderingInformation_translation {
-  order: string;
-  detailsOrder: string;
-  products: string;
-  sum: string;
-  continueOrder: string;
-}
-
-
 export interface IOrderingModal{
-  loadingSetter: Dispatch<boolean>
-}
-export interface IOrderingInformation {
-  children: ReactNode;
-  translation: IOrderingInformation_translation;
-  openRequestPage: (...props) => any; 
-}
-
-export interface IOrderRequest {
-  translation: IOrderRequest_translation;
-  openOrderingInfo: (...props) => any;
+  loadingSetter: Dispatch<boolean>;
+  selectedProducts: number;
+  totalSum: number;
 }
 
 export interface IOrderedCartWrapper {
@@ -33,6 +16,37 @@ export interface IOrderedCartWrapper {
   cartItemGetter: cartItemGetter_fnc;
   region: IRegionSlice<IRegionsListType>;
   imageOptimization?: IImageOptimizationOptions
+}
+
+export interface IOrderingInformation {
+  children: ReactNode;
+  translation: IOrderingInformation_translation;
+}
+
+export interface IOrderRequest {
+  translation: IOrderRequest_translation;
+}
+
+export interface IOrderingDialog {
+  totalSelect: number;
+  totalSum: number;
+  translation: IOrderingDialog_translation;
+  openOrderingInfo: (...props) => any;
+  openRequestPage: (...props) => any; 
+  placeOrder: (...props) => any;
+  openingModal: number;
+}
+
+export type ICartSelected = {
+  cartSelected: string[],
+}
+
+export interface IOrderingInformation_translation {
+  order: string;
+  detailsOrder: string;
+  products: string;
+  sum: string;
+  continueOrder: string;
 }
 
 export interface IOrderRequest_translation {
@@ -54,9 +68,14 @@ export interface IOrderRequest_translation {
   buttonOrderingDetails: string;
 }
 
-export type ICartSelected = {
-  cartSelected: string[],
+export interface IOrderingDialog_translation {
+  products: string;
+  sum: string;
+  continueOrder: string;
+  buttonOrdering: string;
+  buttonOrderingDetails: string;
 }
+
 
 
 

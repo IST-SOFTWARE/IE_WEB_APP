@@ -6,14 +6,15 @@
 .orderRequestBox {
   max-width: 500px;
 
-  padding-left: 2px;
+  padding: 0 10px;
 
-  max-height: 60vh;
+  max-height: 50vh;
   overflow: auto;
   @include scroll($size: 2px, $direction: rtl);
 
   margin-top: 24px;
 
+  @include font-size(1.125rem);
   color: $def_white;
   font-weight: 700;
   .input {

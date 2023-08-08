@@ -2,13 +2,9 @@ import React, { FC } from "react";
 import styles from "../../../styles/Modals/order/ordering_request.module.scss";
 import ISTInput, { inputTypesVars } from "../../UI/ISTInput/ISTInput";
 import ISTButtonN from "../../UI/ISTButton/ISTButtonN";
-import { IOrderRequest } from './common'
+import { IOrderRequest } from "./common";
 
-
-const OrderingRequest_modal: FC<IOrderRequest> = ({
-  translation,
-  openOrderingInfo: previousModalFunc,
-}) => {
+const OrderingRequest_modal: FC<IOrderRequest> = ({ translation }) => {
   return (
     <>
       <div className={styles.orderRequestBox}>
@@ -80,39 +76,6 @@ const OrderingRequest_modal: FC<IOrderRequest> = ({
             outDataSetter={() => {}}
             required={true}
           />
-        </div>
-
-        <div className={styles.footerButtonBox}>
-          <div>
-            <ISTButtonN
-              light={{
-                fill: true,
-                style: {
-                  borderRadius: "15px",
-                  fillContainer: true,
-                },
-              }}
-              title={{
-                caption: translation?.buttonOrdering,
-              }}
-              onClick={() => {}}
-            />
-          </div>
-          <div>
-            <ISTButtonN
-              light={{
-                fill: true,
-                style: {
-                  borderRadius: "15px",
-                  fillContainer: true,
-                },
-              }}
-              title={{
-                caption: translation?.buttonOrderingDetails,
-              }}
-              onClick={previousModalFunc}
-            />
-          </div>
         </div>
       </div>
     </>

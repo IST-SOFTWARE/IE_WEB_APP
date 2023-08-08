@@ -5,6 +5,7 @@ import PuWrapper from "../popUp/puWrapper";
 import {
   ICartSelected,
   IOrderRequest_translation,
+  IOrderingDialog_translation,
   IOrderingInformation_translation,
   IOrderingModal,
 } from "./common";
@@ -19,6 +20,10 @@ import en_order_information from "../../../locales/orderInformation/en";
 
 import ru_order_request from "../../../locales/orderRequest/ru";
 import en_order_request from "../../../locales/orderRequest/en";
+
+import ru_order_dialog from "../../../locales/orderDialog/ru";
+import en_order_dialog from "../../../locales/orderDialog/en";
+
 import { useAppSelector } from "../../../Hooks/reduxSettings";
 import { useCartActions } from "../../../Hooks/useCartActions/useCartActions";
 import { ICartSelector_type } from "../../UI/ISTProductItem/Abstract/ICartTypes";
@@ -28,8 +33,13 @@ import { useImageOptimization } from "../../../Hooks/useImageOptimization/useIma
 import { OrderedCartWrapper } from "./OrderedCartWrapper";
 import { useDispatch } from "react-redux";
 import { setCatalogState } from "../../../store/slices/catalogSlices/catalogSlice";
+import OrderingFooterDialog from "./OrderingFooterDialog";
 
-const OrderingModal: FC<IOrderingModal> = ({ loadingSetter }) => {
+const OrderingModal: FC<IOrderingModal> = ({
+  loadingSetter,
+  selectedProducts,
+  totalSum,
+}) => {
   // IMAGE OPTIMIZATION
   let cloudinary_acc = process.env.NEXT_PUBLIC_CLOUDINARY_ACC;
   const PROD_IMAGES_ROOT = process.env.NEXT_PUBLIC_PROD_IMAGES_ROOT;
@@ -55,6 +65,12 @@ const OrderingModal: FC<IOrderingModal> = ({ loadingSetter }) => {
     useTransition<IOrderRequest_translation>([
       { locale: RU_LOCALE, translation: ru_order_request },
       { locale: EN_LOCALE, translation: en_order_request },
+    ]);
+
+  const currentTranslationOrderDialog =
+    useTransition<IOrderingDialog_translation>([
+      { locale: RU_LOCALE, translation: ru_order_dialog },
+      { locale: EN_LOCALE, translation: en_order_dialog },
     ]);
 
   // CART ORDERING MODAL
@@ -134,8 +150,7 @@ const OrderingModal: FC<IOrderingModal> = ({ loadingSetter }) => {
 
   const openOrderingModal = useCallback(() => {
     const _HasSelected =
-      cartSelector?.length > 0 &&
-      !(cMeta.loading || cMeta.error)
+      cartSelector?.length > 0 && !(cMeta.loading || cMeta.error);
     puModalComponent.switch(_HasSelected).then(() => {
       dispatch(setCatalogState(false));
     });
@@ -147,33 +162,44 @@ const OrderingModal: FC<IOrderingModal> = ({ loadingSetter }) => {
 
   return (
     <PU_ModalView>
-      {puModalComponent.isCurrentModal(toc_order_information.typeName) ? (
-        <PuWrapper data={puModalComponent} style={{
-          padding: "0px 0px 10px"
-        }}>
-          <OrderingInformation_modal
-            translation={currentTranslationOrderInformation?.translation}
-            openRequestPage={handleSwitcherCartModalRequest}
-          >
-            <OrderedCartWrapper
-              selectedItems={cartSelector}
-              cartItemGetter={cItemById}
-              region={regionHandler}
-              imageOptimization={{
-                loader: sourcedLoader,
-                sizes: "350px",
-              }}
+      <PuWrapper
+        data={puModalComponent}
+        style={{
+          padding: "0px 0px 10px",
+        }}
+      >
+        <div>
+          {puModalComponent.isCurrentModal(toc_order_information.typeName) ? (
+            <OrderingInformation_modal
+              translation={currentTranslationOrderInformation?.translation}
+            >
+              <OrderedCartWrapper
+                selectedItems={cartSelector}
+                cartItemGetter={cItemById}
+                region={regionHandler}
+                imageOptimization={{
+                  loader: sourcedLoader,
+                  sizes: "350px",
+                }}
+              />
+            </OrderingInformation_modal>
+          ) : puModalComponent.isCurrentModal(toc_order_request.typeName) ? (
+            <OrderingRequest_modal
+              translation={currentTranslationOrderRequest?.translation}
             />
-          </OrderingInformation_modal>
-        </PuWrapper>
-      ) : puModalComponent.isCurrentModal(toc_order_request.typeName) ? (
-        <PuWrapper data={puModalComponent}>
-          <OrderingRequest_modal
-            translation={currentTranslationOrderRequest?.translation}
+          ) : null}
+
+          <OrderingFooterDialog
+            openRequestPage={handleSwitcherCartModalRequest}
             openOrderingInfo={handleSwitcherCartModalInformation}
+            placeOrder={() => {}}
+            totalSelect={selectedProducts}
+            totalSum={totalSum}
+            translation={currentTranslationOrderDialog?.translation}
+            openingModal={currentCartModalIndex}
           />
-        </PuWrapper>
-      ) : null}
+        </div>
+      </PuWrapper>
     </PU_ModalView>
   );
 };

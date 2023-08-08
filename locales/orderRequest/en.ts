@@ -15,6 +15,5 @@ export default {
     fullNameRepresentative: "EN Translation",
     emailText: "EN Translation",
     email: "EN Translation",
-    buttonOrdering: "EN Translation",
-    buttonOrderingDetails: "EN Translation",
+
 } as IOrderRequest_translation

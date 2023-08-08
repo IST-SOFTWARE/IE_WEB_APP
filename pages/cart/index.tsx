@@ -134,6 +134,8 @@ const CartPage = ({}) => {
 
       <OrderingModal
         loadingSetter={setLoadingModal_cartSelected}
+        selectedProducts={numOfSelected}
+        totalSum={totalSum}
       />
     </>
   );

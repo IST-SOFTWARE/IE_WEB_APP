@@ -3,27 +3,17 @@
 @import "../../../styles/scss_mixins.scss";
 @import "../../../styles/variables.scss";
 
-.orderBox {
+.order {
   max-width: 500px;
   
-  .cartTotal {
-    @include font-size(1.25rem);
-    color: $def_white;
-    font-weight: 700;
+  .cartProducts {
+    max-height: 50vh;
+    padding: 0 10px;
 
-    position: sticky;
-    bottom: 0px;
+    @include scroll($size: 2px, $direction: rtl);
 
-    width: 100%;
-
-    .costBox {
-      display: flex;
-      flex-direction: column;
-    }
-
-    .boxButtonOrder {
-      max-width: 310px;
-      margin-top: 24px;
-    }
+    overflow: auto;
+    box-sizing: border-box
   }
+
 }

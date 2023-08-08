@@ -15,6 +15,5 @@ export default {
     fullNameRepresentative: "John Doe",
     emailText: "Email",
     email: "user@istlift.com",
-    buttonOrdering: "Оформление заказа",
-    buttonOrderingDetails: "Детали заказа",
+
 } as IOrderRequest_translation
