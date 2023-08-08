@@ -6,75 +6,52 @@ import ISTCartTotalSum, {
 import { CartWrapper } from "../../components/ProductsWrapper/cartWrapper/cartWrapper";
 import { ICartSelector_type } from "../../components/UI/ISTProductItem/Abstract/ICartTypes";
 import { useTransition } from "../../Hooks/useTranslation/useTranslation";
-import { IFiltersLocale } from "../../locales/filters/filtersLocale";
 import { EN_LOCALE, RU_LOCALE } from "../../locales/locales";
 import ru_upd from "../../locales/cartTotalSum/ru";
 import en_upd from "../../locales/cartTotalSum/en";
 import { useAppSelector } from "../../Hooks/reduxSettings";
 import useBaseModal from "../../Hooks/useBaseModal/useBaseModal";
-import PuWrapper from "../../components/DefaultModals/popUp/puWrapper";
-import { toc_order_information } from "../../components/DefaultModals/table_of_contents/order/toc_order_information";
-import { toc_order_request } from "../../components/DefaultModals/table_of_contents/order/toc_order_request";
-import ru_order_information from "../../locales/orderInformation/ru";
-import en_order_information from "../../locales/orderInformation/en";
-import ru_order_request from "../../locales/orderRequest/ru";
-import en_order_request from "../../locales/orderRequest/en";
 import LoaderModal from "../../components/DefaultModals/Loader/Loader_modal";
+import OrderingModal from "../../components/DefaultModals/Order/OrderingModal";
+import { useDispatch } from "react-redux";
 import { useQueryBuilder } from "../../Hooks/useQueryBuilder/useQueryBuilder";
-import {
-  ICartSelected,
-  IOrderRequest_translation,
-  IOrderingInformation_translation,
-} from "../../components/DefaultModals/Order/common";
-import OrderingInformation_modal from "../../components/DefaultModals/Order/OrderingInformation_modal";
-import OrderingRequest_modal from "../../components/DefaultModals/Order/OrderingRequest_modal";
+import { ICartSelected } from "../../components/DefaultModals/Order/common";
+import { setCatalogState } from "../../store/slices/catalogSlices/catalogSlice";
 
-const CartPage_index = ({}) => {
+const CartPage = ({}) => {
+  // REDUX
+  const region = useAppSelector((sel) => sel.region);
+
+  // CART SELECTOR / TOTAL SUM
   const [cartSelector, setCartSelector] = useState<ICartSelector_type[]>([]);
-
-  const { getQuery, parseQuery, pushToQuery } =
-    useQueryBuilder<ICartSelected>();
-
-  const [cartModalSwitch, setCartModalSwitch] = useState(0);
-
   const [numOfSelected, setNumOfSelected] = useState<number>(0);
   const [totalSum, setTotalSum] = useState<number>(0);
+ 
+  //LOADING STATE
+  const [loadingModal_cartData, setLoadingModal_cartData] =
+    useState<boolean>(false);
 
-  const { modalComponent, ModalView } = useBaseModal(
-    "APP_BODY_WRAPPER",
-    "PopUpBase"
-  );
+  const [loadingModal_cartSelected, setLoadingModal_cartSelected] =
+    useState<boolean>(false);
 
-  const [loadingModal, setLoadingModal] = useState<boolean>(false);
+  // LOADING MODAL
+  const { modalComponent: LoadingModalComponent, ModalView: LoadingModalView } =
+    useBaseModal(undefined, "LoadingSpace");
 
+  useEffect(() => {
+    LoadingModalComponent.switch(
+      loadingModal_cartData || loadingModal_cartSelected
+    );
+  }, [LoadingModalComponent, loadingModal_cartData, loadingModal_cartSelected]);
+
+  // TRANSLATION
   const currentTranslation = useTransition<ICartTotalSum_translation>([
     { locale: RU_LOCALE, translation: ru_upd },
     { locale: EN_LOCALE, translation: en_upd },
   ]);
 
-  const currentTranslationOrderInformation =
-    useTransition<IOrderingInformation_translation>([
-      { locale: RU_LOCALE, translation: ru_order_information },
-      { locale: EN_LOCALE, translation: en_order_information },
-    ]);
-
-  const currentTranslationOrderRequest =
-    useTransition<IOrderRequest_translation>([
-      { locale: RU_LOCALE, translation: ru_order_request },
-      { locale: EN_LOCALE, translation: en_order_request },
-    ]);
-
-  const region = useAppSelector((sel) => sel.region);
-
-  const [state, setState] = useState<boolean>(false)
-
-  const openModalWithSelected = useCallback(() => {
-    if(parseQuery()?.cartSelected && parseQuery()?.cartSelected.length > 0){
-      modalComponent.switch(true)
-      setState(!state)
-    } 
- 
-  }, [modalComponent, parseQuery]);
+  // QUERY HANDLING
+  const { pushToQuery } = useQueryBuilder<ICartSelected>();
 
   const pushSelectedItemsToQuery = useCallback(() => {
     const newIDsArray = new Array<string>();
@@ -83,57 +60,9 @@ const CartPage_index = ({}) => {
     if (newIDsArray.length > 0) {
       pushToQuery({
         cartSelected: newIDsArray,
-      }).then((res) => (res ? openModalWithSelected() : null));
+      })
     }
-
-  }, [openModalWithSelected, cartSelector, pushToQuery]);
-
-  useEffect(() => {
-    openModalWithSelected();
-    
-  }, [openModalWithSelected]);
-
-  useEffect(() => {
-    if (!modalComponent) return;
-
-    modalComponent.editModals(
-      [
-        {
-          typeName: toc_order_information.typeName,
-          _header: currentTranslationOrderInformation?.translation.order,
-          _paragraph:
-            currentTranslationOrderInformation?.translation.detailsOrder,
-        },
-
-        {
-          typeName: toc_order_request.typeName,
-          _header: currentTranslationOrderRequest?.translation?.order,
-          _paragraph: currentTranslationOrderRequest?.translation?.detailsOrder,
-        },
-      ],
-      cartModalSwitch
-    );
-  }, [modalComponent]);
-
-  const handleSwitcherCartModalRequest = useCallback(() => {
-    modalComponent
-      .applyModalByName(toc_order_request?.typeName)
-      .then((value) => {
-        setCartModalSwitch(value.index);
-      });
-  }, [modalComponent]);
-
-  const handleSwitcherCartModalInformation = useCallback(() => {
-    modalComponent
-      .applyModalByName(toc_order_information?.typeName)
-      .then((value) => {
-        setCartModalSwitch(value.index);
-      });
-  }, [modalComponent]);
-
-  useEffect(() => {
-    modalComponent.switch(loadingModal);
-  }, [loadingModal, modalComponent]);
+  }, [cartSelector, pushToQuery]);
 
   return (
     <>
@@ -146,7 +75,7 @@ const CartPage_index = ({}) => {
       >
         <div className={`col-12 col-lg-7 position-relative`}>
           <CartWrapper
-            loadingSetter={setLoadingModal}
+            loadingSetter={setLoadingModal_cartData}
             cartSelector={{
               selectedState: cartSelector,
               setSelectedState: setCartSelector,
@@ -183,6 +112,9 @@ const CartPage_index = ({}) => {
               currencySymbol:
                 region.currency[region.currentCurrencyId]?.currencySymbol ??
                 "$",
+              // НЕ НАДО ИСПОЛЬЗОВАТЬ МАГИЧЕСКИЕ ВСЯКИЕ СИМВОЛЫ.
+              // ДАННЫЙ СИМВОЛ ОПРЕДЕЛЕН ДЛЯ ЛОКАЛИ EN-US,
+              // НЕ ЗАБЫВАЕМ ПРО ПРИМЕРЫ ))
               region: region.region,
             }}
             translation={currentTranslation?.translation}
@@ -193,36 +125,18 @@ const CartPage_index = ({}) => {
         </div>
       </DefaultLandingPage>
 
-      <ModalView>
-        {loadingModal ? (
-          <LoaderModal />
-        ) : (
-          <PuWrapper data={modalComponent}>
-            {}
-            {modalComponent.isCurrentModal(toc_order_information.typeName) ? (
-              <OrderingInformation_modal
-                totalSelect={numOfSelected}
-                totalSum={totalSum}
-                region={{
-                  currencySymbol:
-                    region.currency[region.currentCurrencyId]?.currencySymbol ??
-                    "$",
-                  region: region.region,
-                }}
-                translation={currentTranslationOrderInformation?.translation}
-                nextModalFunc={handleSwitcherCartModalRequest}
-              />
-            ) : modalComponent.isCurrentModal(toc_order_request.typeName) ? (
-              <OrderingRequest_modal
-                translation={currentTranslationOrderRequest?.translation}
-                previousModalFunc={handleSwitcherCartModalInformation}
-              />
-            ) : null}
-          </PuWrapper>
-        )}
-      </ModalView>
+      {/* LOADING MODAL */}
+      <LoadingModalView>
+        <LoaderModal />
+      </LoadingModalView>
+
+      {/* CART ORDERING MODAL */}
+
+      <OrderingModal
+        loadingSetter={setLoadingModal_cartSelected}
+      />
     </>
   );
 };
 
-export default CartPage_index;
+export default CartPage;

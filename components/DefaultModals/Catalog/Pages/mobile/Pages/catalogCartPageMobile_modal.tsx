@@ -31,19 +31,18 @@ const CatalogCartPageMobileModal: FC<ICatalogCartPageMobileModal> = ({
 
   const region = useAppSelector((selector) => selector.region);
 
-  const { getQuery, parseQuery, pushToQuery } =
-    useQueryBuilder<ICartSelected>();
+  const { pushToQuery } = useQueryBuilder<ICartSelected>();
 
   // Loading modal
   const [loadingModal, setLoadingModal] = useState<boolean>(false);
-  const { modalComponent, ModalView } = useBaseModal(undefined, "PopUpBase");
+  const { modalComponent, ModalView } = useBaseModal(undefined, "LoadingSpace");
 
   const transitionAndPushSelectedItemsToQuery = useCallback(() => {
     const newIDsArray = new Array<string>();
     cartSelector.map((el) => newIDsArray.push(el.id.toString()));
 
     if (newIDsArray.length > 0) {
-      pushToQuery({ cartSelected: newIDsArray, path: "/cart/"});
+      pushToQuery({ cartSelected: newIDsArray }, "cart");
     }
   }, [cartSelector, pushToQuery]);
 

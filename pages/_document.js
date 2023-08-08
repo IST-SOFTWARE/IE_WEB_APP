@@ -19,9 +19,10 @@ export default function Document() {
         <meta name="theme-color" content="#ffffff"/>
       </Head>
           <body id={"APP_BODY_WRAPPER"}>
+                <div id="LoadingSpace"  style={{zIndex: "40"}}/>
                 <div id="PopUpBase"     style={{zIndex: "30"}}/>
                 <div id="CatalogSpace"  style={{zIndex: "20"}}/>
-                <div id="FeedBackList"  style={{zIndex: "10"}}/>
+                {/* <div id="FeedBackList"  style={{zIndex: "10"}}/> */}
                 <Main />
                 <NextScript />
           </body>

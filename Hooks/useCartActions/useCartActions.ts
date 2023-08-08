@@ -309,6 +309,7 @@ export const useCartActions = (data?: ICartActionsPayload) => {
 
               vendCode: _data.vend_code.toString(),
               slug: _data.slug,
+              
             };
           }
 

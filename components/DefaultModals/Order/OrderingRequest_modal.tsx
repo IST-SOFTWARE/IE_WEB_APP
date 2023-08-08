@@ -7,7 +7,7 @@ import { IOrderRequest } from './common'
 
 const OrderingRequest_modal: FC<IOrderRequest> = ({
   translation,
-  previousModalFunc,
+  openOrderingInfo: previousModalFunc,
 }) => {
   return (
     <>

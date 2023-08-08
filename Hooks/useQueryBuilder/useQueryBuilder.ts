@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import { useCallback, useEffect, useState } from "react";
 
 interface dataT {
-  cartSelected: Array<string>,
+  cartSelected: Array<string>;
 }
 
 /**
@@ -17,14 +17,13 @@ export const useQueryBuilder = <
 >(
   parseOptions?: queryString.StringifyOptions
 ) => {
-  const [currentQuery, setCurrentQuery] = useState<string>();
   const router = useRouter();
 
   const [_parseOptions] = useState<queryString.StringifyOptions>(
     parseOptions
       ? parseOptions
       : {
-          arrayFormat: 'bracket-separator',
+          arrayFormat: "bracket-separator",
           arrayFormatSeparator: "|",
           skipNull: true,
         }
@@ -32,21 +31,21 @@ export const useQueryBuilder = <
 
   const getQuery = useCallback(
     (data: T): string => {
-      
       return queryString.stringify({ ...data }, { ..._parseOptions });
-
     },
     [_parseOptions]
   );
 
   const pushToQuery = useCallback(
-    (data: T, path?: string):Promise<boolean> => {
+    (data: T, additionalPath?: string): Promise<boolean> => {
       const newQuery = getQuery(data);
-      console.log("data: ", data)
       return newQuery
-      ? router.push(`${newQuery}`)
-      : router.push(``);
-
+        ? router.push(
+            additionalPath ? `${additionalPath}/?${newQuery}` : `?${newQuery}`,
+            undefined,
+            { shallow: false }
+          )
+        : router.push(``, undefined, { shallow: false });
     },
     [getQuery, router]
   );
@@ -61,5 +60,5 @@ export const useQueryBuilder = <
     return;
   }, [_parseOptions, router?.asPath]);
 
-  return { parseQuery, getQuery, pushToQuery };
+  return { parseQuery, getQuery, pushToQuery, router };
 };

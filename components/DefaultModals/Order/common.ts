@@ -1,4 +1,9 @@
-import { cartCollection } from '../../ProductsWrapper/common'
+import { Dispatch, ReactNode } from 'react'
+import { IImageOptimizationOptions, cartItemGetter_fnc } from '../../UI/common'
+import { IRegionSlice } from '../../../store/slices/regionSlice/IRegionSlice'
+import { IRegionsListType } from '../../../store/slices/common/regionsListType'
+import { ICartSelector_type } from '../../UI/ISTProductItem/Abstract/ICartTypes'
+import { modalStater } from '../../../Hooks/useBaseModal/modalSetter'
 
 export interface IOrderingInformation_translation {
   order: string;
@@ -8,27 +13,26 @@ export interface IOrderingInformation_translation {
   continueOrder: string;
 }
 
-interface IOrderInformation_region {
-  currencySymbol: string,
-  region:  Intl.LocalesArgument
-}
 
+export interface IOrderingModal{
+  loadingSetter: Dispatch<boolean>
+}
 export interface IOrderingInformation {
+  children: ReactNode;
   translation: IOrderingInformation_translation;
-  totalSum: number;
-  totalSelect: number;
-  region?: IOrderInformation_region;
-  nextModalFunc: (...props) => any;
+  openRequestPage: (...props) => any; 
 }
 
 export interface IOrderRequest {
   translation: IOrderRequest_translation;
-  previousModalFunc: (...props) => any;
+  openOrderingInfo: (...props) => any;
 }
 
-export interface IOrderedCart {
-  selectedIds: Array<string | number>;
-  cartData: cartCollection;
+export interface IOrderedCartWrapper {
+  selectedItems: ICartSelector_type[];
+  cartItemGetter: cartItemGetter_fnc;
+  region: IRegionSlice<IRegionsListType>;
+  imageOptimization?: IImageOptimizationOptions
 }
 
 export interface IOrderRequest_translation {
@@ -52,7 +56,6 @@ export interface IOrderRequest_translation {
 
 export type ICartSelected = {
   cartSelected: string[],
-  path?: string,
 }
 
 

@@ -70,7 +70,7 @@ const CatalogSearchModal: FC<ICatalogSearchModal> = ({
   const [loaderState, setLoaderState] = useState<boolean>(false)
   const {ModalView, modalComponent} = useBaseModal(
       undefined,
-      "PopUpBase"
+      "LoadingSpace"
   )
 
   useEffect(()=>{

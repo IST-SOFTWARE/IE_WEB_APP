@@ -59,14 +59,14 @@ const useBaseModal = (
                 console.warn("Base modal component:\n" +
                     "The container with the ID you provided was not found")
         }
-    }, [currentData])
+    }, [ContainerIdForScrollBlocking, currentData])
 
     const portalSender = useCallback((modal: React.ReactNode) => {
         if (currentData)
             return createPortal(currentData.getState ? modal : null,
                 document.getElementById(TransferBlockId ? TransferBlockId : "PopUpBase"))
 
-    }, [currentData])
+    }, [TransferBlockId, currentData])
 
     const ModalView: FC<IBaseModalFC> = ({
      children,
@@ -100,7 +100,7 @@ const useBaseModal = (
                     </div>
                 </>
             )
-        }, [currentData])
+        }, [alignStyle?.horizontal, alignStyle?.vertical, children, style])
 
         return currentData?.getState ? portalSender(modal) : null
     }
