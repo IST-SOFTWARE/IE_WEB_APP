@@ -83,6 +83,7 @@ $reaction_size: 60px;
 .comment{
   height: 55px;
   min-height: 55px;
+  word-break: break-all;
 
   display: -webkit-box;
   -webkit-line-clamp: 2;
