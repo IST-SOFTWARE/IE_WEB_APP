@@ -16,6 +16,9 @@
   flex-direction: column;
   justify-content: space-between;
 
+  @include font-size(1.25rem);
+
+
   .cartLabel {
     @include font-size(1.688rem);
     font-weight: 700;

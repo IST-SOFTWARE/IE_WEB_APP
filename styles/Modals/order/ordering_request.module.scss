@@ -4,9 +4,13 @@
 @import "../../../styles/variables.scss";
 
 .orderRequestBox {
-  max-width: 500px;
+  max-width: 550px;
 
   padding: 0 10px;
+
+  @media (min-width: 539.98px){
+    padding: 0px 32px;
+  }
 
   max-height: 50vh;
   overflow: auto;

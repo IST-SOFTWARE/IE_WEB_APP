@@ -14,6 +14,10 @@
 
   padding: 0 10px;
 
+  @media (min-width: 539.98px){
+    padding: 0px 32px;
+  }
+
   .cost {
     padding: 15px 0;
     .select {
