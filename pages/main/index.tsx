@@ -33,6 +33,7 @@ import ru_ourPartnersPage from "../../locales/ourPartnersPage/ru";
 import en_ourPartnersPage from "../../locales/ourPartnersPage/en";
 import ru_productDemo from "../../locales/productDemo/ru";
 import en_productDemo from "../../locales/productDemo/en";
+import { setCatalogState } from '../../store/slices/catalogSlices/catalogSlice'
 
 interface ILandingPageCont {
   landingPage: ILandingPage | null;
@@ -104,13 +105,11 @@ const Index: FC<ILandingPageCont> = ({ landingPage }) => {
   const dispatch = useAppDispatch();
   const scrollSpy = useAppSelector((state) => state.scrollSpy.scrollSpy);
 
-  const router = useRouter();
-
   // REDUX. SCROLL SPY
   useEffect(() => {
     if (scrollPos && scrollPos.percentInterval)
       dispatch(setActualPosition(scrollPos));
-  }, [scrollPos]);
+  }, [dispatch, scrollPos]);
 
   useEffect(() => {
     const onScroll = () => {
@@ -130,9 +129,8 @@ const Index: FC<ILandingPageCont> = ({ landingPage }) => {
   }, [scrollSpy]);
 
   useEffect(() => {
-    // console.log(router);
     dispatch(setActualPosition(0));
-  }, []);
+  }, [dispatch]);
 
   return (
     <>
@@ -184,7 +182,15 @@ const Index: FC<ILandingPageCont> = ({ landingPage }) => {
           pageId={elem.page_identifier}
           scrollSpyTag={elem.landing_label[0]?.page_type}
         >
-          <ProductDemo translation={currencyTranslationProductDemo?.translation} page={elem} />
+          <ProductDemo
+            actions={{
+              catalogOpener: () => {
+                dispatch(setCatalogState(true))
+              }
+            }}
+            translation={currencyTranslationProductDemo?.translation}
+            page={elem}
+          />
         </DefaultLandingPage>
       ))}
 

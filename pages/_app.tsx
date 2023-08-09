@@ -1,24 +1,27 @@
+import "../styles/global.scss";
+import Head from "next/head";
+import { ApolloProvider } from "@apollo/client";
+import { catalogClient } from "../Apollo/catalogClient";
+import { Provider } from "react-redux";
+import store from "../store/store";
+import LandingLayout from "../components/Layouts/landingLayout";
+import NextProgress from "next-progress";
+
 //POLYFILLS FOR OLDER BR
 import { forEach } from "core-js/stable/dom-collections";
 import { replaceAll } from "core-js/stable/string";
 
-import "../styles/global.scss";
-import Head from "next/head";
-
-import { useRouter } from "next/router";
-
-import { ApolloProvider } from "@apollo/client";
-import { catalogClient } from "../Apollo/catalogClient";
-
-import { Provider } from "react-redux";
-import store from "../store/store";
-
-import LandingLayout from "../components/Layouts/landingLayout";
-
 export default function MyApp({ Component, pageProps }) {
-
   return (
     <>
+      <NextProgress
+        delay={300}
+        height={"3px"}
+        color={"#4D7BAE"}
+        options={{ showSpinner: false }}
+        disableSameRoute={true}
+      />
+
       <Head>
         <title>IST ELEVATOR</title>
         <meta
@@ -35,9 +38,9 @@ export default function MyApp({ Component, pageProps }) {
 
       <ApolloProvider client={catalogClient}>
         <Provider store={store}>
-            <LandingLayout>
-                <Component {...pageProps}/>
-            </LandingLayout>
+          <LandingLayout>
+            <Component {...pageProps} />
+          </LandingLayout>
         </Provider>
       </ApolloProvider>
     </>

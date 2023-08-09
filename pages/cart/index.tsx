@@ -26,7 +26,7 @@ const CartPage = ({}) => {
   const [cartSelector, setCartSelector] = useState<ICartSelector_type[]>([]);
   const [numOfSelected, setNumOfSelected] = useState<number>(0);
   const [totalSum, setTotalSum] = useState<number>(0);
- 
+
   //LOADING STATE
   const [loadingModal_cartData, setLoadingModal_cartData] =
     useState<boolean>(false);
@@ -60,7 +60,7 @@ const CartPage = ({}) => {
     if (newIDsArray.length > 0) {
       pushToQuery({
         cartSelected: newIDsArray,
-      })
+      });
     }
   }, [cartSelector, pushToQuery]);
 
@@ -71,7 +71,6 @@ const CartPage = ({}) => {
           title: null,
           titleOffset: 100,
         }}
-        pageId={"CartPage"}
       >
         <div className={`col-12 col-lg-7 position-relative`}>
           <CartWrapper

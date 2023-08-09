@@ -152,7 +152,8 @@ const OrderingModal: FC<IOrderingModal> = ({
     const _HasSelected =
       cartSelector?.length > 0 && !(cMeta.loading || cMeta.error);
     puModalComponent.switch(_HasSelected).then(() => {
-      dispatch(setCatalogState(false));
+      if(_HasSelected)
+        dispatch(setCatalogState(false));
     });
   }, [cartSelector?.length, cMeta, puModalComponent, dispatch]);
 

@@ -20,8 +20,6 @@ import en_upd from "../../../locales/callBackRequest/en";
 import { modalsBasics } from "../../../Hooks/useBaseModal/modalSetter";
 import { EN_LOCALE, RU_LOCALE } from "../../../locales/locales";
 import { useTransition } from "../../../Hooks/useTranslation/useTranslation";
-import ru from "../../../locales/ru";
-import en from "../../../locales/en";
 
 export interface IProductDemo_translation {
   more: string;
@@ -36,14 +34,17 @@ export interface IProductDemo_translation {
   paragraphRes: string;
 }
 
+interface IActionsHandlers {
+  catalogOpener?: (props: unknown) => unknown;
+}
 interface IPage {
   page: IPageOfLanding;
   translation: IProductDemo_translation;
+  actions?: IActionsHandlers;
 }
 
-const ProductDemo: FC<IPage> = ({ page, translation }) => {
+const ProductDemo: FC<IPage> = ({ page, translation, actions }) => {
   const router = useRouter();
-  const t = router.locale === "ru-RU" ? ru : en;
 
   const currentTranslation = useTransition<ICallBackRequest_translation>([
     { locale: RU_LOCALE, translation: ru_upd },
@@ -53,11 +54,13 @@ const ProductDemo: FC<IPage> = ({ page, translation }) => {
   const [galleryContent, setGalleryContent] = useState<IGallery>(null);
 
   // Modal windows
-  const { modalComponent, ModalView } = useBaseModal("PopUpBase");
+  const { modalComponent, ModalView } = useBaseModal(
+    "APP_BODY_WRAPPER",
+    "PopUpBase"
+  );
 
   //user contacts for CB request
   const [newCB_data, setNewCB_data] = useState<ICB_RequestModalData>(null);
-
   const [currentModal, setCurrentModal] = useState<number>(0);
   //
 
@@ -143,9 +146,7 @@ const ProductDemo: FC<IPage> = ({ page, translation }) => {
             </div>
           ))}
           <div className={`${styles.prTypeCard} ${styles.opener}`}>
-            <Link href={"/useCatalog"}>
-              <button />
-            </Link>
+            <button onClick={actions?.catalogOpener ?? null} />
             <div className={styles.imageBlock}>
               <Image
                 src={"/op_catalog.svg"}
@@ -155,7 +156,7 @@ const ProductDemo: FC<IPage> = ({ page, translation }) => {
                 }}
                 alt="product_category"
                 priority={true}
-                sizes={"auto"}
+                sizes={"250px"}
               />
             </div>
             <div className={styles.textBlock}>
@@ -194,7 +195,6 @@ const ProductDemo: FC<IPage> = ({ page, translation }) => {
           ) : null}
         </PuWrapper>
       </ModalView>
-      
     </>
   );
 };

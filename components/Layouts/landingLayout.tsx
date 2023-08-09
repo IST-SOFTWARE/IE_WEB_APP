@@ -189,6 +189,13 @@ export const LandingLayout: FC<ILandingLayout> = ({ children }) => {
       });
   }, [modalComponent]);
 
+  const handleForwarding = useCallback(
+    (forwardingPath: string = "./") => {
+      router.push(forwardingPath);
+    },
+    [router]
+  );
+
   return (
     <>
       <Header
@@ -211,6 +218,10 @@ export const LandingLayout: FC<ILandingLayout> = ({ children }) => {
           dispatch(setCatalogState(true));
         }}
         translation={currencyTranslationHeader?.translation}
+        buttonsDefs={{
+          logo: () => {handleForwarding("./main")},
+          cart: () => {handleForwarding("./cart")}
+        }}
       />
 
       {children}

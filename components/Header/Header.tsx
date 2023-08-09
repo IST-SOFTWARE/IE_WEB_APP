@@ -1,9 +1,9 @@
-import React, { FC, useEffect, useState } from "react";
+import React, { FC, useCallback, useEffect, useState } from "react";
 import styles from "../../styles/Header/Header.module.scss";
 import Image from "next/image";
 import { useAppSelector } from "../../Hooks/reduxSettings";
-import { ICatalogFiltersType } from "../../store/slices/common/catalogFiltersType";
 import { catalogHasFilters_modalsHelper } from "../../helpers/Catalog/modals";
+import { useRouter } from "next/router";
 
 export interface IHeader_translation {
   catalog: string;
@@ -11,11 +11,17 @@ export interface IHeader_translation {
   contacts: string;
 }
 
+interface IHeaderButtonsHandlers {
+  logo?: (props: unknown) => unknown;
+  cart?: (props: unknown) => unknown;
+}
+
 interface Header {
   children?: React.ReactNode;
 
   catalogOpener?: (...props: any) => void;
   searchOpener?: (...props: any) => void;
+  buttonsDefs?: IHeaderButtonsHandlers;
 
   translation: IHeader_translation;
 }
@@ -25,10 +31,10 @@ const Header: FC<Header> = ({
   catalogOpener,
   searchOpener,
   translation,
+  buttonsDefs,
 }) => {
   const reduxCatalogState = useAppSelector((state) => state.catalog);
   const [hasFilters, setHasFilters] = useState<boolean>(false);
-
 
   useEffect(() => {
     setHasFilters(catalogHasFilters_modalsHelper(reduxCatalogState?.filters));
@@ -44,7 +50,10 @@ const Header: FC<Header> = ({
               "col-2 col-lg-2 h-100 d-none d-lg-flex align-items-center"
             }
           >
-            <div className={styles.headerLogo}>
+            <div
+              className={styles.headerLogo}
+              onClick={buttonsDefs?.logo ?? null}
+            >
               <Image
                 src={"/Logo/w_logo_svg.svg"}
                 alt={"Logo"}
@@ -62,7 +71,7 @@ const Header: FC<Header> = ({
               "col-2 h-100 d-flex d-lg-none align-items-center position-relative"
             }
           >
-            <div className={styles.mobLogo}>
+            <div className={styles.mobLogo} onClick={buttonsDefs?.logo ?? null}>
               <div className={styles.headerLogo}>
                 <Image
                   src={"/Logo/mob_logo.svg"}
@@ -125,7 +134,10 @@ const Header: FC<Header> = ({
             }
           >
             <div className={styles.headerNav}>
-              <button className={styles.cartBtn}>
+              <button
+                className={styles.cartBtn}
+                onClick={buttonsDefs?.cart ?? null}
+              >
                 <div className={styles.cartBtn_img}>
                   <Image
                     src={"/Header/header_cart.svg"}
