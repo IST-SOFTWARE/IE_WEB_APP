@@ -3,7 +3,7 @@
     height: 100vh;
     display: grid;
     grid-template-columns: 50% auto;
-    z-index: 10;
+    z-index: 1;
     position: relative;
 }
 .HelloContent h2{

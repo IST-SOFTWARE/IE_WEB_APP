@@ -5,7 +5,7 @@
     background-color: #151A20;
     display: flex;
     align-items: center;
-    z-index: 11;
+    z-index: 1;
     position: fixed;
   }
 
@@ -415,7 +415,7 @@
     /* MOBITE SEARCH ACTIVE STYLES */
     .search_block.active{
         position: absolute;
-        z-index: 5;
+        z-index: 1;
         left: 0;
         transform-origin: center;
         top:20px;

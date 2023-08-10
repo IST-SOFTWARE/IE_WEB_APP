@@ -6,13 +6,7 @@
     display: grid;
     justify-items: end;
     grid-template-rows: 187px 60px;
-    z-index: 10;
-    /* border: solid 1px #fff; */
-
-    /* grid-area: gtBlock; */
-    /* justify-content: center;
-    row-gap: 34px; */
-
+    z-index: 1;
 }
 .gtBlock.unload{
      animation-duration: 1.7s;

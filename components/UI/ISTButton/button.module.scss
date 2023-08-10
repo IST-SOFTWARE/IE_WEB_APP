@@ -1,0 +1,109 @@
+@import "../scss/variables";
+@import "../scss/mixins/rfs_mixins";
+@import "../scss/mixins/background_mixin";
+@import "../scss/mixins/ratioBox/ratio-box";
+
+$trans_speed: 0.3s;
+
+.btn{
+  cursor: pointer;
+  position: relative;
+
+  max-width: 100%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+
+  box-sizing: border-box;
+  height: fit-content;
+
+  background: transparent;
+  border: none;
+  outline: none;
+  color: transparent;
+
+  .btn_title{
+    display: flex;
+    justify-content: center;
+    flex-grow: 1;
+    padding: 10px 0;
+  }
+
+  .img_btn{
+    @include ratio-box(1/1);
+    width: 100%;
+
+    display: flex;
+    flex: 1;
+  }
+
+}
+
+
+.light_th{
+
+  border: solid 3px $def_light_blue;
+  background: transparent;
+
+  color: $pure_white;
+
+  &:focus{
+    border: solid 3px $def_light_blue !important;
+  }
+}
+
+.fill{
+  background: $def_blue;
+  border: none !important;
+
+  &:focus{
+    border: none !important;
+  }
+}
+
+.lf_actions{
+  &{
+    transition: $trans_speed;
+  }
+
+  &:hover, &:focus{
+    box-shadow: 0px 0px 10px $def_dark;
+    transition: $trans_speed;
+  }
+}
+
+.dark_th{
+  @include gradient_bg($background:gradient);
+  color: $pure_white;
+  font-weight: 700;
+  @include font-size(1rem);
+  line-height: 19px;
+  transition: $trans_speed;
+
+  &:hover, &:focus{
+    box-shadow: 0px 0px 10px $def_dark;
+    transition: $trans_speed;
+  }
+}
+
+.dt_solid{
+  @include gradient_bg($background:$def_page_bg, $border_s: 0px);
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 25%);
+}
+
+.ds_actions{
+  &{
+    transition: $trans_speed;
+  }
+
+  &:hover, &:focus{
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 50%);
+    transition: $trans_speed;
+  }
+}
+
+
+
+
