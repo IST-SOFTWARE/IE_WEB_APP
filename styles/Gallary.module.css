@@ -79,7 +79,7 @@
     width: 100%;
     height: 100%;
     position: relative;
-    mask:url("/g_mask.svg");
+    mask:url("/public/g_mask.svg");
     mask-repeat: no-repeat;
     mask-position: right;
     padding: 2px;
@@ -102,7 +102,7 @@
     top: 0;
     right: 0;
     background: linear-gradient(0deg, rgba(118, 172, 231, 1), rgba(21, 26, 32, 1));
-    mask:url("/g_mask.svg");
+    mask:url("/public/g_mask.svg");
     mask-repeat: no-repeat;
     mask-position: right;
 }

@@ -1,4 +1,5 @@
 import { Html, Head, Main, NextScript } from 'next/document'
+import useWindowDimensions from "../Hooks/useWindowsDimensions";
 
 export default function Document() {
   return (
