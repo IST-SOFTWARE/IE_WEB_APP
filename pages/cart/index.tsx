@@ -21,7 +21,7 @@ import { setCatalogState } from "../../store/slices/catalogSlices/catalogSlice";
 const CartPage = ({}) => {
   // REDUX
   const region = useAppSelector((sel) => sel.region);
-
+  
   // CART SELECTOR / TOTAL SUM
   const [cartSelector, setCartSelector] = useState<ICartSelector_type[]>([]);
   const [numOfSelected, setNumOfSelected] = useState<number>(0);
@@ -52,7 +52,7 @@ const CartPage = ({}) => {
 
   // QUERY HANDLING
   const { pushToQuery } = useQueryBuilder<ICartSelected>();
-
+  const [orderingPopUpState, setOrderingPopUpState] = useState<boolean>(false);
   const pushSelectedItemsToQuery = useCallback(() => {
     const newIDsArray = new Array<string>();
     cartSelector.map((el) => newIDsArray.push(el.id.toString()));
@@ -60,7 +60,7 @@ const CartPage = ({}) => {
     if (newIDsArray.length > 0) {
       pushToQuery({
         cartSelected: newIDsArray,
-      });
+      }).then(()=>{setOrderingPopUpState(true)});
     }
   }, [cartSelector, pushToQuery]);
 
@@ -130,9 +130,12 @@ const CartPage = ({}) => {
       </LoadingModalView>
 
       {/* CART ORDERING MODAL */}
-
       <OrderingModal
         loadingSetter={setLoadingModal_cartSelected}
+        modalState={{
+          modalState: orderingPopUpState,
+          modalStateSetter: setOrderingPopUpState
+        }}
         selectedProducts={numOfSelected}
         totalSum={totalSum}
       />

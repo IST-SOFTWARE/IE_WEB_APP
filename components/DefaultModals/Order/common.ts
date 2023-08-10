@@ -3,12 +3,16 @@ import { IImageOptimizationOptions, cartItemGetter_fnc } from '../../UI/common'
 import { IRegionSlice } from '../../../store/slices/regionSlice/IRegionSlice'
 import { IRegionsListType } from '../../../store/slices/common/regionsListType'
 import { ICartSelector_type } from '../../UI/ISTProductItem/Abstract/ICartTypes'
-import { modalStater } from '../../../Hooks/useBaseModal/modalSetter'
 
+interface IOrderingModalOptions{
+  modalState: boolean
+  modalStateSetter: Dispatch<boolean>;
+}
 export interface IOrderingModal{
   loadingSetter: Dispatch<boolean>;
   selectedProducts: number;
   totalSum: number;
+  modalState: IOrderingModalOptions
 }
 
 export interface IOrderedCartWrapper {

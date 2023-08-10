@@ -78,7 +78,6 @@ const CatalogSearchModal: FC<ICatalogSearchModal> = ({
   },[loaderState, modalComponent])
 
 
-
   const [mfgFilter, ha_mfg, mfg_designation] =
     useISTFiltersList<ICatalogFiltersType>("mfg");
 

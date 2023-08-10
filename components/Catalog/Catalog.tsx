@@ -36,7 +36,8 @@ const Catalog: FC<ICatalog> = ({ children, modal}) => {
         modal.isCurrentModal(toc_catalog_search.typeName)
     ){
       modal.applyModalByName(toc_catalog_full_prod_list.typeName)
-          .then(()=>router.push("", undefined, {shallow: true}))
+          .then(()=>router.push(`.${router.asPath}`, undefined, {shallow: true}))
+          
     }
 
   },[modal, reduxCatalogState?.filters, router])

@@ -17,7 +17,7 @@ export default function MyApp({ Component, pageProps }) {
       <NextProgress
         delay={300}
         height={"3px"}
-        color={"#4D7BAE"}
+        color={"#8BC2FF"}
         options={{ showSpinner: false }}
         disableSameRoute={true}
       />

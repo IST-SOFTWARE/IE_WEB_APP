@@ -39,6 +39,7 @@ const OrderingModal: FC<IOrderingModal> = ({
   loadingSetter,
   selectedProducts,
   totalSum,
+  modalState,
 }) => {
   // IMAGE OPTIMIZATION
   let cloudinary_acc = process.env.NEXT_PUBLIC_CLOUDINARY_ACC;
@@ -98,7 +99,17 @@ const OrderingModal: FC<IOrderingModal> = ({
       ],
       currentCartModalIndex
     );
-  }, [puModalComponent]);
+
+    puModalComponent.setOnClose = () => {
+      modalState?.modalStateSetter(false);
+    };
+  }, [
+    puModalComponent,
+    modalState,
+    currentTranslationOrderInformation,
+    currentTranslationOrderRequest,
+    currentCartModalIndex,
+  ]);
 
   const handleSwitcherCartModalRequest = useCallback(() => {
     puModalComponent
@@ -119,7 +130,7 @@ const OrderingModal: FC<IOrderingModal> = ({
   // CART ITEMS HANDLING
   const [cartSelector, setCartSelector] = useState<ICartSelector_type[]>([]);
   const dispatch = useDispatch();
-  const { parseQuery, router } = useQueryBuilder<ICartSelected>();
+  const { parseQuery } = useQueryBuilder<ICartSelected>();
   const { cItemById, cData, cMeta } = useCartActions({
     cartAutoFetching: true,
     regionHandler: regionHandler,
@@ -129,7 +140,8 @@ const OrderingModal: FC<IOrderingModal> = ({
     loadingSetter(cMeta.loading && !puModalComponent.getState);
   }, [cMeta, loadingSetter, puModalComponent.getState]);
 
-  useEffect(() => {
+  const getCartFilteredData = useCallback((): ICartSelector_type[] => {
+    
     const _selected = parseQuery()?.cartSelected;
     if (!(_selected?.length > 0) || !(cData?.length > 0)) return;
 
@@ -145,21 +157,30 @@ const OrderingModal: FC<IOrderingModal> = ({
         quantity: el.quantity,
       });
     });
+
     setCartSelector(_cartItemsData);
+    return _cartItemsData;
   }, [cData, parseQuery]);
 
   const openOrderingModal = useCallback(() => {
+    const _cartSelector = getCartFilteredData();
     const _HasSelected =
-      cartSelector?.length > 0 && !(cMeta.loading || cMeta.error);
-    puModalComponent.switch(_HasSelected).then(() => {
-      if(_HasSelected)
-        dispatch(setCatalogState(false));
-    });
-  }, [cartSelector?.length, cMeta, puModalComponent, dispatch]);
+      _cartSelector?.length > 0 && !(cMeta.loading || cMeta.error);
+
+    !puModalComponent.getState
+      ? puModalComponent.switch(_HasSelected).then(() => {
+          if (_HasSelected) dispatch(setCatalogState(false));
+        })
+      : null;
+  }, [getCartFilteredData, cMeta, puModalComponent, dispatch]);
 
   useEffect(() => {
-    if (router) openOrderingModal();
-  }, [openOrderingModal, router]);
+    openOrderingModal();
+  }, [openOrderingModal]);
+
+  useEffect(() => {
+    if (modalState?.modalState) openOrderingModal();
+  }, [modalState, openOrderingModal]);
 
   return (
     <PU_ModalView>

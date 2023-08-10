@@ -1,4 +1,4 @@
-import { useLazyQuery, useMutation } from "@apollo/client";
+import { QueryResult, useLazyQuery, useMutation } from "@apollo/client";
 import { cartCollection } from "../../components/ProductsWrapper/common";
 import {
   CREATE_CART_COLLECTION,
@@ -199,14 +199,18 @@ export const useCartActions = (data?: ICartActionsPayload) => {
   );
 
   // REFETCH CART
-  const cartItemsFetch = useCallback(() => {
+  const cartItemsFetch = useCallback(async ():Promise<QueryResult<cartCollection>> => {
     if (!getCartData) return;
-
-    getCartData().then((el) =>
+    getCartData().then((el) => {
       el?.data
         ? cartItemsUpdater(el.data.cartCollection_by_id?.cart_model)
-        : null
-    );
+        : null;
+
+      return new Promise<QueryResult<cartCollection>>((resolve) => {
+        resolve(el);
+      });
+    });
+    return;
   }, [cartItemsUpdater, getCartData]);
 
   // AUTO FETCHING CART
@@ -309,7 +313,6 @@ export const useCartActions = (data?: ICartActionsPayload) => {
 
               vendCode: _data.vend_code.toString(),
               slug: _data.slug,
-              
             };
           }
 
